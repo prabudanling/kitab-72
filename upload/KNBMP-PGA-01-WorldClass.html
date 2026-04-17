@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KNBMP — PGA-72 Polymath Grand Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:       #09152B;
+  --navy-mid:   #122142;
+  --navy-light: #1C3260;
+  --gold:       #C4952A;
+  --gold-l:     #DEB96A;
+  --gold-pale:  #F0DFA0;
+  --gold-sub:   #F7F0DC;
+  --cream:      #F5F0E7;
+  --cream-d:    #E8E0D0;
+  --cream-dd:   #D8CEBC;
+  --red:        #B01C28;
+  --txt:        #18192C;
+  --txt-m:      #3A3C5E;
+  --txt-l:      #7A7C9C;
+  --txt-x:      #A8AABB;
+  --wh:         #FFFFFF;
+  --ff-d:       'Cormorant Garamond', Georgia, serif;
+  --ff-b:       'Crimson Pro', Georgia, serif;
+  --ff-u:       'DM Sans', system-ui, sans-serif;
+  --ff-m:       'DM Mono', monospace;
+  --sh:         0 4px 48px rgba(9,21,43,.14), 0 1px 6px rgba(9,21,43,.07);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { background: #C8BFB0; font-family: var(--ff-b); color: var(--txt); -webkit-font-smoothing: antialiased; }
+
+.doc-wrap { max-width: 940px; margin: 48px auto; display: flex; flex-direction: column; gap: 3px; }
+
+/* ── COVER ─────────────────────────────────────────────────────── */
+.pg-cover {
+  background: var(--navy);
+  min-height: 1240px;
+  display: flex;
+  box-shadow: var(--sh);
+  position: relative;
+  overflow: hidden;
+}
+.pg-cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 900px 700px at 25% 20%, rgba(196,149,42,.08) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 900px at 78% 75%, rgba(196,149,42,.05) 0%, transparent 65%),
+    radial-gradient(ellipse 500px 400px at 50% 5%, rgba(196,149,42,.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+/* Background large text watermark */
+.pg-cover::after {
+  content: 'KNBMP';
+  position: absolute;
+  right: -40px; bottom: -20px;
+  font-family: var(--ff-d);
+  font-size: 260px;
+  font-weight: 700;
+  color: rgba(196,149,42,.04);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.cover-spine {
+  width: 72px;
+  background: rgba(196,149,42,.06);
+  border-right: 1px solid rgba(196,149,42,.14);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 0;
+  flex-shrink: 0;
+  position: relative; z-index: 2;
+}
+.spine-text {
+  font-family: var(--ff-m);
+  font-size: 8.5px; letter-spacing: .32em; color: rgba(196,149,42,.45);
+  writing-mode: vertical-rl; text-transform: uppercase; transform: rotate(180deg);
+}
+.cover-main {
+  flex: 1;
+  display: flex; flex-direction: column;
+  padding: 72px 76px 60px 60px;
+  position: relative; z-index: 2;
+}
+.cv-topbar {
+  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 84px;
+}
+.cv-topbar::before, .cv-topbar::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(196,149,42,.55));
+}
+.cv-topbar::after { background: linear-gradient(to left, transparent, rgba(196,149,42,.55)); }
+.cv-badge {
+  font-family: var(--ff-m); font-size: 8.5px; font-weight: 500;
+  letter-spacing: .26em; color: var(--gold); text-transform: uppercase; white-space: nowrap;
+}
+.cv-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.cv-class {
+  font-family: var(--ff-m); font-size: 9px; letter-spacing: .22em;
+  color: rgba(196,149,42,.55); text-transform: uppercase; margin-bottom: 28px;
+}
+.cv-org {
+  font-family: var(--ff-d); font-size: 13px; font-weight: 400; letter-spacing: .2em;
+  color: rgba(245,240,232,.6); text-transform: uppercase; margin-bottom: 18px;
+}
+.cv-acronym {
+  font-family: var(--ff-d); font-size: 128px; font-weight: 300; line-height: 1;
+  letter-spacing: -.02em; color: var(--wh); margin-bottom: 4px;
+}
+.cv-acronym span { color: var(--gold); }
+.orn {
+  display: flex; align-items: center; gap: 14px;
+  margin: 30px 0;
+}
+.orn-line { height: 1px; width: 72px; background: linear-gradient(to right, transparent, var(--gold)); }
+.orn-line.r { background: linear-gradient(to left, transparent, var(--gold)); }
+.orn-d { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
+.orn-ds { width: 4px; height: 4px; background: rgba(196,149,42,.45); transform: rotate(45deg); flex-shrink: 0; }
+.cv-series {
+  font-family: var(--ff-d); font-size: 30px; font-weight: 500; letter-spacing: .06em;
+  color: var(--gold-l); margin-bottom: 12px; line-height: 1.3;
+}
+.cv-title {
+  font-family: var(--ff-d); font-size: 44px; font-weight: 300; color: var(--wh);
+  line-height: 1.22; margin-bottom: 14px; max-width: 520px;
+}
+.cv-tagline {
+  font-family: var(--ff-d); font-size: 18px; font-weight: 400; font-style: italic;
+  color: rgba(245,240,232,.48); max-width: 500px; line-height: 1.65; margin-bottom: 52px;
+}
+.cv-vision-box {
+  border-left: 2px solid var(--gold);
+  padding: 22px 30px; margin: 0 0 52px;
+  background: rgba(196,149,42,.06); max-width: 600px;
+}
+.cv-vis-lbl {
+  font-family: var(--ff-m); font-size: 8.5px; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
+}
+.cv-vis-txt {
+  font-family: var(--ff-d); font-size: 16.5px; font-weight: 500; font-style: italic;
+  color: rgba(245,240,232,.88); line-height: 1.65;
+}
+.cv-footer {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding-top: 36px; border-top: 1px solid rgba(196,149,42,.18);
+}
+.cv-ft-item {
+  font-family: var(--ff-m); font-size: 8.5px; letter-spacing: .17em;
+  color: rgba(245,240,232,.3); text-transform: uppercase;
+}
+.cv-ft-item strong { color: rgba(196,149,42,.65); font-weight: 500; }
+
+/* ── COLOPHON ───────────────────────────────────────────────────── */
+.pg-colophon {
+  background: var(--navy-mid);
+  padding: 72px 100px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 480px;
+  box-shadow: var(--sh);
+}
+.col-hd {
+  font-family: var(--ff-m); font-size: 8.5px; letter-spacing: .26em;
+  color: rgba(196,149,42,.45); text-transform: uppercase;
+  margin-bottom: 44px; padding-bottom: 16px;
+  border-bottom: 1px solid rgba(196,149,42,.14);
+}
+.col-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 36px; margin-bottom: 44px; }
+.col-item label {
+  font-family: var(--ff-m); font-size: 8px; letter-spacing: .2em;
+  color: rgba(196,149,42,.45); text-transform: uppercase; display: block; margin-bottom: 4px;
+}
+.col-item span {
+  font-family: var(--ff-u); font-size: 12.5px; color: rgba(245,240,232,.65); font-weight: 300; line-height: 1.5;
+}
+.col-dis {
+  font-family: var(--ff-u); font-size: 10.5px; color: rgba(245,240,232,.28);
+  line-height: 1.75; border-top: 1px solid rgba(196,149,42,.1); padding-top: 22px;
+}
+
+/* ── CONTENT PAGE BASE ──────────────────────────────────────────── */
+.pg {
+  background: var(--cream);
+  padding: 72px 100px;
+  box-shadow: var(--sh);
+  position: relative;
+}
+.pg-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 18px; border-bottom: 1px solid var(--cream-d);
+  margin-bottom: 68px;
+}
+.pg-hd-org {
+  font-family: var(--ff-m); font-size: 8px; letter-spacing: .22em;
+  color: var(--txt-x); text-transform: uppercase;
+}
+.pg-hd-doc {
+  font-family: var(--ff-m); font-size: 8px; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase;
+}
+.sec-lbl {
+  font-family: var(--ff-m); font-size: 9.5px; letter-spacing: .26em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.sec-lbl::before { content: ''; width: 20px; height: 1px; background: var(--gold); }
+.pg-title {
+  font-family: var(--ff-d); font-size: 58px; font-weight: 300; line-height: 1.08;
+  color: var(--navy); margin-bottom: 8px; letter-spacing: -.015em;
+}
+.pg-subtitle {
+  font-family: var(--ff-d); font-size: 22px; font-weight: 400; font-style: italic;
+  color: var(--txt-m); margin-bottom: 48px; line-height: 1.4;
+}
+.rule { display: flex; align-items: center; gap: 12px; margin: 44px 0; }
+.rule::before { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--gold), transparent); }
+.rule-d { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
+.rule-s { border: none; border-top: 1px solid var(--cream-d); margin: 44px 0; }
+.body-t { font-family: var(--ff-b); font-size: 17px; line-height: 1.82; color: var(--txt); max-width: 650px; }
+.body-t p { margin-bottom: 1.35em; }
+.body-t p:first-child::first-letter {
+  font-family: var(--ff-d); font-size: 72px; font-weight: 300; line-height: .82;
+  float: left; margin: 4px 14px 0 0; color: var(--navy);
+}
+.pq {
+  margin: 48px 0; padding: 0 0 0 32px;
+  border-left: 3px solid var(--gold); position: relative;
+}
+.pq::before {
+  content: '\201C';
+  font-family: var(--ff-d); font-size: 90px; font-weight: 300;
+  color: var(--gold-pale); line-height: 1; position: absolute; left: -14px; top: -22px;
+}
+.pq-t {
+  font-family: var(--ff-d); font-size: 23px; font-weight: 400; font-style: italic;
+  color: var(--navy); line-height: 1.6; margin-bottom: 12px;
+}
+.pq-a {
+  font-family: var(--ff-u); font-size: 11px; font-weight: 400;
+  color: var(--txt-l); letter-spacing: .07em; text-transform: uppercase;
+}
+.sig { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--cream-d); }
+.sig-name { font-family: var(--ff-d); font-size: 30px; font-weight: 500; font-style: italic; color: var(--navy); margin-bottom: 4px; }
+.sig-title { font-family: var(--ff-u); font-size: 11px; color: var(--txt-l); letter-spacing: .09em; text-transform: uppercase; margin-bottom: 2px; }
+.sig-yr { font-family: var(--ff-m); font-size: 11px; color: var(--gold); letter-spacing: .17em; }
+
+/* ── TOC ────────────────────────────────────────────────────────── */
+.toc-intro { font-family: var(--ff-b); font-size: 16px; color: var(--txt-m); line-height: 1.7; max-width: 600px; margin-bottom: 52px; }
+.toc-dom { margin-bottom: 36px; }
+.toc-dom-hd {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--cream-d);
+}
+.toc-dom-n {
+  font-family: var(--ff-m); font-size: 8.5px; font-weight: 500; letter-spacing: .14em;
+  color: var(--gold); background: rgba(196,149,42,.1);
+  border: 1px solid rgba(196,149,42,.22); padding: 3px 8px; text-transform: uppercase;
+}
+.toc-dom-nm {
+  font-family: var(--ff-u); font-size: 11px; font-weight: 500;
+  letter-spacing: .1em; color: var(--txt-m); text-transform: uppercase;
+}
+.toc-dom-rng { font-family: var(--ff-m); font-size: 9px; color: var(--txt-x); margin-left: auto; }
+.toc-items { display: flex; flex-direction: column; gap: 5px; }
+.toc-row { display: flex; align-items: baseline; }
+.toc-id {
+  font-family: var(--ff-m); font-size: 10.5px; font-weight: 400;
+  color: var(--gold); min-width: 76px; flex-shrink: 0;
+}
+.toc-nm { font-family: var(--ff-b); font-size: 15px; color: var(--txt); flex: 1; line-height: 1.35; }
+.toc-dots { flex: 1; border-bottom: 1px dotted var(--cream-dd); margin: 0 8px; min-width: 16px; align-self: flex-end; padding-bottom: 3px; }
+.toc-tr { font-family: var(--ff-m); font-size: 8px; color: var(--txt-x); flex-shrink: 0; letter-spacing: .08em; }
+.toc-tr.sv { color: rgba(176,28,40,.5); }
+
+/* ── CHAPTER HEADER ─────────────────────────────────────────────── */
+.ch-hd {
+  background: var(--navy); padding: 80px 100px;
+  position: relative; overflow: hidden; box-shadow: var(--sh);
+}
+.ch-hd::after {
+  content: '';
+  position: absolute; right: -30px; bottom: -80px;
+  width: 360px; height: 360px;
+  border: 72px solid rgba(196,149,42,.06); border-radius: 50%;
+  pointer-events: none;
+}
+.ch-hd::before {
+  content: '01';
+  position: absolute; right: 80px; top: 40px;
+  font-family: var(--ff-d); font-size: 180px; font-weight: 300;
+  color: rgba(196,149,42,.05); line-height: 1;
+  pointer-events: none; user-select: none;
+}
+.ch-id {
+  font-family: var(--ff-m); font-size: 10px; letter-spacing: .32em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 18px;
+}
+.ch-dom {
+  font-family: var(--ff-m); font-size: 9px; letter-spacing: .22em;
+  color: rgba(196,149,42,.48); text-transform: uppercase; margin-bottom: 28px;
+}
+.ch-title {
+  font-family: var(--ff-d); font-size: 64px; font-weight: 300; color: var(--wh);
+  line-height: 1.08; letter-spacing: -.015em; margin-bottom: 10px;
+}
+.ch-sub {
+  font-family: var(--ff-d); font-size: 22px; font-weight: 400; font-style: italic;
+  color: rgba(245,240,232,.45); margin-bottom: 44px;
+}
+.ch-meta {
+  display: flex; gap: 44px; flex-wrap: wrap;
+  padding-top: 32px; border-top: 1px solid rgba(196,149,42,.2);
+}
+.ch-meta-it label {
+  font-family: var(--ff-m); font-size: 8px; letter-spacing: .18em;
+  color: rgba(196,149,42,.45); text-transform: uppercase; display: block; margin-bottom: 4px;
+}
+.ch-meta-it span {
+  font-family: var(--ff-u); font-size: 12px; color: rgba(245,240,232,.62);
+}
+
+/* ── CHAPTER BODY SECTIONS ──────────────────────────────────────── */
+.ch-body { padding: 72px 100px; background: var(--cream); }
+.sh-n { font-family: var(--ff-m); font-size: 9px; font-weight: 500; letter-spacing: .22em; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+.sh { font-family: var(--ff-d); font-size: 38px; font-weight: 500; color: var(--navy); line-height: 1.18; margin-bottom: 28px; letter-spacing: -.01em; }
+.sh2 { font-family: var(--ff-d); font-size: 26px; font-weight: 400; color: var(--navy); line-height: 1.28; margin-bottom: 20px; }
+
+.vis-hero {
+  background: var(--navy); padding: 56px 60px; margin: 44px 0;
+  position: relative; overflow: hidden;
+}
+.vis-hero::before {
+  content: '\201C';
+  font-family: var(--ff-d); font-size: 220px; font-weight: 300;
+  color: rgba(196,149,42,.07); line-height: 1;
+  position: absolute; left: 20px; top: -24px; pointer-events: none;
+}
+.vis-hero-lbl {
+  font-family: var(--ff-m); font-size: 8.5px; letter-spacing: .26em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 14px;
+}
+.vis-hero-lbl::after { content: ''; flex: 1; height: 1px; background: rgba(196,149,42,.3); }
+.vis-hero-txt {
+  font-family: var(--ff-d); font-size: 32px; font-weight: 400; font-style: italic;
+  color: var(--wh); line-height: 1.55; letter-spacing: .01em; position: relative; z-index: 1;
+}
+.vis-hero-txt em { color: var(--gold-l); font-style: normal; font-weight: 500; }
+
+.stat-g { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin: 40px 0; background: var(--cream-d); }
+.stat-it { background: var(--cream); padding: 30px 26px; border-bottom: 3px solid transparent; }
+.stat-it.hi { border-bottom-color: var(--gold); }
+.stat-n { font-family: var(--ff-d); font-size: 44px; font-weight: 300; color: var(--navy); line-height: 1; margin-bottom: 8px; }
+.stat-n span { color: var(--gold); }
+.stat-l { font-family: var(--ff-u); font-size: 11px; color: var(--txt-m); line-height: 1.4; }
+
+.prin-g { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 40px 0; background: var(--cream-d); }
+.prin-c { background: var(--cream); padding: 34px 30px; }
+.prin-n { font-family: var(--ff-m); font-size: 9px; letter-spacing: .14em; color: var(--gold); margin-bottom: 8px; }
+.prin-en { font-family: var(--ff-m); font-size: 9.5px; letter-spacing: .12em; color: var(--txt-l); text-transform: uppercase; margin-bottom: 4px; }
+.prin-id { font-family: var(--ff-d); font-size: 30px; font-weight: 500; color: var(--navy); line-height: 1.1; margin-bottom: 12px; }
+.prin-q { font-family: var(--ff-b); font-size: 13px; font-style: italic; color: var(--txt-m); line-height: 1.65; border-left: 2px solid var(--gold-pale); padding-left: 12px; margin-bottom: 12px; }
+.prin-ul { list-style: none; padding: 0; }
+.prin-ul li { font-family: var(--ff-u); font-size: 12px; color: var(--txt-m); padding: 4px 0 4px 18px; position: relative; border-bottom: 1px solid var(--cream-d); line-height: 1.5; }
+.prin-ul li::before { content: '—'; position: absolute; left: 0; color: var(--gold); font-weight: 300; }
+
+.tl { position: relative; padding-left: 32px; margin: 40px 0; }
+.tl::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, var(--gold), rgba(196,149,42,.15)); }
+.tl-it { position: relative; margin-bottom: 36px; }
+.tl-it::before { content: ''; position: absolute; left: -36px; top: 7px; width: 9px; height: 9px; background: var(--gold); transform: rotate(45deg); }
+.tl-p { font-family: var(--ff-m); font-size: 10px; font-weight: 500; letter-spacing: .15em; color: var(--gold); margin-bottom: 4px; }
+.tl-ph { font-family: var(--ff-d); font-size: 21px; font-weight: 500; color: var(--navy); margin-bottom: 8px; line-height: 1.2; }
+.tl-desc { font-family: var(--ff-u); font-size: 13px; color: var(--txt-m); line-height: 1.65; }
+
+.qt-g { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--cream-d); margin: 40px 0; }
+.qt-c { background: var(--cream); padding: 32px 28px; }
+.qt-t { font-family: var(--ff-d); font-size: 18.5px; font-weight: 400; font-style: italic; color: var(--navy); line-height: 1.65; margin-bottom: 14px; }
+.qt-a { font-family: var(--ff-m); font-size: 9px; letter-spacing: .14em; color: var(--gold); text-transform: uppercase; }
+
+.sh-items { margin: 24px 0; }
+.sh-row { display: flex; gap: 20px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--cream-d); }
+.sh-lbl { font-family: var(--ff-m); font-size: 9px; letter-spacing: .14em; color: var(--gold); text-transform: uppercase; min-width: 88px; flex-shrink: 0; }
+.sh-txt { font-family: var(--ff-d); font-size: 17.5px; font-weight: 500; font-style: italic; color: var(--navy); line-height: 1.45; }
+
+.dt-g { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--cream-d); margin: 40px 0; }
+.dt-c { background: var(--cream); padding: 32px 28px; }
+.dt-c.ta { border-top: 3px solid var(--navy); }
+.dt-c.tb { border-top: 3px solid var(--gold); }
+.dt-lbl { font-family: var(--ff-m); font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; margin-bottom: 6px; }
+.dt-c.ta .dt-lbl { color: var(--navy); }
+.dt-c.tb .dt-lbl { color: var(--gold); }
+.dt-nm { font-family: var(--ff-d); font-size: 28px; font-weight: 500; color: var(--navy); margin-bottom: 20px; line-height: 1.2; }
+.dt-ul { list-style: none; padding: 0; }
+.dt-ul li { font-family: var(--ff-u); font-size: 12.5px; color: var(--txt-m); padding: 5px 0 5px 18px; position: relative; border-bottom: 1px solid var(--cream-d); line-height: 1.5; }
+.dt-ul li::before { content: '→'; position: absolute; left: 0; color: var(--gold); }
+
+.data-tbl { width: 100%; border-collapse: collapse; margin: 32px 0; font-family: var(--ff-u); font-size: 13px; }
+.data-tbl th { font-family: var(--ff-m); font-size: 8px; font-weight: 500; letter-spacing: .15em; color: var(--gold); text-align: left; padding: 10px 16px; background: var(--navy); border-bottom: 2px solid var(--gold); }
+.data-tbl td { padding: 12px 16px; border-bottom: 1px solid var(--cream-d); color: var(--txt); vertical-align: top; line-height: 1.5; }
+.data-tbl tr:nth-child(even) td { background: rgba(9,21,43,.025); }
+.data-tbl td:first-child { font-family: var(--ff-m); font-size: 11px; font-weight: 500; color: var(--gold); white-space: nowrap; }
+
+/* ── CLOSING ────────────────────────────────────────────────────── */
+.ch-close {
+  background: var(--navy); padding: 72px 80px; text-align: center;
+}
+.ch-cl-orn { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 36px; }
+.ch-cl-orn::before, .ch-cl-orn::after { content: ''; width: 56px; height: 1px; background: rgba(196,149,42,.4); }
+.ch-cl-d { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+.ch-cl-lbl { font-family: var(--ff-m); font-size: 9px; letter-spacing: .32em; color: var(--gold); text-transform: uppercase; margin-bottom: 24px; }
+.ch-cl-txt { font-family: var(--ff-d); font-size: 28px; font-weight: 300; font-style: italic; color: var(--wh); line-height: 1.55; max-width: 560px; margin: 0 auto 36px; }
+.ch-cl-url { font-family: var(--ff-m); font-size: 10px; letter-spacing: .17em; color: rgba(196,149,42,.55); text-transform: uppercase; }
+
+/* ── PAGE FOOTER ────────────────────────────────────────────────── */
+.pg-ft {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 100px; background: var(--cream);
+  border-top: 1px solid var(--cream-d); box-shadow: var(--sh);
+}
+.pg-ft-id { font-family: var(--ff-m); font-size: 8px; letter-spacing: .18em; color: var(--txt-x); text-transform: uppercase; }
+.pg-ft-pg { font-family: var(--ff-m); font-size: 11px; font-weight: 500; color: var(--gold); }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────── */
+@media (max-width: 980px) {
+  .doc-wrap { margin: 0; }
+  .pg, .ch-body, .ch-hd, .pg-colophon { padding: 48px 36px; }
+  .cover-main { padding: 48px 36px; }
+  .cv-acronym { font-size: 84px; }
+  .pg-title { font-size: 44px; }
+  .ch-title { font-size: 46px; }
+  .prin-g { grid-template-columns: 1fr; }
+  .stat-g { grid-template-columns: 1fr 1fr; }
+  .qt-g { grid-template-columns: 1fr; }
+  .dt-g { grid-template-columns: 1fr; }
+  .col-grid { grid-template-columns: 1fr 1fr; }
+  .pg-ft { padding: 14px 36px; }
+}
+@media print {
+  body { background: white; }
+  .doc-wrap { margin: 0; max-width: none; }
+  .pg-cover, .pg-colophon, .pg, .ch-hd, .ch-body { page-break-after: always; box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<div class="doc-wrap">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SAMPUL / COVER
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="pg-cover">
+  <div class="cover-spine">
+    <span class="spine-text">KNBMP · PGA-72 · SOVEREIGN EDITION · 2026</span>
+  </div>
+  <div class="cover-main">
+    <div class="cv-topbar">
+      <span class="cv-badge">◆ Sovereign-72 Edition &nbsp;·&nbsp; Foundational Series &nbsp;·&nbsp; Kelas Dunia</span>
+    </div>
+    <div class="cv-body">
+      <div class="cv-class">Document Classification: Public — Bintang Utara Peradaban &nbsp;|&nbsp; Version 1.0.0</div>
+      <div class="cv-org">Kopi Korporasi Multipihak Nusa Berdikari Merah Putih</div>
+      <div class="cv-acronym">KN<span>BMP</span></div>
+      <div class="orn">
+        <div class="orn-line"></div>
+        <div class="orn-ds"></div>
+        <div class="orn-d"></div>
+        <div class="orn-ds"></div>
+        <div class="orn-line r"></div>
+      </div>
+      <div class="cv-series">PGA-72 — Polymath Grand Architecture</div>
+      <div class="cv-title">72 Dokumen Standar&nbsp;Kelas&nbsp;Dunia untuk Ekosistem Ekonomi Rakyat Berdaulat</div>
+      <div class="cv-tagline">Dari Desa ke Dunia — Fondasi Peradaban yang Akan Bertahan&nbsp;100&nbsp;Tahun</div>
+      <div class="cv-vision-box">
+        <div class="cv-vis-lbl">Visi Utama — Bintang Utara KNBMP</div>
+        <div class="cv-vis-txt">"Membangun Ekosistem Ekonomi Rakyat Berdaulat yang Menjadikan Setiap Manusia Bebas, Makmur, dan Berdignitas — dari Desa ke Dunia."</div>
+      </div>
+    </div>
+    <div class="cv-footer">
+      <div class="cv-ft-item">Indonesia &nbsp;·&nbsp; 38 Provinsi</div>
+      <div class="cv-ft-item" style="text-align:center"><strong>kopnusa.id</strong></div>
+      <div class="cv-ft-item">© 2026 KNBMP &nbsp;·&nbsp; <strong>Foundational Truth</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COLOPHON
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="pg-colophon">
+  <div class="col-hd">Informasi Dokumen &nbsp;·&nbsp; Document Information &nbsp;·&nbsp; KNBMP — PGA-72</div>
+  <div class="col-grid">
+    <div class="col-item"><label>Nama Resmi</label><span>Kopi Korporasi Multipihak Nusa Berdikari Merah Putih</span></div>
+    <div class="col-item"><label>Nama Singkat</label><span>KNBMP / Kopnusa</span></div>
+    <div class="col-item"><label>Website</label><span>www.kopnusa.id</span></div>
+    <div class="col-item"><label>Seri Dokumen</label><span>PGA-72 — Polymath Grand Architecture</span></div>
+    <div class="col-item"><label>Jumlah Dokumen</label><span>72 Dokumen — 9 Domain</span></div>
+    <div class="col-item"><label>Tier Standar</label><span>Sovereign-72 — Standar Emas Kelas Dunia</span></div>
+    <div class="col-item"><label>Tahun Penerbitan</label><span>2026</span></div>
+    <div class="col-item"><label>Status</label><span>Foundational Truth — Tidak Berubah 100 Tahun</span></div>
+    <div class="col-item"><label>Pendaftaran Member</label><span>www.kopnusa.id/kpa</span></div>
+    <div class="col-item"><label>Dokumen ID</label><span>PGA-01 sampai PGA-72</span></div>
+    <div class="col-item"><label>Bahasa</label><span>Bahasa Indonesia (Formal)</span></div>
+    <div class="col-item"><label>Cakupan Geografis</label><span>38 Provinsi Indonesia → Asia → Dunia</span></div>
+  </div>
+  <div class="col-dis">© 2026 KNBMP — Kopi Korporasi Multipihak Nusa Berdikari Merah Putih. Seluruh isi dokumen ini dilindungi untuk kemaslahatan umat manusia. Penggandaan diizinkan untuk tujuan pendidikan dan pemberdayaan rakyat dengan mencantumkan sumber. Dokumen ini bukan untuk tujuan komersial semata — ia adalah warisan peradaban untuk generasi yang akan datang. Setiap kata dipilih dengan hati-hati. Setiap kalimat mengandung amanah. Dokumen ini akan dibaca oleh cucu kita.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     KATA PENGANTAR
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="pg">
+  <div class="pg-hd">
+    <span class="pg-hd-org">KNBMP — Kopi Korporasi Multipihak Nusa Berdikari Merah Putih</span>
+    <span class="pg-hd-doc">PGA-72 — Kata Pengantar</span>
+  </div>
+  <div class="sec-lbl">Pembuka</div>
+  <div class="pg-title">Kata<br>Pengantar</div>
+  <div class="pg-subtitle">Pesan kepada Generasi yang Membaca Ini</div>
+
+  <div class="body-t">
+    <p>Bismillahirrahmanirrahim.</p>
+    <p>Ada momen dalam sejarah sebuah bangsa — yang jarang terjadi, hanya sekali atau dua kali dalam satu abad — ketika sesuatu yang fundamental bergeser. Bukan karena bencana, bukan karena perang, tetapi karena sekelompok kecil manusia memutuskan bahwa cara lama tidak lagi cukup. Bahwa rakyat layak mendapatkan lebih dari yang telah mereka terima selama ini. Bahwa kemakmuran bukan hadiah dari atas, melainkan hak yang dilahirkan bersama setiap jiwa yang menghirup udara di muka bumi ini.</p>
+    <p>KNBMP lahir dari keputusan itu.</p>
+  </div>
+
+  <div class="pq">
+    <div class="pq-t">"Kita tidak membangun KNBMP untuk diri kita. Kita membangun KNBMP untuk generasi yang belum lahir. Itulah amanah yang kita pikul."</div>
+    <div class="pq-a">Prabu Danling — Visioner &amp; Pendiri KNBMP</div>
+  </div>
+
+  <div class="body-t">
+    <p>Dalam tangan Anda kini terdapat 72 dokumen. Bukan 72 laporan biasa. Bukan 72 proposal. Melainkan 72 fondasi peradaban — yang dirancang dengan keyakinan bahwa sistem ekonomi rakyat yang benar-benar berdaulat adalah mungkin, dapat dibangun, dan sudah seharusnya ada sejak lama.</p>
+    <p>Setiap dokumen dalam seri PGA-72 ini lahir dari pertanyaan yang sama: <em>Bagaimana sistem yang benar-benar melayani rakyat — bukan sekadar mengklaim melayani rakyat — dapat dibangun, dijalankan, diukur, dan diwariskan?</em> Pertanyaan ini bukan retorika. Ia adalah kompas yang mengarahkan setiap kata, setiap keputusan arsitektural, setiap pilihan kelembagaan yang tertuang dalam dokumen-dokumen ini.</p>
+    <p>Indonesia berdiri di persimpangan sejarah yang luar biasa. Dengan 278 juta jiwa, 64,2 juta UMKM, 83.763 desa, dan potensi laut terluas di dunia — kita memiliki semua bahan untuk menjadi kekuatan ekonomi rakyat terbesar di abad ke-21. Yang selama ini kurang bukan sumber dayanya. Yang kurang adalah sistemnya. Arsitekturnya. Ekosistemnya.</p>
+    <p>PGA-72 adalah arsitektur itu.</p>
+    <p>Dokumen-dokumen ini tidak dibuat dalam kerangka berpikir consulting fee atau quarterly report. Ia dibuat dalam kerangka berpikir peradaban — dengan horizon 100 tahun, dengan tanggung jawab kepada generasi yang belum lahir, dengan kesadaran bahwa setiap kata yang kita tulis hari ini akan membentuk keputusan, kebijakan, dan kehidupan jutaan manusia di masa depan.</p>
+    <p>Kepada setiap pembaca — apakah Anda seorang petani di Lombok yang baru bergabung sebagai anggota, seorang pengusaha muda di Surabaya yang mencari ekosistem yang bermakna, seorang pejabat pemerintah yang ingin memahami model ini, atau seorang investor dari Singapura yang melihat potensi besar Indonesia — kami sampaikan satu pesan:</p>
+  </div>
+
+  <div class="pq">
+    <div class="pq-t">"Kemakmuran bukan hak istimewa. Ia adalah hak asasi. Dan dokumen-dokumen ini adalah peta jalan menuju ke sana."</div>
+    <div class="pq-a">Gugun Gunara — Arsitek Ekosistem KNBMP</div>
+  </div>
+
+  <div class="body-t">
+    <p>Kami tahu perjalanan ini tidak mudah. Mengubah sistem ekonomi yang telah berjalan selama puluhan tahun membutuhkan lebih dari sekadar niat baik. Ia membutuhkan doktrin yang jelas, sistem yang kokoh, tata kelola yang amanah, teknologi yang inklusif, dan — yang paling penting — manusia-manusia yang percaya bahwa perubahan adalah mungkin.</p>
+    <p>Itulah mengapa 72 dokumen ini ada. Ia adalah peta, kompas, dan bekal sekaligus. Bagi mereka yang akan membangun. Bagi mereka yang akan melanjutkan. Bagi cucu-cucu kita yang suatu hari akan membacanya dan bertanya: "Siapa mereka yang memulai ini?" Dan kita ingin mereka tahu: <em>mereka adalah orang-orang yang percaya.</em></p>
+    <p>Mari kita mulai.</p>
+  </div>
+
+  <div class="sig">
+    <div class="sig-name">Gugun Gunara</div>
+    <div class="sig-title">Pendiri &amp; Arsitek Ekosistem — KNBMP</div>
+    <div class="sig-yr">2026 — Indonesia</div>
+  </div>
+</div>
+<div class="pg-ft">
+  <span class="pg-ft-id">KNBMP · PGA-72 · Kata Pengantar</span>
+  <span class="pg-ft-id">www.kopnusa.id</span>
+  <span class="pg-ft-pg">i</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DAFTAR ISI
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="pg">
+  <div class="pg-hd">
+    <span class="pg-hd-org">KNBMP — Kopi Korporasi Multipihak Nusa Berdikari Merah Putih</span>
+    <span class="pg-hd-doc">PGA-72 — Daftar Isi</span>
+  </div>
+  <div class="sec-lbl">Navigasi</div>
+  <div class="pg-title">Daftar Isi</div>
+  <div class="pg-subtitle">72 Dokumen — 9 Domain — Sovereign-72 Edition</div>
+  <p class="toc-intro">Arsitektur PGA-72 terdiri atas sembilan domain yang saling menopang — dari fondasi identitas hingga warisan peradaban. Setiap dokumen dirancang sebagai unit yang berdiri sendiri sekaligus bagian dari satu keseluruhan yang utuh. Standar: <strong>Core-24</strong> = minimum wajib · <strong>Pro-48</strong> = profesional · <strong>SV-72</strong> = Sovereign kelas dunia.</p>
+
+  <!-- Domain 1 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 1</span>
+      <span class="toc-dom-nm">Identity &amp; Civilization</span>
+      <span class="toc-dom-rng">PGA-01 — PGA-08</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-01</span><span class="toc-nm">Vision Statement</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-02</span><span class="toc-nm">Mission Statement</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-03</span><span class="toc-nm">Core Values &amp; 7 Prinsip KNBMP</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-04</span><span class="toc-nm">Organizational Identity &amp; Brand Story</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-05</span><span class="toc-nm">Philosophy, Worldview &amp; Civilization Framework</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-06</span><span class="toc-nm">Narrative &amp; Founding Story</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-07</span><span class="toc-nm">Symbol, Logo &amp; Visual Identity System</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-08</span><span class="toc-nm">Legacy Declaration &amp; 100-Year Covenant</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+    </div>
+  </div>
+  <!-- Domain 2 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 2</span>
+      <span class="toc-dom-nm">Strategy &amp; Direction</span>
+      <span class="toc-dom-rng">PGA-09 — PGA-16</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-09</span><span class="toc-nm">Strategic Master Plan 2026–2030</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-10</span><span class="toc-nm">Business Model Architecture</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-11</span><span class="toc-nm">Market Analysis &amp; Opportunity Mapping</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-12</span><span class="toc-nm">Competitive Intelligence &amp; Positioning</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-13</span><span class="toc-nm">Growth &amp; Expansion Strategy</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-14</span><span class="toc-nm">Partnership &amp; Alliance Framework</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-15</span><span class="toc-nm">Digital Transformation Roadmap</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-16</span><span class="toc-nm">Civilization Strategy — The 100-Year Vision</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+    </div>
+  </div>
+  <!-- Domain 3 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 3</span>
+      <span class="toc-dom-nm">Governance &amp; Legal</span>
+      <span class="toc-dom-rng">PGA-17 — PGA-24</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-17</span><span class="toc-nm">Organizational Structure &amp; Hierarchy</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-18</span><span class="toc-nm">AD/ART — Anggaran Dasar &amp; Anggaran Rumah Tangga</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-19</span><span class="toc-nm">Governance Framework &amp; Democracy Principles</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-20</span><span class="toc-nm">Legal Compliance &amp; Regulatory Mapping</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-21</span><span class="toc-nm">Member Rights, Obligations &amp; 16 Hak Anggota</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-22</span><span class="toc-nm">Decision-Making Protocol &amp; RAT Framework</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-23</span><span class="toc-nm">Conflict Resolution &amp; Dispute Management</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-24</span><span class="toc-nm">Regulatory Affairs &amp; Government Relations</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+    </div>
+  </div>
+  <!-- Domain 4 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 4</span>
+      <span class="toc-dom-nm">Product / Service / Solution</span>
+      <span class="toc-dom-rng">PGA-25 — PGA-32</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-25</span><span class="toc-nm">Product Architecture &amp; Ecosystem Map</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-26</span><span class="toc-nm">Unit Bisnis — Agribusiness &amp; Ketahanan Pangan</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-27</span><span class="toc-nm">Unit Bisnis — Logistics &amp; Supply Chain</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-28</span><span class="toc-nm">Unit Bisnis — Export-Import Division (EKTA)</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-29</span><span class="toc-nm">Unit Bisnis — Digital Platform &amp; Technology</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-30</span><span class="toc-nm">Unit Bisnis — Financial Services &amp; KUR Gateway</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-31</span><span class="toc-nm">Unit Bisnis — Tourism, Wisata Lokal &amp; Religi</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-32</span><span class="toc-nm">KNBMP Academy — Knowledge &amp; Training Ecosystem</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+    </div>
+  </div>
+  <!-- Domain 5 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 5</span>
+      <span class="toc-dom-nm">Operations &amp; Delivery</span>
+      <span class="toc-dom-rng">PGA-33 — PGA-40</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-33</span><span class="toc-nm">Standard Operating Procedures Master</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-34</span><span class="toc-nm">Operations Manual — Desa &amp; Kecamatan Level</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-35</span><span class="toc-nm">Operations Manual — Kabupaten &amp; Provinsi Level</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-36</span><span class="toc-nm">Operations Manual — National &amp; International Level</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-37</span><span class="toc-nm">Vendor &amp; Partner Management System</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-38</span><span class="toc-nm">Quality Control &amp; Standardization Framework</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-39</span><span class="toc-nm">Supply Chain Management System</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-40</span><span class="toc-nm">Business Continuity &amp; Crisis Management Plan</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+    </div>
+  </div>
+  <!-- Domain 6 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 6</span>
+      <span class="toc-dom-nm">Finance, Risk &amp; Control</span>
+      <span class="toc-dom-rng">PGA-41 — PGA-48</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-41</span><span class="toc-nm">Financial Model &amp; Projection 2026–2035</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-42</span><span class="toc-nm">Capital Structure &amp; Investment Framework</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-43</span><span class="toc-nm">SHU Distribution &amp; Member Benefit System</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-44</span><span class="toc-nm">Internal Audit &amp; Control System</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-45</span><span class="toc-nm">Risk Management Framework</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-46</span><span class="toc-nm">Tax Planning &amp; Fiscal Compliance</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-47</span><span class="toc-nm">Investor Relations &amp; Funding Strategy</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-48</span><span class="toc-nm">Long-Term Endowment &amp; Wealth Preservation</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+    </div>
+  </div>
+  <!-- Domain 7 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 7</span>
+      <span class="toc-dom-nm">People, Culture &amp; Leadership</span>
+      <span class="toc-dom-rng">PGA-49 — PGA-56</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-49</span><span class="toc-nm">HR Architecture &amp; Talent Management</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-50</span><span class="toc-nm">Organizational Culture Code</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-51</span><span class="toc-nm">Leadership Development Program</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-52</span><span class="toc-nm">Compensation &amp; Benefits Framework</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-53</span><span class="toc-nm">Member Onboarding &amp; Development Journey</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-54</span><span class="toc-nm">Performance Management System</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-55</span><span class="toc-nm">Succession Planning &amp; Leadership Pipeline</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-56</span><span class="toc-nm">Women &amp; Youth Empowerment Framework</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+    </div>
+  </div>
+  <!-- Domain 8 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 8</span>
+      <span class="toc-dom-nm">Brand, Growth &amp; Stakeholders</span>
+      <span class="toc-dom-rng">PGA-57 — PGA-64</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-57</span><span class="toc-nm">Brand Architecture &amp; Communication Strategy</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-58</span><span class="toc-nm">Marketing &amp; Digital Outreach Plan</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-59</span><span class="toc-nm">Community Building &amp; Engagement Framework</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-60</span><span class="toc-nm">Stakeholder Management &amp; Relations</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-61</span><span class="toc-nm">Media, PR &amp; Public Communication Strategy</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-62</span><span class="toc-nm">Social Media &amp; Content Creation Strategy</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-63</span><span class="toc-nm">Event, Exhibition &amp; Advocacy Strategy</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-64</span><span class="toc-nm">International Relations &amp; Diplomatic Outreach</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+    </div>
+  </div>
+  <!-- Domain 9 -->
+  <div class="toc-dom">
+    <div class="toc-dom-hd">
+      <span class="toc-dom-n">Domain 9</span>
+      <span class="toc-dom-nm">Data, Intelligence &amp; Legacy</span>
+      <span class="toc-dom-rng">PGA-65 — PGA-72</span>
+    </div>
+    <div class="toc-items">
+      <div class="toc-row"><span class="toc-id">PGA-65</span><span class="toc-nm">Data Governance &amp; Privacy Framework</span><span class="toc-dots"></span><span class="toc-tr">Core</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-66</span><span class="toc-nm">Technology Architecture &amp; Digital Infrastructure</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-67</span><span class="toc-nm">Business Intelligence &amp; Analytics System</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-68</span><span class="toc-nm">Security &amp; Cyber Resilience Plan</span><span class="toc-dots"></span><span class="toc-tr">Pro</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-69</span><span class="toc-nm">Impact Measurement &amp; Social Return Framework</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-70</span><span class="toc-nm">Knowledge Management &amp; Intellectual Property</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-71</span><span class="toc-nm">Annual Report &amp; Transparency Standards</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+      <div class="toc-row"><span class="toc-id">PGA-72</span><span class="toc-nm">Legacy Charter — Surat untuk Generasi Mendatang</span><span class="toc-dots"></span><span class="toc-tr sv">SV-72</span></div>
+    </div>
+  </div>
+</div>
+<div class="pg-ft">
+  <span class="pg-ft-id">KNBMP · PGA-72 · Daftar Isi</span>
+  <span class="pg-ft-id">9 Domain · 72 Dokumen · Sovereign Edition</span>
+  <span class="pg-ft-pg">ii</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PGA-01: CHAPTER HEADER
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="ch-hd">
+  <div class="ch-id">PGA-01 &nbsp;·&nbsp; Domain 1: Identity &amp; Civilization &nbsp;·&nbsp; Dokumen Pertama dari 72</div>
+  <div class="ch-dom">Polymath Grand Architecture — Sovereign-72 Edition</div>
+  <div class="ch-title">Vision<br>Statement</div>
+  <div class="ch-sub">Bintang Utara yang Tidak Akan Padam Selama 100 Tahun</div>
+  <div class="ch-meta">
+    <div class="ch-meta-it"><label>Document ID</label><span>PGA-01</span></div>
+    <div class="ch-meta-it"><label>Tier</label><span>Sovereign-72 — Core Document</span></div>
+    <div class="ch-meta-it"><label>Owner</label><span>Founder Office</span></div>
+    <div class="ch-meta-it"><label>Classification</label><span>Public — Foundational Truth</span></div>
+    <div class="ch-meta-it"><label>Version</label><span>1.0.0</span></div>
+    <div class="ch-meta-it"><label>Status</label><span>ACTIVE — Tidak Bisa Diubah Selama 100 Tahun</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PGA-01: BODY
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="ch-body">
+
+  <!-- Section I: Satu Kalimat Visi -->
+  <div class="sh-n">Bagian I</div>
+  <div class="sh">Satu Kalimat Visi</div>
+  <p style="font-family:var(--ff-b);font-size:17px;line-height:1.8;color:var(--txt-m);max-width:650px;margin-bottom:32px;">Setiap organisasi besar dalam sejarah dimulai dengan satu kalimat yang cukup jelas untuk dipahami seorang anak, cukup dalam untuk direnungkan seorang filsuf, dan cukup kuat untuk menggerakkan satu bangsa. Inilah kalimat KNBMP.</p>
+
+  <div class="vis-hero">
+    <div class="vis-hero-lbl">Visi Utama KNBMP — Bintang Utara</div>
+    <div class="vis-hero-txt">
+      "Membangun <em>Ekosistem Ekonomi Rakyat Berdaulat</em> yang Menjadikan Setiap Manusia <em>Bebas, Makmur, dan Berdignitas</em> — dari <em>Desa ke Dunia</em>."
+    </div>
+  </div>
+
+  <table class="data-tbl">
+    <thead><tr><th>Kata Kunci</th><th>Makna Operasional</th><th>Dimensi</th></tr></thead>
+    <tbody>
+      <tr><td>Membangun</td><td>Aksi aktif — bukan passive, bukan menunggu, bukan mengharap</td><td>Agency</td></tr>
+      <tr><td>Ekosistem</td><td>Holistik, terintegrasi, saling menopang — bukan silo atau fragmen</td><td>Sistem</td></tr>
+      <tr><td>Ekonomi Rakyat</td><td>Milik rakyat, dikelola rakyat, hasilnya untuk rakyat</td><td>Keadilan</td></tr>
+      <tr><td>Berdaulat</td><td>Tidak bergantung, tidak tunduk pada tekanan eksternal, mandiri</td><td>Kemerdekaan</td></tr>
+      <tr><td>Bebas</td><td>Bebas dari kemiskinan, bebas dari ketergantungan, bebas memilih</td><td>Liberty</td></tr>
+      <tr><td>Makmur</td><td>Cukup secara material, tumbuh secara ekonomi, berkelanjutan</td><td>Prosperity</td></tr>
+      <tr><td>Berdignitas</td><td>Dihormati, dihargai, tidak diperlakukan sebagai objek</td><td>Humanity</td></tr>
+      <tr><td>Dari Desa ke Dunia</td><td>Dimulai dari unit terkecil, berakhir di pasar global — inklusif penuh</td><td>Skala</td></tr>
+    </tbody>
+  </table>
+
+  <div class="rule"><div class="rule-d"></div></div>
+
+  <!-- Section II: Konteks Indonesia -->
+  <div class="sh-n">Bagian II</div>
+  <div class="sh">Konteks Indonesia</div>
+  <p style="font-family:var(--ff-b);font-size:17px;line-height:1.8;color:var(--txt-m);max-width:650px;margin-bottom:28px;">Visi ini bukan lahir di ruang hampa. Ia lahir dari membaca realitas Indonesia — angka-angka yang berbicara tentang potensi yang belum terwujud dan kesenjangan yang belum terjembatani.</p>
+
+  <div class="stat-g">
+    <div class="stat-it hi"><div class="stat-n">278<span>+</span></div><div class="stat-l">Juta jiwa Indonesia<br>Pasar terbesar ke-4 dunia</div></div>
+    <div class="stat-it"><div class="stat-n">64<span>.2 jt</span></div><div class="stat-l">Unit UMKM — 97% tenaga kerja, 61% PDB Indonesia</div></div>
+    <div class="stat-it"><div class="stat-n">83<span>.7rb</span></div><div class="stat-l">Desa di Indonesia — titik awal transformasi KNBMP</div></div>
+    <div class="stat-it"><div class="stat-n">97<span>jt</span></div><div class="stat-l">Penduduk unbanked — belum tersentuh sistem keuangan formal</div></div>
+    <div class="stat-it hi"><div class="stat-n">26<span>jt</span></div><div class="stat-l">Penduduk miskin — 9,4% — yang ingin KNBMP angkat martabatnya</div></div>
+    <div class="stat-it"><div class="stat-n">$362<span>M</span></div><div class="stat-l">Target ekonomi digital Indonesia 2030 — peluang transformasi</div></div>
+  </div>
+
+  <div class="pq">
+    <div class="pq-t">"Indonesia tidak miskin sumber daya. Indonesia miskin sistem. KNBMP hadir untuk membangun sistemnya."</div>
+    <div class="pq-a">Dari Dokumen Fondasi KNBMP</div>
+  </div>
+
+  <div class="rule"><div class="rule-d"></div></div>
+
+  <!-- Section III: 7 Prinsip -->
+  <div class="sh-n">Bagian III</div>
+  <div class="sh">7 Prinsip KNBMP</div>
+  <p style="font-family:var(--ff-b);font-size:17px;line-height:1.8;color:var(--txt-m);max-width:650px;margin-bottom:28px;">Visi tanpa prinsip adalah slogan. Tujuh pilar ini adalah sistem kekebalan organisasi — yang menjaga KNBMP tetap benar, bahkan ketika tekanan datang dari segala arah.</p>
+
+  <div class="prin-g">
+    <div class="prin-c">
+      <div class="prin-n">Prinsip 1</div>
+      <div class="prin-en">Trust</div>
+      <div class="prin-id">Amanah</div>
+      <div class="prin-q">"Kepercayaan adalah mata uang tertinggi. Kami jaga dengan segenap jiwa."</div>
+      <ul class="prin-ul">
+        <li>Setiap amanah dijaga dengan integritas tertinggi</li>
+        <li>Transparansi dalam setiap tindakan dan keputusan</li>
+        <li>Akuntabilitas kepada anggota dan masyarakat</li>
+      </ul>
+    </div>
+    <div class="prin-c">
+      <div class="prin-n">Prinsip 2</div>
+      <div class="prin-en">Justice</div>
+      <div class="prin-id">Keadilan</div>
+      <div class="prin-q">"Setiap suara berharga. Setiap anggota memiliki nilai yang sama."</div>
+      <ul class="prin-ul">
+        <li>Demokrasi dalam governance — 1 anggota = 1 suara</li>
+        <li>Kesetaraan akses dan peluang tanpa diskriminasi</li>
+        <li>Distribusi SHU yang adil dan transparan</li>
+      </ul>
+    </div>
+    <div class="prin-c">
+      <div class="prin-n">Prinsip 3</div>
+      <div class="prin-en">Transparency</div>
+      <div class="prin-id">Transparansi</div>
+      <div class="prin-q">"Dalam cahaya, kita berjalan bersama. Dalam gelap, kita tersesat."</div>
+      <ul class="prin-ul">
+        <li>Open books policy — laporan keuangan publik</li>
+        <li>Decision-making yang terbuka dan dapat diaudit</li>
+        <li>Komunikasi jujur kepada seluruh pemangku kepentingan</li>
+      </ul>
+    </div>
+    <div class="prin-c">
+      <div class="prin-n">Prinsip 4</div>
+      <div class="prin-en">Beneficence</div>
+      <div class="prin-id">Kemaslahatan</div>
+      <div class="prin-q">"Profit adalah alat, bukan tujuan. Kemaslahatan adalah tujuan akhir."</div>
+      <ul class="prin-ul">
+        <li>Dampak sosial di atas pertimbangan profit semata</li>
+        <li>Kesejahteraan anggota sebagai prioritas utama</li>
+        <li>Kontribusi nyata pada kemajuan peradaban</li>
+      </ul>
+    </div>
+    <div class="prin-c">
+      <div class="prin-n">Prinsip 5</div>
+      <div class="prin-en">Simplicity</div>
+      <div class="prin-id">Kesederhanaan</div>
+      <div class="prin-q">"Kesederhanaan membebaskan kita untuk fokus pada yang esensial."</div>
+      <ul class="prin-ul">
+        <li>Proses yang sederhana dan dapat diakses semua orang</li>
+        <li>Teknologi yang user-friendly dan inklusif</li>
+        <li>Bahasa yang mudah dipahami — dari sarjana hingga petani</li>
+      </ul>
+    </div>
+    <div class="prin-c">
+      <div class="prin-n">Prinsip 6</div>
+      <div class="prin-en">Collectivism</div>
+      <div class="prin-id">Kebersamaan</div>
+      <div class="prin-q">"Kita kuat karena kebersamaan. Kita bertahan karena saling menjaga."</div>
+      <ul class="prin-ul">
+        <li>Gotong royong sebagai fondasi operasional</li>
+        <li>Saling membantu dan mendukung antar anggota</li>
+        <li>Kepentingan komunitas di atas kepentingan individual</li>
+      </ul>
+    </div>
+    <div class="prin-c" style="grid-column:1/-1;background:rgba(196,149,42,.04);border-bottom:3px solid var(--gold);">
+      <div class="prin-n">Prinsip 7</div>
+      <div class="prin-en">Sustainability</div>
+      <div class="prin-id">Kelestarian</div>
+      <div class="prin-q">"Hari ini tidak boleh mengorbankan hari esok. Wariskan yang lebih baik dari yang kita terima."</div>
+      <ul class="prin-ul" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 20px;">
+        <li>Berpikir dan berencana lintas generasi</li>
+        <li>Praktik bisnis ramah lingkungan</li>
+        <li>Model bisnis yang sustainable jangka panjang</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule"><div class="rule-d"></div></div>
+
+  <!-- Section IV: Dimensi Spiritual -->
+  <div class="sh-n">Bagian IV</div>
+  <div class="sh">Dimensi Spiritual &amp; Humanistik</div>
+  <div class="body-t" style="max-width:700px;">
+    <p>KNBMP bukan sekadar model bisnis. Ia adalah pernyataan moral tentang apa yang manusia berhak dapatkan dari sistem ekonomi yang mengklaim melayaninya. Setiap entitas bisnis yang hanya mengejar profit tanpa mempertimbangkan kemanusiaan adalah entitas yang belum selesai.</p>
+    <p>Dimensi spiritual KNBMP bukan tentang ritual — ia tentang <em>niat</em>. Niat bahwa setiap keputusan bisnis adalah keputusan moral. Bahwa setiap rupiah yang berpindah tangan adalah amanah. Bahwa setiap anggota yang bergabung adalah manusia seutuhnya — bukan sekadar angka dalam database.</p>
+  </div>
+
+  <div class="pq">
+    <div class="pq-t">"Bisnis yang hanya menghasilkan uang adalah bisnis yang miskin. Bisnis yang menghasilkan manusia yang lebih baik — itulah bisnis yang kaya sesungguhnya."</div>
+    <div class="pq-a">Muhammad Lutfi Azmi — Dimensi Ruhani-Ilmiah KNBMP</div>
+  </div>
+
+  <div class="rule"><div class="rule-d"></div></div>
+
+  <!-- Section V: Roadmap 100 Tahun -->
+  <div class="sh-n">Bagian V</div>
+  <div class="sh">Roadmap 100 Tahun</div>
+  <p style="font-family:var(--ff-b);font-size:17px;line-height:1.8;color:var(--txt-m);max-width:650px;margin-bottom:32px;">Visi yang bertahan 100 tahun harus dijabarkan dalam fase-fase yang logis, terukur, dan saling menopang. Ini bukan rencana bisnis biasa — ini adalah warisan generasi.</p>
+
+  <div class="tl">
+    <div class="tl-it">
+      <div class="tl-p">2026 — 2030</div>
+      <div class="tl-ph">Fondasi &amp; Proof of Concept</div>
+      <div class="tl-desc">Membangun sistem core, membuktikan model di 100 desa percontohan, merekrut 100.000 anggota aktif pertama, meluncurkan 4 unit bisnis utama, membangun platform digital pertama.</div>
+    </div>
+    <div class="tl-it">
+      <div class="tl-p">2030 — 2035</div>
+      <div class="tl-ph">Skala &amp; Transformasi</div>
+      <div class="tl-desc">Ekspansi ke 38 provinsi penuh, 1 juta anggota aktif, unit bisnis export-import beroperasi penuh (EKTA), KNBMP Academy melahirkan 50.000 lulusan, integrasi dengan sistem pemerintah desa.</div>
+    </div>
+    <div class="tl-it">
+      <div class="tl-p">2035 — 2050</div>
+      <div class="tl-ph">Maturasi &amp; Legacy</div>
+      <div class="tl-desc">10 juta anggota aktif, hadir di 10 negara ASEAN, model KNBMP diadopsi sebagai referensi nasional, KNBMP Academy menjadi universitas ekonomi rakyat, kontribusi terukur terhadap penurunan kemiskinan.</div>
+    </div>
+    <div class="tl-it" style="margin-bottom:0">
+      <div class="tl-p">2050 &amp; seterusnya</div>
+      <div class="tl-ph">Generational Impact</div>
+      <div class="tl-desc">KNBMP menjadi model peradaban global untuk ekonomi rakyat berdaulat — dirujuk oleh PBB, Bank Dunia, dan pemimpin dunia sebagai bukti nyata bahwa kemakmuran yang adil dan berkelanjutan adalah mungkin.</div>
+    </div>
+  </div>
+
+  <div class="rule"><div class="rule-d"></div></div>
+
+  <!-- Section VI: Quote Inspiratif -->
+  <div class="sh-n">Bagian VI</div>
+  <div class="sh">Kutipan Fondasi</div>
+
+  <div class="qt-g">
+    <div class="qt-c"><div class="qt-t">"Kemakmuran bukan hadiah dari langit. Ia dibangun, diorganisir, dan diwariskan. KNBMP adalah organisasinya."</div><div class="qt-a">Gugun Gunara</div></div>
+    <div class="qt-c"><div class="qt-t">"Ketika rakyat berdaulat atas ekonominya, tidak ada kekuatan luar yang bisa menjajahnya kembali."</div><div class="qt-a">Prabu Danling</div></div>
+    <div class="qt-c"><div class="qt-t">"Kebenaran tanpa keberanian hanyalah pengetahuan. KNBMP adalah keberanian untuk menjalankan kebenaran."</div><div class="qt-a">Muhammad Lutfi Azmi</div></div>
+    <div class="qt-c"><div class="qt-t">"Desa yang makmur adalah fondasi bangsa yang kuat. Jangan bangun istana di atas pondasi yang rapuh."</div><div class="qt-a">Santri Angon</div></div>
+  </div>
+
+  <div class="rule"><div class="rule-d"></div></div>
+
+  <!-- Section VII: Vision Shorthand -->
+  <div class="sh-n">Bagian VII</div>
+  <div class="sh">Vision Shorthand</div>
+  <p style="font-family:var(--ff-b);font-size:17px;line-height:1.8;color:var(--txt-m);max-width:650px;margin-bottom:28px;">Visi yang baik harus bisa dikomunikasikan dalam berbagai panjang — dari penulisan di media sosial hingga presentasi kepada kepala negara. Berikut versi resmi untuk setiap konteks.</p>
+
+  <div class="sh-items">
+    <div class="sh-row"><span class="sh-lbl">5 Kata</span><span class="sh-txt">"Ekonomi Rakyat Berdaulat, Dari Desa ke Dunia."</span></div>
+    <div class="sh-row"><span class="sh-lbl">10 Kata</span><span class="sh-txt">"Membangun ekosistem ekonomi rakyat yang bebas, makmur, dan berdaulat."</span></div>
+    <div class="sh-row"><span class="sh-lbl">15 Kata</span><span class="sh-txt">"Menjadikan setiap manusia Indonesia bebas, makmur, dan berdignitas melalui ekosistem ekonomi berdaulat."</span></div>
+    <div class="sh-row"><span class="sh-lbl">Full Vision</span><span class="sh-txt">"Membangun Ekosistem Ekonomi Rakyat Berdaulat yang Menjadikan Setiap Manusia Bebas, Makmur, dan Berdignitas — dari Desa ke Dunia."</span></div>
+  </div>
+
+  <div class="rule"><div class="rule-d"></div></div>
+
+  <!-- Section VIII: Dual Track -->
+  <div class="sh-n">Bagian VIII</div>
+  <div class="sh">Strategi Dual-Track</div>
+  <p style="font-family:var(--ff-b);font-size:17px;line-height:1.8;color:var(--txt-m);max-width:650px;margin-bottom:28px;">KNBMP dirancang untuk bertahan dan berkembang dalam dua kondisi yang berbeda: dengan dukungan pemerintah (Track A) atau dengan kekuatan rakyat mandiri (Track B). Tidak ada satu kondisi pun yang bisa menghentikan gerakannya.</p>
+
+  <div class="dt-g">
+    <div class="dt-c ta">
+      <div class="dt-lbl">Track A</div>
+      <div class="dt-nm">Kemitraan Pemerintah</div>
+      <ul class="dt-ul">
+        <li>Integrasi dengan program KDMP dan BUMDes nasional</li>
+        <li>Akses Dana Desa Rp 60,6 triliun (2026) sebagai leverage</li>
+        <li>Co-branding dengan Kemenkop dan Kementerian terkait</li>
+        <li>Legitimasi regulatif yang kuat dan akselerasi perizinan</li>
+        <li>Skalabilitas lebih cepat berkat dukungan infrastruktur negara</li>
+      </ul>
+    </div>
+    <div class="dt-c tb">
+      <div class="dt-lbl">Track B</div>
+      <div class="dt-nm">People Power Mandiri</div>
+      <ul class="dt-ul">
+        <li>Organik dari bawah — gotong royong tanpa menunggu birokrasi</li>
+        <li>Peer-to-peer support dan jaringan komunitas yang otonom</li>
+        <li>Tidak bergantung pada siklus politik atau pergantian kebijakan</li>
+        <li>Agilitas tinggi — dapat beradaptasi cepat terhadap perubahan</li>
+        <li>Kemandirian dan ketahanan dalam kondisi apapun</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:rgba(196,149,42,.06);border:1px solid rgba(196,149,42,.2);padding:24px 28px;margin:8px 0 40px;">
+    <p style="font-family:var(--ff-d);font-size:20px;font-weight:500;color:var(--navy);line-height:1.5;margin:0;">Kesimpulan Strategis: KNBMP tidak memilih antara pemerintah dan rakyat. <em>KNBMP membangun keduanya.</em> Bermitra dengan pemerintah yang mau bekerja sama, sambil membangun people power yang tidak bergantung padanya. Ketika keduanya bersatu — tidak ada yang bisa menghentikan kita.</p>
+  </div>
+
+  <div class="rule"><div class="rule-d"></div></div>
+
+  <!-- Section IX: Narasi Inspiratif -->
+  <div class="sh-n">Bagian IX</div>
+  <div class="sh">Narasi Inspiratif</div>
+
+  <div class="body-t">
+    <p>Bayangkan seorang petani di Flores. Setiap musim, ia menanam dengan harapan. Dan setiap musim, ia menjual hasil kerja setahunnya kepada tengkulak yang menentukan harga sesuka hati. Ia tidak tahu berapa harga pasar sebenarnya. Ia tidak punya akses ke pembeli langsung. Ia tidak memiliki modal untuk menyimpan hasil panen hingga harga membaik.</p>
+    <p>Bayangkan seorang nelayan di Maluku. Setiap fajar, ia berlayar ke tengah laut dengan penuh keberanian. Tetapi sore hari, ia kembali ke darat dan tidak tahu bagaimana cara menjual ikannya ke Jakarta, apalagi ke Tokyo atau Dubai. Potensinya luar biasa. Sistemnya tidak ada.</p>
+    <p>Bayangkan seorang ibu di Kalimantan. Ia membuat kerajinan tangan yang indah — dengan motif yang tidak ada duanya di dunia. Tetapi ia hanya bisa menjualnya di pasar desa, kepada pembeli yang menawar serendah-rendahnya.</p>
+    <p><strong>KNBMP hadir untuk mengubah cerita mereka.</strong></p>
+    <p>Bukan dengan memberikan ikan. Bukan dengan charity yang melemahkan. Melainkan dengan membangun sistem yang memungkinkan si petani terhubung langsung ke pasar nasional dan global. Yang memungkinkan si nelayan mengekspor hasil tangkapannya ke Jepang. Yang memungkinkan si ibu menjual kerajinannya ke seluruh dunia melalui platform digital yang dikelola bersama.</p>
+    <p>Itulah ekosistem ekonomi rakyat berdaulat. Itulah KNBMP.</p>
+  </div>
+
+</div>
+
+<!-- ── CLOSING ─────────────────────────────────────────────────── -->
+<div class="ch-close">
+  <div class="ch-cl-orn">
+    <div class="ch-cl-d"></div>
+  </div>
+  <div class="ch-cl-lbl">Penutup &nbsp;·&nbsp; PGA-01 Vision Statement</div>
+  <div class="ch-cl-txt">"Visi ini akan bertahan 100 tahun. Akan dibaca oleh cucu kita. Akan menginspirasi miliaran manusia. Dan suatu hari, ketika kita melihat bahwa visi ini telah menjadi kenyataan — kita akan tahu bahwa semua kerja keras itu sebanding dengan nilainya."</div>
+  <div class="ch-cl-url">www.kopnusa.id &nbsp;·&nbsp; Pendaftaran: www.kopnusa.id/kpa &nbsp;·&nbsp; © 2026 KNBMP</div>
+</div>
+<div class="pg-ft">
+  <span class="pg-ft-id">PGA-01 · Vision Statement · KNBMP</span>
+  <span class="pg-ft-id">Sovereign-72 · Foundational Truth · v1.0.0</span>
+  <span class="pg-ft-pg">1</span>
+</div>
+
+</div><!-- /doc-wrap -->
+</body>
+</html>

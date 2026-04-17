@@ -757,6 +757,52 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
       {/* ── VISIBLE PASSCODE INPUT (phone lock screen style) ── */}
       {(phase === 'LOCKED' || phase === 'SYNTHESIZING') && (
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 sm:pb-24 px-6 z-10">
+          {/* Classification badge */}
+          <motion.div
+            className="mb-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.35 }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          >
+            <span
+              className="inline-block px-3 py-1 rounded-full"
+              style={{
+                fontFamily: 'var(--font-body)',
+                color: GOLD,
+                fontSize: '9px',
+                letterSpacing: '0.25em',
+                textTransform: 'uppercase',
+                border: '1px solid rgba(197,160,89,0.2)',
+                background: 'rgba(197,160,89,0.04)',
+              }}
+            >
+              Dokumen Omega&ensp;&bull;&ensp;Rahasia Strategis
+            </span>
+          </motion.div>
+
+          {/* Classification badge */}
+          <motion.div
+            className="mb-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.35 }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          >
+            <span
+              className="inline-block px-3 py-1 rounded-full"
+              style={{
+                fontFamily: 'var(--font-body)',
+                color: GOLD,
+                fontSize: '9px',
+                letterSpacing: '0.25em',
+                textTransform: 'uppercase',
+                border: '1px solid rgba(197,160,89,0.2)',
+                background: 'rgba(197,160,89,0.04)',
+              }}
+            >
+              Dokumen Omega&ensp;&bull;&ensp;Rahasia Strategis
+            </span>
+          </motion.div>
+
           {/* Title */}
           <motion.p
             className="mb-8 sm:mb-12 text-center"
@@ -871,7 +917,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
               }}
               className="text-center px-8"
             >
-              72 Pilar Kebangkitan menunggu untuk dibuka&hellip;
+              Imperium Kemaslahatan Universal menunggu untuk dibuka&hellip;
             </motion.p>
           )}
           {phase === 'LOCKED' && showFullHint && (
@@ -1088,9 +1134,10 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                 textShadow: `0 0 30px rgba(197,160,89,0.5), 0 0 60px rgba(197,160,89,0.2)`,
               }}
             >
-              &ldquo;Para Pendiri Republik merajut benih kedaulatan ekonomi rakyat.
+              &ldquo;Menjadi imperium kemaslahatan universal—ekosistem
+              ekonomi rakyat yang berdaulat, berkeadilan, dan bermakna.
               <br />
-              Kini, 72 pilar itu bangkit menuju mercusuar abadi.&rdquo;
+              Dari Desa, Untuk Dunia.&rdquo;
             </p>
           </motion.div>
         )}
@@ -1181,6 +1228,30 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         KITAB 72
                       </h1>
 
+                      {/* GOD MODE TIER MAX badge */}
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.3 }}
+                      >
+                        <span
+                          className="inline-block px-4 py-1.5 rounded-full"
+                          style={{
+                            fontFamily: 'var(--font-body)',
+                            color: GOLD,
+                            fontSize: '9px',
+                            fontWeight: 600,
+                            letterSpacing: '0.22em',
+                            textTransform: 'uppercase',
+                            border: '1px solid rgba(197,160,89,0.4)',
+                            background: 'linear-gradient(135deg, rgba(197,160,89,0.1), rgba(197,160,89,0.03))',
+                            boxShadow: '0 0 20px rgba(197,160,89,0.15), inset 0 0 12px rgba(197,160,89,0.05)',
+                          }}
+                        >
+                          ★ God Mode Tier Max—Aktif Penuh ★
+                        </span>
+                      </motion.div>
+
                       {/* Subtitle — Grand Statement */}
                       <div className="flex flex-col items-center gap-1.5">
                         <p
@@ -1210,6 +1281,19 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         >
                           Warisan 100 Tahun Menuju Indonesia Mercusuar Legacy Abadi
                         </p>
+                        <p
+                          className="text-center"
+                          style={{
+                            fontFamily: 'var(--font-body)',
+                            color: GOLD,
+                            fontSize: 'clamp(9px, 1.8vw, 11px)',
+                            letterSpacing: '0.14em',
+                            textTransform: 'uppercase',
+                            opacity: 0.4,
+                          }}
+                        >
+                          Imperium Kemaslahatan Universal • Dari Desa, Untuk Dunia
+                        </p>
                       </div>
 
                       {/* Divider */}
@@ -1238,6 +1322,20 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         }}
                       >
                         Meneruskan Perjuangan Para Pendiri Republik Indonesia
+                      </p>
+
+                      {/* Grand Architect credit */}
+                      <p
+                        className="text-center"
+                        style={{
+                          fontFamily: 'var(--font-body)',
+                          color: GOLD,
+                          fontSize: 'clamp(8px, 1.5vw, 10px)',
+                          letterSpacing: '0.08em',
+                          opacity: 0.28,
+                        }}
+                      >
+                        Grand Architect: Tn. H. Gugun Gunara, CMC, MBA Int&rsquo;l, CFA, PMP
                       </p>
 
                       {/* Buka Kitab button */}

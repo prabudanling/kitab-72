@@ -515,3 +515,25 @@ Stage Summary:
 - Cover subtitle now features the grand "72 PILAR KEBANGKITAN EKONOMI RAKYAT REPUBLIK INDONESIA" heading
 - Indonesia Raya-inspired brass fanfare plays when opening the book
 - Lint passes clean, dev server compiles successfully
+---
+Task ID: 7
+Agent: Main
+Task: Update DigitalUnveiling role activation to GOD MODE TIER MAX with Dokumen Omega content
+
+Work Log:
+- Read uploaded file DOKUMEN-OMEGA-KNBMP-Sample-L0-L3.md (full strategic document L0-L3)
+- Extracted key Omega language: "Imperium Kemaslahatan Universal", "Dari Desa, Untuk Dunia", "God Mode Tier Max — Aktif Penuh", Grand Architect credentials
+- Updated LOCKED phase: Added "Dokumen Omega • Rahasia Strategis" classification badge above password input
+- Updated hint text (20s): Changed to "Imperium Kemaslahatan Universal menunggu untuk dibuka…"
+- Updated REVELATION quote: Now uses Omega vision statement — "Menjadi imperium kemaslahatan universal—ekosistem ekonomi rakyat yang berdaulat, berkeadilan, dan bermakna. Dari Desa, Untuk Dunia."
+- Updated REVEALED cover: Added "★ God Mode Tier Max—Aktif Penuh ★" animated badge with gold border + glow
+- Updated REVEALED subtitle: Added third line "IMPERIUM KEMASLAHATAN UNIVERSAL • DARI DESA, UNTUK DUNIA"
+- Added Grand Architect credit: "Tn. H. Gugun Gunara, CMC, MBA Int'l, CFA, PMP" below dedication
+- Lint clean, dev server compiles successfully
+
+Stage Summary:
+- DigitalUnveiling ritual now fully aligned with Dokumen Omega God Mode Tier Max classification
+- LOCKED phase: Classified document badge + strategic language
+- REVELATION: Omega vision statement as cinematic reveal quote
+- REVEALED cover: God Mode badge + 3-line subtitle + Grand Architect credit
+- All text sourced from DOKUMEN-OMEGA-KNBMP-Sample-L0-L3.md
