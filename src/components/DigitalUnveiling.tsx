@@ -609,7 +609,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                 textShadow: `0 0 30px rgba(197,160,89,0.5), 0 0 60px rgba(197,160,89,0.2)`,
               }}
             >
-              &ldquo;Kedaulatan dimulai dari pikiran yang merdeka&rdquo;
+              &ldquo;Bung Karno menanam benih kemerdekaan ekonomi rakyat.
+              <br />
+              Kini, kita hidupkan kembali warisan yang tak pernah mati.&rdquo;
             </p>
           </motion.div>
         )}
@@ -711,7 +713,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                           opacity: 0.85,
                         }}
                       >
-                        Dokumen Strategis Dewan Pendiri
+                        Meneruskan Doktrin Berdikari Sang Proklamator
                       </p>
 
                       {/* Divider */}
@@ -739,7 +741,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                           opacity: 0.45,
                         }}
                       >
-                        Terukir khusus untuk: Dewan Pendiri
+                        Warisan Bung Karno yang kita aktifkan kembali
                       </p>
 
                       {/* Buka Kitab button */}
@@ -834,28 +836,44 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
               style={{
                 fontFamily: 'var(--font-body)',
                 color: GOLD,
-                fontSize: '13px',
+                fontSize: '12px',
                 opacity: 0.2,
                 animation: 'subtlePulse 3s ease-in-out infinite',
+                lineHeight: 1.6,
               }}
+              className="text-center px-8"
             >
-              Coba ketik sesuatu...
+              Warisan Sang Proklamator menunggu untuk diaktifkan&hellip;
             </p>
           )}
 
           {/* Full hint — 40s */}
           {showFullHint && (
-            <p
-              style={{
-                fontFamily: 'var(--font-body)',
-                color: GOLD,
-                fontSize: '13px',
-                opacity: 0.28,
-                letterSpacing: '0.22em',
-              }}
-            >
-              Kata kunci:&nbsp; b e r d i k a r i
-            </p>
+            <div className="flex flex-col items-center gap-2">
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  color: GOLD,
+                  fontSize: '11px',
+                  opacity: 0.22,
+                  letterSpacing: '0.08em',
+                }}
+                className="text-center px-8"
+              >
+                Ajaran Bung Karno yang sempat terpause&thinsp;—&thinsp;kini kita lanjutkan.
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  color: GOLD,
+                  fontSize: '13px',
+                  opacity: 0.28,
+                  letterSpacing: '0.22em',
+                }}
+              >
+                Kata kunci:&ensp;b e r d i k a r i
+              </p>
+            </div>
           )}
         </div>
       )}

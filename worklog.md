@@ -409,3 +409,21 @@ Stage Summary:
 - **Hydration mismatch fixed**: DigitalUnveiling now loaded via `next/dynamic` with `ssr: false` — no SSR, no hydration mismatch possible
 - **Duplicate key fixed**: xref array deduplicated in data transform layer
 - Dev server running cleanly, GET / 200, GET /api/flipbook 200
+
+---
+Task ID: 2
+Agent: Main
+Task: Update DigitalUnveiling narrative — weave Bung Karno's Berdikari legacy theme
+
+Work Log:
+- Updated LOCKED hint (20s): "Warisan Sang Proklamator menunggu untuk diaktifkan…"
+- Updated LOCKED hint (40s): Added narrative line "Ajaran Bung Karno yang sempat terpause — kini kita lanjutkan." above the password reveal
+- Updated REVELATION quote: "Bung Karno menanam benih kemerdekaan ekonomi rakyat. Kini, kita hidupkan kembali warisan yang tak pernah mati."
+- Updated REVEALED subtitle: "Meneruskan Doktrin Berdikari Sang Proklamator" (was "Dokumen Strategis Dewan Pendiri")
+- Updated REVEALED dedication: "Warisan Bung Karno yang kita aktifkan kembali" (was "Terukir khusus untuk: Dewan Pendiri")
+- Password "berdikari" now thematically framed as activating Bung Karno's paused doctrine
+
+Stage Summary:
+- All DigitalUnveiling text now tells the Berdikari legacy story
+- The password activation ritual symbolizes reactivating Bung Karno's self-reliance program
+- Lint and dev server clean
