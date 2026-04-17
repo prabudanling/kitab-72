@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { domains, type Pillar, type Domain } from '@/lib/pillar-data'
+import { domains, type Domain } from '@/lib/pillar-data'
 
 // ═══════════════════════════════════════════════════════════════
 // COLORS
@@ -55,8 +55,7 @@ type BookPage =
   | { type: 'kata-pengantar'; part: number }
   | { type: 'mukadimah'; part: number }
   | { type: 'toc' }
-  | { type: 'domain-opener'; data: Domain }
-  | { type: 'pillar'; data: { pillar: Pillar; domain: Domain } }
+  | { type: 'domain-pillars'; data: Domain }
   | { type: 'philosophy' }
   | { type: 'covenant' }
   | { type: 'back-cover' }
@@ -1269,78 +1268,78 @@ function TableOfContentsPage() {
     <div className="absolute inset-0 flex flex-col overflow-hidden paper-grain"
       style={{ backgroundColor: '#FFFEFB' }}>
       <BatikWatermark />
-      <div className="absolute left-0 top-0 bottom-0 w-1 z-20" style={{ backgroundColor: BURGUNDY }} />
+      <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20" style={{ backgroundColor: BURGUNDY }} />
 
       <div className="relative z-10 flex-1 overflow-y-auto px-6 sm:px-8 lg:px-10 py-6 sm:py-8">
-        <motion.div className="text-center mb-6"
+        <motion.div className="text-center mb-8"
           variants={staggerContainer} initial="hidden" animate="visible">
           <motion.div className="flex items-center justify-center gap-3 mb-4" variants={fadeSlideUp} custom={0}>
-            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${GOLD}50` }} />
-            <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: GOLD }} />
-            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${GOLD}50` }} />
+            <div className="h-px flex-1 max-w-[100px]" style={{ backgroundColor: `${GOLD}50` }} />
+            <div className="w-2 h-2 rotate-45" style={{ backgroundColor: GOLD }} />
+            <div className="h-px flex-1 max-w-[100px]" style={{ backgroundColor: `${GOLD}50` }} />
           </motion.div>
-          <motion.h2 className="font-[family-name:var(--font-heading)] text-base sm:text-lg font-normal tracking-wide"
+          <motion.h2 className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl font-normal tracking-wide"
             style={{ color: CHARCOAL }} variants={fadeSlideUp} custom={1}>
             Master Index PGA-72
           </motion.h2>
-          <motion.p className="font-[family-name:var(--font-heading)] text-sm sm:text-base font-normal mt-1"
+          <motion.p className="font-[family-name:var(--font-heading)] text-base sm:text-lg font-normal mt-1"
             style={{ color: BURGUNDY }} variants={fadeSlideUp} custom={2}>
             Anatomi Peradaban KNBMP
           </motion.p>
-          <motion.p className="font-[family-name:var(--font-heading)] text-[10px] sm:text-xs tracking-[2px] uppercase mt-2"
+          <motion.p className="font-[family-name:var(--font-heading)] text-[11px] sm:text-xs tracking-[2px] uppercase mt-2"
             style={{ color: '#8B7D6B' }} variants={fadeSlideUp} custom={3}>
             Dokumen Super-Master &nbsp;|&nbsp; Klasifikasi: Absolut &nbsp;|&nbsp; Horizon: 100 Tahun
           </motion.p>
           <motion.div className="flex items-center justify-center gap-3 mt-4" variants={fadeSlideUp} custom={4}>
-            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${GOLD}50` }} />
-            <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: GOLD }} />
-            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${GOLD}50` }} />
+            <div className="h-px flex-1 max-w-[100px]" style={{ backgroundColor: `${GOLD}50` }} />
+            <div className="w-2 h-2 rotate-45" style={{ backgroundColor: GOLD }} />
+            <div className="h-px flex-1 max-w-[100px]" style={{ backgroundColor: `${GOLD}50` }} />
           </motion.div>
         </motion.div>
 
-        <motion.p className="font-[family-name:var(--font-serif)] text-[11px] sm:text-[13px] leading-[1.85] text-center mb-8 max-w-lg mx-auto"
+        <motion.p className="font-[family-name:var(--font-serif)] text-sm sm:text-base leading-[1.85] text-center mb-8 max-w-lg mx-auto"
           style={{ color: '#4A3F32' }}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
           Buku ini bukan sekadar manual korporasi. Ini adalah 72 anak tangga menuju kemerdekaan ekonomi. Setiap domain mewakili satu fungsi vital dari ekosistem kita. Berikut adalah arsitektur lengkap beserta makna filosofis di balik setiap dokumennya.
         </motion.p>
 
-        <div className="space-y-5 sm:space-y-6">
+        <div className="space-y-6 sm:space-y-8">
           {domains.map((domain, domainIdx) => (
             <motion.div key={domain.id} className="relative"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 + domainIdx * 0.1, duration: 0.5 }}>
-              <div className="flex items-start gap-2 mb-1.5">
-                <span className="text-sm sm:text-base flex-shrink-0 mt-px">{domain.emoji}</span>
+              <div className="flex items-start gap-3 mb-2">
+                <span className="text-lg sm:text-xl flex-shrink-0 mt-0.5">{domain.emoji}</span>
                 <div className="min-w-0">
-                  <p className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs font-bold tracking-wider uppercase leading-tight"
+                  <p className="font-[family-name:var(--font-body)] text-xs sm:text-sm font-bold tracking-wider uppercase leading-tight"
                     style={{ color: domain.color }}>
                     Domain {domain.id}: {domain.name}
                   </p>
-                  <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide"
+                  <p className="font-[family-name:var(--font-body)] text-sm sm:text-base font-semibold uppercase tracking-wide"
                     style={{ color: '#6B5E50' }}>
                     ({domain.nameId} — {domain.nameSubtitle})
                   </p>
                 </div>
               </div>
-              <p className="font-[family-name:var(--font-serif)] text-[11px] sm:text-[13px] leading-[1.75] ml-5 sm:ml-6 mb-2"
+              <p className="font-[family-name:var(--font-serif)] text-sm sm:text-base leading-[1.75] ml-8 sm:ml-10 mb-3"
                 style={{ color: '#3E2723' }}>
                 {domain.description}
               </p>
-              <div className="ml-5 sm:ml-6 space-y-2 mb-2">
+              <div className="ml-8 sm:ml-10 space-y-3 mb-3">
                 {domain.pillars.map((pillar) => (
-                  <div key={pillar.id} className="relative pl-3"
+                  <div key={pillar.id} className="relative pl-4"
                     style={{ borderLeft: `2px solid ${domain.color}20` }}>
-                    <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-[11px] leading-[1.6]"
+                    <p className="font-[family-name:var(--font-body)] text-[12px] sm:text-sm leading-[1.7]"
                       style={{ color: '#3E2723' }}>
-                      <span className="font-bold" style={{ color: domain.color }}>{pillar.code}</span>
+                      <span className="font-bold text-[12px] sm:text-sm" style={{ color: domain.color }}>{pillar.code}</span>
                       <span>{': '}</span>
                       <span className="font-semibold">{pillar.name}</span>
-                      <span className="font-[family-name:var(--font-serif)] italic" style={{ color: '#6B5E50' }}>
+                      <span className="font-[family-name:var(--font-serif)] italic text-[11px] sm:text-xs" style={{ color: '#6B5E50' }}>
                         {' '}({pillar.eng})
                       </span>
                       <span style={{ color: '#8B7D6B' }}> — </span>
-                      <span style={{ color: '#4A3F32' }}>{pillar.desc}</span>
+                      <span className="text-[12px] sm:text-sm" style={{ color: '#4A3F32' }}>{pillar.desc}</span>
                     </p>
                   </div>
                 ))}
@@ -1348,7 +1347,7 @@ function TableOfContentsPage() {
               {domainIdx < domains.length - 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4">
                   <div className="h-px flex-1" style={{ backgroundColor: `${domain.color}15` }} />
-                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ opacity: 0.3 }}>
+                  <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style={{ opacity: 0.3 }}>
                     <path d="M5 0L10 5L5 10L0 5Z" fill="none" stroke={domain.color} strokeWidth="0.5" />
                   </svg>
                   <div className="h-px flex-1" style={{ backgroundColor: `${domain.color}15` }} />
@@ -1357,193 +1356,162 @@ function TableOfContentsPage() {
             </motion.div>
           ))}
         </div>
-        <div className="h-6" />
+        <div className="h-8" />
       </div>
     </div>
   )
 }
 
-function DomainOpenerPage({ domain }: { domain: Domain }) {
+function DomainPillarsPage({ domain }: { domain: Domain }) {
   return (
     <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain">
       <BatikWatermark />
-      <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20" style={{ backgroundColor: domain.color }} />
+      <div className="absolute left-0 top-0 bottom-0 w-2 z-20" style={{ backgroundColor: domain.color }} />
 
-      <motion.div
-        className="flex flex-col px-8 sm:px-12 py-10 sm:py-14 flex-1 relative z-10"
-        variants={staggerContainer} initial="hidden" animate="visible">
+      {/* Domain Header - sticky */}
+      <div className="flex-shrink-0 px-5 sm:px-8 lg:px-10 py-4 sm:py-5 relative z-10"
+        style={{ backgroundColor: `${domain.color}06` }}>
+        <motion.div
+          className="flex flex-col gap-1"
+          variants={staggerContainer} initial="hidden" animate="visible">
+          <motion.p className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs tracking-[3px] uppercase font-bold"
+            style={{ color: domain.color }} variants={fadeSlideUp} custom={0}>
+            Domain {domain.id} &middot; {domain.code}
+          </motion.p>
+          <motion.h2 className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl lg:text-3xl font-normal leading-tight"
+            style={{ color: CHARCOAL }} variants={fadeSlideUp} custom={1}>
+            {domain.emoji} {domain.name}
+          </motion.h2>
+          <motion.p className="font-[family-name:var(--font-heading)] text-sm sm:text-base italic"
+            style={{ color: domain.color }} variants={fadeSlideUp} custom={2}>
+            ({domain.nameId} — {domain.nameSubtitle})
+          </motion.p>
+          <motion.p className="font-[family-name:var(--font-body)] text-xs sm:text-sm font-semibold mt-1"
+            style={{ color: '#6B5E50' }} variants={fadeSlideUp} custom={3}>
+            {domain.range} &middot; {domain.pillars.length} Pilar
+          </motion.p>
+        </motion.div>
+      </div>
 
-        <motion.p className="font-[family-name:var(--font-body)] text-[10px] tracking-[3px] uppercase mb-4"
-          style={{ color: domain.color }} variants={fadeSlideUp} custom={0}>
-          Domain {domain.id}
-        </motion.p>
+      {/* Divider */}
+      <div className="flex-shrink-0 px-5 sm:px-8">
+        <div className="h-px w-full" style={{ backgroundColor: `${domain.color}20` }} />
+      </div>
 
-        <motion.h2 className="font-[family-name:var(--font-heading)] text-2xl sm:text-3xl font-normal leading-tight mb-1"
-          style={{ color: CHARCOAL }} variants={fadeSlideUp} custom={1}>
-          {domain.emoji} {domain.name}
-        </motion.h2>
-
-        <motion.p className="font-[family-name:var(--font-heading)] text-sm sm:text-base italic mb-6"
-          style={{ color: domain.color }} variants={fadeSlideUp} custom={2}>
-          ({domain.nameId} — {domain.nameSubtitle})
-        </motion.p>
-
-        <motion.div variants={fadeSlideUp} custom={3}><ChapterDivider /></motion.div>
-
-        <motion.p className="font-[family-name:var(--font-body)] text-sm sm:text-base leading-relaxed mb-auto"
-          style={{ color: '#3E2723' }} variants={fadeSlideUp} custom={4}>
+      {/* All Pillars - scrollable */}
+      <div className="flex-1 overflow-y-auto px-5 sm:px-8 lg:px-10 py-4 sm:py-5 relative z-10">
+        <motion.p className="font-[family-name:var(--font-body)] text-sm sm:text-base leading-relaxed mb-4 sm:mb-5"
+          style={{ color: '#3E2723' }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
           {domain.description}
         </motion.p>
 
-        <motion.div className="mt-6 mb-2" variants={fadeSlideUp} custom={5}>
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-6 h-px" style={{ backgroundColor: domain.color }} />
-            <span className="font-[family-name:var(--font-body)] text-xs font-semibold"
-              style={{ color: domain.color }}>{domain.pillars.length} Pilar</span>
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1">
-            {domain.pillars.map((p, i) => (
-              <motion.span key={p.id} className="font-[family-name:var(--font-body)] text-[10px]"
-                style={{ color: '#6B5E50' }}
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 + i * 0.05 }}>
-                {p.code}
-              </motion.span>
-            ))}
-          </div>
-        </motion.div>
+        <div className="space-y-5 sm:space-y-6">
+          {domain.pillars.map((pillar, idx) => (
+            <motion.div key={pillar.id}
+              className="relative pl-0 sm:pl-4"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + idx * 0.06, duration: 0.4 }}>
 
-        <motion.p className="font-[family-name:var(--font-body)] text-sm font-semibold mt-4"
-          style={{ color: domain.color }} variants={fadeSlideUp} custom={6}>
-          {domain.range}
-        </motion.p>
+              {/* Pillar Card */}
+              <div className="relative p-3 sm:p-4 rounded-sm"
+                style={{
+                  backgroundColor: idx % 2 === 0 ? `${domain.color}04` : 'transparent',
+                  borderLeft: `3px solid ${domain.color}40`,
+                }}>
 
-        <div className="absolute bottom-4 right-4 opacity-30">
-          <CornerOrnament color={domain.color} size={50} />
-        </div>
-      </motion.div>
-    </div>
-  )
-}
+                {/* Code badge */}
+                <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-[family-name:var(--font-body)] font-bold tracking-wider"
+                    style={{ backgroundColor: `${domain.color}15`, color: domain.color }}>
+                    {pillar.code}
+                  </span>
+                  <span className="font-[family-name:var(--font-body)] text-[10px] sm:text-[11px] font-medium"
+                    style={{ color: '#A09385' }}>
+                    {pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'}
+                  </span>
+                  <span className="font-[family-name:var(--font-body)] text-[10px] sm:text-[11px]"
+                    style={{ color: '#B0A898' }}>
+                    {pillar.id}/72
+                  </span>
+                </div>
 
-function PillarPage({ pillar, domain }: { pillar: Pillar; domain: Domain }) {
-  return (
-    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain">
-      <div className="flex items-center justify-between px-4 sm:px-6 py-2 flex-shrink-0"
-        style={{ backgroundColor: `${domain.color}08` }}>
-        <div className="flex items-center gap-2">
-          <motion.div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: domain.color }}
-            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }} />
-          <span className="font-[family-name:var(--font-body)] text-[9px] sm:text-[10px] font-semibold tracking-wider uppercase"
-            style={{ color: domain.color }}>
-            {domain.code} &middot; {domain.nameId}
-          </span>
-        </div>
-        <span className="font-[family-name:var(--font-body)] text-[9px] sm:text-[10px]" style={{ color: '#A09385' }}>
-          {pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'}
-        </span>
-      </div>
+                {/* Pillar Name - BIG */}
+                <h3 className="font-[family-name:var(--font-heading)] text-base sm:text-lg lg:text-xl font-semibold leading-snug mb-0.5"
+                  style={{ color: CHARCOAL }}>
+                  {pillar.name}
+                </h3>
 
-      <div className="relative flex-1 overflow-y-auto px-5 sm:px-8 py-4 sm:py-5 page-fold-shadow">
-        <div className="absolute top-2 right-2 sm:top-4 sm:right-4 font-[family-name:var(--font-heading)] font-bold pointer-events-none select-none"
-          style={{ fontSize: 'clamp(100px, 18vw, 200px)', color: `${domain.color}08`, lineHeight: 1 }}>
-          {pillar.id}
-        </div>
+                {/* English name */}
+                <p className="font-[family-name:var(--font-heading)] text-xs sm:text-sm italic mb-1.5 sm:mb-2"
+                  style={{ color: '#8B7D6B' }}>
+                  {pillar.eng}
+                </p>
 
-        <motion.div className="relative z-10 flex flex-col gap-3 sm:gap-4"
-          variants={staggerContainer} initial="hidden" animate="visible">
+                {/* Description - readable */}
+                <p className="font-[family-name:var(--font-body)] text-[13px] sm:text-sm lg:text-base leading-relaxed mb-2 sm:mb-3"
+                  style={{ color: '#3E2723' }}>
+                  {pillar.desc}
+                </p>
 
-          <motion.span className="inline-block self-start px-3 py-1 rounded-full text-[10px] sm:text-xs font-[family-name:var(--font-body)] font-bold tracking-wider"
-            style={{ backgroundColor: `${domain.color}15`, color: domain.color }}
-            variants={scaleIn} custom={0}>
-            {pillar.code}
-          </motion.span>
+                {/* Vision quote */}
+                <div className="p-2.5 sm:p-3 rounded-sm"
+                  style={{ backgroundColor: `${domain.color}06`, borderLeft: `2px solid ${domain.color}50` }}>
+                  <p className="font-[family-name:var(--font-serif)] text-[12px] sm:text-sm leading-relaxed italic"
+                    style={{ color: '#3E2723' }}>
+                    {pillar.vision}
+                  </p>
+                </div>
 
-          <motion.h3 className="font-[family-name:var(--font-heading)] text-lg sm:text-xl font-normal leading-tight"
-            style={{ color: CHARCOAL }} variants={fadeSlideUp} custom={1}>
-            {pillar.name}
-          </motion.h3>
-
-          <motion.p className="font-[family-name:var(--font-heading)] text-xs sm:text-sm italic"
-            style={{ color: '#8B7D6B' }} variants={fadeSlideUp} custom={2}>
-            {pillar.eng}
-          </motion.p>
-
-          <motion.div className="h-px w-full max-w-[200px]"
-            style={{ backgroundColor: `${GOLD}40` }}
-            initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-            transition={{ delay: 0.5, duration: 0.6 }} />
-
-          <motion.p className="font-[family-name:var(--font-body)] text-[13px] sm:text-sm leading-relaxed"
-            style={{ color: '#3E2723' }} variants={fadeSlideUp} custom={3}>
-            {pillar.desc}
-          </motion.p>
-
-          <motion.div className="border-l-3 rounded-r p-3 sm:p-4"
-            style={{ backgroundColor: `${domain.color}06`, borderColor: `${domain.color}60`, borderLeftWidth: 3 }}
-            variants={fadeSlideUp} custom={4}>
-            <p className="font-[family-name:var(--font-serif)] text-xs sm:text-[13px] leading-relaxed italic"
-              style={{ color: '#3E2723' }}>{pillar.vision}</p>
-          </motion.div>
-
-          {pillar.dimensions.length > 0 && (
-            <motion.div variants={fadeSlideUp} custom={5}>
-              <p className="font-[family-name:var(--font-body)] text-[10px] tracking-[2px] uppercase font-semibold mb-2"
-                style={{ color: '#8B7D6B' }}>Dimensi</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
-                {pillar.dimensions.map((dim, i) => (
-                  <div key={i} className="flex items-baseline gap-2">
-                    <span className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs font-semibold flex-shrink-0"
-                      style={{ color: '#6B5E50' }}>{dim.label}:</span>
-                    <span className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs"
-                      style={{ color: '#3E2723' }}>{dim.value}</span>
+                {/* Dimensions */}
+                {pillar.dimensions.length > 0 && (
+                  <div className="mt-2 sm:mt-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                      {pillar.dimensions.map((dim, i) => (
+                        <div key={i} className="flex items-baseline gap-1.5">
+                          <span className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs font-semibold flex-shrink-0"
+                            style={{ color: '#6B5E50' }}>{dim.label}:</span>
+                          <span className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs"
+                            style={{ color: '#3E2723' }}>{dim.value}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                )}
+
+                {/* Principles */}
+                {pillar.principles.length > 0 && (
+                  <div className="mt-2 sm:mt-3">
+                    <ul className="space-y-1">
+                      {pillar.principles.map((principle, i) => (
+                        <li key={i} className="flex items-start gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: GOLD }} />
+                          <span className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs leading-relaxed"
+                            style={{ color: '#4A3F32' }}>{principle}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Cross refs */}
+                {pillar.xref.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {pillar.xref.map((refId) => (
+                      <span key={refId}
+                        className="inline-block px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-[family-name:var(--font-body)] font-semibold"
+                        style={{ backgroundColor: `${domain.color}10`, color: domain.color }}>
+                        PGA-{String(refId).padStart(2, '0')}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
-          )}
-
-          {pillar.principles.length > 0 && (
-            <motion.div variants={fadeSlideUp} custom={6}>
-              <p className="font-[family-name:var(--font-body)] text-[10px] tracking-[2px] uppercase font-semibold mb-2"
-                style={{ color: '#8B7D6B' }}>Prinsip Utama</p>
-              <ul className="space-y-1.5">
-                {pillar.principles.map((principle, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: GOLD }} />
-                    <span className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs leading-relaxed"
-                      style={{ color: '#3E2723' }}>{principle}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-
-          {pillar.xref.length > 0 && (
-            <motion.div className="mt-1" variants={fadeSlideUp} custom={7}>
-              <p className="font-[family-name:var(--font-body)] text-[10px] tracking-[2px] uppercase font-semibold mb-1.5"
-                style={{ color: '#8B7D6B' }}>Referensi Silang</p>
-              <div className="flex flex-wrap gap-1.5">
-                {pillar.xref.map((refId) => (
-                  <motion.span key={refId}
-                    className="inline-block px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-[family-name:var(--font-body)] font-semibold"
-                    style={{ backgroundColor: `${domain.color}10`, color: domain.color }}
-                    whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
-                    PGA-{String(refId).padStart(2, '0')}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </motion.div>
-      </div>
-
-      <div className="flex-shrink-0 px-5 sm:px-8 py-2">
-        <div className="h-px w-full mb-1.5" style={{ backgroundColor: '#E8E0D4' }} />
-        <p className="font-[family-name:var(--font-body)] text-[8px] sm:text-[9px] text-center tracking-wider"
-          style={{ color: '#B0A898' }}>
-          {pillar.code} &middot; {pillar.id} / 72
-        </p>
+          ))}
+        </div>
+        <div className="h-4" />
       </div>
     </div>
   )
@@ -1666,8 +1634,7 @@ function renderPage(page: BookPage, index: number) {
     case 'kata-pengantar': return <KataPengantarPage key={`kp-${page.part}`} part={page.part} />
     case 'mukadimah': return <MukadimahPage key={`muk-${page.part}`} part={page.part} />
     case 'toc': return <TableOfContentsPage key={`toc-${index}`} />
-    case 'domain-opener': return <DomainOpenerPage key={`do-${page.data.id}`} domain={page.data} />
-    case 'pillar': return <PillarPage key={`p-${page.data.pillar.id}`} pillar={page.data.pillar} domain={page.data.domain} />
+    case 'domain-pillars': return <DomainPillarsPage key={`dp-${page.data.id}`} domain={page.data} />
     case 'philosophy': return <PhilosophyPage key={`phil-${index}`} />
     case 'covenant': return <CovenantPage key={`cov-${index}`} />
     case 'back-cover': return <BackCoverPage key={`bc-${index}`} />
@@ -1700,10 +1667,7 @@ export default function Home() {
     { type: 'mukadimah' as const, part: 3 },
     { type: 'mukadimah' as const, part: 4 },
     { type: 'toc' },
-    ...domains.flatMap((domain) => [
-      { type: 'domain-opener' as const, data: domain },
-      ...domain.pillars.map((pillar) => ({ type: 'pillar' as const, data: { pillar, domain } })),
-    ]),
+    ...domains.map((domain) => ({ type: 'domain-pillars' as const, data: domain })),
     { type: 'philosophy' as const },
     { type: 'covenant' as const },
     { type: 'back-cover' as const },
@@ -1721,8 +1685,7 @@ export default function Home() {
       case 'kata-pengantar': return { domainColor: BURGUNDY, domainName: `Kata Pengantar (${page.part}/${KP_PARTS})`, pillarCode: '' }
       case 'mukadimah': return { domainColor: GOLD, domainName: `Mukadimah (${page.part}/${MUKADIMAH_PARTS})`, pillarCode: '' }
       case 'toc': return { domainColor: BURGUNDY, domainName: 'Daftar Isi', pillarCode: '' }
-      case 'domain-opener': return { domainColor: page.data.color, domainName: page.data.name, pillarCode: '' }
-      case 'pillar': return { domainColor: page.data.domain.color, domainName: page.data.domain.name, pillarCode: page.data.pillar.code }
+      case 'domain-pillars': return { domainColor: page.data.color, domainName: `${page.data.emoji} ${page.data.name}`, pillarCode: page.data.range }
       case 'philosophy': return { domainColor: BURGUNDY, domainName: 'Filosofi', pillarCode: '' }
       case 'covenant': return { domainColor: BURGUNDY, domainName: 'Covenant', pillarCode: '' }
       case 'back-cover': return { domainColor: GOLD, domainName: 'Sampul Belakang', pillarCode: '' }

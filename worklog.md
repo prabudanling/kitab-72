@@ -140,3 +140,45 @@ Stage Summary:
 - 8 world leaders cited as inspiration, 5 declarations of civilization, Victor Hugo closing
 - Total pages now 94 (was 90): Cover + 4 Kata Pengantar + 4 Mukadimah + TOC + 9 Domain Openers + 72 Pillars + Philosophy + Covenant + Back Cover
 - All heritage design preserved: VOC grey, KNBMP burgundy, gold accents, batik watermarks
+
+---
+Task ID: 7
+Agent: Main
+Task: Consolidate pillars per domain (9 pages instead of 81) and enlarge TOC fonts
+
+Work Log:
+- Read worklog.md for context and page.tsx fully to understand current 94-page structure
+- **BookPage type updated**: Removed `domain-opener` and `pillar` variants, added `{ type: 'domain-pillars'; data: Domain }`
+- **DomainPillarsPage component created** (~150 lines): Single scrollable page per domain showing ALL pillars
+  - Sticky domain header at top (emoji, name, Indonesian subtitle, range, pillar count)
+  - Colored divider separating header from scrollable content
+  - Domain description at top of scroll area
+  - All pillars rendered in cards with alternating background colors
+  - Each pillar card shows: code badge, badge type (Fondasi/Strategis/Operasional), pillar ID/72, name (BIG), English name, description, vision quote, dimensions grid, principles list, cross-references
+  - Responsive text: `text-base sm:text-lg lg:text-xl` for pillar names, `text-[13px] sm:text-sm lg:text-base` for descriptions
+- **DomainOpenerPage and PillarPage removed** — replaced entirely by DomainPillarsPage
+- **TableOfContentsPage enlarged** — all fonts increased by 1-2 steps:
+  - Header: `text-xl sm:text-2xl` (was `text-base sm:text-lg`)
+  - Subtitle: `text-base sm:text-lg` (was `text-sm sm:text-base`)
+  - Classification: `text-[11px] sm:text-xs` (was `text-[10px] sm:text-xs`)
+  - Intro paragraph: `text-sm sm:text-base` (was `text-[11px] sm:text-[13px]`)
+  - Domain emoji: `text-lg sm:text-xl` (was `text-sm sm:text-base`)
+  - Domain name: `text-xs sm:text-sm` (was `text-[11px] sm:text-xs`)
+  - Domain Indonesian: `text-sm sm:text-base` (was `text-[10px] sm:text-[11px]`)
+  - Domain description: `text-sm sm:text-base` (was `text-[11px] sm:text-[13px]`)
+  - Pillar entries: `text-[12px] sm:text-sm` (was `text-[10px] sm:text-[11px]`)
+  - Pillar code: `text-[12px] sm:text-sm` bold (was `text-[10px] sm:text-[11px]`)
+  - Left accent bar widened to 1.5 (was 1)
+  - Spacing increased throughout: `gap-3`, `mb-3`, `space-y-6 sm:space-y-8`
+- **bookPages array simplified**: `domains.flatMap(...)` → `domains.map(domain => ({ type: 'domain-pillars', data: domain }))`
+- **renderPage updated**: Single case `domain-pillars` → `DomainPillarsPage` (was 2 cases for domain-opener and pillar)
+- **currentPageInfo updated**: Shows emoji + domain name and domain range as pillarCode
+- Removed unused `Pillar` type import
+- Lint passes cleanly (0 errors), dev server compiles successfully (GET / 200)
+
+Stage Summary:
+- All pillars grouped per domain: 9 scrollable domain pages instead of 81 individual pages (9 domain openers + 72 pillars)
+- TOC/Master Index fonts significantly enlarged for readability
+- New total page count: 22 (was 94): Cover + 4 Kata Pengantar + 4 Mukadimah + TOC + 9 Domain-Pillar pages + Philosophy + Covenant + Back Cover
+- Domain-pillar pages use sticky header with scrollable pillar content below
+- All existing components (Cover, Kata Pengantar, Mukadimah, Philosophy, Covenant, BackCover) untouched
