@@ -7,6 +7,7 @@ import { type Domain, type Pillar } from '@/lib/pillar-data'
 import { useFlipbookData } from '@/hooks/use-flipbook-data'
 import { AdminTrigger } from '@/components/admin/AdminTrigger'
 import { AdminPanel } from '@/components/admin/AdminPanel'
+import { DigitalUnveiling } from '@/components/DigitalUnveiling'
 
 // ═══════════════════════════════════════════════════════════════
 // COLORS
@@ -4364,7 +4365,16 @@ export default function Home() {
   const [showHint, setShowHint] = useState(true)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [loading, setLoading] = useState(true)
+  const [ritualComplete, setRitualComplete] = useState(() => {
+    if (typeof window !== 'undefined') return sessionStorage.getItem('knbmp-ritual-complete') === 'true'
+    return false
+  })
   const { domains: liveDomains, isLive, lastFetched, refresh: refreshFlipbookData } = useFlipbookData()
+
+  const handleRitualComplete = useCallback(() => {
+    setRitualComplete(true)
+    if (typeof window !== 'undefined') sessionStorage.setItem('knbmp-ritual-complete', 'true')
+  }, [])
 
   const touchStartX = useRef(0)
   const touchStartY = useRef(0)
@@ -4453,6 +4463,11 @@ export default function Home() {
 
   const progress = ((currentLeaf + 1) / totalPages) * 100
   const displayPage = currentLeaf + 1
+
+  // ═══ Ritual: Digital Unveiling Experience ═══
+  if (!ritualComplete) {
+    return <DigitalUnveiling onComplete={handleRitualComplete} />
+  }
 
   return (
     <main className="min-h-screen flex flex-col" style={{ backgroundColor: DARK_BG }}>
