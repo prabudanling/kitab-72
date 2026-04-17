@@ -63,27 +63,38 @@ interface Particle {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   HELPERS
+   HELPERS — Seeded PRNG (mulberry32) for deterministic SSR/hydration
    ═══════════════════════════════════════════════════════════════ */
+function mulberry32(seed: number) {
+  return function () {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 function buildNodes(): NodePos[] {
   const out: NodePos[] = [];
   const cols = 9;
   const rows = 8;
   const cw = 100 / cols;
   const ch = 100 / rows;
+  const rng = mulberry32(72);
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       out.push({
-        x: `${c * cw + cw * 0.15 + Math.random() * cw * 0.7}%`,
-        y: `${r * ch + ch * 0.15 + Math.random() * ch * 0.7}%`,
-        fx1: `${(Math.random() - 0.5) * 26}px`,
-        fy1: `${(Math.random() - 0.5) * 26}px`,
-        fx2: `${(Math.random() - 0.5) * 26}px`,
-        fy2: `${(Math.random() - 0.5) * 26}px`,
-        fx3: `${(Math.random() - 0.5) * 26}px`,
-        fy3: `${(Math.random() - 0.5) * 26}px`,
-        dur: 5 + Math.random() * 4,
-        del: Math.random() * 5,
+        x: `${c * cw + cw * 0.15 + rng() * cw * 0.7}%`,
+        y: `${r * ch + ch * 0.15 + rng() * ch * 0.7}%`,
+        fx1: `${(rng() - 0.5) * 26}px`,
+        fy1: `${(rng() - 0.5) * 26}px`,
+        fx2: `${(rng() - 0.5) * 26}px`,
+        fy2: `${(rng() - 0.5) * 26}px`,
+        fx3: `${(rng() - 0.5) * 26}px`,
+        fy3: `${(rng() - 0.5) * 26}px`,
+        dur: 5 + rng() * 4,
+        del: rng() * 5,
       });
     }
   }
@@ -91,13 +102,14 @@ function buildNodes(): NodePos[] {
 }
 
 function buildParticles(): Particle[] {
+  const rng = mulberry32(420);
   return Array.from({ length: 30 }, (_, i) => ({
     id: i,
-    angle: (i / 30) * Math.PI * 2 + (Math.random() - 0.5) * 0.4,
-    dist: 220 + Math.random() * 380,
-    size: 4 + Math.random() * 10,
+    angle: (i / 30) * Math.PI * 2 + (rng() - 0.5) * 0.4,
+    dist: 220 + rng() * 380,
+    size: 4 + rng() * 10,
     color: i % 3 === 0 ? '#ffffff' : i % 3 === 1 ? GOLD : GOLD_LIGHT,
-    delay: Math.random() * 0.25,
+    delay: rng() * 0.25,
   }));
 }
 
