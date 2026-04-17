@@ -608,7 +608,7 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
           animate={{ width: `${Math.min(progress, 100)}%` }}
           transition={{ duration: 0.3, ease: 'easeOut' }} />
       </motion.div>
-      <motion.p className="font-[family-name:var(--font-body)] text-[10px] tracking-[3px] uppercase mt-4"
+      <motion.p className="font-[family-name:var(--font-ui)] text-[10px] tracking-[3px] uppercase mt-4"
         style={{ color: '#6B5E50' }}
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
         Memuat Dokumen Peradaban
@@ -836,7 +836,7 @@ function CoverPage() {
           style={{
             color: `${GOLD}70`,
             direction: 'rtl',
-            fontFamily: "'Amiri', serif",
+            fontFamily: "'Lora', serif",
             textShadow: '0 0 20px rgba(197,160,89,0.15)',
           }}
           variants={coverFadeSlide}>
@@ -845,7 +845,7 @@ function CoverPage() {
 
         {/* Classification line */}
         <motion.p
-          className="font-[family-name:var(--font-body)] text-[7px] sm:text-[8px] tracking-[3px] uppercase"
+          className="font-[family-name:var(--font-ui)] text-[7px] sm:text-[8px] tracking-[3px] uppercase"
           style={{ color: `${GOLD}60` }}
           variants={coverFadeSlide}>
           Dokumen Super-Master &nbsp;&bull;&nbsp; Klasifikasi: Absolut &nbsp;&bull;&nbsp; Horizon: 100 Tahun
@@ -945,7 +945,7 @@ function CoverPage() {
 
         {/* Full organization name */}
         <motion.p
-          className="font-[family-name:var(--font-body)] text-[6px] sm:text-[7px] tracking-[2.5px] uppercase mt-0.5"
+          className="font-[family-name:var(--font-ui)] text-[6px] sm:text-[7px] tracking-[2.5px] uppercase mt-0.5"
           style={{ color: `${GOLD}60` }}
           variants={coverFadeSlide}>
           Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih
@@ -971,7 +971,7 @@ function CoverPage() {
           className="flex items-center gap-2"
           variants={coverFadeSlide}>
           <div className="h-px w-5" style={{ backgroundColor: `${GOLD}30` }} />
-          <span className="font-[family-name:var(--font-body)] text-[6px] sm:text-[7px] tracking-[2px] uppercase"
+          <span className="font-[family-name:var(--font-ui)] text-[6px] sm:text-[7px] tracking-[2px] uppercase"
             style={{ color: `${GOLD}45` }}>
             Est. 2026 &nbsp;&bull;&nbsp; Indonesia &nbsp;&bull;&nbsp; Merdeka
           </span>
@@ -1072,7 +1072,7 @@ function KataPengantarPage({ part }: { part: number }) {
   const pageRef = useRef<HTMLDivElement>(null)
 
   const serif = 'font-[family-name:var(--font-serif)]'
-  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const bodyFont = 'font-[family-name:var(--font-ui)]'
   const txtBase = `${serif} text-[14px] sm:text-[17px] leading-[1.9]`
   const txtSm = `${serif} text-[12px] sm:text-[15px] leading-[1.85]`
 
@@ -1117,7 +1117,7 @@ function KataPengantarPage({ part }: { part: number }) {
         <BatikWatermark />
         {/* Large watermark */}
         <div className="absolute top-12 right-4 sm:top-16 sm:right-8 pointer-events-none select-none z-0"
-          style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(100px, 22vw, 220px)', color: `${BURGUNDY}06`, lineHeight: 1 }}>
+          style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(100px, 22vw, 220px)', color: `${BURGUNDY}06`, lineHeight: 1 }}>
           بسم
         </div>
 
@@ -1130,7 +1130,7 @@ function KataPengantarPage({ part }: { part: number }) {
 
           {/* Bismillah — animated reveal */}
           <motion.p className={`${serif} text-lg sm:text-xl text-center my-4 sm:my-6`}
-            style={{ color: BURGUNDY, direction: 'rtl', fontFamily: "'Amiri', serif" }}
+            style={{ color: BURGUNDY, direction: 'rtl', fontFamily: "'Lora', serif" }}
             variants={glowPulse} custom={2}>
             بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم
           </motion.p>
@@ -1204,7 +1204,7 @@ function KataPengantarPage({ part }: { part: number }) {
         <BatikWatermark />
         {/* VOC watermark */}
         <div className="absolute bottom-8 right-4 sm:bottom-12 sm:right-8 pointer-events-none select-none z-0"
-          style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(80px, 18vw, 180px)', color: `${GOLD}05`, lineHeight: 1, fontWeight: 700 }}>
+          style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(80px, 18vw, 180px)', color: `${GOLD}05`, lineHeight: 1, fontWeight: 700 }}>
           1602
         </div>
 
@@ -1386,7 +1386,7 @@ function KataPengantarPage({ part }: { part: number }) {
         <GoldenParticles />
         {/* Large watermark */}
         <div className="absolute bottom-8 left-4 sm:bottom-12 sm:left-8 pointer-events-none select-none z-0"
-          style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(80px, 16vw, 160px)', color: `${GOLD}05`, lineHeight: 1 }}>
+          style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(80px, 16vw, 160px)', color: `${GOLD}05`, lineHeight: 1 }}>
           72
         </div>
 
@@ -1495,7 +1495,7 @@ function MukadimahPage({ part }: { part: number }) {
   const pageRef = useRef<HTMLDivElement>(null)
 
   const serif = 'font-[family-name:var(--font-serif)]'
-  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const bodyFont = 'font-[family-name:var(--font-ui)]'
   const txtBase = `${serif} text-[14px] sm:text-[17px] leading-[1.9]`
   const txtSm = `${serif} text-[12px] sm:text-[15px] leading-[1.85]`
   const txtXs = `${serif} text-[11px] sm:text-[13px] leading-[1.8]`
@@ -1542,7 +1542,7 @@ function MukadimahPage({ part }: { part: number }) {
         <BatikWatermark />
         {/* Large watermark */}
         <div className="absolute top-12 right-4 sm:top-16 sm:right-8 pointer-events-none select-none z-0"
-          style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(100px, 22vw, 220px)', color: `${GOLD}06`, lineHeight: 1 }}>
+          style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(100px, 22vw, 220px)', color: `${GOLD}06`, lineHeight: 1 }}>
           &#xFDFA;
         </div>
 
@@ -1555,7 +1555,7 @@ function MukadimahPage({ part }: { part: number }) {
 
           {/* Bismillah */}
           <motion.p className={`${serif} text-lg sm:text-xl text-center my-4 sm:my-6`}
-            style={{ color: BURGUNDY, direction: 'rtl', fontFamily: "'Amiri', serif" }}
+            style={{ color: BURGUNDY, direction: 'rtl', fontFamily: "'Lora', serif" }}
             variants={glowPulse} custom={2}>
             بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيْمِ
           </motion.p>
@@ -1890,7 +1890,7 @@ function TocPage({ tocPage, domains }: { tocPage: number; domains: Domain[] }) {
       {/* Large background domain number watermark */}
       <div className="absolute top-1/2 right-6 sm:right-10 pointer-events-none select-none z-0"
         style={{
-          fontFamily: 'var(--font-heading)',
+          fontFamily: 'var(--font-display)',
           fontSize: 'clamp(120px, 28vw, 260px)',
           color: `${domain.color}06`,
           lineHeight: 1,
@@ -1937,7 +1937,7 @@ function TocPage({ tocPage, domains }: { tocPage: number; domains: Domain[] }) {
               style={{ color: '#6B5E50' }}>
               ({domain.nameId} — {domain.nameSubtitle})
             </motion.p>
-            <motion.p className="font-[family-name:var(--font-body)] text-sm sm:text-base font-semibold mt-1.5"
+            <motion.p className="font-[family-name:var(--font-ui)] text-sm sm:text-base font-semibold mt-1.5"
               style={{ color: domain.color }}>
               {domain.range} &middot; {domain.pillars.length} Pilar
             </motion.p>
@@ -1973,11 +1973,11 @@ function TocPage({ tocPage, domains }: { tocPage: number; domains: Domain[] }) {
 
                   {/* Code Badge — BIG */}
                   <div className="flex items-center gap-3 mb-2 sm:mb-3">
-                    <span className="inline-block px-3 py-1 rounded-full text-sm sm:text-base font-[family-name:var(--font-body)] font-bold tracking-wider"
+                    <span className="inline-block px-3 py-1 rounded-full text-sm sm:text-base font-[family-name:var(--font-ui)] font-bold tracking-wider"
                       style={{ backgroundColor: `${domain.color}15`, color: domain.color }}>
                       {pillar.code}
                     </span>
-                    <span className="font-[family-name:var(--font-body)] text-xs sm:text-sm font-medium"
+                    <span className="font-[family-name:var(--font-ui)] text-xs sm:text-sm font-medium"
                       style={{ color: '#A09385' }}>
                       {pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'}
                     </span>
@@ -1996,7 +1996,7 @@ function TocPage({ tocPage, domains }: { tocPage: number; domains: Domain[] }) {
                   </p>
 
                   {/* Description — readable */}
-                  <p className="font-[family-name:var(--font-body)] text-sm sm:text-base leading-relaxed"
+                  <p className="font-[family-name:var(--font-ui)] text-sm sm:text-base leading-relaxed"
                     style={{ color: '#4A3F32' }}>
                     {pillar.desc}
                   </p>
@@ -2016,7 +2016,7 @@ function TocPage({ tocPage, domains }: { tocPage: number; domains: Domain[] }) {
               </svg>
               <div className="h-px w-8" style={{ backgroundColor: GOLD }} />
             </div>
-            <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-[2px] uppercase"
+            <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-[2px] uppercase"
               style={{ color: '#B0A898' }}>
               Daftar Isi ({tocPage + 1}/{domains.length}) &middot; {domain.pillars.length} Pilar
             </p>
@@ -2178,7 +2178,7 @@ const sevenPrinciples = [
 function PillarDetailPage01() {
   const serif = 'font-[family-name:var(--font-serif)]'
   const heading = 'font-[family-name:var(--font-heading)]'
-  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const bodyFont = 'font-[family-name:var(--font-ui)]'
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const [visionRevealed, setVisionRevealed] = useState(false)
@@ -2193,7 +2193,7 @@ function PillarDetailPage01() {
       {/* Large "PGA-01" watermark */}
       <div className="absolute top-[15%] right-2 sm:right-6 pointer-events-none select-none z-0"
         style={{
-          fontFamily: 'var(--font-heading)',
+          fontFamily: 'var(--font-display)',
           fontSize: 'clamp(80px, 20vw, 200px)',
           color: `${DOMAIN1_COLOR}05`,
           lineHeight: 1,
@@ -2326,7 +2326,7 @@ function PillarDetailPage01() {
           {/* Letter-by-letter vision statement */}
           <div className="relative z-10 text-center py-2" style={{ perspective: '800px' }}>
             <p className="text-[14px] sm:text-base lg:text-lg leading-[1.7] tracking-wide font-bold"
-              style={{ color: CHARCOAL, fontFamily: "'Courier New', Courier, monospace" }}>
+              style={{ color: CHARCOAL, fontFamily: "'JetBrains Mono', monospace" }}>
               {visionSentence.split('').map((char, i) => (
                 <motion.span
                   key={i}
@@ -2613,7 +2613,7 @@ const fiveBidang = [
 
 function PillarDetailPage02() {
   const heading = 'font-[family-name:var(--font-heading)]'
-  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const bodyFont = 'font-[family-name:var(--font-ui)]'
   const serif = 'font-[family-name:var(--font-serif)]'
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -2628,7 +2628,7 @@ function PillarDetailPage02() {
 
       {/* PGA-02 Watermark */}
       <div className="absolute top-[12%] right-2 sm:right-6 pointer-events-none select-none z-0"
-        style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(80px, 20vw, 200px)', color: `${DOMAIN1_COLOR}05`, lineHeight: 1, fontWeight: 700, letterSpacing: '0.05em' }}>
+        style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(80px, 20vw, 200px)', color: `${DOMAIN1_COLOR}05`, lineHeight: 1, fontWeight: 700, letterSpacing: '0.05em' }}>
         PGA-02
       </div>
 
@@ -2719,7 +2719,7 @@ function PillarDetailPage02() {
 
           <div className="relative z-10 text-center py-2" style={{ perspective: '800px' }}>
             <p className="text-[13px] sm:text-base lg:text-lg leading-[1.7] tracking-wide font-bold"
-              style={{ color: CHARCOAL, fontFamily: "'Courier New', Courier, monospace" }}>
+              style={{ color: CHARCOAL, fontFamily: "'JetBrains Mono', monospace" }}>
               {missionSentence.split('').map((char, i) => (
                 <motion.span
                   key={i}
@@ -2935,7 +2935,7 @@ const siloData = [
 ]
 
 function PillarDetailPage13({ domain }: { domain: Domain }) {
-  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const bodyFont = 'font-[family-name:var(--font-ui)]'
   const heading = 'font-[family-name:var(--font-heading)]'
   const serif = 'font-[family-name:var(--font-serif)]'
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -2948,7 +2948,7 @@ function PillarDetailPage13({ domain }: { domain: Domain }) {
       {/* Large "PGA-13" watermark */}
       <div className="absolute top-[12%] right-2 sm:right-6 pointer-events-none select-none z-0"
         style={{
-          fontFamily: 'var(--font-heading)',
+          fontFamily: 'var(--font-display)',
           fontSize: 'clamp(80px, 20vw, 200px)',
           color: `${DOMAIN2_COLOR}05`,
           lineHeight: 1,
@@ -3261,7 +3261,7 @@ function SDGridClass(n: number) {
 }
 
 function SpecialDocumentPage({ data }: { data: SDData }) {
-  const bf = 'font-[family-name:var(--font-body)]'
+  const bf = 'font-[family-name:var(--font-ui)]'
   const hf = 'font-[family-name:var(--font-heading)]'
   const sf = 'font-[family-name:var(--font-serif)]'
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -3273,7 +3273,7 @@ function SpecialDocumentPage({ data }: { data: SDData }) {
       <GoldenParticles />
       <div className="absolute left-0 top-0 bottom-0 w-2 z-20" style={{ backgroundColor: DC }} />
       <div className="absolute top-[12%] right-2 sm:right-6 pointer-events-none select-none z-0"
-        style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(80px, 20vw, 200px)', color: `${DC}05`, lineHeight: 1, fontWeight: 700, letterSpacing: '0.05em' }}>
+        style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(80px, 20vw, 200px)', color: `${DC}05`, lineHeight: 1, fontWeight: 700, letterSpacing: '0.05em' }}>
         {data.pgaCode}
       </div>
 
@@ -4093,7 +4093,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
       {/* Large background pillar number watermark */}
       <div className="absolute top-1/3 right-4 sm:right-8 pointer-events-none select-none z-0"
         style={{
-          fontFamily: 'var(--font-heading)',
+          fontFamily: 'var(--font-display)',
           fontSize: 'clamp(100px, 24vw, 240px)',
           color: `${domain.color}05`,
           lineHeight: 1,
@@ -4109,11 +4109,11 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
 
         {/* Domain header (small, at top) */}
         <motion.div className="mb-3 sm:mb-4" variants={fadeSlideUp} custom={0}>
-          <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-[3px] uppercase font-bold"
+          <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-[3px] uppercase font-bold"
             style={{ color: domain.color }}>
             Domain {domain.id} &middot; {domain.code}
           </p>
-          <p className="font-[family-name:var(--font-body)] text-xs sm:text-sm font-semibold"
+          <p className="font-[family-name:var(--font-ui)] text-xs sm:text-sm font-semibold"
             style={{ color: '#6B5E50' }}>
             {domain.emoji} {domain.nameId}
           </p>
@@ -4126,15 +4126,15 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
 
         {/* Code badge + type + pillar count */}
         <motion.div className="flex items-center gap-3 mb-3 sm:mb-4" variants={fadeSlideUp} custom={2}>
-          <span className="inline-block px-3.5 py-1.5 rounded-full text-base sm:text-lg font-[family-name:var(--font-body)] font-bold tracking-wider"
+          <span className="inline-block px-3.5 py-1.5 rounded-full text-base sm:text-lg font-[family-name:var(--font-ui)] font-bold tracking-wider"
             style={{ backgroundColor: `${domain.color}15`, color: domain.color }}>
             {pillar.code}
           </span>
-          <span className="font-[family-name:var(--font-body)] text-xs sm:text-sm font-semibold px-2.5 py-1 rounded-full"
+          <span className="font-[family-name:var(--font-ui)] text-xs sm:text-sm font-semibold px-2.5 py-1 rounded-full"
             style={{ backgroundColor: `${domain.color}08`, color: domain.color }}>
             {badgeLabel}
           </span>
-          <span className="font-[family-name:var(--font-body)] text-xs sm:text-sm"
+          <span className="font-[family-name:var(--font-ui)] text-xs sm:text-sm"
             style={{ color: '#B0A898' }}>
             Pilar {pillar.id} dari 72
           </span>
@@ -4160,7 +4160,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
         </motion.div>
 
         {/* Description — large readable text */}
-        <motion.p className="font-[family-name:var(--font-body)] text-base sm:text-lg leading-[1.8] mb-4 sm:mb-5"
+        <motion.p className="font-[family-name:var(--font-ui)] text-base sm:text-lg leading-[1.8] mb-4 sm:mb-5"
           style={{ color: '#3E2723' }}
           variants={fadeSlideUp} custom={6}>
           {pillar.desc}
@@ -4177,7 +4177,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
         {/* Dimensions section */}
         {pillar.dimensions.length > 0 && (
           <motion.div className="mt-4 sm:mt-5" variants={fadeSlideUp} custom={8}>
-            <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-[2px] uppercase font-bold mb-2.5"
+            <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-[2px] uppercase font-bold mb-2.5"
               style={{ color: domain.color }}>
               Dimensi
             </p>
@@ -4188,11 +4188,11 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
                     backgroundColor: `${domain.color}05`,
                     borderLeft: `2px solid ${domain.color}30`,
                   }}>
-                  <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs font-semibold tracking-wider uppercase mb-0.5"
+                  <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs font-semibold tracking-wider uppercase mb-0.5"
                     style={{ color: '#6B5E50' }}>
                     {dim.label}
                   </p>
-                  <p className="font-[family-name:var(--font-body)] text-sm sm:text-base font-semibold"
+                  <p className="font-[family-name:var(--font-ui)] text-sm sm:text-base font-semibold"
                     style={{ color: '#3E2723' }}>
                     {dim.value}
                   </p>
@@ -4205,7 +4205,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
         {/* Principles section */}
         {pillar.principles.length > 0 && (
           <motion.div className="mt-4 sm:mt-5" variants={fadeSlideUp} custom={9}>
-            <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-[2px] uppercase font-bold mb-2.5"
+            <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-[2px] uppercase font-bold mb-2.5"
               style={{ color: domain.color }}>
               Prinsip
             </p>
@@ -4213,7 +4213,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
               {pillar.principles.map((principle, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: GOLD }} />
-                  <span className="font-[family-name:var(--font-body)] text-sm sm:text-base leading-relaxed"
+                  <span className="font-[family-name:var(--font-ui)] text-sm sm:text-base leading-relaxed"
                     style={{ color: '#4A3F32' }}>{principle}</span>
                 </li>
               ))}
@@ -4224,14 +4224,14 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
         {/* Cross-references */}
         {pillar.xref.length > 0 && (
           <motion.div className="mt-4 sm:mt-5" variants={fadeSlideUp} custom={10}>
-            <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-[2px] uppercase font-bold mb-2"
+            <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-[2px] uppercase font-bold mb-2"
               style={{ color: '#A09385' }}>
               Referensi Silang
             </p>
             <div className="flex flex-wrap gap-1.5">
               {pillar.xref.map((refId) => (
                 <span key={refId}
-                  className="inline-block px-2 py-1 rounded text-xs sm:text-sm font-[family-name:var(--font-body)] font-semibold"
+                  className="inline-block px-2 py-1 rounded text-xs sm:text-sm font-[family-name:var(--font-ui)] font-semibold"
                   style={{ backgroundColor: `${domain.color}10`, color: domain.color }}>
                   PGA-{String(refId).padStart(2, '0')}
                 </span>
@@ -4251,7 +4251,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
             </svg>
             <div className="h-px w-8" style={{ backgroundColor: `${domain.color}30` }} />
           </div>
-          <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-[2px] uppercase"
+          <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-[2px] uppercase"
             style={{ color: '#B0A898' }}>
             {pillar.code} &middot; {pillar.id}/72 &middot; {domain.emoji} {domain.name}
           </p>
@@ -4267,7 +4267,7 @@ function PhilosophyPage() {
     <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
       <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20" style={{ backgroundColor: BURGUNDY }} />
       <BatikWatermark />
-      <div className="absolute top-8 right-6 sm:top-12 sm:right-10 font-[family-name:var(--font-heading)] pointer-events-none select-none z-0"
+      <div className="absolute top-8 right-6 sm:top-12 sm:right-10 font-[family-name:var(--font-display)] pointer-events-none select-none z-0"
         style={{ fontSize: 'clamp(120px, 25vw, 250px)', color: `${BURGUNDY}08`, lineHeight: 1 }}>φ</div>
 
       <motion.div className="flex-1 flex flex-col justify-center px-10 sm:px-16 py-10 sm:py-14 relative z-10"
@@ -4322,7 +4322,7 @@ function CovenantPage() {
           bukanlah impian. Ia adalah tujuan yang kami pertaruhkan dengan segala daya dan upaya.&rdquo;
         </motion.blockquote>
         <motion.div variants={fadeSlideUp} custom={4}><GoldDivider /></motion.div>
-        <motion.p className="font-[family-name:var(--font-body)] text-xs tracking-wider uppercase mt-6"
+        <motion.p className="font-[family-name:var(--font-ui)] text-xs tracking-wider uppercase mt-6"
           style={{ color: '#A09385' }} variants={fadeSlideUp} custom={5}>
           Dewan Pendiri KNBMP &middot; Warisan Negara Republik Indonesia
         </motion.p>
@@ -4351,7 +4351,7 @@ function BackCoverPage() {
 
       <GoldenParticles />
       <BatikWatermark />
-      <div className="absolute font-[family-name:var(--font-heading)] font-bold pointer-events-none select-none"
+      <div className="absolute font-[family-name:var(--font-display)] font-bold pointer-events-none select-none"
         style={{ fontSize: 'clamp(60px, 15vw, 140px)', color: `${BURGUNDY}06`, letterSpacing: '0.1em', lineHeight: 1, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
         MERDEKA
       </div>
@@ -4368,7 +4368,7 @@ function BackCoverPage() {
           style={{ color: `${GOLD}CC` }} variants={fadeSlideUp} custom={1}>
           Dewan Pendiri KNBMP
         </motion.p>
-        <motion.p className="font-[family-name:var(--font-body)] text-xs tracking-[2px] uppercase"
+        <motion.p className="font-[family-name:var(--font-ui)] text-xs tracking-[2px] uppercase"
           style={{ color: '#A09385' }} variants={fadeSlideUp} custom={2}>
           Klasifikasi: Absolute Source of Truth
         </motion.p>
@@ -4652,7 +4652,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
                 transition={{ duration: 0.2 }}>
                 {currentPageInfo.pillarCode && (
-                  <p className="font-[family-name:var(--font-body)] text-[10px] tracking-wider truncate"
+                  <p className="font-[family-name:var(--font-ui)] text-[10px] tracking-wider truncate"
                     style={{ color: currentPageInfo.domainColor }}>{currentPageInfo.pillarCode}</p>
                 )}
                 <p className="font-[family-name:var(--font-heading)] text-xs tracking-[0.15em]"
@@ -4723,7 +4723,7 @@ export default function Home() {
       {/* ═══ Keyboard hint ═══ */}
       <motion.div className="fixed bottom-12 md:bottom-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
         animate={{ opacity: showHint ? 1 : 0 }} transition={{ duration: 1 }}>
-        <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-wider"
+        <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-wider"
           style={{ color: '#6B5E50' }}>
           ← → atau klik untuk berpindah halaman
         </p>

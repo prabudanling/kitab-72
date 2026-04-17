@@ -1,28 +1,77 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, Libre_Baskerville, Inter } from "next/font/google";
+import {
+  Outfit,
+  Lora,
+  JetBrains_Mono,
+  Cormorant_Garamond,
+  Crimson_Pro,
+  DM_Sans,
+  DM_Mono,
+} from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-// Heading: DM Serif Display — selalu bold, tegak, sangat jelas, elegan
-const dmSerif = DM_Serif_Display({
+// ═══════════════════════════════════════════════════════════
+// FONT SYSTEM — GOD TIER LUXURY TYPOGRAPHY
+// ═══════════════════════════════════════════════════════════
+
+// PRIMARY SYSTEM
+// Heading/Title: Outfit — modern geometric, impactful
+const outfit = Outfit({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
-// Serif Body: Libre Baskerville — tegak, jelas, bold kuat, ramah mata senior
-const libreBaskerville = Libre_Baskerville({
+// Serif/Elegant: Lora — classic editorial serif
+const lora = Lora({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-// UI/Labels: Inter — clean, modern, Helvetica Neue equivalent
-const inter = Inter({
-  variable: "--font-body",
+// Mono/Code: JetBrains Mono — developer-grade monospace
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+});
+
+// ALTERNATIVE ELEGANT SYSTEM (Premium / Heritage Sections)
+// Display: Cormorant Garamond — ultra-luxury serif for GOD MODE covers
+const cormorantGaramond = Cormorant_Garamond({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+// Elegant Body: Crimson Pro — rich book-style serif
+const crimsonPro = Crimson_Pro({
+  variable: "--font-elegant",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+// UI: DM Sans — clean, geometric UI font
+const dmSans = DM_Sans({
+  variable: "--font-ui",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+// Elegant Mono: DM Mono — refined monospace
+const dmMono = DM_Mono({
+  variable: "--font-code-mono",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
   display: "swap",
 });
 
@@ -56,7 +105,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body
-        className={`${dmSerif.variable} ${libreBaskerville.variable} ${inter.variable} antialiased`}
+        className={`${outfit.variable} ${lora.variable} ${jetbrainsMono.variable} ${cormorantGaramond.variable} ${crimsonPro.variable} ${dmSans.variable} ${dmMono.variable} antialiased`}
       >
         {children}
         <Toaster />

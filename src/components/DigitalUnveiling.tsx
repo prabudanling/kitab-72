@@ -767,9 +767,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
             <span
               className="inline-block px-3 py-1 rounded-full"
               style={{
-                fontFamily: 'var(--font-body)',
+                fontFamily: 'var(--font-ui)',
                 color: GOLD,
-                fontSize: '9px',
+                fontSize: '0.75rem',
                 letterSpacing: '0.25em',
                 textTransform: 'uppercase',
                 border: '1px solid rgba(197,160,89,0.2)',
@@ -790,9 +790,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
             <span
               className="inline-block px-3 py-1 rounded-full"
               style={{
-                fontFamily: 'var(--font-body)',
+                fontFamily: 'var(--font-ui)',
                 color: GOLD,
-                fontSize: '9px',
+                fontSize: '0.75rem',
                 letterSpacing: '0.25em',
                 textTransform: 'uppercase',
                 border: '1px solid rgba(197,160,89,0.2)',
@@ -884,7 +884,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
               }}
               className="mt-3 px-6 py-2.5 rounded-full cursor-pointer"
               style={{
-                fontFamily: 'var(--font-body)',
+                fontFamily: 'var(--font-ui)',
                 color: GOLD,
                 fontSize: '12px',
                 letterSpacing: '0.15em',
@@ -908,7 +908,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.25 }}
               style={{
-                fontFamily: 'var(--font-body)',
+                fontFamily: 'var(--font-ui)',
                 color: GOLD,
                 fontSize: '11px',
                 marginTop: '20px',
@@ -928,9 +928,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
             >
               <p
                 style={{
-                  fontFamily: 'var(--font-body)',
+                  fontFamily: 'var(--font-ui)',
                   color: GOLD,
-                  fontSize: '10px',
+                  fontSize: '0.75rem',
                   opacity: 0.22,
                   letterSpacing: '0.06em',
                 }}
@@ -940,7 +940,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
               </p>
               <p
                 style={{
-                  fontFamily: 'var(--font-body)',
+                  fontFamily: 'var(--font-ui)',
                   color: GOLD,
                   fontSize: '12px',
                   opacity: 0.28,
@@ -959,7 +959,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
               animate={{ opacity: [0.15, 0.35, 0.15] }}
               transition={{ duration: 2.5, repeat: Infinity }}
               style={{
-                fontFamily: 'var(--font-body)',
+                fontFamily: 'var(--font-ui)',
                 color: GOLD,
                 fontSize: '11px',
                 marginTop: '16px',
@@ -1011,7 +1011,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                     style={
                       {
                         fontSize: 'clamp(8px, 1.4vw, 12px)',
-                        fontFamily: 'var(--font-body)',
+                        fontFamily: 'var(--font-ui)',
                         color: glow ? GOLD : 'rgba(197,160,89,0.18)',
                         textShadow: glow
                           ? `0 0 8px ${GOLD}, 0 0 16px rgba(197,160,89,0.25)`
@@ -1218,10 +1218,10 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                       <h1
                         className="tracking-[0.15em]"
                         style={{
-                          fontFamily: 'var(--font-heading)',
+                          fontFamily: 'var(--font-display)',
                           color: GOLD,
-                          fontSize: 'clamp(34px, 9vw, 58px)',
-                          fontWeight: 400,
+                          fontSize: 'clamp(2rem, 5vw, 4rem)',
+                          fontWeight: 700,
                           textShadow: `0 0 24px rgba(197,160,89,0.35), 0 0 48px rgba(197,160,89,0.12)`,
                         }}
                       >
@@ -1237,9 +1237,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         <span
                           className="inline-block px-4 py-1.5 rounded-full"
                           style={{
-                            fontFamily: 'var(--font-body)',
+                            fontFamily: 'var(--font-ui)',
                             color: GOLD,
-                            fontSize: '9px',
+                            fontSize: '0.75rem',
                             fontWeight: 600,
                             letterSpacing: '0.22em',
                             textTransform: 'uppercase',
@@ -1259,7 +1259,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                           style={{
                             fontFamily: 'var(--font-heading)',
                             color: GOLD,
-                            fontSize: 'clamp(11px, 2.8vw, 16px)',
+                            fontSize: 'clamp(1rem, 2vw, 1.4rem)',
                             fontWeight: 400,
                             letterSpacing: '0.16em',
                             textTransform: 'uppercase',
@@ -1284,7 +1284,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         <p
                           className="text-center"
                           style={{
-                            fontFamily: 'var(--font-body)',
+                            fontFamily: 'var(--font-ui)',
                             color: GOLD,
                             fontSize: 'clamp(9px, 1.8vw, 11px)',
                             letterSpacing: '0.14em',
@@ -1315,7 +1315,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                       <p
                         className="tracking-[0.12em] text-center"
                         style={{
-                          fontFamily: 'var(--font-body)',
+                          fontFamily: 'var(--font-ui)',
                           color: GOLD,
                           fontSize: 'clamp(10px, 2.2vw, 13px)',
                           opacity: 0.45,
@@ -1328,9 +1328,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                       <p
                         className="text-center"
                         style={{
-                          fontFamily: 'var(--font-body)',
+                          fontFamily: 'var(--font-ui)',
                           color: GOLD,
-                          fontSize: 'clamp(8px, 1.5vw, 10px)',
+                          fontSize: '0.75rem',
                           letterSpacing: '0.08em',
                           opacity: 0.28,
                         }}
@@ -1347,7 +1347,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         }}
                         className="mt-2 px-8 py-3 rounded-sm cursor-pointer"
                         style={{
-                          fontFamily: 'var(--font-body)',
+                          fontFamily: 'var(--font-ui)',
                           color: GOLD,
                           fontSize: '13px',
                           fontWeight: 500,
