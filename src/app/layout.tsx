@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Libre_Baskerville, Inter } from "next/font/google";
+import { DM_Serif_Display, Libre_Baskerville, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-// Heading: Cormorant Garamond — elegant, dramatic, world-class titles
-const cormorant = Cormorant_Garamond({
+// Heading: DM Serif Display — selalu bold, tegak, sangat jelas, elegan
+const dmSerif = DM_Serif_Display({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400"],
   display: "swap",
 });
 
@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body
-        className={`${cormorant.variable} ${libreBaskerville.variable} ${inter.variable} antialiased`}
+        className={`${dmSerif.variable} ${libreBaskerville.variable} ${inter.variable} antialiased`}
       >
         {children}
         <Toaster />
