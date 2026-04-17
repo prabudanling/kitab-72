@@ -108,3 +108,35 @@ Stage Summary:
 - 3 new animation types: inkBleed, emotionalReveal, glowPulse
 - Semantic text coloring preserved throughout
 - Total pages now 90 (was 87)
+
+---
+Task ID: 6
+Agent: Main
+Task: Enhance Kata Pengantar Part 4 and add new Mukadimah section (4 parts)
+
+Work Log:
+- Read worklog.md for context and `kata pengantar-2.txt` for source content (uploaded file)
+- **Kata Pengantar Part 4 Enhanced**: Added 2 new paragraphs after PGA-72 Architecture block:
+  - "72 dokumen untuk 100 tahun" paragraph (custom={3}) — describing how the 72 documents translate dreams into measurable SOPs, marrying democratic economy with corporate speed, ensuring equal dignity for farmers and exporters
+  - EmotionalQuote "Kami menulis ini untuk Anda. Dan yang lebih penting, kami menulis ini untuk cucu-cucu Anda." (custom={4})
+  - Renumbered all subsequent custom values: Declaration→5, Generational promise→6, Final call→7/8/9, Signature→10
+  - pageFooter remains at custom={20}
+- **MukadimahPage Component Added** (~390 lines): Full 4-part formal constitutional opening
+  - **Part 1 — Bismillah + Declaration of Freedom**: Arabic bismillah with glow, Quran verse (QS. Ar-Ra'd: 11) in gold-bordered block, "Bahwa sesungguhnya Kemerdekaan Ekonomi" declaration, pulsing transition to "Lima Deklarasi Peradaban"
+  - **Part 2 — Three Declarations**: Deklarasi Keadilan Ekonomi (coffee Gayo/Amsterdam, rice Java/Jakarta, fish Bajo examples), Deklarasi Persatuan Kelembagaan (15-25 village institutions disconnected digitally), Deklarasi Kedaulatan Digital (data sovereignty, UU PDP No. 27/2022, blockchain as eternal digital notary)
+  - **Part 3 — Two More Declarations + Manifesto**: Deklarasi Kemerdekaan Petani (17 million farmers, rentenir, JP3 Pay, Resi Gudang Digital, Commodity Exchange, Global Trade Desk), Deklarasi Gotong Royong 4.0, Manifesto Peradaban (4 "berpihak kepada..." lines)
+  - **Part 4 — Inspiration + Covenant + Victor Hugo**: "Dari silo menuju ekosistem", Inspirasi 10 Pemimpin Peradaban Dunia (Gajah Mada, Umar bin Abdul Aziz, Sheikh Zayed, Lee Kuan Yew, Friedrich Raiffeisen, Mahatma Gandhi, Deng Xiaoping, Alexander Agung), Perjanjian Abadi Para Pendiri (formal constitutional preamble), Victor Hugo quote, final 4-line declaration with glow
+- Mukadimah design: gold left-bar gradient for part 1, solid gold for part 2, gold-to-burgundy gradient for parts 3-4, GoldenParticles on part 4
+- Mukadimah header uses burgundy dot indicators (vs gold for Kata Pengantar)
+- Updated BookPage type: added `{ type: 'mukadimah'; part: number }`
+- Updated bookPages array: 4 mukadimah pages inserted between kata-pengantar part 4 and toc
+- Updated renderPage switch: added `case 'mukadimah'`
+- Updated currentPageInfo: shows `Mukadimah (X/4)` with GOLD domain color
+- Lint passes cleanly (0 errors), dev server compiles successfully (GET / 200)
+
+Stage Summary:
+- Kata Pengantar Part 4 enhanced with 2 powerful new paragraphs and renumbered animations
+- New Mukadimah section: 4 formal constitutional opening pages with full content from uploaded document
+- 8 world leaders cited as inspiration, 5 declarations of civilization, Victor Hugo closing
+- Total pages now 94 (was 90): Cover + 4 Kata Pengantar + 4 Mukadimah + TOC + 9 Domain Openers + 72 Pillars + Philosophy + Covenant + Back Cover
+- All heritage design preserved: VOC grey, KNBMP burgundy, gold accents, batik watermarks

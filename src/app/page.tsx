@@ -53,6 +53,7 @@ const letterReveal = {
 type BookPage =
   | { type: 'cover' }
   | { type: 'kata-pengantar'; part: number }
+  | { type: 'mukadimah'; part: number }
   | { type: 'toc' }
   | { type: 'domain-opener'; data: Domain }
   | { type: 'pillar'; data: { pillar: Pillar; domain: Domain } }
@@ -792,10 +793,22 @@ function KataPengantarPage({ part }: { part: number }) {
               Melalui <span className="font-bold" style={{ color: BURGUNDY }}>PGA-72 (Polymath Grand Architecture)</span> ini, kami meletakkan cetak biru peradaban baru. Sebuah arsitektur kelembagaan yang sangat canggih secara teknologi (berbasis Blockchain dan AI), namun berakar sangat dalam pada nilai ketuhanan dan gotong royong.
             </motion.p>
 
-            {/* Declaration */}
+            {/* 72 dokumen for 100 years */}
             <motion.p className={txtSm}
               style={{ color: '#3E2723' }}
               variants={fadeSlideUp} custom={3}>
+              Kami telah merancang <span className="font-semibold" style={{ color: BURGUNDY }}>72 dokumen ini</span> agar mampu menghadapi ujian waktu selama <span className="font-semibold" style={{ color: GOLD }}>100 tahun ke depan</span>. Di dalamnya, Anda akan menemukan bagaimana kami menerjemahkan mimpi-mimpi terbesar ke dalam Standard Operating Procedure (SOP) yang terukur. Bagaimana kami mengawinkan demokrasi ekonomi nyata (<span className="font-semibold" style={{ color: BURGUNDY }}>1 Anggota = 1 Suara</span>) dengan kecepatan korporasi global. Bagaimana kami memastikan bahwa seorang petani rumput laut di Maluku memiliki martabat, kedaulatan, dan akses modal yang sama dengan seorang eksportir di Jakarta.
+            </motion.p>
+
+            {/* Written for you and grandchildren */}
+            <EmotionalQuote custom={4}>
+              Kami menulis ini untuk <span className="font-semibold" style={{ color: BURGUNDY }}>Anda</span>. Dan yang lebih penting, kami menulis ini untuk <span className="font-semibold" style={{ color: GOLD }}>cucu-cucu Anda</span>.
+            </EmotionalQuote>
+
+            {/* Declaration */}
+            <motion.p className={txtSm}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={5}>
               Dokumen-dokumen dalam PGA-72 ini adalah{' '}
               <span className="font-semibold" style={{ color: BURGUNDY }}>deklarasi peradaban</span> bahwa bangsa ini telah selesai menangisi masa lalunya. Kita tidak akan lagi menjadi bangsa kuli di antara bangsa-bangsa, dan kuli di antara bangsa sendiri.{' '}
               <span className="font-semibold" style={{ color: GOLD }}>Mulai hari ini, perdagangan bukanlah alat untuk menindas, melainkan instrumen suci untuk memerdekakan</span>.
@@ -807,7 +820,7 @@ function KataPengantarPage({ part }: { part: number }) {
                 backgroundColor: `linear-gradient(135deg, rgba(94,33,41,0.06), rgba(197,160,89,0.06))`,
                 border: `1px solid ${BURGUNDY}15`,
               }}
-              variants={emotionalReveal} custom={4}>
+              variants={emotionalReveal} custom={6}>
               <div className="absolute top-0 right-0 w-20 h-20 pointer-events-none"
                 style={{ background: `radial-gradient(circle at top right, ${GOLD}10, transparent)` }} />
               <p className={`${serif} text-[14px] sm:text-[17px] leading-[1.9] italic relative z-10`}
@@ -820,19 +833,19 @@ function KataPengantarPage({ part }: { part: number }) {
             </motion.div>
 
             {/* Final call — big and bold */}
-            <motion.div className="text-center my-6 sm:my-8" variants={emotionalReveal} custom={5}>
+            <motion.div className="text-center my-6 sm:my-8" variants={emotionalReveal} custom={7}>
               <motion.div className="mb-4">
                 <GoldDivider />
               </motion.div>
               <motion.p className={`${serif} text-xl sm:text-2xl md:text-3xl font-semibold leading-snug`}
                 style={{ color: BURGUNDY }}
-                variants={glowPulse} custom={6}>
+                variants={glowPulse} custom={8}>
                 Selamat datang di ekosistem
                 <br />ekonomi rakyat berdaulat.
               </motion.p>
               <motion.p className={`${serif} text-lg sm:text-xl mt-2`}
                 style={{ color: GOLD }}
-                variants={glowPulse} custom={7}>
+                variants={glowPulse} custom={9}>
                 Mari kita mulai bekerja.
               </motion.p>
               <motion.div className="mt-4">
@@ -842,13 +855,403 @@ function KataPengantarPage({ part }: { part: number }) {
 
             {/* Signature */}
             <motion.div className="text-center mt-6"
-              variants={fadeSlideUp} custom={8}>
+              variants={fadeSlideUp} custom={10}>
               <p className={`${serif} text-sm font-semibold`} style={{ color: BURGUNDY }}>
                 The Founder&apos;s Office
               </p>
               <p className={`${serif} text-xs italic`} style={{ color: '#999' }}>
                 April 2026
               </p>
+            </motion.div>
+          </div>
+
+          {pageFooter}
+        </motion.div>
+      </div>
+    )
+  }
+
+  return null
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MUKADIMAH — 4 Parts (Formal Constitutional Opening)
+// ═══════════════════════════════════════════════════════════════
+const MUKADIMAH_PARTS = 4
+
+function MukadimahPage({ part }: { part: number }) {
+  const pageRef = useRef<HTMLDivElement>(null)
+
+  const serif = 'font-[family-name:var(--font-serif)]'
+  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const txtBase = `${serif} text-[14px] sm:text-[17px] leading-[1.9]`
+  const txtSm = `${serif} text-[12px] sm:text-[15px] leading-[1.85]`
+  const txtXs = `${serif} text-[11px] sm:text-[13px] leading-[1.8]`
+
+  const header = (
+    <motion.div className="flex items-center gap-3 mb-2" variants={fadeSlideUp} custom={0}>
+      <motion.p className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[3px] uppercase`}
+        style={{ color: GOLD }}>
+        Mukadimah
+      </motion.p>
+      <div className="flex gap-1">
+        {[1, 2, 3, 4].map(n => (
+          <motion.div key={n} className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: n === part ? BURGUNDY : `${BURGUNDY}25` }}
+            initial={{ scale: 0 }} animate={{ scale: 1 }}
+            transition={{ delay: 0.3 + n * 0.08 }} />
+        ))}
+      </div>
+    </motion.div>
+  )
+
+  const divider = (
+    <motion.div variants={fadeSlideUp} custom={1}>
+      <GoldDivider className="my-3" />
+    </motion.div>
+  )
+
+  const pageFooter = (
+    <motion.div className="flex-shrink-0 text-center pb-3 pt-2"
+      variants={fadeSlideUp} custom={20}>
+      <p className={`${bodyFont} text-[8px] tracking-[2px] uppercase`}
+        style={{ color: '#B0A898' }}>
+        Pembukaan Agung {part} dari {MUKADIMAH_PARTS} &middot; Koperasi Nusantara Merah Putih
+      </p>
+    </motion.div>
+  )
+
+  // ═══ PART 1: Bismillah + Declaration of Freedom ═══
+  if (part === 1) {
+    return (
+      <div ref={pageRef} className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20"
+          style={{ background: `linear-gradient(180deg, ${GOLD}, ${BURGUNDY})` }} />
+        <BatikWatermark />
+        {/* Large watermark */}
+        <div className="absolute top-12 right-4 sm:top-16 sm:right-8 pointer-events-none select-none z-0"
+          style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(100px, 22vw, 220px)', color: `${GOLD}06`, lineHeight: 1 }}>
+          &#xFDFA;
+        </div>
+
+        <motion.div
+          className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-16 py-6 sm:py-10 relative z-10"
+          variants={staggerContainer} initial="hidden" animate="visible">
+
+          {header}
+          {divider}
+
+          {/* Bismillah */}
+          <motion.p className={`${serif} text-lg sm:text-xl text-center my-4 sm:my-6`}
+            style={{ color: BURGUNDY, direction: 'rtl', fontFamily: "'Amiri', serif" }}
+            variants={glowPulse} custom={2}>
+            بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيْمِ
+          </motion.p>
+
+          <motion.p className={`${txtXs} text-center mb-4`}
+            style={{ color: '#6B5E50' }}
+            variants={inkBleed} custom={3}>
+            Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang
+          </motion.p>
+
+          <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+            {/* Quran verse */}
+            <motion.div className="relative p-3 sm:p-4 rounded-sm"
+              style={{ backgroundColor: 'rgba(197,160,89,0.05)', borderLeft: `3px solid ${GOLD}50` }}
+              variants={emotionalReveal} custom={4}>
+              <p className={`${serif} text-[13px] sm:text-[16px] leading-[1.9] italic`}
+                style={{ color: '#3E2723' }}>
+                &ldquo;Sesungguhnya, Allah tidak mengubah keadaan suatu kaum hingga mereka mengubah keadaan yang ada pada diri mereka sendiri.&rdquo;
+              </p>
+              <p className={`${bodyFont} text-[10px] tracking-wider uppercase mt-2`}
+                style={{ color: GOLD }}>
+                QS. Ar-Ra&apos;d: 11
+              </p>
+            </motion.div>
+
+            {/* Declaration of Economic Freedom */}
+            <motion.p className={`${txtBase} drop-cap`}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={5}>
+              <span className="font-bold tracking-wide" style={{ color: BURGUNDY }}>Bahwa sesungguhnya Kemerdekaan Ekonomi</span> adalah hak seluruh rakyat Indonesia — dari Sabang sampai Merauke, dari Miangas hingga Pulau Rote — dan oleh sebab itu maka segala bentuk kemiskinan struktural, kesenjangan digital, dan ketidakadilan rantai nilai yang telah memiskinkan{' '}
+              <span className="font-bold" style={{ color: GOLD }}>83.763 desa dan kelurahan Indonesia</span> harus dihapuskan, bukan dengan janji-janji, melainkan dengan sistem yang bekerja.
+            </motion.p>
+
+            {/* Transition */}
+            <motion.div className="text-center pt-2"
+              variants={fadeSlideUp} custom={6}>
+              <motion.p className={`${bodyFont} text-[10px] tracking-[2px] uppercase`}
+                style={{ color: `${GOLD}80` }}
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}>
+                Lima Deklarasi Peradaban&hellip;
+              </motion.p>
+            </motion.div>
+          </div>
+
+          {pageFooter}
+        </motion.div>
+      </div>
+    )
+  }
+
+  // ═══ PART 2: Three Declarations ═══
+  if (part === 2) {
+    return (
+      <div ref={pageRef} className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20"
+          style={{ backgroundColor: GOLD }} />
+        <BatikWatermark />
+
+        <motion.div
+          className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-16 py-6 sm:py-10 relative z-10"
+          variants={staggerContainer} initial="hidden" animate="visible">
+
+          {header}
+          {divider}
+
+          <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+            {/* Declaration 1: Keadilan Ekonomi */}
+            <motion.div className="relative"
+              variants={fadeSlideUp} custom={2}>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-2`}
+                style={{ color: BURGUNDY }}>
+                Pertama &mdash; Deklarasi Keadilan Ekonomi
+              </p>
+              <motion.p className={txtXs}
+                style={{ color: '#3E2723' }}
+                variants={inkBleed} custom={3}>
+                Bahwa selama 79 tahun Indonesia merdeka, desa telah menjadi tulang punggung pangan bangsa namun tidak pernah menjadi pemilik rantai nilainya. Kopi dari Gayo dibeli dengan harga Rp 30.000 per kilogram dan dijual kembali seharga &euro;15 di Amsterdam. Beras dari Jawa Tengah melewati lima tangan perantara sebelum tiba di meja makan Jakarta. Ikan dari nelayan Bajo dipungut oleh pengepul dengan harga sepertiga nilai pasarnya.{' '}
+                <span className="font-semibold" style={{ color: BURGUNDY }}>Ini bukan nasib. Ini adalah konstruksi sistem yang salah.</span> Dan KNMP hadir untuk membangun sistem yang benar.
+              </motion.p>
+            </motion.div>
+
+            <ChapterDivider />
+
+            {/* Declaration 2: Persatuan Kelembagaan */}
+            <motion.div className="relative"
+              variants={fadeSlideUp} custom={4}>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-2`}
+                style={{ color: BURGUNDY }}>
+                Kedua &mdash; Deklarasi Persatuan Kelembagaan
+              </p>
+              <motion.p className={txtXs}
+                style={{ color: '#3E2723' }}
+                variants={inkBleed} custom={5}>
+                Bahwa setiap desa di Indonesia rata-rata memiliki 15 hingga 25 lembaga yang bekerja keras setiap hari — PKK, Posyandu, Karang Taruna, BUMDes, Gapoktan, P3A, Lumbung Pangan, BKAD, BUMDesMA, Linmas, LPM, dan puluhan lainnya — namun tidak satu pun dari mereka pernah saling terhubung secara digital. PKK mendata keluarga miskin tetapi datanya tidak terhubung ke BUMDes yang punya program modal usaha. Posyandu mencatat angka stunting tetapi datanya tidak terhubung ke Lumbung Pangan yang punya stok beras.{' '}
+                <span className="font-semibold" style={{ color: GOLD }}>KNMP hadir sebagai sistem saraf digital</span> yang menyatukan semua organ desa yang sudah berdenyut — bukan menggantikan, melainkan menyempurnakan.
+              </motion.p>
+            </motion.div>
+
+            <ChapterDivider />
+
+            {/* Declaration 3: Kedaulatan Digital */}
+            <motion.div className="relative"
+              variants={fadeSlideUp} custom={6}>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-2`}
+                style={{ color: BURGUNDY }}>
+                Ketiga &mdash; Deklarasi Kedaulatan Digital
+              </p>
+              <motion.p className={txtXs}
+                style={{ color: '#3E2723' }}
+                variants={inkBleed} custom={7}>
+                Bahwa di era peradaban digital ini, <span className="font-semibold" style={{ color: GOLD }}>data adalah kekuasaan baru</span>. Bangsa yang mampu mengelola datanya sendiri adalah bangsa yang berdaulat. KNMP berkomitmen bahwa setiap data anggota adalah milik anggota dan koperasi — dilindungi sepenuhnya oleh UU Perlindungan Data Pribadi Nomor 27 Tahun 2022 — tidak pernah dan tidak akan pernah dijual kepada pihak ketiga manapun. Blockchain adalah notaris digital abadi kami: setiap keputusan RAT, setiap distribusi SHU, setiap transaksi anggota tercatat secara permanen dan dapat diaudit oleh siapapun, kapanpun.{' '}
+                <span className="font-semibold" style={{ color: BURGUNDY }}>Transparansi bukan pilihan bagi KNMP — transparansi adalah fondasi kepercayaan.</span>
+              </motion.p>
+            </motion.div>
+          </div>
+
+          {pageFooter}
+        </motion.div>
+      </div>
+    )
+  }
+
+  // ═══ PART 3: Two More Declarations + Manifesto ═══
+  if (part === 3) {
+    return (
+      <div ref={pageRef} className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20"
+          style={{ background: `linear-gradient(180deg, ${GOLD}, ${BURGUNDY})` }} />
+        <BatikWatermark />
+
+        <motion.div
+          className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-16 py-6 sm:py-10 relative z-10"
+          variants={staggerContainer} initial="hidden" animate="visible">
+
+          {header}
+          {divider}
+
+          <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+            {/* Declaration 4: Kemerdekaan Petani */}
+            <motion.div className="relative"
+              variants={fadeSlideUp} custom={2}>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-2`}
+                style={{ color: BURGUNDY }}>
+                Keempat &mdash; Deklarasi Kemerdekaan Petani
+              </p>
+              <motion.p className={txtXs}
+                style={{ color: '#3E2723' }}
+                variants={inkBleed} custom={3}>
+                Bahwa <span className="font-bold" style={{ color: GOLD }}>17 juta petani Indonesia</span> tidak memiliki akses ke sistem keuangan formal. Mereka meminjam dari rentenir dengan bunga 10 persen per minggu. Mereka menjual panen di titik harga terendah karena tidak memiliki gudang untuk menunggu harga naik. Mereka tidak bisa mengekspor karena tidak mengenal prosedur ekspor. Mereka tidak bisa mendapat KUR karena tidak memiliki agunan yang diakui bank.{' '}
+                <span className="font-semibold" style={{ color: BURGUNDY }}>KNMP memutus semua mata rantai penindasan ini sekaligus</span>: JP3 Pay memberikan akses keuangan digital pertama mereka; Resi Gudang Digital mengubah hasil panen menjadi agunan yang diakui; KNMP Commodity Exchange memberikan kepastian harga; KNMP Global Trade Desk membuka pintu ekspor yang selama ini tertutup. Kemerdekaan sejati petani adalah ketika ia bisa menentukan harga produknya sendiri — dan KNMP adalah jaminan kemerdekaan itu.
+              </motion.p>
+            </motion.div>
+
+            <ChapterDivider />
+
+            {/* Declaration 5: Gotong Royong 4.0 */}
+            <motion.div className="relative"
+              variants={fadeSlideUp} custom={4}>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-2`}
+                style={{ color: BURGUNDY }}>
+                Kelima &mdash; Deklarasi Peradaban Gotong Royong 4.0
+              </p>
+              <motion.p className={txtXs}
+                style={{ color: '#3E2723' }}
+                variants={inkBleed} custom={5}>
+                Bahwa gotong royong bukan sekadar kata indah di dalam dasar negara — <span className="font-semibold" style={{ color: GOLD }}>gotong royong adalah teknologi sosial paling canggih</span> yang pernah diciptakan peradaban Indonesia. Koperasi adalah manifestasi tertinggi dari gotong royong: setiap anggota adalah pemilik, setiap pemilik adalah pelanggan, setiap pelanggan adalah pemasok, setiap pemasok adalah pemangku kepentingan. Dalam KNMP, tidak ada pemegang saham yang untung di atas kerugian anggota. Tidak ada direksi yang kaya di atas kemiskinan petani. Tidak ada data yang dijual demi keuntungan investor. Yang ada adalah Sisa Hasil Usaha yang adil, transparan, dan kembali sepenuhnya kepada mereka yang telah berpartisipasi menciptakannya.{' '}
+                <span className="font-semibold" style={{ color: BURGUNDY }}>Ini adalah Gotong Royong 4.0</span> — gotong royong yang terverifikasi blockchain, teraudit secara real-time, dan dapat dipertanggungjawabkan hingga 100 tahun ke depan.
+              </motion.p>
+            </motion.div>
+
+            <ChapterDivider />
+
+            {/* Manifesto Peradaban */}
+            <motion.div className="my-3" variants={emotionalReveal} custom={6}>
+              <motion.p className={`${serif} text-base sm:text-lg font-semibold text-center`}
+                style={{ color: BURGUNDY }}
+                variants={glowPulse} custom={7}>
+                Manifesto Peradaban
+              </motion.p>
+            </motion.div>
+
+            <motion.p className={txtXs}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={8}>
+              <span className="font-semibold" style={{ color: BURGUNDY }}>KNMP bukan koperasi biasa. KNMP adalah proyek peradaban.</span> Upaya sadar untuk membalik 79 tahun ketidakadilan struktural yang membuat desa selalu menjadi pemasok — tidak pernah menjadi pemilik. Yang membuat petani selalu menjual — tidak pernah menentukan harga. Yang membuat desa selalu menerima program — tidak pernah memimpin perubahan.
+            </motion.p>
+
+            <motion.p className={txtXs}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={9}>
+              Dengan AD/ART ini, kami meletakkan fondasi konstitusi koperasi yang:{' '}
+              <span style={{ color: BURGUNDY }}>berpihak kepada anggota — bukan kepada modal</span>.{' '}
+              <span style={{ color: BURGUNDY }}>Berpihak kepada desa — bukan kepada kota</span>.{' '}
+              <span style={{ color: BURGUNDY }}>Berpihak kepada petani — bukan kepada tengkulak</span>.{' '}
+              <span style={{ color: BURGUNDY }}>Berpihak kepada keadilan — bukan kepada kemudahan bagi yang berkuasa</span>.
+            </motion.p>
+          </div>
+
+          {pageFooter}
+        </motion.div>
+      </div>
+    )
+  }
+
+  // ═══ PART 4: Inspiration + Covenant + Victor Hugo ═══
+  if (part === 4) {
+    return (
+      <div ref={pageRef} className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20"
+          style={{ background: `linear-gradient(180deg, ${BURGUNDY}, ${GOLD})` }} />
+        <BatikWatermark />
+        <GoldenParticles />
+
+        <motion.div
+          className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-16 py-6 sm:py-10 relative z-10"
+          variants={staggerContainer} initial="hidden" animate="visible">
+
+          {header}
+          {divider}
+
+          <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+            {/* From silo to ecosystem */}
+            <motion.div className="text-center my-3"
+              variants={emotionalReveal} custom={2}>
+              <p className={`${txtXs} font-semibold`} style={{ color: '#3E2723' }}>
+                Dari <span style={{ color: GOLD }}>83.763 desa</span> dan kelurahan yang terpencar, kami bangun <span className="font-semibold" style={{ color: BURGUNDY }}>satu peradaban</span>.
+              </p>
+              <p className={`${txtXs} mt-1`} style={{ color: '#6B5E50' }}>
+                Dari silo menuju ekosistem. Dari desa untuk Indonesia. Dari Indonesia untuk Dunia. Dari hari ini untuk 100 tahun ke depan.
+              </p>
+            </motion.div>
+
+            <GoldDivider />
+
+            {/* Inspirasi 10 Pemimpin */}
+            <motion.div className="relative"
+              variants={fadeSlideUp} custom={3}>
+              <motion.p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-2`}
+                style={{ color: BURGUNDY }}
+                variants={glowPulse} custom={4}>
+                Inspirasi 10 Pemimpin Peradaban Dunia
+              </motion.p>
+              <motion.p className={txtXs}
+                style={{ color: '#3E2723' }}
+                variants={inkBleed} custom={5}>
+                KNMP dibangun di atas pundak para raksasa peradaban. Semangat <span className="font-semibold" style={{ color: GOLD }}>Gajah Mada</span> dalam menyatukan Nusantara via sistem yang menguntungkan semua pihak. Semangat <span className="font-semibold" style={{ color: GOLD }}>Umar bin Abdul Aziz</span> dalam membangun tata kelola tanpa korupsi hingga tidak ada satu pun warga yang mau menerima zakat karena semua sudah sejahtera. Semangat <span className="font-semibold" style={{ color: GOLD }}>Sheikh Zayed</span> dalam membangun peradaban dari nol dengan visi 100 tahun. Semangat <span className="font-semibold" style={{ color: GOLD }}>Lee Kuan Yew</span> dalam meritokrasi dan zero toleransi korupsi. Semangat <span className="font-semibold" style={{ color: GOLD }}>Friedrich Raiffeisen</span> dalam mendirikan koperasi modern kredit pertama di dunia yang membebaskan petani dari cengkeraman rentenir. Semangat <span className="font-semibold" style={{ color: GOLD }}>Mahatma Gandhi</span> dalam membangun Swadesi — ekonomi kemandirian rakyat. Semangat <span className="font-semibold" style={{ color: GOLD }}>Deng Xiaoping</span> dalam pragmatisme: pilot dulu, dokumentasikan, baru replikasi nasional. Dan semangat <span className="font-semibold" style={{ color: GOLD }}>Alexander Agung</span> dalam kecepatan eksekusi dan integrasi budaya — bukan menghancurkan yang berbeda, melainkan mengintegrasikannya.
+              </motion.p>
+            </motion.div>
+
+            <GoldDivider />
+
+            {/* Perjanjian Abadi */}
+            <motion.div className="relative"
+              variants={fadeSlideUp} custom={6}>
+              <motion.p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-2`}
+                style={{ color: BURGUNDY }}
+                variants={glowPulse} custom={7}>
+                Perjanjian Abadi Para Pendiri
+              </motion.p>
+              <motion.p className={txtXs}
+                style={{ color: '#3E2723' }}
+                variants={inkBleed} custom={8}>
+                Dengan memanjatkan doa dan puji syukur kepada Allah Subhanahu wa Ta&apos;ala, Tuhan Yang Maha Esa, atas segala rahmat dan hidayah-Nya; dengan mengingat cita-cita luhur para pendiri bangsa yang terpatri dalam Pancasila dan Undang-Undang Dasar Negara Republik Indonesia Tahun 1945; dengan meyakini bahwa koperasi sebagaimana diamanatkan dalam Pasal 33 UUD NRI 1945 adalah soko guru perekonomian nasional dan pilar terkuat kedaulatan ekonomi rakyat;
+              </motion.p>
+              <motion.p className={txtXs} style={{ color: '#3E2723' }}
+                variants={fadeSlideUp} custom={9}>
+                Maka kami, para pendiri Koperasi Multipihak Nusantara Merah Putih, dengan penuh kesadaran, tanggung jawab, dan tekad yang bulat, pada hari ini menyepakati dan mengesahkan Anggaran Dasar, Anggaran Rumah Tangga, dan Kode Etik ini sebagai konstitusi tertinggi KNMP yang akan memandu setiap langkah perjalanan kami — dari hari pertama pendirian hingga satu abad ke depan — dalam mewujudkan <span className="font-bold" style={{ color: GOLD }}>Desa Berdikari</span>: desa yang mandiri pangan, mandiri energi, mandiri ekonomi, dan mandiri dalam menentukan nasibnya sendiri.
+              </motion.p>
+            </motion.div>
+
+            {/* Victor Hugo quote */}
+            <motion.div className="text-center my-5" variants={emotionalReveal} custom={10}>
+              <GoldDivider className="mb-4" />
+              <motion.p className={`${serif} text-base sm:text-lg italic`}
+                style={{ color: '#3E2723' }}
+                variants={glowPulse} custom={11}>
+                &ldquo;Tidak ada yang lebih kuat dari sebuah ide yang waktunya telah tiba.&rdquo;
+              </motion.p>
+              <p className={`${bodyFont} text-[10px] tracking-wider uppercase mt-1`}
+                style={{ color: GOLD }}>
+                &mdash; Victor Hugo
+              </p>
+              <GoldDivider className="mt-4" />
+            </motion.div>
+
+            {/* Final declaration */}
+            <motion.div className="text-center" variants={emotionalReveal} custom={12}>
+              <motion.p className={`${serif} text-base sm:text-lg font-semibold leading-snug`}
+                style={{ color: BURGUNDY }}
+                variants={glowPulse} custom={13}>
+                Waktu KNMP telah tiba.
+              </motion.p>
+              <motion.p className={`${serif} text-sm sm:text-base mt-1`}
+                style={{ color: GOLD }}
+                variants={glowPulse} custom={14}>
+                Waktunya Desa Indonesia Berdikari.
+              </motion.p>
+              <motion.p className={`${serif} text-sm sm:text-base mt-1`}
+                style={{ color: GOLD }}
+                variants={glowPulse} custom={15}>
+                Waktunya 83.763 desa terhubung dalam satu ekosistem peradaban.
+              </motion.p>
+              <motion.p className={`${serif} text-sm sm:text-base mt-1`}
+                style={{ color: BURGUNDY }}
+                variants={glowPulse} custom={16}>
+                Waktunya gotong royong menjadi kekuatan ekonomi yang mengubah Indonesia.
+              </motion.p>
             </motion.div>
           </div>
 
@@ -1261,6 +1664,7 @@ function renderPage(page: BookPage, index: number) {
   switch (page.type) {
     case 'cover': return <CoverPage key={`cover-${index}`} />
     case 'kata-pengantar': return <KataPengantarPage key={`kp-${page.part}`} part={page.part} />
+    case 'mukadimah': return <MukadimahPage key={`muk-${page.part}`} part={page.part} />
     case 'toc': return <TableOfContentsPage key={`toc-${index}`} />
     case 'domain-opener': return <DomainOpenerPage key={`do-${page.data.id}`} domain={page.data} />
     case 'pillar': return <PillarPage key={`p-${page.data.pillar.id}`} pillar={page.data.pillar} domain={page.data.domain} />
@@ -1291,6 +1695,10 @@ export default function Home() {
     { type: 'kata-pengantar' as const, part: 2 },
     { type: 'kata-pengantar' as const, part: 3 },
     { type: 'kata-pengantar' as const, part: 4 },
+    { type: 'mukadimah' as const, part: 1 },
+    { type: 'mukadimah' as const, part: 2 },
+    { type: 'mukadimah' as const, part: 3 },
+    { type: 'mukadimah' as const, part: 4 },
     { type: 'toc' },
     ...domains.flatMap((domain) => [
       { type: 'domain-opener' as const, data: domain },
@@ -1311,6 +1719,7 @@ export default function Home() {
     switch (page.type) {
       case 'cover': return { domainColor: GOLD, domainName: 'Sampul', pillarCode: '' }
       case 'kata-pengantar': return { domainColor: BURGUNDY, domainName: `Kata Pengantar (${page.part}/${KP_PARTS})`, pillarCode: '' }
+      case 'mukadimah': return { domainColor: GOLD, domainName: `Mukadimah (${page.part}/${MUKADIMAH_PARTS})`, pillarCode: '' }
       case 'toc': return { domainColor: BURGUNDY, domainName: 'Daftar Isi', pillarCode: '' }
       case 'domain-opener': return { domainColor: page.data.color, domainName: page.data.name, pillarCode: '' }
       case 'pillar': return { domainColor: page.data.domain.color, domainName: page.data.domain.name, pillarCode: page.data.pillar.code }
