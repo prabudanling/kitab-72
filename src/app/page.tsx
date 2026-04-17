@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
-import { ChevronLeft, ChevronRight, Volume2, VolumeX } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronDown, Volume2, VolumeX } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { domains, type Domain, type Pillar } from '@/lib/pillar-data'
 
@@ -230,6 +230,52 @@ function ChapterDivider() {
         <circle cx="8" cy="8" r="2" fill={GOLD} opacity="0.5" />
       </svg>
       <div className="h-px w-8" style={{ backgroundColor: GOLD }} />
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PAGE NUMBER
+// ═══════════════════════════════════════════════════════════════
+function PageNumber({ index, total }: { index: number; total: number }) {
+  return (
+    <div className="absolute bottom-3 left-0 right-0 text-center z-30 pointer-events-none">
+      <span className="font-[family-name:var(--font-heading)] text-xs tracking-widest"
+        style={{ color: '#C5A05960' }}>
+        — {index + 1} —
+      </span>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SCROLL INDICATOR
+// ═══════════════════════════════════════════════════════════════
+function ScrollIndicator({ containerRef }: { containerRef: React.RefObject<HTMLDivElement | null> }) {
+  const [show, setShow] = useState(false)
+  const [atBottom, setAtBottom] = useState(false)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const check = () => {
+      setShow(el.scrollHeight > el.clientHeight + 20)
+      setAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < 30)
+    }
+    check()
+    el.addEventListener('scroll', check, { passive: true })
+    const observer = new ResizeObserver(check)
+    observer.observe(el)
+    return () => { el.removeEventListener('scroll', check); observer.disconnect() }
+  }, [containerRef])
+
+  if (!show || atBottom) return null
+
+  return (
+    <div className="absolute bottom-2 right-3 z-30 flex flex-col items-center gap-0.5">
+      <motion.div animate={{ y: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}>
+        <ChevronDown className="w-4 h-4" style={{ color: `${GOLD}60` }} />
+      </motion.div>
     </div>
   )
 }
@@ -1265,6 +1311,7 @@ function MukadimahPage({ part }: { part: number }) {
 
 function TocPage({ tocPage }: { tocPage: number }) {
   const domain = domains[tocPage]
+  const scrollRef = useRef<HTMLDivElement>(null)
   if (!domain) return null
 
   return (
@@ -1286,7 +1333,7 @@ function TocPage({ tocPage }: { tocPage: number }) {
         D{domain.id}
       </div>
 
-      <div className="relative z-10 flex-1 overflow-y-auto px-6 sm:px-10 lg:px-14 py-6 sm:py-8">
+      <div ref={scrollRef} className="relative z-10 flex-1 overflow-y-auto px-6 sm:px-10 lg:px-14 py-6 sm:py-8">
         <motion.div
           variants={staggerContainer} initial="hidden" animate="visible">
 
@@ -1409,6 +1456,7 @@ function TocPage({ tocPage }: { tocPage: number }) {
           </motion.div>
         </motion.div>
       </div>
+      <ScrollIndicator containerRef={scrollRef} />
     </div>
   )
 }
@@ -1564,6 +1612,7 @@ function PillarDetailPage01() {
   const serif = 'font-[family-name:var(--font-serif)]'
   const heading = 'font-[family-name:var(--font-heading)]'
   const bodyFont = 'font-[family-name:var(--font-body)]'
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const [visionRevealed, setVisionRevealed] = useState(false)
   useEffect(() => { const t = setTimeout(() => setVisionRevealed(true), 1200); return () => clearTimeout(t) }, [])
@@ -1588,7 +1637,8 @@ function PillarDetailPage01() {
       </div>
 
       <motion.div
-        className="flex-1 overflow-y-auto px-5 sm:px-8 lg:px-12 py-5 sm:py-7 relative z-10"
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto px-5 sm:px-8 lg:px-12 pt-5 sm:pt-7 pb-14 sm:pb-16 relative z-10"
         variants={staggerContainer} initial="hidden" animate="visible">
 
         {/* ═══ SECTION A: Hero / Document Header ═══ */}
@@ -1664,7 +1714,7 @@ function PillarDetailPage01() {
                 style={{ color: BURGUNDY }}>
                 Peringatan
               </p>
-              <p className={`${serif} text-[12px] sm:text-[14px] leading-[1.75] italic`}
+              <p className={`${serif} text-[13px] sm:text-[15px] leading-[1.75] italic`}
                 style={{ color: '#4A3F32' }}>
                 Dokumen ini adalah{' '}
                 <span className="font-semibold" style={{ color: BURGUNDY }}>FONDASI PERADABAN</span>. Setiap kata telah dipilih
@@ -1799,7 +1849,7 @@ function PillarDetailPage01() {
             style={{ color: DOMAIN1_COLOR }}>
             ◆ Dampak Jika Visi Tercapai ◆
           </p>
-          <p className={`${serif} text-[12px] sm:text-[13px] text-center italic`}
+          <p className={`${serif} text-[13px] sm:text-sm text-center italic`}
             style={{ color: '#8B7D6B' }}>
             6 kategori dampak yang mengubah segalanya
           </p>
@@ -1821,7 +1871,7 @@ function PillarDetailPage01() {
                 <span className={`${heading} text-lg sm:text-xl`} style={{ color: idx % 2 === 0 ? DOMAIN1_COLOR : BURGUNDY }}>
                   {cat.icon}
                 </span>
-                <h3 className={`${bodyFont} text-[11px] sm:text-xs tracking-[1px] uppercase font-bold`}
+                <h3 className={`${bodyFont} text-xs tracking-[1px] uppercase font-bold`}
                   style={{ color: idx % 2 === 0 ? DOMAIN1_COLOR : BURGUNDY }}>
                   {cat.title}
                 </h3>
@@ -1834,7 +1884,7 @@ function PillarDetailPage01() {
                     <li key={mi} className="flex items-start gap-1.5">
                       <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
                         style={{ backgroundColor: idx % 2 === 0 ? DOMAIN1_COLOR : BURGUNDY, opacity: 0.6 }} />
-                      <span className={`${bodyFont} text-[11px] sm:text-xs leading-relaxed`}
+                      <span className={`${bodyFont} text-xs leading-relaxed`}
                         style={{ color: '#4A3F32' }}>{m}</span>
                     </li>
                   ))}
@@ -1875,7 +1925,7 @@ function PillarDetailPage01() {
             style={{ color: DOMAIN1_COLOR }}>
             ◆ 7 Prinsip Visi — Non-Negotiable ◆
           </p>
-          <p className={`${serif} text-[12px] sm:text-[13px] text-center italic`}
+          <p className={`${serif} text-[13px] sm:text-sm text-center italic`}
             style={{ color: '#8B7D6B' }}>
             Tidak bisa diganggu gugat
           </p>
@@ -1904,19 +1954,19 @@ function PillarDetailPage01() {
                 </div>
               </div>
               {/* Description */}
-              <p className={`${bodyFont} text-[11px] sm:text-xs leading-[1.75] mb-2`}
+              <p className={`${bodyFont} text-xs leading-[1.75] mb-2`}
                 style={{ color: '#4A3F32' }}>{pr.desc}</p>
               {/* Implementation */}
               <div className="flex items-start gap-1.5 mb-1.5">
                 <span className={`${bodyFont} text-[9px] font-bold tracking-[0.5px] uppercase`}
                   style={{ color: DOMAIN1_COLOR }}>Implementasi:</span>
-                <span className={`${bodyFont} text-[10px] sm:text-[11px] leading-relaxed`}
+                <span className={`${bodyFont} text-[11px] sm:text-xs leading-relaxed`}
                   style={{ color: '#6B5E50' }}>{pr.impl}</span>
               </div>
               {/* Red Line */}
               <div className="flex items-center gap-1.5 mt-2">
                 <span className={`${bodyFont} text-[10px]`}>✕</span>
-                <span className={`${bodyFont} text-[10px] sm:text-[11px] font-semibold`}
+                <span className={`${bodyFont} text-[11px] sm:text-xs font-semibold`}
                   style={{ color: BURGUNDY }}>{pr.redLine}</span>
               </div>
             </motion.div>
@@ -1943,12 +1993,14 @@ function PillarDetailPage01() {
           </p>
         </motion.div>
       </motion.div>
+      <ScrollIndicator containerRef={scrollRef} />
     </div>
   )
 }
 
 function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }) {
   const badgeLabel = pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   return (
     <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
@@ -1968,7 +2020,8 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
       </div>
 
       <motion.div
-        className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-14 py-6 sm:py-8 relative z-10"
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-14 py-6 sm:py-8 pb-14 sm:pb-16 relative z-10"
         variants={staggerContainer} initial="hidden" animate="visible">
 
         {/* Domain header (small, at top) */}
@@ -2121,6 +2174,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
           </p>
         </motion.div>
       </motion.div>
+      <ScrollIndicator containerRef={scrollRef} />
     </div>
   )
 }
@@ -2236,21 +2290,28 @@ function BackCoverPage() {
 // ═══════════════════════════════════════════════════════════════
 // RENDER PAGE DISPATCHER
 // ═══════════════════════════════════════════════════════════════
-function renderPage(page: BookPage, index: number) {
-  switch (page.type) {
-    case 'cover': return <CoverPage key={`cover-${index}`} />
-    case 'kata-pengantar': return <KataPengantarPage key={`kp-${page.part}`} part={page.part} />
-    case 'mukadimah': return <MukadimahPage key={`muk-${page.part}`} part={page.part} />
-    case 'toc-page': return <TocPage key={`toc-${page.tocPage}`} tocPage={page.tocPage} />
-    case 'pillar-detail':
-      return page.pillar.id === 1
-        ? <PillarDetailPage01 key={`pga01`} />
-        : <PillarDetailPage key={`p-${page.pillar.id}`} pillar={page.pillar} domain={page.domain} />
-    case 'philosophy': return <PhilosophyPage key={`phil-${index}`} />
-    case 'covenant': return <CovenantPage key={`cov-${index}`} />
-    case 'back-cover': return <BackCoverPage key={`bc-${index}`} />
-    default: return null
-  }
+function renderPage(page: BookPage, index: number, total: number) {
+  const skipPageNumber = page.type === 'cover' || page.type === 'back-cover'
+
+  const content = (() => {
+    switch (page.type) {
+      case 'cover': return <CoverPage key={`cover-${index}`} />
+      case 'kata-pengantar': return <KataPengantarPage key={`kp-${page.part}`} part={page.part} />
+      case 'mukadimah': return <MukadimahPage key={`muk-${page.part}`} part={page.part} />
+      case 'toc-page': return <TocPage key={`toc-${page.tocPage}`} tocPage={page.tocPage} />
+      case 'pillar-detail':
+        return page.pillar.id === 1
+          ? <PillarDetailPage01 key={`pga01`} />
+          : <PillarDetailPage key={`p-${page.pillar.id}`} pillar={page.pillar} domain={page.domain} />
+      case 'philosophy': return <PhilosophyPage key={`phil-${index}`} />
+      case 'covenant': return <CovenantPage key={`cov-${index}`} />
+      case 'back-cover': return <BackCoverPage key={`bc-${index}`} />
+      default: return null
+    }
+  })()
+
+  if (skipPageNumber) return content
+  return <>{content}<PageNumber index={index} total={total} /></>
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -2374,11 +2435,14 @@ export default function Home() {
             boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 1px rgba(197,160,89,0.3)' }}
           onClick={handleBookClick} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
           role="book" aria-label={`Page ${displayPage} of ${totalPages}`}>
+          {/* Gold page edge effect */}
+          <div className="absolute top-0 right-0 bottom-0 w-[3px] z-50 pointer-events-none"
+            style={{ background: 'linear-gradient(180deg, transparent, rgba(197,160,89,0.15) 20%, rgba(197,160,89,0.25) 50%, rgba(197,160,89,0.15) 80%, transparent)' }} />
           {bookPages.map((page, index) => {
             const isFlipped = index <= currentLeaf
             const isCurrent = index === currentLeaf
             return (
-              <div key={index} className="absolute inset-0 bg-white overflow-hidden"
+              <div key={index} className="absolute inset-0 bg-white overflow-hidden book-spine-shadow"
                 style={{
                   transformOrigin: 'left center',
                   transform: isFlipped ? 'rotateY(-180deg)' : 'rotateY(0deg)',
@@ -2387,7 +2451,7 @@ export default function Home() {
                   zIndex: getZIndex(index, currentLeaf, totalPages),
                   boxShadow: isFlipped ? '-5px 0 20px rgba(0,0,0,0.15)' : isCurrent ? '8px 0 30px rgba(0,0,0,0.25)' : '3px 0 10px rgba(0,0,0,0.15)',
                 }}>
-                {renderPage(page, index)}
+                {renderPage(page, index, totalPages)}
               </div>
             )
           })}
@@ -2409,11 +2473,14 @@ export default function Home() {
           style={{ perspective: '2500px' }}
           onClick={handleBookClick} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
           role="book" aria-label={`Page ${displayPage} of ${totalPages}`}>
+          {/* Gold page edge effect */}
+          <div className="absolute top-0 right-0 bottom-0 w-[3px] z-50 pointer-events-none"
+            style={{ background: 'linear-gradient(180deg, transparent, rgba(197,160,89,0.15) 20%, rgba(197,160,89,0.25) 50%, rgba(197,160,89,0.15) 80%, transparent)' }} />
           {bookPages.map((page, index) => {
             const isFlipped = index <= currentLeaf
             const isCurrent = index === currentLeaf
             return (
-              <div key={index} className="absolute inset-0 bg-white overflow-hidden"
+              <div key={index} className="absolute inset-0 bg-white overflow-hidden book-spine-shadow"
                 style={{
                   transformOrigin: 'left center',
                   transform: isFlipped ? 'rotateY(-180deg)' : 'rotateY(0deg)',
@@ -2422,7 +2489,7 @@ export default function Home() {
                   zIndex: getZIndex(index, currentLeaf, totalPages),
                   boxShadow: isFlipped ? '-3px 0 10px rgba(0,0,0,0.15)' : isCurrent ? '4px 0 15px rgba(0,0,0,0.2)' : '2px 0 5px rgba(0,0,0,0.1)',
                 }}>
-                {renderPage(page, index)}
+                {renderPage(page, index, totalPages)}
               </div>
             )
           })}
@@ -2430,6 +2497,9 @@ export default function Home() {
 
         <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]"
           style={{ backgroundColor: DARK_BG }}>
+          {/* Subtle gold separator line */}
+          <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(197,160,89,0.2) 30%, rgba(197,160,89,0.2) 70%, transparent)' }} />
           <motion.button onClick={goPrev} disabled={currentLeaf <= 0}
             className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default"
             style={{ backgroundColor: '#2A2520', color: GOLD, border: '1px solid #3A3530' }}
@@ -2445,7 +2515,7 @@ export default function Home() {
                   <p className="font-[family-name:var(--font-body)] text-[10px] tracking-wider truncate"
                     style={{ color: currentPageInfo.domainColor }}>{currentPageInfo.pillarCode}</p>
                 )}
-                <p className="font-[family-name:var(--font-body)] text-xs tracking-wider"
+                <p className="font-[family-name:var(--font-heading)] text-xs tracking-[0.15em]"
                   style={{ color: '#A09385' }}>{displayPage} / {totalPages}</p>
               </motion.div>
             </AnimatePresence>
@@ -2469,8 +2539,11 @@ export default function Home() {
       </div>
 
       {/* ═══ Desktop bottom bar ═══ */}
-      <div className="hidden md:flex fixed bottom-4 left-1/2 -translate-x-1/2 z-30 items-center gap-3">
-        <motion.div className="flex items-center gap-3 px-5 py-2 rounded-full"
+      <div className="hidden md:flex fixed bottom-4 left-1/2 -translate-x-1/2 z-30 flex-col items-center gap-2">
+        {/* Subtle gold separator line */}
+        <div className="w-48 h-px pointer-events-none"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(197,160,89,0.25) 30%, rgba(197,160,89,0.25) 70%, transparent)' }} />
+        <motion.div className="flex items-center gap-3 px-6 py-2.5 rounded-full"
           style={{ color: '#A09385', backgroundColor: '#1A1814CC', border: '1px solid #2A2520' }}
           layout>
           <motion.div className="w-2 h-2 rounded-full flex-shrink-0"
@@ -2480,10 +2553,10 @@ export default function Home() {
             <motion.div key={displayPage} className="text-center min-w-0"
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
               {currentPageInfo.pillarCode && (
-                <p className="font-[family-name:var(--font-body)] text-[10px] tracking-wider"
+                <p className="font-[family-name:var(--font-heading)] text-[10px] tracking-[0.15em] uppercase"
                   style={{ color: currentPageInfo.domainColor }}>{currentPageInfo.pillarCode}</p>
               )}
-              <p className="font-[family-name:var(--font-body)] text-sm tracking-wider">{displayPage} / {totalPages}</p>
+              <p className="font-[family-name:var(--font-heading)] text-sm tracking-[0.15em]">{displayPage} / {totalPages}</p>
             </motion.div>
           </AnimatePresence>
           <div className="w-px h-5" style={{ backgroundColor: '#3A3530' }} />

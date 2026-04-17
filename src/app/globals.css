@@ -140,6 +140,11 @@
   box-shadow: inset -3px 0 8px rgba(0,0,0,0.04);
 }
 
+/* ═══ Book Spine Shadow (left edge inner shadow) ═══ */
+.book-spine-shadow {
+  box-shadow: inset 8px 0 16px -8px rgba(0,0,0,0.06);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -310,3 +310,81 @@ Stage Summary:
 - Fonts changed to world-class "Elegansi Korporat" combination (Cormorant Garamond + EB Garamond + Inter)
 - PGA-01 has a stunning dedicated page with full content, letter-by-letter vision reveal, impact analysis cards, and 7 principles display
 - Total file size: ~2500 lines in page.tsx
+
+---
+Task ID: 9
+Agent: main
+Task: Add 4 luxury features to KNBMP flipbook — page numbers, scroll indicator, font fixes, gold touches
+
+Work Log:
+- Read page.tsx (~2512 lines) and globals.css fully to understand current codebase
+
+**Feature 1: Page Numbers on Every Page**
+- Created `PageNumber` component: subtle `— {index + 1} —` in DM Serif Display font, color `#C5A05960`
+- Positioned at absolute bottom-3, centered, z-30, pointer-events-none
+- Modified `renderPage` function signature from `(page, index)` to `(page, index, total)`
+- Wrapped non-cover/non-back-cover pages in React fragments with PageNumber
+- Cover and back-cover pages skip page numbers
+- Updated both renderPage call sites (desktop + mobile) to pass `totalPages`
+
+**Feature 2: Scroll Indicator**
+- Created `ScrollIndicator` component with scroll detection via ResizeObserver and scroll event
+- Shows animated bouncing ChevronDown arrow (framer-motion y: [0,5,0] infinite)
+- Only visible when content overflows (scrollHeight > clientHeight + 20) and user hasn't scrolled to bottom
+- Added `ChevronDown` to lucide-react imports
+- Added `useRef<HTMLDivElement>(null)` + ScrollIndicator to:
+  - TocPage: scrollable content container
+  - PillarDetailPage01: main scrollable motion.div
+  - PillarDetailPage: main scrollable motion.div
+
+**Feature 3: Fix PGA-01 Font Issues**
+- Changed PillarDetailPage01 scroll container padding from `py-5 sm:py-7` to `pt-5 sm:pt-7 pb-14 sm:pb-16` for adequate bottom space
+- Changed PillarDetailPage scroll container to include `pb-14 sm:pb-16`
+- Bumped font sizes in PGA-01:
+  - Warning block description: `text-[12px] sm:text-[14px]` → `text-[13px] sm:text-[15px]`
+  - Impact subtitle: `text-[12px] sm:text-[13px]` → `text-[13px] sm:text-sm`
+  - 7 Principles subtitle: `text-[12px] sm:text-[13px]` → `text-[13px] sm:text-sm`
+  - Impact category headers: `text-[11px] sm:text-xs` → `text-xs`
+  - Impact metric text: `text-[11px] sm:text-xs` → `text-xs`
+  - Principle description: `text-[11px] sm:text-xs` → `text-xs`
+  - Implementation text: `text-[10px] sm:text-[11px]` → `text-[11px] sm:text-xs`
+  - Red line text: `text-[10px] sm:text-[11px]` → `text-[11px] sm:text-xs`
+
+**Feature 4: Luxury Touches**
+- **Gold edge shimmer**: Added 3px gold gradient strip on right edge of book container (both desktop and mobile)
+  - `linear-gradient(180deg, transparent, rgba(197,160,89,0.15) 20%, rgba(197,160,89,0.25) 50%, ...)`
+- **Book spine shadow**: Added `.book-spine-shadow` CSS class in globals.css
+  - `box-shadow: inset 8px 0 16px -8px rgba(0,0,0,0.06)` — subtle inner shadow on left edge
+  - Applied to both desktop and mobile page container divs
+- **Refined bottom navigation bar**:
+  - Mobile: Added gold gradient separator line above bottom bar, changed page count font to DM Serif Display with tracking-[0.15em]
+  - Desktop: Added gold separator line above bar, changed from `items-center` to `flex-col` with gap-2, enlarged pill padding (px-6 py-2.5), changed fonts to DM Serif Display with tracking-[0.15em], pillarCode now uppercase
+
+Stage Summary:
+- 4 luxury features implemented successfully
+- Page numbers visible on all content pages (except cover/back-cover)
+- Scroll indicator shows on scrollable pages with animated bouncing chevron
+- PGA-01 page text bumped to minimum 11-13px mobile, no thin/light font weights
+- Gold edge shimmer, book spine shadow, and refined navigation bar add premium feel
+- Lint passes cleanly (0 errors), dev server compiles successfully
+- File: page.tsx (~2580 lines), globals.css (updated with book-spine-shadow class)
+---
+Task ID: 3
+Agent: main + subagent
+Task: Add luxury features — page numbers, scroll indicator, fix PGA-01 fonts, premium touches
+
+Work Log:
+- Added PageNumber component: elegant "— X —" at bottom-right of every page (except cover/back-cover)
+- Added ScrollIndicator component: bouncing ChevronDown arrow when content overflows, auto-hides at bottom
+- Added scroll detection (ResizeObserver + scroll listener) to TocPage, PillarDetailPage01, PillarDetailPage
+- Fixed PGA-01: increased scroll container padding (pb-14/pb-16), bumped undersized fonts (11px→13px, 10px→11px)
+- Added book-spine-shadow CSS class for inner shadow on page left edge
+- Added gold edge shimmer (3px gradient) on book right edge (desktop + mobile)
+- Added ChevronDown to lucide-react imports
+- Added gold separator lines above bottom navigation bars
+
+Stage Summary:
+- 4 luxury features implemented: page numbers, scroll indicator, PGA-01 font fixes, premium visual touches
+- All pages now show page numbers, scrollable pages show scroll indicator
+- Gold edge shimmer and book spine shadow add premium book feel
+- Lint: 0 errors, dev server: compiles successfully
