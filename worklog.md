@@ -490,3 +490,28 @@ Stage Summary:
 - Mobile: auto-shows keyboard, tap to focus, HAPUS button for backspace
 - Desktop: type directly, Backspace key works
 - Visual feedback: gold dots for correct, dim dots for wrong, shake on error
+---
+Task ID: 6
+Agent: Main
+Task: Update DigitalUnveiling text — 72 Pilar Kebangkitan + remove Bungkarno refs + Indonesia Raya fanfare
+
+Work Log:
+- Updated cover subtitle (line 1050): "Meneruskan Doktrin Berdikari Sang Proklamator" → Two-line luxurious layout:
+  - Line 1 (heading font, uppercase, tracked): "72 PILAR KEBANGKITAN EKONOMI RAKYAT REPUBLIK INDONESIA"
+  - Line 2 (serif italic): "Warisan 100 Tahun Menuju Indonesia Mercusuar Legacy Abadi"
+- Updated dedication (line 1078): "Warisan Bung Karno yang kita aktifkan kembali" → "Meneruskan Perjuangan Para Pendiri Republik Indonesia"
+- Updated hint text 1 (line 729): "Warisan Sang Proklamator menunggu untuk diaktifkan…" → "72 Pilar Kebangkitan menunggu untuk dibuka…"
+- Updated hint text 2 (line 748): "Ajaran Bung Karno yang sempat terpause — kini kita lanjutkan." → "Meneruskan perjuangan para pendiri republik — kini saatnya."
+- Updated revelation quote (lines 946-948): Now references "Para Pendiri Republik" and "72 pilar bangkit menuju mercusuar abadi"
+- Added `playIndonesiaRaya()` fanfare function — majestic brass synthesis with:
+  1. Triumphant brass fanfare: 8 ascending notes (Bb4→C6) with sawtooth + bandpass + chorus detune
+  2. Timpani roll: 3 bass drums (Bb1, D2, F2) with 6 hits each
+  3. Cymbal shimmer: highpass-filtered noise wash at climax
+  4. Final chord: Bb Major triad (Bb4+D5+F5+Bb5) with shimmer overtones
+- Wired fanfare to "Buka Kitab" button onClick handler
+
+Stage Summary:
+- All Bungkarno-specific text replaced with "Para Pendiri Republik Indonesia" narrative
+- Cover subtitle now features the grand "72 PILAR KEBANGKITAN EKONOMI RAKYAT REPUBLIK INDONESIA" heading
+- Indonesia Raya-inspired brass fanfare plays when opening the book
+- Lint passes clean, dev server compiles successfully

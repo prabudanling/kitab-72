@@ -408,6 +408,151 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   }, []);
 
   /* ═══════════════════════════════════════════════════════════
+     FANFARE — Hiduplah Indonesia Raya (Spirit)
+     ═══════════════════════════════════════════════════════════
+     A majestic brass fanfare synthesised to evoke the triumphant
+     spirit of Indonesia Raya — ascending fanfare, timpani rumble,
+     cymbal shimmer, and a soaring clarion call.
+     ═══════════════════════════════════════════════════════════ */
+  const playIndonesiaRaya = useCallback(() => {
+    const ctx = actxRef.current;
+    const master = masterRef.current;
+    if (!ctx || !master) return;
+    const t = ctx.currentTime;
+
+    // ═══ 1. TRIUMPHANT BRASS FANFARE — Ascending Bb Major ═══
+    // Evokes the opening spirit: ascending heroic phrases
+    const fanfareNotes = [
+      // Phrase 1 — Heroic ascent (Bb4→C5→D5→Eb5→F5)
+      { freq: 466.16, start: 0.0, dur: 0.35, vol: 0.18 },   // Bb4
+      { freq: 523.25, start: 0.25, dur: 0.30, vol: 0.18 },  // C5
+      { freq: 587.33, start: 0.45, dur: 0.35, vol: 0.20 },  // D5
+      { freq: 622.25, start: 0.70, dur: 0.50, vol: 0.22 },  // Eb5
+      { freq: 698.46, start: 0.95, dur: 0.80, vol: 0.25 },  // F5 (hold)
+      // Phrase 2 — Soaring resolution (G5→Bb5→C6)
+      { freq: 783.99, start: 1.60, dur: 0.40, vol: 0.22 },  // G5
+      { freq: 932.33, start: 1.85, dur: 0.55, vol: 0.24 },  // Bb5
+      { freq: 1046.50, start: 2.20, dur: 1.20, vol: 0.28 }, // C6 (climax hold)
+    ];
+
+    fanfareNotes.forEach((note) => {
+      const nt = t + note.start;
+      // Lead oscillator — sawtooth (brass body)
+      const osc1 = ctx.createOscillator();
+      const g1 = ctx.createGain();
+      osc1.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(note.freq, nt);
+      // Slight pitch rise during attack (brass "wah")
+      osc1.frequency.linearRampToValueAtTime(note.freq * 1.015, nt + 0.04);
+      osc1.frequency.linearRampToValueAtTime(note.freq, nt + 0.12);
+      g1.gain.setValueAtTime(0.001, nt);
+      g1.gain.linearRampToValueAtTime(note.vol, nt + 0.04);
+      g1.gain.setValueAtTime(note.vol * 0.8, nt + note.dur * 0.3);
+      g1.gain.exponentialRampToValueAtTime(0.001, nt + note.dur);
+      // Bandpass for brassy colour
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = note.freq * 2.5;
+      bp.Q.value = 0.8;
+      osc1.connect(bp).connect(g1).connect(master);
+      osc1.start(nt);
+      osc1.stop(nt + note.dur);
+
+      // Chorus oscillator — slightly detuned for richness
+      const osc2 = ctx.createOscillator();
+      const g2 = ctx.createGain();
+      osc2.type = 'sawtooth';
+      osc2.frequency.setValueAtTime(note.freq * 1.003, nt);
+      osc2.frequency.linearRampToValueAtTime(note.freq * 1.018, nt + 0.04);
+      g2.gain.setValueAtTime(0.001, nt);
+      g2.gain.linearRampToValueAtTime(note.vol * 0.3, nt + 0.04);
+      g2.gain.exponentialRampToValueAtTime(0.001, nt + note.dur * 0.8);
+      osc2.connect(bp).connect(g2).connect(master);
+      osc2.start(nt);
+      osc2.stop(nt + note.dur);
+
+      // Triangle fundamental for warmth
+      const osc3 = ctx.createOscillator();
+      const g3 = ctx.createGain();
+      osc3.type = 'triangle';
+      osc3.frequency.setValueAtTime(note.freq, nt);
+      g3.gain.setValueAtTime(0.001, nt);
+      g3.gain.linearRampToValueAtTime(note.vol * 0.15, nt + 0.04);
+      g3.gain.exponentialRampToValueAtTime(0.001, nt + note.dur);
+      osc3.connect(g3).connect(master);
+      osc3.start(nt);
+      osc3.stop(nt + note.dur);
+    });
+
+    // ═══ 2. TIMPANI ROLL — Deep rumble ═══
+    const timpHits = [58.27, 73.42, 87.31]; // Bb1, D2, F2
+    timpHits.forEach((freq, idx) => {
+      for (let j = 0; j < 6; j++) {
+        const ht = t + 0.0 + idx * 0.15 + j * 0.12;
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ht);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.9, ht + 0.15);
+        g.gain.setValueAtTime(0.12 + j * 0.02, ht);
+        g.gain.exponentialRampToValueAtTime(0.001, ht + 0.12);
+        osc.connect(g).connect(master);
+        osc.start(ht);
+        osc.stop(ht + 0.12);
+      }
+    });
+
+    // ═══ 3. CYMBAL SHIMMER — High-frequency wash ═══
+    const cymLen = ctx.sampleRate * 3;
+    const cymBuf = ctx.createBuffer(1, cymLen, ctx.sampleRate);
+    const cd = cymBuf.getChannelData(0);
+    for (let i = 0; i < cymLen; i++) {
+      const s = i / cymLen;
+      cd[i] = (Math.random() * 2 - 1) * Math.exp(-s * 1.8) * 0.12;
+    }
+    const cymSrc = ctx.createBufferSource();
+    cymSrc.buffer = cymBuf;
+    const chp = ctx.createBiquadFilter();
+    chp.type = 'highpass';
+    chp.frequency.value = 4000;
+    const cg = ctx.createGain();
+    cg.gain.setValueAtTime(0.001, t + 1.8);
+    cg.gain.linearRampToValueAtTime(0.35, t + 2.0);
+    cg.gain.exponentialRampToValueAtTime(0.001, t + 4.0);
+    cymSrc.connect(chp).connect(cg).connect(master);
+    cymSrc.start(t + 1.8);
+
+    // ═══ 4. FINAL CHORD — Majestic Bb Major triad (Bb4+D5+F5) ═══
+    const chordNotes = [466.16, 587.33, 698.46, 932.33]; // Bb4, D5, F5, Bb5
+    chordNotes.forEach((freq) => {
+      const ct = t + 2.6;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ct);
+      g.gain.setValueAtTime(0.001, ct);
+      g.gain.linearRampToValueAtTime(0.10, ct + 0.15);
+      g.gain.setValueAtTime(0.08, ct + 1.0);
+      g.gain.exponentialRampToValueAtTime(0.001, ct + 3.5);
+      osc.connect(g).connect(master);
+      osc.start(ct);
+      osc.stop(ct + 3.5);
+
+      // Detuned shimmer
+      const ov = ctx.createOscillator();
+      const og = ctx.createGain();
+      ov.type = 'triangle';
+      ov.frequency.setValueAtTime(freq * 1.002, ct);
+      og.gain.setValueAtTime(0.001, ct);
+      og.gain.linearRampToValueAtTime(0.03, ct + 0.15);
+      og.gain.exponentialRampToValueAtTime(0.001, ct + 2.5);
+      ov.connect(og).connect(master);
+      ov.start(ct);
+      ov.stop(ct + 2.5);
+    });
+  }, []);
+
+  /* ═══════════════════════════════════════════════════════════
      CHARACTER PROCESSOR (with backspace + wrong-char shake)
      ═══════════════════════════════════════════════════════════ */
   const processChar = useCallback(
@@ -726,7 +871,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
               }}
               className="text-center px-8"
             >
-              Warisan Sang Proklamator menunggu untuk diaktifkan&hellip;
+              72 Pilar Kebangkitan menunggu untuk dibuka&hellip;
             </motion.p>
           )}
           {phase === 'LOCKED' && showFullHint && (
@@ -745,7 +890,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                 }}
                 className="text-center px-8"
               >
-                Ajaran Bung Karno yang sempat terpause&thinsp;—&thinsp;kini kita lanjutkan.
+                Meneruskan perjuangan para pendiri republik&thinsp;—&thinsp;kini saatnya.
               </p>
               <p
                 style={{
@@ -943,9 +1088,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                 textShadow: `0 0 30px rgba(197,160,89,0.5), 0 0 60px rgba(197,160,89,0.2)`,
               }}
             >
-              &ldquo;Bung Karno menanam benih kemerdekaan ekonomi rakyat.
+              &ldquo;Para Pendiri Republik merajut benih kedaulatan ekonomi rakyat.
               <br />
-              Kini, kita hidupkan kembali warisan yang tak pernah mati.&rdquo;
+              Kini, 72 pilar itu bangkit menuju mercusuar abadi.&rdquo;
             </p>
           </motion.div>
         )}
@@ -1036,19 +1181,36 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         KITAB 72
                       </h1>
 
-                      {/* Subtitle */}
-                      <p
-                        className="text-center"
-                        style={{
-                          fontFamily: 'var(--font-serif)',
-                          color: GOLD_LIGHT,
-                          fontSize: 'clamp(12px, 2.6vw, 16px)',
-                          fontStyle: 'italic',
-                          opacity: 0.85,
-                        }}
-                      >
-                        Meneruskan Doktrin Berdikari Sang Proklamator
-                      </p>
+                      {/* Subtitle — Grand Statement */}
+                      <div className="flex flex-col items-center gap-1.5">
+                        <p
+                          className="text-center leading-tight"
+                          style={{
+                            fontFamily: 'var(--font-heading)',
+                            color: GOLD,
+                            fontSize: 'clamp(11px, 2.8vw, 16px)',
+                            fontWeight: 400,
+                            letterSpacing: '0.16em',
+                            textTransform: 'uppercase',
+                            textShadow: '0 0 16px rgba(197,160,89,0.2)',
+                          }}
+                        >
+                          72 Pilar Kebangkitan Ekonomi Rakyat Republik Indonesia
+                        </p>
+                        <p
+                          className="text-center"
+                          style={{
+                            fontFamily: 'var(--font-serif)',
+                            color: GOLD_LIGHT,
+                            fontSize: 'clamp(10px, 2.2vw, 14px)',
+                            fontStyle: 'italic',
+                            opacity: 0.75,
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          Warisan 100 Tahun Menuju Indonesia Mercusuar Legacy Abadi
+                        </p>
+                      </div>
 
                       {/* Divider */}
                       <div className="flex items-center gap-3 w-full max-w-[200px]">
@@ -1075,13 +1237,16 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                           opacity: 0.45,
                         }}
                       >
-                        Warisan Bung Karno yang kita aktifkan kembali
+                        Meneruskan Perjuangan Para Pendiri Republik Indonesia
                       </p>
 
                       {/* Buka Kitab button */}
                       <motion.button
                         type="button"
-                        onClick={() => setPhase('OPENING')}
+                        onClick={() => {
+                          playIndonesiaRaya();
+                          setPhase('OPENING');
+                        }}
                         className="mt-2 px-8 py-3 rounded-sm cursor-pointer"
                         style={{
                           fontFamily: 'var(--font-body)',
