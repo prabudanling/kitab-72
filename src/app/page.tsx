@@ -2004,6 +2004,332 @@ function PillarDetailPage01() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// PGA-02 SPECIAL PAGE — Mission Statement
+// ═══════════════════════════════════════════════════════════════
+
+const missionSentence = 'MENGORGANISIR, MENGUATKAN, DAN MENGHUBUNGKAN RAKYAT INDONESIA DALAM EKOSISTEM EKONOMI DIGITAL YANG BERKEADILAN — AGAR SETIAP ANGGOTA BISA BEBAS, MAKMUR, DAN BERDAYA.'
+
+const threePillars = [
+  {
+    num: 1, title: 'MENGORGANISIR', eng: 'Organize', color: DOMAIN1_COLOR,
+    desc: 'Mengumpulkan, menertibkan, dan menyatukan rakyat Indonesia ke dalam satu ekosistem yang terstruktur.',
+    belief: 'Kekuatan terbesar bukan di tangan segelintir orang, tapi di tangan rakyat yang bersatu.',
+    how: ['Keanggotaan terbuka — tanpa diskriminasi', 'Struktur 6 Tier: Desa → Internasional', '1 Anggota = 1 Suara (demokrasi internal)', 'Komunitas terstruktur dengan koordinator lokal'],
+    target: { 2026: '10.000', 2030: '1.000.000', 2035: '5.000.000', 2050: '50.000.000' },
+    targetLabel: 'Anggota',
+  },
+  {
+    num: 2, title: 'MENGUATKAN', eng: 'Empower', color: BURGUNDY,
+    desc: 'Meningkatkan kapasitas, kemampuan, dan kesejahteraan anggota agar mereka bisa berdiri sendiri.',
+    belief: 'Yang terbaik yang bisa kami lakukan untuk mereka adalah membuat mereka tidak perlu kami lagi.',
+    how: ['Akses modal — KUR, crowdfunding, alternative credit', 'Akses pengetahuan — Academy KNBMP, sertifikasi', 'Akses teknologi — platform digital user-friendly', 'Akses pasar — marketplace, cold chain, ekspor'],
+    target: { 2026: '1.000', 2030: '100K', 2035: '1M', 2050: '10M+' },
+    targetLabel: 'Training & Sertifikasi',
+  },
+  {
+    num: 3, title: 'MENGHUBUNGKAN', eng: 'Connect', color: '#00695C',
+    desc: 'Membangun jembatan yang menghubungkan anggota dengan pasar, modal, teknologi, dan orang lain.',
+    belief: 'Konektivitas adalah kunci kemakmuran — menghapus walls yang memisahkan dari kesempatan.',
+    how: ['Marketplace digital KNBMP', 'Portal pembiayaan terintegrasi', 'Jaringan bisnis & mentoring antar-anggota', 'Advocacy & kolaborasi dengan pemerintah'],
+    target: { 2026: '5.000', 2030: '500K', 2035: '5M', 2050: '50M+' },
+    targetLabel: 'Marketplace Users',
+  },
+]
+
+const fiveBidang = [
+  { icon: '💰', title: 'Ekonomi', desc: 'Ekosistem ekonomi yang memberdayakan rakyat — dari produksi hingga konsumsi', color: DOMAIN1_COLOR },
+  { icon: '📚', title: 'Pendidikan', desc: 'Generasi rakyat yang literate — digital, finansial, dan manajerial', color: BURGUNDY },
+  { icon: '⚙️', title: 'Teknologi', desc: 'Infrastruktur digital yang memungkinkan rakyat menikmati benefit teknologi', color: '#1565C0' },
+  { icon: '🤝', title: 'Sosial', desc: 'Membangun masyarakat yang saling mendukung dan peduli satu sama lain', color: '#00695C' },
+  { icon: '⚖️', title: 'Keadilan', desc: 'Sistem yang fair untuk semua — bukan hanya untuk yang sudah kaya', color: '#6A1B9A' },
+]
+
+function PillarDetailPage02() {
+  const heading = 'font-[family-name:var(--font-heading)]'
+  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const serif = 'font-[family-name:var(--font-serif)]'
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  const [missionRevealed, setMissionRevealed] = useState(false)
+  useEffect(() => { const t = setTimeout(() => setMissionRevealed(true), 600); return () => clearTimeout(t) }, [])
+
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+      <BatikWatermark />
+      <GoldenParticles />
+      <div className="absolute left-0 top-0 bottom-0 w-2 z-20" style={{ backgroundColor: DOMAIN1_COLOR }} />
+
+      {/* PGA-02 Watermark */}
+      <div className="absolute top-[12%] right-2 sm:right-6 pointer-events-none select-none z-0"
+        style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(80px, 20vw, 200px)', color: `${DOMAIN1_COLOR}05`, lineHeight: 1, fontWeight: 700, letterSpacing: '0.05em' }}>
+        PGA-02
+      </div>
+
+      <motion.div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto px-5 sm:px-8 lg:px-12 pt-5 sm:pt-7 pb-14 sm:pb-16 relative z-10"
+        variants={staggerContainer} initial="hidden" animate="visible">
+
+        {/* ═══ HEADER ═══ */}
+        <motion.div className="mb-4" variants={fadeSlideUp} custom={0}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[3px] uppercase font-bold`}
+              style={{ color: DOMAIN1_COLOR }}>
+              Domain 1 &middot; Identity &amp; Civilization
+            </span>
+          </div>
+          <motion.div variants={fadeSlideUp} custom={1}>
+            <GoldDivider className="my-2" color={DOMAIN1_COLOR} />
+          </motion.div>
+        </motion.div>
+
+        {/* Badge */}
+        <motion.div className="mb-4" variants={scaleIn} custom={2}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-sm"
+            style={{ backgroundColor: `${BURGUNDY}08`, border: `1px solid ${BURGUNDY}25` }}>
+            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: BURGUNDY }} />
+            <span className={`${bodyFont} text-[10px] sm:text-xs tracking-[1.5px] uppercase font-bold`}
+              style={{ color: BURGUNDY }}>
+              Mission Statement — Penjabaran Visi Menjadi Aksi
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Title */}
+        <motion.h1 className={`${heading} text-2xl sm:text-3xl lg:text-[2.5rem] font-bold leading-tight mb-1`}
+          style={{ color: CHARCOAL }}
+          variants={fadeSlideUp} custom={3}>
+          Mandat Transformasi Nyata
+        </motion.h1>
+        <motion.p className={`${heading} text-sm sm:text-base lg:text-lg italic mb-4`}
+          style={{ color: '#8B7D6B' }}
+          variants={fadeSlideUp} custom={4}>
+          Mission Statement
+        </motion.p>
+
+        {/* Visi → Misi connection */}
+        <motion.div className="mb-5 p-3 rounded-sm flex items-center gap-3"
+          style={{ backgroundColor: `${DOMAIN1_COLOR}05`, border: `1px solid ${DOMAIN1_COLOR}15` }}
+          variants={fadeSlideUp} custom={5}>
+          <span className={`${heading} text-lg font-bold`} style={{ color: DOMAIN1_COLOR }}>VISI</span>
+          <span style={{ color: '#C0B8AA' }}>→</span>
+          <span className={`${bodyFont} text-xs font-bold`} style={{ color: BURGUNDY }}>APA yang kita inginkan</span>
+          <span className="mx-1" style={{ color: '#D0C8BA' }}>|</span>
+          <span className={`${heading} text-lg font-bold`} style={{ color: BURGUNDY }}>MISI</span>
+          <span style={{ color: '#C0B8BA' }}>→</span>
+          <span className={`${bodyFont} text-xs font-bold`} style={{ color: BURGUNDY }}>BAGAIMANA kita mencapainya</span>
+        </motion.div>
+
+        {/* ═══ MISSION STATEMENT UTAMA ═══ */}
+        <motion.div className="mb-4" variants={fadeSlideUp} custom={6}>
+          <motion.div className="text-center mb-4">
+            <p className={`${heading} text-base sm:text-xl lg:text-2xl font-bold tracking-wide leading-tight`}
+              style={{ color: BURGUNDY }}>
+              MISSION STATEMENT UTAMA
+            </p>
+            <div className="flex items-center justify-center gap-3 mt-2">
+              <div className="h-px w-12 sm:w-16" style={{ backgroundColor: `${DOMAIN1_COLOR}50` }} />
+              <span className="block w-2.5 h-2.5 rotate-45" style={{ backgroundColor: `${DOMAIN1_COLOR}60` }} />
+              <div className="h-px w-12 sm:w-16" style={{ backgroundColor: `${DOMAIN1_COLOR}50` }} />
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Golden Mission Box */}
+        <motion.div
+          className="relative p-5 sm:p-7 lg:p-8 rounded-sm mb-4"
+          style={{
+            perspective: '1000px',
+            background: `linear-gradient(135deg, ${DOMAIN1_COLOR}10 0%, ${BURGUNDY}06 50%, ${DOMAIN1_COLOR}10 100%)`,
+            border: `2px solid ${DOMAIN1_COLOR}40`,
+            boxShadow: `0 0 30px rgba(196,149,42,0.08), inset 0 0 30px rgba(196,149,42,0.05)`,
+          }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={missionRevealed ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}>
+
+          <CornerOrnament color={DOMAIN1_COLOR} size={24} />
+
+          <div className="relative z-10 text-center py-2" style={{ perspective: '800px' }}>
+            <p className="text-[13px] sm:text-base lg:text-lg leading-[1.7] tracking-wide font-bold"
+              style={{ color: CHARCOAL, fontFamily: "'Courier New', Courier, monospace" }}>
+              {missionSentence.split('').map((char, i) => (
+                <motion.span
+                  key={i}
+                  style={{
+                    color: char === '—' ? DOMAIN1_COLOR : ['M', 'E', 'N', 'G'].includes(char) && i < 3 ? BURGUNDY : CHARCOAL,
+                    display: 'inline-block',
+                  }}
+                  variants={letterReveal}
+                  custom={Math.floor(i / 4)}
+                  initial="hidden"
+                  animate={missionRevealed ? 'visible' : 'hidden'}>
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))}
+            </p>
+          </div>
+
+          <div className="absolute bottom-2 right-2 rotate-180 opacity-40">
+            <CornerOrnament color={DOMAIN1_COLOR} size={24} />
+          </div>
+        </motion.div>
+
+        {/* 18 kata badge */}
+        <motion.div className="text-center mb-5" variants={fadeSlideUp} custom={7}>
+          <span className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[1px] uppercase`}
+            style={{ color: '#A09385' }}>
+            18 kata &middot; 3 aksi &middot; 3 outcome &middot; 1 misi
+          </span>
+        </motion.div>
+
+        <motion.div variants={fadeSlideUp} custom={8}>
+          <GoldDivider className="my-3" color={DOMAIN1_COLOR} />
+        </motion.div>
+
+        {/* ═══ TIGA PILLAR MISI ═══ */}
+        <motion.div className="mb-4" variants={fadeSlideUp} custom={9}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-1`}
+            style={{ color: DOMAIN1_COLOR }}>
+            ◆ Tiga Pilar Misi ◆
+          </p>
+          <p className={`${serif} text-[13px] sm:text-sm text-center italic`}
+            style={{ color: '#8B7D6B' }}>
+            Misi KNBMP adalah tiga aksi nyata yang saling terhubung
+          </p>
+        </motion.div>
+
+        <div className="space-y-4 mb-5">
+          {threePillars.map((p, idx) => (
+            <motion.div key={idx} className="p-3 sm:p-4 rounded-sm"
+              style={{
+                backgroundColor: `${p.color}05`,
+                border: `1px solid ${p.color}20`,
+                borderLeft: `4px solid ${p.color}`,
+              }}
+              variants={fadeSlideUp} custom={10 + idx}>
+              {/* Header */}
+              <div className="flex items-center gap-2 mb-2">
+                <span className={`${heading} text-xl sm:text-2xl font-bold`} style={{ color: p.color }}>{p.num}</span>
+                <div>
+                  <h3 className={`${heading} text-base sm:text-lg font-bold`} style={{ color: p.color }}>{p.title}</h3>
+                  <p className={`${bodyFont} text-[9px] sm:text-[10px] italic`} style={{ color: '#8B7D6B' }}>{p.eng}</p>
+                </div>
+              </div>
+              {/* Desc */}
+              <p className={`${bodyFont} text-[11px] sm:text-xs leading-[1.7] mb-2`} style={{ color: '#4A3F32' }}>{p.desc}</p>
+              {/* Belief */}
+              <p className={`${serif} text-[11px] sm:text-xs italic mb-2`} style={{ color: p.color }}>
+                &ldquo;{p.belief}&rdquo;
+              </p>
+              {/* How */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mb-2">
+                {p.how.map((h, hi) => (
+                  <div key={hi} className="flex items-start gap-1.5">
+                    <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: p.color, opacity: 0.6 }} />
+                    <span className={`${bodyFont} text-[10px] sm:text-[11px]`} style={{ color: '#6B5E50' }}>{h}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Target mini table */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className={`${bodyFont} text-[9px] font-bold tracking-wider uppercase`} style={{ color: p.color }}>{p.targetLabel}:</span>
+                {Object.entries(p.target).map(([year, val]) => (
+                  <span key={year} className={`${bodyFont} text-[9px] px-1.5 py-0.5 rounded-sm`}
+                    style={{ backgroundColor: `${p.color}10`, color: p.color }}>
+                    {year}: {val}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div variants={fadeSlideUp} custom={14}>
+          <GoldDivider className="my-3" color={DOMAIN1_COLOR} />
+        </motion.div>
+
+        {/* ═══ 5 BIDANG MISI ═══ */}
+        <motion.div className="mb-4" variants={fadeSlideUp} custom={15}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-3`}
+            style={{ color: DOMAIN1_COLOR }}>
+            ◆ 5 Bidang Misi ◆
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 mb-5">
+          {fiveBidang.map((b, i) => (
+            <motion.div key={i} className="p-3 rounded-sm"
+              style={{ backgroundColor: `${b.color}04`, border: `1px solid ${b.color}15` }}
+              variants={scaleIn} custom={16 + i}>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-lg">{b.icon}</span>
+                <h4 className={`${bodyFont} text-xs sm:text-sm font-bold`} style={{ color: b.color }}>{b.title}</h4>
+              </div>
+              <p className={`${bodyFont} text-[10px] sm:text-[11px] leading-[1.6]`} style={{ color: '#6B5E50' }}>{b.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Target 2050 summary */}
+        <motion.div className="p-4 rounded-sm mb-5"
+          style={{ backgroundColor: `${BURGUNDY}05`, border: `1px solid ${BURGUNDY}15` }}
+          variants={fadeSlideUp} custom={22}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[2px] uppercase font-bold text-center mb-3`}
+            style={{ color: BURGUNDY }}>
+            Target 2050 — Sumbbangsi Kepada Bangsa
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { label: 'Anggota', value: '50M+' },
+              { label: 'Total Asset', value: 'Rp200T+' },
+              { label: 'SHU ke Anggota', value: 'Rp1T+/tahun' },
+              { label: 'Desa Terintegrasi', value: '83.763' },
+            ].map((t, i) => (
+              <div key={i} className="text-center p-2 rounded-sm"
+                style={{ backgroundColor: `${BURGUNDY}05` }}>
+                <p className={`${heading} text-sm sm:text-base font-bold`} style={{ color: BURGUNDY }}>{t.value}</p>
+                <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#A09385' }}>{t.label}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div variants={fadeSlideUp} custom={23}>
+          <GoldDivider className="my-3" color={DOMAIN1_COLOR} />
+        </motion.div>
+
+        {/* Closing quote */}
+        <motion.div className="text-center mb-4" variants={fadeSlideUp} custom={24}>
+          <p className={`${serif} text-[14px] sm:text-[16px] leading-[1.8] italic`}
+            style={{ color: BURGUNDY }}>
+            &ldquo;Inilah misi kami. Inilah cara kami mencapai visi. Inilah janji kami kepada rakyat Indonesia.&rdquo;
+          </p>
+        </motion.div>
+
+        {/* ═══ PAGE FOOTER ═══ */}
+        <motion.div className="text-center pt-3 pb-2" variants={fadeSlideUp} custom={25}>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-8" style={{ backgroundColor: `${DOMAIN1_COLOR}30` }} />
+            <span className="block w-2 h-2 rotate-45" style={{ backgroundColor: `${DOMAIN1_COLOR}50` }} />
+            <div className="h-px w-8" style={{ backgroundColor: `${DOMAIN1_COLOR}30` }} />
+          </div>
+          <p className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[2px] uppercase`}
+            style={{ color: '#B0A898' }}>
+            PGA-02 &middot; 2/72 &middot; ◆ Identity &amp; Civilization
+          </p>
+          <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[1px] uppercase mt-0.5`}
+            style={{ color: '#C0B8AA' }}>
+            Mission Statement &middot; Mandat Transformasi Nyata
+          </p>
+        </motion.div>
+      </motion.div>
+      <ScrollIndicator containerRef={scrollRef} />
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
 // PGA-13 SPECIAL PAGE — Dual-Track Integration Strategy
 // ═══════════════════════════════════════════════════════════════
 const DOMAIN2_COLOR = '#1565C0'
@@ -2652,6 +2978,8 @@ function renderPage(page: BookPage, index: number, total: number) {
       case 'pillar-detail':
         return page.pillar.id === 1
           ? <PillarDetailPage01 key={`pga01`} />
+          : page.pillar.id === 2
+          ? <PillarDetailPage02 key={`pga02`} />
           : page.pillar.id === 13
           ? <PillarDetailPage13 key={`pga13`} domain={page.domain} />
           : <PillarDetailPage key={`p-${page.pillar.id}`} pillar={page.pillar} domain={page.domain} />
