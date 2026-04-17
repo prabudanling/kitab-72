@@ -347,7 +347,10 @@ function DomainCard({ domain, onClick, pillarCount, isActive }: {
         <h3 className="font-serif text-sm sm:text-base font-semibold text-white/90 leading-tight">
           {domain.nameId}
         </h3>
-        <p className="font-sans text-[11px] text-white/40 italic mt-1">{domain.name}</p>
+        <p className="font-sans text-[10px] font-mono tracking-wider uppercase mt-1" style={{ color: `${domain.color}88` }}>
+          {domain.nameSubtitle}
+        </p>
+        <p className="font-sans text-[11px] text-white/40 italic mt-0.5">{domain.name}</p>
         <div className="flex items-center gap-1 mt-3">
           <span className="font-mono text-lg font-bold" style={{ color: domain.color }}>
             {pillarCount}
