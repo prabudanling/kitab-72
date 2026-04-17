@@ -427,3 +427,22 @@ Stage Summary:
 - All DigitalUnveiling text now tells the Berdikari legacy story
 - The password activation ritual symbolizes reactivating Bung Karno's self-reliance program
 - Lint and dev server clean
+
+---
+Task ID: 3
+Agent: Main
+Task: Replace sound design with "Gong Ageng Keharyatian" — Javanese royal bronze gong synthesis
+
+Work Log:
+- Replaced entire `playBigBang` with "Gong Ageng Keharyatian" — 4-layer royal gong synthesis:
+  1. **Gong Ageng body**: 12 harmonic overtones (62Hz fundamental) with beating (detuned copies at ×1.002) for authentic bronze shimmer, pitch bend down simulating real gong physics
+  2. **Kempul Cascade**: 5 ascending kettle gongs (E4→F#5, pelog-ish intervals), staggered at 0.18s intervals with beating overtones
+  3. **Golden Zither Shimmer**: 4 high triangle-wave overtones (1200-2800Hz) descending slowly
+  4. **Pendopo Resonance**: Low-pass filtered noise rumble (120Hz) simulating reverberant pendopo hall
+- Replaced `playChime` with pelog-inspired bronze saron tones: fundamental + detuned 2nd harmonic (beating) + triangle 3rd overtone for metallic brightness
+- Drone kept as-is (55Hz sine) — already gamelan-appropriate
+
+Stage Summary:
+- Sound design now authentically Javanese/royalty — Gong Ageng, Kempul, Saron timbres
+- Bronze beating effect (slightly detuned oscillator pairs) creates realistic metallic shimmer
+- Lint and dev server clean

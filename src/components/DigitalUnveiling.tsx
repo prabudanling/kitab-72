@@ -167,7 +167,11 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   }, []);
 
   /* ═══════════════════════════════════════════════════════════
-     SOUND ENGINE (Web Audio API)
+     SOUND ENGINE — GONG AGENG KEHARYATIAN (Web Audio API)
+     ═══════════════════════════════════════════════════════════
+     Inspired by Javanese Keraton Gong Ageng — the great bronze gong
+     that opens every sacred ceremony. Synthesized with harmonic
+     overtones, beating (detune shimmer), and gamelan-like timbres.
      ═══════════════════════════════════════════════════════════ */
   const initAudio = useCallback(() => {
     if (actxRef.current) return;
@@ -179,6 +183,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
     masterRef.current = master;
   }, []);
 
+  // ── DRONE: Deep gamelan hum (sitar-like) ──
   const startDrone = useCallback(() => {
     const ctx = actxRef.current;
     const master = masterRef.current;
@@ -205,71 +210,185 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
     );
   }, []);
 
+  // ── CHIME: Pelog-inspired metallic tones (bronze saron) ──
   const playChime = useCallback((idx: number) => {
     const ctx = actxRef.current;
     const master = masterRef.current;
     if (!ctx || !master) return;
-    const freq = 440 + (idx / 8) * (988 - 440);
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    g.gain.setValueAtTime(0.25, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.7);
-    osc.connect(g);
-    g.connect(master);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.7);
+    const t = ctx.currentTime;
+    // Pelog-inspired scale: approximate Javanese 5-tone intervals
+    const pelog = [261.6, 311.1, 370.0, 415.3, 523.3, 622.3, 740.0, 830.6, 1046.5];
+    const freq = pelog[idx] || 523.3;
+
+    // Main tone — sine for pure bronze fundamental
+    const osc1 = ctx.createOscillator();
+    const g1 = ctx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.value = freq;
+    g1.gain.setValueAtTime(0.22, t);
+    g1.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+    osc1.connect(g1).connect(master);
+    osc1.start(t);
+    osc1.stop(t + 0.9);
+
+    // Overtone — 2nd harmonic slightly detuned (bronze beating)
+    const osc2 = ctx.createOscillator();
+    const g2 = ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.value = freq * 2.003; // slight detune = shimmer
+    g2.gain.setValueAtTime(0.08, t);
+    g2.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+    osc2.connect(g2).connect(master);
+    osc2.start(t);
+    osc2.stop(t + 0.6);
+
+    // High overtone — triangle for metallic brightness
+    const osc3 = ctx.createOscillator();
+    const g3 = ctx.createGain();
+    osc3.type = 'triangle';
+    osc3.frequency.value = freq * 3;
+    g3.gain.setValueAtTime(0.03, t);
+    g3.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+    osc3.connect(g3).connect(master);
+    osc3.start(t);
+    osc3.stop(t + 0.35);
   }, []);
 
+  // ── GONG AGENG: The Royal Opening ──
+  // A synthesis of Javanese Gong Ageng (great gong) with:
+  // 1. Bronze harmonic overtones with beating shimmer
+  // 2. Kempul cascade (ascending kettle gongs)
+  // 3. Golden zither sustain (high triangle overtones)
+  // 4. Pendopo resonance tail (deep low rumble)
   const playBigBang = useCallback(() => {
     const ctx = actxRef.current;
     const master = masterRef.current;
     if (!ctx || !master) return;
     const t = ctx.currentTime;
 
-    // Deep bass hit (40 Hz)
-    const bass = ctx.createOscillator();
-    const bg = ctx.createGain();
-    bass.type = 'sine';
-    bass.frequency.setValueAtTime(40, t);
-    bg.gain.setValueAtTime(0.7, t);
-    bg.gain.exponentialRampToValueAtTime(0.001, t + 2.5);
-    bass.connect(bg);
-    bg.connect(master);
-    bass.start(t);
-    bass.stop(t + 2.5);
+    // ═══ 1. GONG AGENG — Bronze hit with 12 harmonics ═══
+    const FUNDAMENTAL = 62; // Deep bronze gong
+    const harmonics = [
+      1.0,   // 62 Hz  — fundamental (deep body)
+      2.01,  // ~125 Hz — slight detune = beating (bronze character)
+      2.99,  // ~185 Hz — 3rd harmonic
+      4.02,  // ~249 Hz — detuned 4th
+      5.5,   // ~341 Hz — inharmonic partial (real gongs have these)
+      7.1,   // ~440 Hz — bell-like region
+      9.3,   // ~577 Hz — upper bronze
+      11.7,  // ~725 Hz — bright overtone
+      14.2,  // ~880 Hz — metallic sheen
+      18.0,  // ~1116 Hz — high shimmer
+      22.5,  // ~1395 Hz — air
+      27.0,  // ~1674 Hz — sizzle
+    ];
+    const gains = [
+      0.55, 0.25, 0.18, 0.12, 0.08, 0.06, 0.04, 0.03, 0.02, 0.015, 0.008, 0.004,
+    ];
 
-    // White noise burst
-    const len = ctx.sampleRate * 2;
-    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) {
-      d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.25));
+    harmonics.forEach((h, i) => {
+      // Main oscillator
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = i < 4 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(FUNDAMENTAL * h, t);
+      // Slight pitch bend down (real gong pitch drops after strike)
+      osc.frequency.exponentialRampToValueAtTime(
+        FUNDAMENTAL * h * 0.985,
+        t + 4,
+      );
+      const vol = gains[i];
+      g.gain.setValueAtTime(vol, t);
+      // Fast attack, slow exponential decay (bronze sustain)
+      g.gain.setValueAtTime(vol * 0.7, t + 0.03); // initial drop
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 5 + i * 0.3);
+      osc.connect(g).connect(master);
+      osc.start(t);
+      osc.stop(t + 5 + i * 0.3);
+
+      // Beating oscillator (detuned copy for bronze shimmer)
+      if (i < 8) {
+        const beat = ctx.createOscillator();
+        const bg = ctx.createGain();
+        beat.type = 'sine';
+        beat.frequency.setValueAtTime(FUNDAMENTAL * h * 1.002, t);
+        beat.frequency.exponentialRampToValueAtTime(
+          FUNDAMENTAL * h * 0.987 * 1.002,
+          t + 4,
+        );
+        bg.gain.setValueAtTime(vol * 0.4, t);
+        bg.gain.exponentialRampToValueAtTime(0.0001, t + 4 + i * 0.2);
+        beat.connect(bg).connect(master);
+        beat.start(t);
+        beat.stop(t + 4 + i * 0.2);
+      }
+    });
+
+    // ═══ 2. KEMPUL CASCADE — 5 ascending kettle gongs ═══
+    const kempulNotes = [370, 440, 523, 622, 740]; // E4-G4-C5-D#5-F#5 (pelog-ish)
+    kempulNotes.forEach((freq, i) => {
+      const delay = 0.4 + i * 0.18; // staggered entry
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, t + delay);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.99, t + delay + 2.5);
+      g.gain.setValueAtTime(0.001, t);
+      g.gain.linearRampToValueAtTime(0.15, t + delay + 0.01); // sharp attack
+      g.gain.exponentialRampToValueAtTime(0.001, t + delay + 2.5);
+      osc.connect(g).connect(master);
+      osc.start(t + delay);
+      osc.stop(t + delay + 2.5);
+
+      // Beating overtone for each kempul
+      const ov = ctx.createOscillator();
+      const og = ctx.createGain();
+      ov.type = 'sine';
+      ov.frequency.setValueAtTime(freq * 2.004, t + delay);
+      og.gain.setValueAtTime(0.001, t);
+      og.gain.linearRampToValueAtTime(0.06, t + delay + 0.01);
+      og.gain.exponentialRampToValueAtTime(0.001, t + delay + 1.5);
+      ov.connect(og).connect(master);
+      ov.start(t + delay);
+      ov.stop(t + delay + 1.5);
+    });
+
+    // ═══ 3. GOLDEN ZITHER SHIMMER — High overtones ═══
+    const shimmerFreqs = [1200, 1580, 2100, 2800];
+    shimmerFreqs.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, t);
+      osc.frequency.exponentialRampToValueAtTime(freq * 0.9, t + 3);
+      g.gain.setValueAtTime(0.015, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 3);
+      osc.connect(g).connect(master);
+      osc.start(t);
+      osc.stop(t + 3);
+    });
+
+    // ═══ 4. PENDOPO RESONANCE — Deep room rumble ═══
+    const rumbleLen = ctx.sampleRate * 4;
+    const rumbleBuf = ctx.createBuffer(1, rumbleLen, ctx.sampleRate);
+    const rd = rumbleBuf.getChannelData(0);
+    for (let i = 0; i < rumbleLen; i++) {
+      const s = i / rumbleLen;
+      rd[i] = (Math.random() * 2 - 1) * Math.exp(-s * 1.2) * 0.15;
     }
-    const ns = ctx.createBufferSource();
-    ns.buffer = buf;
-    const ng = ctx.createGain();
-    ng.gain.setValueAtTime(0.35, t);
-    ng.gain.exponentialRampToValueAtTime(0.001, t + 1.5);
-    ns.connect(ng);
-    ng.connect(master);
-    ns.start(t);
+    const rsrc = ctx.createBufferSource();
+    rsrc.buffer = rumbleBuf;
+    const rlp = ctx.createBiquadFilter();
+    rlp.type = 'lowpass';
+    rlp.frequency.value = 120;
+    rlp.Q.value = 1.5;
+    const rg = ctx.createGain();
+    rg.gain.setValueAtTime(0.25, t);
+    rg.gain.exponentialRampToValueAtTime(0.001, t + 4);
+    rsrc.connect(rlp).connect(rg).connect(master);
+    rsrc.start(t);
 
-    // Golden shimmer (triangle wave, descending)
-    const sh = ctx.createOscillator();
-    const sg = ctx.createGain();
-    sh.type = 'triangle';
-    sh.frequency.setValueAtTime(1200, t);
-    sh.frequency.exponentialRampToValueAtTime(600, t + 3);
-    sg.gain.setValueAtTime(0.12, t);
-    sg.gain.exponentialRampToValueAtTime(0.001, t + 3);
-    sh.connect(sg);
-    sg.connect(master);
-    sh.start(t);
-    sh.stop(t + 3);
-
-    // Fade out drone
+    // ═══ FADE OUT DRONE ═══
     if (droneOscRef.current && droneGainRef.current) {
       droneGainRef.current.gain.linearRampToValueAtTime(0.001, t + 0.3);
       try { droneOscRef.current.stop(t + 0.4); } catch { /* already stopped */ }
