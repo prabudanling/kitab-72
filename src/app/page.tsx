@@ -2655,6 +2655,796 @@ function PillarDetailPage13({ domain }: { domain: Domain }) {
   )
 }
 
+
+// ═══════════════════════════════════════════════════════════════
+// SPECIAL DOCUMENT PAGE SYSTEM (PGA-03 through PGA-08)
+// ═══════════════════════════════════════════════════════════════
+
+interface SDSection {
+  type: 'stats' | 'quote' | 'cards' | 'timeline' | 'table' | 'list' | 'text' | 'declamation' | 'comparison' | 'footer-quote'
+  title?: string
+  text?: string
+  content?: string
+  emphasis?: boolean
+  cols?: number
+  lines?: string[]
+  statsItems?: { value: string; label: string }[]
+  items?: { title: string; desc?: string; icon?: string; metric?: string; subtitle?: string; year?: string }[]
+  headers?: string[]
+  rows?: string[][]
+  compHeaders?: string[]
+  compRows?: { text: string; highlight?: boolean }[][]
+}
+
+interface SDData {
+  pgaCode: string
+  title: string
+  subtitle: string
+  badge: string
+  badgeType?: 'warning' | 'info'
+  footerLabel: string
+  footerSub: string
+  sections: SDSection[]
+}
+
+function SDGridClass(n: number) {
+  if (n === 1) return 'grid-cols-1'
+  if (n === 3) return 'grid-cols-1 sm:grid-cols-3'
+  return 'grid-cols-1 sm:grid-cols-2'
+}
+
+function SpecialDocumentPage({ data }: { data: SDData }) {
+  const bf = 'font-[family-name:var(--font-body)]'
+  const hf = 'font-[family-name:var(--font-heading)]'
+  const sf = 'font-[family-name:var(--font-serif)]'
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const DC = DOMAIN1_COLOR
+
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+      <BatikWatermark />
+      <GoldenParticles />
+      <div className="absolute left-0 top-0 bottom-0 w-2 z-20" style={{ backgroundColor: DC }} />
+      <div className="absolute top-[12%] right-2 sm:right-6 pointer-events-none select-none z-0"
+        style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(80px, 20vw, 200px)', color: `${DC}05`, lineHeight: 1, fontWeight: 700, letterSpacing: '0.05em' }}>
+        {data.pgaCode}
+      </div>
+
+      <motion.div ref={scrollRef}
+        className="flex-1 overflow-y-auto px-5 sm:px-8 lg:px-12 pt-5 sm:pt-7 pb-14 sm:pb-16 relative z-10"
+        variants={staggerContainer} initial="hidden" animate="visible">
+
+        {/* Domain Header */}
+        <motion.div className="mb-4" variants={fadeSlideUp} custom={0}>
+          <span className={`${bf} text-[9px] sm:text-[10px] tracking-[3px] uppercase font-bold`} style={{ color: DC }}>
+            Domain 1 &middot; Identity &amp; Civilization
+          </span>
+        </motion.div>
+        <motion.div variants={fadeSlideUp} custom={1}><GoldDivider className="my-2" color={DC} /></motion.div>
+
+        {/* Classification Badge */}
+        <motion.div className="mb-4" variants={scaleIn} custom={2}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-sm"
+            style={{ backgroundColor: `${data.badgeType === 'warning' ? BURGUNDY : DC}08`, border: `1px solid ${data.badgeType === 'warning' ? BURGUNDY : DC}25` }}>
+            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: data.badgeType === 'warning' ? BURGUNDY : DC }} />
+            <span className={`${bf} text-[10px] sm:text-xs tracking-[1.5px] uppercase font-bold`}
+              style={{ color: data.badgeType === 'warning' ? BURGUNDY : DC }}>{data.badge}</span>
+          </div>
+        </motion.div>
+
+        {/* Title & Subtitle */}
+        <motion.h1 className={`${hf} text-xl sm:text-2xl lg:text-3xl font-bold leading-tight mb-1`}
+          style={{ color: CHARCOAL }} variants={fadeSlideUp} custom={3}>{data.title}</motion.h1>
+        <motion.p className={`${hf} text-xs sm:text-sm italic mb-4`} style={{ color: '#8B7D6B' }}
+          variants={fadeSlideUp} custom={4}>{data.subtitle}</motion.p>
+
+        {/* Sections */}
+        {data.sections.map((sec, si) => {
+          const bi = 6 + si * 4
+          switch (sec.type) {
+            case 'stats': {
+              const sItems = sec.statsItems || []
+              return (
+                <div key={si} className="mb-4">
+                  {sec.title && (
+                    <motion.div className="flex items-center gap-3 mb-3" variants={fadeSlideUp} custom={bi}>
+                      <div className="h-px flex-1" style={{ backgroundColor: `${DC}30` }} />
+                      <p className={`${bf} text-[10px] sm:text-xs tracking-[2px] uppercase font-bold`} style={{ color: DC }}>{sec.title}</p>
+                      <div className="h-px flex-1" style={{ backgroundColor: `${DC}30` }} />
+                    </motion.div>
+                  )}
+                  <motion.div className={sItems.length <= 3 ? 'grid grid-cols-3 gap-2' : sItems.length <= 5 ? 'grid grid-cols-2 sm:grid-cols-5 gap-2' : 'grid grid-cols-2 sm:grid-cols-4 gap-2'}
+                    variants={fadeSlideUp} custom={bi + 1}>
+                    {sItems.map((s, i) => (
+                      <div key={i} className="p-2 rounded-sm text-center"
+                        style={{ backgroundColor: `${DC}05`, borderLeft: `2px solid ${DC}20` }}>
+                        <p className={`${hf} text-sm sm:text-base font-bold`} style={{ color: DC }}>{s.value}</p>
+                        <p className={`${bf} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#A09385' }}>{s.label}</p>
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+              )
+            }
+
+            case 'quote':
+              return (
+                <EmotionalQuote key={si} className="mb-4">
+                  &ldquo;{sec.text}&rdquo;
+                </EmotionalQuote>
+              )
+
+            case 'cards': {
+              const cItems = sec.items || []
+              const cCols = sec.cols || 2
+              return (
+                <div key={si} className="mb-4">
+                  {sec.title && (
+                    <motion.div className="flex items-center gap-3 mb-3" variants={fadeSlideUp} custom={bi}>
+                      <div className="h-px w-6" style={{ backgroundColor: `${DC}30` }} />
+                      <p className={`${bf} text-[10px] sm:text-xs tracking-[2px] uppercase font-bold`} style={{ color: DC }}>{sec.title}</p>
+                      <div className="h-px flex-1" style={{ backgroundColor: `${DC}15` }} />
+                    </motion.div>
+                  )}
+                  <motion.div className={`grid ${SDGridClass(cCols)} gap-2 sm:gap-3`}
+                    variants={staggerContainer} initial="hidden" animate="visible">
+                    {cItems.map((item, i) => (
+                      <motion.div key={i} className="p-3 rounded-sm"
+                        style={{ backgroundColor: `${DC}04`, border: `1px solid ${DC}12` }}
+                        variants={fadeSlideUp} custom={bi + i + 1}>
+                        {item.icon && <span className="text-base mb-1 block">{item.icon}</span>}
+                        <p className={`${hf} text-xs sm:text-sm font-bold mb-0.5`} style={{ color: CHARCOAL }}>{item.title}</p>
+                        {item.subtitle && (
+                          <p className={`${bf} text-[9px] sm:text-[10px] uppercase tracking-wider mb-1`}
+                            style={{ color: DC }}>{item.subtitle}</p>
+                        )}
+                        <p className={`${bf} text-[10px] sm:text-xs leading-relaxed`} style={{ color: '#5D4E37' }}>{item.desc}</p>
+                        {item.metric && (
+                          <p className={`${hf} text-[10px] sm:text-xs font-bold mt-1.5`} style={{ color: BURGUNDY }}>{item.metric}</p>
+                        )}
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              )
+            }
+
+            case 'timeline': {
+              const tItems = sec.items || []
+              return (
+                <div key={si} className="mb-4">
+                  {sec.title && (
+                    <motion.div className="flex items-center gap-3 mb-3" variants={fadeSlideUp} custom={bi}>
+                      <div className="h-px w-6" style={{ backgroundColor: `${DC}30` }} />
+                      <p className={`${bf} text-[10px] sm:text-xs tracking-[2px] uppercase font-bold`} style={{ color: DC }}>{sec.title}</p>
+                      <div className="h-px flex-1" style={{ backgroundColor: `${DC}15` }} />
+                    </motion.div>
+                  )}
+                  <div className="relative pl-6 sm:pl-8">
+                    <div className="absolute left-2 sm:left-3 top-1 bottom-1 w-px" style={{ backgroundColor: `${DC}25` }} />
+                    {tItems.map((item, i) => (
+                      <motion.div key={i} className="relative mb-3 last:mb-0" variants={fadeSlideUp} custom={bi + i + 1}>
+                        <div className="absolute -left-[14px] sm:-left-[17px] top-1 w-3 h-3 rounded-full border-2"
+                          style={{ backgroundColor: 'white', borderColor: DC }} />
+                        <p className={`${hf} text-[10px] sm:text-xs font-bold`} style={{ color: DC }}>{item.year}</p>
+                        <p className={`${hf} text-xs sm:text-sm font-bold`} style={{ color: CHARCOAL }}>{item.title}</p>
+                        {item.desc && (
+                          <p className={`${bf} text-[10px] sm:text-xs leading-relaxed mt-0.5`} style={{ color: '#5D4E37' }}>{item.desc}</p>
+                        )}
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+
+            case 'table': {
+              return (
+                <div key={si} className="mb-4 overflow-x-auto">
+                  {sec.title && (
+                    <motion.div className="flex items-center gap-3 mb-2" variants={fadeSlideUp} custom={bi}>
+                      <div className="h-px w-6" style={{ backgroundColor: `${DC}30` }} />
+                      <p className={`${bf} text-[10px] sm:text-xs tracking-[2px] uppercase font-bold`} style={{ color: DC }}>{sec.title}</p>
+                      <div className="h-px flex-1" style={{ backgroundColor: `${DC}15` }} />
+                    </motion.div>
+                  )}
+                  <motion.div className="rounded-sm overflow-hidden" style={{ border: `1px solid ${DC}15` }}
+                    variants={fadeSlideUp} custom={bi + 1}>
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr style={{ borderBottom: `2px solid ${DC}30`, backgroundColor: `${DC}06` }}>
+                          {(sec.headers || []).map((h, i) => (
+                            <th key={i} className={`${bf} text-[9px] sm:text-[10px] tracking-[1px] uppercase font-bold p-2`}
+                              style={{ color: DC }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(sec.rows || []).map((row, i) => (
+                          <tr key={i} style={{ borderBottom: `1px solid ${DC}08` }}>
+                            {row.map((cell, j) => (
+                              <td key={j} className={`${bf} text-[10px] sm:text-xs p-2`} style={{ color: '#3E2723' }}>{cell}</td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </motion.div>
+                </div>
+              )
+            }
+
+            case 'list': {
+              const lItems = sec.items || []
+              return (
+                <div key={si} className="mb-4">
+                  {sec.title && (
+                    <motion.div className="flex items-center gap-3 mb-3" variants={fadeSlideUp} custom={bi}>
+                      <div className="h-px w-6" style={{ backgroundColor: `${DC}30` }} />
+                      <p className={`${bf} text-[10px] sm:text-xs tracking-[2px] uppercase font-bold`} style={{ color: DC }}>{sec.title}</p>
+                      <div className="h-px flex-1" style={{ backgroundColor: `${DC}15` }} />
+                    </motion.div>
+                  )}
+                  <motion.div variants={staggerContainer} initial="hidden" animate="visible">
+                    {lItems.map((item, i) => (
+                      <motion.div key={i} className="flex items-start gap-3 mb-2 last:mb-0 p-2 rounded-sm"
+                        style={{ backgroundColor: `${DC}03` }} variants={fadeSlideUp} custom={bi + i + 1}>
+                        <span className={`${hf} text-[10px] sm:text-xs font-bold flex-shrink-0 w-5 h-5 flex items-center justify-center rounded-full mt-0.5`}
+                          style={{ backgroundColor: `${DC}15`, color: DC }}>{i + 1}</span>
+                        <div className="flex-1 min-w-0">
+                          <p className={`${hf} text-xs sm:text-sm font-bold`} style={{ color: CHARCOAL }}>{item.title}</p>
+                          {item.desc && (
+                            <p className={`${bf} text-[10px] sm:text-xs leading-relaxed mt-0.5`} style={{ color: '#5D4E37' }}>{item.desc}</p>
+                          )}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              )
+            }
+
+            case 'text':
+              return (
+                <motion.div key={si} className="mb-4" variants={fadeSlideUp} custom={bi}>
+                  <p className={`${sec.emphasis ? hf : bf} ${sec.emphasis ? 'text-xs sm:text-sm font-bold' : 'text-xs sm:text-sm'} leading-relaxed`}
+                    style={{ color: sec.emphasis ? CHARCOAL : '#3E2723' }}>
+                    {sec.content}
+                  </p>
+                </motion.div>
+              )
+
+            case 'declamation':
+              return (
+                <motion.div key={si} className="my-4 sm:my-5 p-5 sm:p-6 rounded-sm text-center"
+                  style={{ backgroundColor: `${BURGUNDY}06`, border: `2px solid ${BURGUNDY}15` }}
+                  variants={emotionalReveal} custom={bi}>
+                  {(sec.lines || []).map((line, i) => (
+                    <p key={i} className={`${hf} text-xs sm:text-sm font-bold leading-relaxed ${i > 0 ? 'mt-2' : ''}`}
+                      style={{ color: BURGUNDY }}>
+                      {line}
+                    </p>
+                  ))}
+                </motion.div>
+              )
+
+            case 'comparison': {
+              const cHeaders = sec.compHeaders || []
+              return (
+                <div key={si} className="mb-4 overflow-x-auto">
+                  {sec.title && (
+                    <motion.div className="flex items-center gap-3 mb-2" variants={fadeSlideUp} custom={bi}>
+                      <div className="h-px w-6" style={{ backgroundColor: `${DC}30` }} />
+                      <p className={`${bf} text-[10px] sm:text-xs tracking-[2px] uppercase font-bold`} style={{ color: DC }}>{sec.title}</p>
+                      <div className="h-px flex-1" style={{ backgroundColor: `${DC}15` }} />
+                    </motion.div>
+                  )}
+                  <motion.div className="rounded-sm overflow-hidden" style={{ border: `1px solid ${DC}15` }}
+                    variants={fadeSlideUp} custom={bi + 1}>
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr style={{ borderBottom: `2px solid ${DC}30`, backgroundColor: `${DC}06` }}>
+                          {cHeaders.map((h, i) => (
+                            <th key={i} className={`${bf} text-[9px] sm:text-[10px] tracking-[1px] uppercase font-bold p-2 ${i === cHeaders.length - 1 ? 'text-center' : ''}`}
+                              style={{ color: i === cHeaders.length - 1 ? BURGUNDY : DC }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(sec.compRows || []).map((row, i) => (
+                          <tr key={i} style={{ borderBottom: `1px solid ${DC}08` }}>
+                            {row.map((cell, j) => (
+                              <td key={j} className={`${bf} text-[10px] sm:text-xs p-2 ${j === cHeaders.length - 1 ? 'text-center font-bold' : ''}`}
+                                style={{
+                                  color: cell.highlight ? BURGUNDY : '#3E2723',
+                                  backgroundColor: cell.highlight ? `${BURGUNDY}08` : 'transparent'
+                                }}>{cell.text}</td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </motion.div>
+                </div>
+              )
+            }
+
+            case 'footer-quote':
+              return (
+                <motion.div key={si} className="mt-6 mb-2 text-center" variants={emotionalReveal} custom={bi}>
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <div className="h-px w-8" style={{ backgroundColor: `${DC}30` }} />
+                    <span className="block w-1.5 h-1.5 rotate-45" style={{ backgroundColor: `${DC}50` }} />
+                    <div className="h-px w-8" style={{ backgroundColor: `${DC}30` }} />
+                  </div>
+                  <p className={`${sf} text-sm sm:text-base italic leading-relaxed`} style={{ color: '#5D4E37' }}>
+                    &ldquo;{sec.text}&rdquo;
+                  </p>
+                </motion.div>
+              )
+
+            default:
+              return null
+          }
+        })}
+
+        {/* Footer */}
+        <motion.div className="mt-6 pt-4 text-center" style={{ borderTop: `1px solid ${DC}15` }}
+          variants={fadeSlideUp} custom={50}>
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <div className="h-px w-8" style={{ backgroundColor: `${DC}30` }} />
+            <span className="block w-2 h-2 rotate-45" style={{ backgroundColor: `${DC}50` }} />
+            <div className="h-px w-8" style={{ backgroundColor: `${DC}30` }} />
+          </div>
+          <p className={`${bf} text-[9px] sm:text-[10px] tracking-[2px] uppercase`} style={{ color: '#B0A898' }}>
+            {data.footerLabel}
+          </p>
+          <p className={`${bf} text-[8px] sm:text-[9px] tracking-[1px] uppercase mt-0.5`} style={{ color: '#C0B8BA' }}>
+            {data.footerSub}
+          </p>
+        </motion.div>
+      </motion.div>
+      <ScrollIndicator containerRef={scrollRef} />
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PGA-03: Akar Hikmah Para Pendiri (Founders Philosophy)
+// ═══════════════════════════════════════════════════════════════
+const pga03Data: SDData = {
+  pgaCode: 'PGA-03',
+  title: 'Akar Hikmah Para Pendiri',
+  subtitle: 'Founders Philosophy & Guiding Principles',
+  badge: 'FONDASI FILOSOFIS — Tidak Bisa Diubah Tanpa Persetujuan RAT',
+  badgeType: 'warning',
+  footerLabel: 'PGA-03 · 3/72 · ◆ Identity & Civilization',
+  footerSub: 'Founders Philosophy & Guiding Principles',
+  sections: [
+    {
+      type: 'cards',
+      title: '7 Luka Besar Indonesia',
+      cols: 2,
+      items: [
+        { title: 'Fragmentasi Ekonomi Rakyat', metric: '64.2M UMKM, 80%+ gagal', desc: 'Puluhan juta UMKM terfragmentasi tanpa akses ke pasar dan modal yang memadai. Delapan puluh persen lebih gagal dalam lima tahun pertama.' },
+        { title: 'Ketergantungan Kapital Asing', desc: 'Ekonomi rakyat terjebak dalam ketergantungan pada kebijakan, modal, dan teknologi asing yang tidak mengutamakan kepentingan lokal.' },
+        { title: 'Kesenjangan Akses', metric: '97M+ unbanked, 2500+ blank spot', desc: 'Lebih dari 97 juta orang belum memiliki akses perbankan, ribuan desa masih menjadi blank spot digital.' },
+        { title: 'Koperasi Zombie', metric: '22.000+ KUD tidak aktif', desc: 'Lebih dari 22.000 Koperasi Unit Desa tidak aktif. Sistem koperasi secara massal gagal memberdayakan anggotanya.' },
+        { title: 'Bangkitan Desa Terpencil', metric: '17.500+ desa tertinggal', desc: 'Ribuan desa tertinggal tanpa infrastruktur memadai, terisolasi dari akses pasar, pendidikan, dan kesehatan.' },
+        { title: 'Hilangnya Identitas Ekonomi Rakyat', desc: 'Akar budaya ekonomi rakyat — gotong royong, pasar tradisional, sistem bagi hasil — terkikis oleh modernisasi yang tidak inklusif.' },
+        { title: 'Kosongnya Model Alternatif', desc: 'Tidak ada model ekonomi rakyat yang terbukti berhasil pada skala nasional. Setiap upaya hanya bersifat parsial dan tidak terintegrasi.' },
+      ],
+    },
+    {
+      type: 'cards',
+      title: 'Wisdom dari 6 Peradaban',
+      items: [
+        { title: 'Indonesia', subtitle: 'Gotong Royong, Subak, Pasar Loak, Kongsi Laut', desc: 'Kekayaan lokal yang teruji berabad-abad — sistem irigasi Subak Bali, kongsi laut nusantara, dan tradisi gotong royong.' },
+        { title: 'Islam', subtitle: 'Muamalah, Zakat, Waqf, Mudharabah', desc: 'Prinsip ekonomi syariah yang menekankan keadilan, kebersamaan, dan distribusi kekayaan secara adil.' },
+        { title: 'Barat', subtitle: 'Mondragon (€11B+), Fonterra ($20B+), Rabobank ($70B+)', desc: 'Bukti nyata koperasi global: Mondragon Spanyol, Fonterra Selandia Baru, Rabobank Belanda.' },
+        { title: 'Cina', subtitle: 'TVE, Gong Xiao He', desc: 'Township and Village Enterprises mendorong pertumbuhan ekonomi desa Tiongkok secara masif.' },
+        { title: 'Afrika', subtitle: 'Ubuntu, Rotating Savings', desc: 'Filosofi Ubuntu dan sistem tabung bergilir menunjukkan kekuatan kebersamaan di komunitas Afrika.' },
+        { title: 'India', subtitle: 'SHG, Amul Cooperativa', desc: 'Self-Help Groups dan koperasi Amul menjadi bukti kekuatan kolektif dalam mengubah ekonomi rakyat.' },
+      ],
+    },
+    {
+      type: 'list',
+      title: '5 Prinsip Fundamental Pendiri',
+      items: [
+        { title: 'Rakyat Pertama, Selalu', desc: 'Setiap keputusan harus dimulai dari pertanyaan: "Apakah ini terbaik untuk rakyat?"' },
+        { title: 'Kita Bangun Bersama, Bukan Untuk Kita', desc: 'KNBMP adalah milik bersama — bukan milik segelintir pendiri atau investor.' },
+        { title: 'Sistem yang Membangun, Bukan Mengandungkan', desc: 'Infrastruktur harus memberdayakan, bukan memenjarakan rakyat dalam ketergantungan.' },
+        { title: 'Kecil-kecil Dulu, Lalu Bangun Sambil Berjalan', desc: 'Mulai dari skala terkecil yang bisa ditangani, lalu berkembang secara organik.' },
+        { title: 'Dunia Sudah Cukup Baik, Kita Cuma Perlu Menggabungkan', desc: 'Kebijaksanaan sudah tersebar di seluruh penjuru dunia — tugas kita adalah menggabungkannya.' },
+      ],
+    },
+    {
+      type: 'footer-quote',
+      text: 'Kami tidak memulai dari nol — kami memulai dari akar yang telah tertanam selama berabad-abad.',
+    },
+  ],
+}
+
+function PillarDetailPage03() {
+  return <SpecialDocumentPage data={pga03Data} />
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PGA-04: Sejarah & Luka yang Menyembuhkan (Story of Origin)
+// ═══════════════════════════════════════════════════════════════
+const pga04Data: SDData = {
+  pgaCode: 'PGA-04',
+  title: 'Sejarah & Luka yang Menyembuhkan',
+  subtitle: 'Story of Origin / Narrative',
+  badge: 'FOUNDATIONAL NARRATIVE — Akar Sejarah KNBMP',
+  badgeType: 'warning',
+  footerLabel: 'PGA-04 · 4/72 · ◆ Identity & Civilization',
+  footerSub: 'Story of Origin / Narrative',
+  sections: [
+    {
+      type: 'quote',
+      text: 'Sistem yang tidak adil bisa diubah — bukan dengan menghancurkan, melainkan dengan membangun alternatif yang lebih baik.',
+    },
+    {
+      type: 'cards',
+      title: '3 Wajah yang Dikhianati Sistem',
+      items: [
+        { title: 'Pak Hasan', subtitle: '52 tahun, Petani Kopi Bromo', metric: 'Rp12.000/kg vs Rp250.000/kg', desc: 'Kopi yang ditanam dengan tangan di lereng Bromo dijual Rp12.000/kg, sementara di pasar internasional harganya Rp250.000/kg. Enam puluh persen nilai hilang di tangan perantara.' },
+        { title: 'Pak Jusuf', subtitle: '45 tahun, Nelayan Takalar', metric: 'Rp1.5M/bulan, 40% untuk bahan bakar', desc: 'Penghasilan Rp1.5 juta per bulan, tidak ada cold chain, 40% habis untuk bahan bakar. Ikan hasil tangkapan harus dijual murah sebelum membusuk.' },
+        { title: 'Bu Ratna', subtitle: '38 tahun, Wirausaha Kupang', metric: 'Pinjaman lintah darat 20%/bulan', desc: 'Terjebak utang pinjaman lintah darat dengan bunga 20% per bulan. Kemiri yang diproduksi tidak bisa mencapai pasar yang membayar harga adil.' },
+      ],
+    },
+    {
+      type: 'list',
+      title: '6 Rantai Penindasan Struktural',
+      items: [
+        { title: 'Rantai Pasok Tidak Adil', desc: 'Perantara menguasai 40-60% nilai produk dari petani ke konsumen akhir.' },
+        { title: 'Akses Pasar Terbatas', desc: 'UMKM tidak punya akses ke pasar modern, ekspor, dan distribusi nasional.' },
+        { title: 'Eksploitasi Pembiayaan', desc: 'Pinjaman liar dengan bunga mencekik. Bank tidak melayani UMKM kecil.' },
+        { title: 'Ketergantungan Impor', desc: 'Produk rakyat kalah bersaing dengan barang impor murah bersubsidi.' },
+        { title: 'Digital Divide', desc: 'Teknologi digital tidak menjangkau desa — yang paling butuh justru terakhir dapat.' },
+        { title: 'Birokrasi Mematikan', desc: 'Perizinan rumit, regulasi tidak ramah UMKM, korupsi di setiap level.' },
+      ],
+    },
+    {
+      type: 'timeline',
+      title: 'Evolusi KNBMP',
+      items: [
+        { year: '2016', title: 'bisnisPPP didirikan', desc: 'Platform digital pertama untuk ekonomi rakyat mulai dikembangkan.' },
+        { year: '2018', title: 'Pengamatan Lapangan', desc: 'Observasi langsung di Jawa Timur dan NTT — menyaksikan kondisi nyata petani dan nelayan.' },
+        { year: '2020', title: 'JP3 Lahir', desc: 'Platform Jaringan Pangan & Pemberdayaan Petani lahir sebagai respons terhadap COVID-19.' },
+        { year: '2022', title: 'Platform Digital Berkembang', desc: 'Ekosistem digital diperluas — marketplace, logistik, dan pembayaran terintegrasi.' },
+        { year: '2024', title: 'AD/ART Super Final v7', desc: 'Dokumen konstitusi KNBMP disempurnakan ke versi final melalui proses deliberatif.' },
+        { year: '21 Maret 2026', title: 'KNBMP Resmi Didirikan', desc: '17 pendiri menandatangani pendirian KNBMP — lahir dari rakyat, untuk rakyat.' },
+      ],
+    },
+    {
+      type: 'cards',
+      title: '4 Identitas Pendiri',
+      items: [
+        { title: 'Gugun Gunara', subtitle: 'Bisnis-Negara', metric: 'Dominan', desc: 'Sang arsitek bisnis yang merancang model ekonomi KNBMP dengan presisi dan ambisi global.' },
+        { title: 'Muhammad Lutfi Azmi', subtitle: 'Ruhani-Ilmiah', metric: 'Sekunder', desc: 'Jiwa spiritual dan intelektual yang memberikan fondasi nilai dan etika pada gerakan ini.' },
+        { title: 'Prabu Danling', subtitle: 'Visi Peradaban', metric: 'Tersembunyi', desc: 'Visi besar yang melihat KNBMP bukan sekadar koperasi, tapi peradaban baru.' },
+        { title: 'Santri Angon', subtitle: 'Kemanusiaan', metric: 'Tersembunyi', desc: 'Nurani kemanusiaan yang memastikan setiap langkah KNBMP menyentuh kehidupan nyata.' },
+      ],
+    },
+    {
+      type: 'text',
+      emphasis: true,
+      content: 'Dua inovasi kunci yang membedakan KNBMP: Pentagon Kedaulatan (5 KPA × 20% = 100% kepemilikan rakyat) dan Invisible Dues (pendapatan dari transaksi yang otomatis mengalir ke seluruh ekosistem tanpa membebani anggota).',
+    },
+    {
+      type: 'cards',
+      title: 'Visi 2045: Transformasi Nyata',
+      items: [
+        { title: 'Pak Hasan', subtitle: 'Petani Kopi Bromo', metric: 'Income 3x lipat', desc: 'Dari Rp12.000/kg menjadi direct-to-consumer dengan margin yang adil.' },
+        { title: 'Pak Jusuf', subtitle: 'Nelayan Takalar', metric: 'Rp1.5M → Rp4.5M', desc: 'Cold chain terintegrasi, akses pasar luas, bahan bakar lebih efisien.' },
+        { title: 'Bu Ratna', subtitle: 'Wirausaha Kupang', metric: 'Rp2M → Rp8M', desc: 'Terbebas dari lintah darat, akses pembiayaan adil, pasar jauh lebih luas.' },
+      ],
+    },
+    {
+      type: 'footer-quote',
+      text: 'Dari luka yang sama, kami membangun obat yang sama — untuk rakyat.',
+    },
+  ],
+}
+
+function PillarDetailPage04() {
+  return <SpecialDocumentPage data={pga04Data} />
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PGA-05: Sepuluh Pilar Etika Absolut (Core Values Charter)
+// ═══════════════════════════════════════════════════════════════
+const pga05Data: SDData = {
+  pgaCode: 'PGA-05',
+  title: 'Sepuluh Pilar Etika Absolut',
+  subtitle: 'Core Values Charter',
+  badge: 'ETIKA ABSOLUT — Tidak Bisa Dinegosiasi',
+  badgeType: 'warning',
+  footerLabel: 'PGA-05 · 5/72 · ◆ Identity & Civilization',
+  footerSub: 'Core Values Charter',
+  sections: [
+    {
+      type: 'cards',
+      title: '10 Nilai Inti',
+      cols: 2,
+      items: [
+        { title: '1. AMANAH', subtitle: 'Trust', desc: 'Kepercayaan yang harus dijaga di 4 dimensi: terhadap anggota, mitra, masyarakat, dan diri sendiri.', metric: '4 Dimensi' },
+        { title: '2. KEADILAN', subtitle: 'Justice', desc: 'Keadilan distributif, prosedural, interaksional, dan retributif — menyeluruh dan tidak diskriminatif.', metric: '4 Dimensi' },
+        { title: '3. TRANSPARANSI', subtitle: 'Transparency', desc: 'Imunitas terhadap korupsi. Setiap rupiah dan setiap keputusan harus bisa diakses oleh anggota.', metric: 'Anti-Korupsi' },
+        { title: '4. KEMASLAHATAN', subtitle: 'Beneficence', desc: 'Filter tertinggi untuk setiap keputusan: "Apakah ini membawa kemaslahatan terbesar untuk semua?"', metric: 'Filter Tertinggi' },
+        { title: '5. KESEDERHANAAN', subtitle: 'Simplicity', desc: 'Besar tanpa berlebihan. Kekayaan yang didistribusikan, bukan ditumpuk. Hidup sederhana, berkarya luar biasa.', metric: 'Zero Waste' },
+        { title: '6. KEBERSAMAAN', subtitle: 'Collectivism', desc: 'Kebersamaan yang mengangkat — bukan yang menarik ke bawah. Satu untuk semua, semua untuk satu.', metric: '1 untuk Semua' },
+        { title: '7. KELESTARIAN', subtitle: 'Sustainability', desc: 'Setiap keputusan harus mempertimbangkan dampak jangka panjang — untuk anak cucu kita.', metric: 'Generasi Mendatang' },
+        { title: '8. KEBERANIAN', subtitle: 'Courage', desc: 'Keberanian yang membangun — berani mengambil keputusan sulit, berani berubah, berani bertanggung jawab.', metric: 'Prinsip Non-Kompromi' },
+        { title: '9. KEJUJURAN', subtitle: 'Integrity', desc: 'Tidak ada kompromi dengan kejujuran. Satu kebohongan bisa meruntuhkan seluruh ekosistem kepercayaan.', metric: 'Zero Tolerance' },
+        { title: '10. KEMANDIRIAN', subtitle: 'Independence', desc: 'Kemandirian berdaulat — tidak tergantung pada pihak manapun. Kekuatan dari dalam, bukan dari luar.', metric: 'Kedaulatan Penuh' },
+      ],
+    },
+    {
+      type: 'footer-quote',
+      text: 'Nilai adalah apa yang tetap bertahan ketika segalanya berubah.',
+    },
+  ],
+}
+
+function PillarDetailPage05() {
+  return <SpecialDocumentPage data={pga05Data} />
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PGA-06: Antitesis Sistem Global (Identity & Positioning)
+// ═══════════════════════════════════════════════════════════════
+const pga06Data: SDData = {
+  pgaCode: 'PGA-06',
+  title: 'Antitesis Sistem Global',
+  subtitle: 'Identity & Positioning Paper',
+  badge: 'POSITIONING PAPER — Identitas & Diferensiasi',
+  badgeType: 'info',
+  footerLabel: 'PGA-06 · 6/72 · ◆ Identity & Civilization',
+  footerSub: 'Identity & Positioning Paper',
+  sections: [
+    {
+      type: 'text',
+      emphasis: true,
+      content: 'KNBMP bukan sekadar alternatif — ia adalah antitesis. Bukan kapitalisme, bukan sosialisme, tetapi kedaulatan koperatif — model ke-3 untuk Indonesia dan dunia.',
+    },
+    {
+      type: 'comparison',
+      title: '5 Axis Diferensiasi',
+      compHeaders: ['Axis', 'Oligarki/Kapitalis', 'Sosialisme/Negara', 'KNBMP'],
+      compRows: [
+        [
+          { text: 'Governance' },
+          { text: 'Oligarki — kekuasaan segelintir' },
+          { text: 'Sentralisasi negara' },
+          { text: 'Pentagon — 5 KPA demokratis', highlight: true },
+        ],
+        [
+          { text: 'Ownership' },
+          { text: 'Pemegang saham & institusi' },
+          { text: 'Negara/birokrasi' },
+          { text: 'Multipihak — rakyat berdaulat', highlight: true },
+        ],
+        [
+          { text: 'Purpose' },
+          { text: 'Profit maksimum' },
+          { text: 'Ideologi partai/negara' },
+          { text: 'Kemaslahatan seluruh anggota', highlight: true },
+        ],
+        [
+          { text: 'Technology' },
+          { text: 'Eksploitasi data rakyat' },
+          { text: 'Kontrol & pengawasan' },
+          { text: 'Kedaulatan Digital — data rakyat', highlight: true },
+        ],
+        [
+          { text: 'Scale' },
+          { text: 'Monopoli & konsentrasi' },
+          { text: 'Sentralisasi birokrasi' },
+          { text: 'Desa-first — dari bawah ke atas', highlight: true },
+        ],
+      ],
+    },
+    {
+      type: 'text',
+      emphasis: true,
+      content: 'KNBMP = Model Ke-3. Neither capitalism nor socialism, but cooperative sovereignty — kedaulatan yang lahir dari kerjasama, bukan kompetisi atau kontrol.',
+    },
+    {
+      type: 'cards',
+      title: '4 Identitas Terintegrasi',
+      items: [
+        { title: 'Gugun Gunara', subtitle: 'Bisnis-Negara', desc: 'Arsitek model bisnis yang memadukan logika korporat dengan naluri negara — memastikan setiap strategi menguntungkan rakyat.' },
+        { title: 'Muhammad Lutfi Azmi', subtitle: 'Ruhani-Ilmiah', desc: 'Fondasi moral dan intelektual yang memastikan KNBMP selalu berpijak pada nilai-nilai etika absolut.' },
+        { title: 'Prabu Danling', subtitle: 'Visi Peradaban', desc: 'Visi jangka panjang yang melihat KNBMP sebagai kontribusi Indonesia bagi peradaban dunia.' },
+        { title: 'Santri Angon', subtitle: 'Kemanusiaan', desc: 'Jiwa kemanusiaan yang menjadi kompas — memastikan tidak ada satupun yang tertinggal.' },
+      ],
+    },
+    {
+      type: 'footer-quote',
+      text: 'Kritik tanpa alternatif adalah keluhan; alternatif tanpa aksi adalah ilusi.',
+    },
+  ],
+}
+
+function PillarDetailPage06() {
+  return <SpecialDocumentPage data={pga06Data} />
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PGA-07: Deklarasi Pembebasan Ekonomi (Manifesto)
+// ═══════════════════════════════════════════════════════════════
+const pga07Data: SDData = {
+  pgaCode: 'PGA-07',
+  title: 'Deklarasi Pembebasan Ekonomi',
+  subtitle: 'Manifesto / Declaration of Purpose',
+  badge: 'MANIFESTO — Deklarasi Resmi KNBMP',
+  badgeType: 'warning',
+  footerLabel: 'PGA-07 · 7/72 · ◆ Identity & Civilization',
+  footerSub: 'Manifesto / Declaration of Purpose',
+  sections: [
+    {
+      type: 'declamation',
+      lines: [
+        'DEKLARASI PEMBEBASAN EKONOMI RAKYAT',
+        'Kami, 17 pendiri Koperasi Nusantara Bersatu Mandiri Prima,',
+        'dengan ini menyatakan bahwa setiap manusia berhak atas',
+        'kehidupan ekonomi yang berdaulat, adil, dan bermartabat.',
+      ],
+    },
+    {
+      type: 'list',
+      title: '10 Keyakinan Kami',
+      items: [
+        { title: 'Tentang Rakyat', desc: 'Setiap manusia berhak hidup bermartabat — tanpa terkecuali.' },
+        { title: 'Tentang Ekonomi', desc: 'Ekonomi harus berputar di sekitar manusia — bukan sebaliknya.' },
+        { title: 'Tentang Demokrasi', desc: '1 Anggota = 1 Suara. Kedaulatan nyata, bukan sekadar simbol.' },
+        { title: 'Tentang Teknologi', desc: 'Teknologi harus membebaskan — bukan menguasai atau mengeksploitasi.' },
+        { title: 'Tentang Keadilan', desc: 'Keadilan adalah kesamaan kesempatan — bukan kesamaan hasil.' },
+        { title: 'Tentang Kemandirian', desc: 'Kedaulatan digital = keamanan nasional. Data rakyat harus dimiliki rakyat.' },
+        { title: 'Tentang Kebersamaan', desc: 'Gotong royong bukan warisan masa lalu — ia adalah model masa depan.' },
+        { title: 'Tentang Kelestarian', desc: 'Generasi mendatang punya hak atas sumber daya yang kita warisi.' },
+        { title: 'Tentang Peradaban', desc: 'Indonesia punya sesuatu yang sangat berharga untuk ditawarkan kepada dunia.' },
+        { title: 'Tentang Masa Depan', desc: 'Kita tidak menunggu perubahan — kita membangunnya, mulai hari ini.' },
+      ],
+    },
+    {
+      type: 'cards',
+      title: 'Komitmen Kami',
+      items: [
+        { title: 'Untuk Anggota', desc: 'Akses adil ke pasar, modal, teknologi, dan pendidikan. SHU yang didistribusikan secara transparan.' },
+        { title: 'Untuk Masyarakat', desc: 'Membangun ekosistem yang mengangkat komunitas sekitar — bukan mengeksploitasinya.' },
+        { title: 'Untuk Bangsa', desc: 'Mengurangi kesenjangan, memperkuat kedaulatan ekonomi, dan memajukan desa-desa Indonesia.' },
+        { title: 'Untuk Peradaban', desc: 'Membuktikan bahwa model ke-3 — kedaulatan koperatif — bisa bekerja pada skala global.' },
+      ],
+    },
+    {
+      type: 'list',
+      title: 'Yang Kami Tolak',
+      items: [
+        { title: 'Eksploitasi Rakyat', desc: 'Segala bentuk sistem yang mengambil keuntungan dari ketidakberdayaan rakyat.' },
+        { title: 'Monopoli & Oligarki', desc: 'Konsentrasi kekuatan ekonomi di tangan segelintir pihak.' },
+        { title: 'Korupsi & Opasitas', desc: 'Setiap bentuk ketidaktransparanan yang merugikan anggota dan masyarakat.' },
+        { title: 'Ketergantungan Asing', desc: 'Ketergantungan berlebihan pada modal, teknologi, dan kebijakan asing.' },
+        { title: 'Digital Divide', desc: 'Pengecualian rakyat dari manfaat revolusi digital.' },
+        { title: 'Inertia & Keluhan Tanpa Aksi', desc: 'Mengeluh tanpa membangun alternatif adalah pengkhianatan terhadap rakyat.' },
+      ],
+    },
+    {
+      type: 'text',
+      content: 'Ditandatangani oleh 17 Pendiri KNBMP pada 21 Maret 2026 di Indonesia.',
+    },
+    {
+      type: 'stats',
+      statsItems: [
+        { value: '10M', label: 'Anggota Target' },
+        { value: '83.763', label: 'Desa' },
+        { value: 'Rp2.000T', label: 'Target Transaksi' },
+      ],
+    },
+  ],
+}
+
+function PillarDetailPage07() {
+  return <SpecialDocumentPage data={pga07Data} />
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PGA-08: Arsitektur Konseptual Makro (Whitepaper)
+// ═══════════════════════════════════════════════════════════════
+const pga08Data: SDData = {
+  pgaCode: 'PGA-08',
+  title: 'Arsitektur Konseptual Makro',
+  subtitle: 'Whitepaper — Concept Paper',
+  badge: 'WHITEPAPER — Arsitektur Organisasi',
+  badgeType: 'info',
+  footerLabel: 'PGA-08 · 8/72 · ◆ Identity & Civilization',
+  footerSub: 'Whitepaper — Concept Paper',
+  sections: [
+    {
+      type: 'stats',
+      statsItems: [
+        { value: 'KSU', label: 'Legal Entity' },
+        { value: 'ISO 27001', label: 'Security Standard' },
+        { value: 'OJK', label: 'Regulatory Oversight' },
+        { value: '17', label: 'Founders' },
+      ],
+    },
+    {
+      type: 'text',
+      emphasis: true,
+      content: 'Dual-Entity Model: JE-P3 (Jakarta Enterprise — Strategy & Policy) + KNMP (Koperasi Nusantara Mandiri Prima — Operations). Keduanya terhubung melalui Joint Strategic Committee yang memastikan sinergi strategis.',
+    },
+    {
+      type: 'cards',
+      title: '4 Inovasi Fundamental',
+      items: [
+        { title: 'Pentagon Kedaulatan', subtitle: '5 KPA × 20%', desc: '5 Kelompok Perwakilan Anggota yang mewakili seluruh spektrum ekonomi — masing-masing 20% suara, total 100% kepemilikan rakyat.', metric: 'Governance Revolution' },
+        { title: '7-Tier Membership', subtitle: 'Petani GRATIS → KORNAS Rp200M', desc: 'Keanggotaan bertingkat dari gratis untuk petani/nelayan hingga Rp200M untuk korporasi nasional — inklusif namun bertanggung jawab.', metric: 'Inclusive by Design' },
+        { title: '6 Unit Usaha Terintegrasi', subtitle: 'Ekosistem Lengkap', desc: 'Marketplace, Logistik, Pembayaran, Asuransi, Pendidikan, dan Investasi — terintegrasi dalam satu platform.', metric: 'Full Ecosystem' },
+        { title: 'Doktrin Invisible Dues', subtitle: 'Pendapatan Otomatis', desc: 'Pendapatan dari transaksi yang otomatis mengalir ke seluruh ekosistem — tanpa membebani anggota dengan iuran langsung.', metric: 'Self-Sustaining' },
+      ],
+    },
+    {
+      type: 'table',
+      title: 'KPA Table',
+      headers: ['KPA', 'Segmen', 'Bobot', 'Iuran'],
+      rows: [
+        ['KPA-1', 'Produsen & Pekerja', '20%', 'Rp100.000'],
+        ['KPA-2', 'Konsumen Umum', '20%', 'Rp100.000'],
+        ['KPA-3', 'Abdi Negara', '20%', 'Rp250.000'],
+        ['KPA-4', 'Entitas Bisnis', '20%', 'Rp5.000.000'],
+        ['KPA-5', 'Pemodal & Investor', '20%', 'Rp50M — Rp250M'],
+      ],
+    },
+    {
+      type: 'table',
+      title: '7-Tier Membership',
+      headers: ['Tier', 'Segmen', 'Iuran', 'Hak Suara'],
+      rows: [
+        ['T1', 'Petani', 'GRATIS', '1 suara'],
+        ['T2', 'Nelayan', 'GRATIS', '1 suara'],
+        ['T3', 'UMKM', 'Rp50.000', '1 suara'],
+        ['T4', 'Profesional', 'Rp200.000', '1 suara'],
+        ['T5', 'KOPERASI', 'Rp1.000.000', '1 suara'],
+        ['T6', 'KORWIL', 'Rp50.000.000', '1 suara'],
+        ['T7', 'KORNAS', 'Rp200.000.000', '1 suara'],
+      ],
+    },
+    {
+      type: 'timeline',
+      title: '3 Fase Implementasi',
+      items: [
+        { year: 'FONDASI (2026-2030)', title: '1M Anggota, 10K Desa', desc: 'Membangun fondasi teknologi, merekrut anggota pertama, membuktikan model di skala kecil.' },
+        { year: 'SKALA (2030-2035)', title: '5M Anggota, 50K Desa, ASEAN', desc: 'Ekspansi regional, integrasi lintas sektor, masuk pasar ASEAN.' },
+        { year: 'MATURASI (2035-2050)', title: '10M Anggota, 83.763 Desa', desc: 'Setara Mondragon — menjadi kekuatan ekonomi global yang berdaulat.' },
+      ],
+    },
+    {
+      type: 'list',
+      title: '6 Sumber Pendapatan',
+      items: [
+        { title: 'Iuran Anggota', desc: 'Kontribusi bertingkat dari 7 tier keanggotaan — inklusif dan berkeadilan.' },
+        { title: 'JP3 Pay', desc: 'Transaction fees dari pembayaran digital yang mengalir ke ekosistem.' },
+        { title: 'Marketplace', desc: 'Komisi dari transaksi marketplace B2B dan B2C.' },
+        { title: 'Logistik', desc: 'Service fees dari jaringan logistik terintegrasi.' },
+        { title: 'Academy', desc: 'Pendapatan dari program pendidikan dan pelatihan anggota.' },
+        { title: 'Investasi & Dana', desc: 'Pengelolaan dana anggota dan investasi strategis jangka panjang.' },
+      ],
+    },
+    {
+      type: 'footer-quote',
+      text: 'Ekonomi yang berdaulat dimulai dari langkah Anda.',
+    },
+  ],
+}
+
+function PillarDetailPage08() {
+  return <SpecialDocumentPage data={pga08Data} />
+}
+
 function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }) {
   const badgeLabel = pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -2980,6 +3770,18 @@ function renderPage(page: BookPage, index: number, total: number) {
           ? <PillarDetailPage01 key={`pga01`} />
           : page.pillar.id === 2
           ? <PillarDetailPage02 key={`pga02`} />
+          : page.pillar.id === 3
+          ? <PillarDetailPage03 key={`pga03`} />
+          : page.pillar.id === 4
+          ? <PillarDetailPage04 key={`pga04`} />
+          : page.pillar.id === 5
+          ? <PillarDetailPage05 key={`pga05`} />
+          : page.pillar.id === 6
+          ? <PillarDetailPage06 key={`pga06`} />
+          : page.pillar.id === 7
+          ? <PillarDetailPage07 key={`pga07`} />
+          : page.pillar.id === 8
+          ? <PillarDetailPage08 key={`pga08`} />
           : page.pillar.id === 13
           ? <PillarDetailPage13 key={`pga13`} domain={page.domain} />
           : <PillarDetailPage key={`p-${page.pillar.id}`} pillar={page.pillar} domain={page.domain} />
