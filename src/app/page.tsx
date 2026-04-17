@@ -52,7 +52,7 @@ const letterReveal = {
 // ═══════════════════════════════════════════════════════════════
 type BookPage =
   | { type: 'cover' }
-  | { type: 'dedication' }
+  | { type: 'kata-pengantar'; part: number }
   | { type: 'toc' }
   | { type: 'domain-opener'; data: Domain }
   | { type: 'pillar'; data: { pillar: Pillar; domain: Domain } }
@@ -398,78 +398,467 @@ function CoverPage() {
   )
 }
 
-function DedicationPage() {
+// ═══════════════════════════════════════════════════════════════
+// INK-BLEED ANIMATION (emotional text reveal)
+// ═══════════════════════════════════════════════════════════════
+const inkBleed = {
+  hidden: { opacity: 0, filter: 'blur(8px)' },
+  visible: (i: number = 0) => ({
+    opacity: 1, filter: 'blur(0px)',
+    transition: { delay: i * 0.15, duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }
+  })
+}
+
+const emotionalReveal = {
+  hidden: { opacity: 0, y: 12, scale: 0.98 },
+  visible: (i: number = 0) => ({
+    opacity: 1, y: 0, scale: 1,
+    transition: { delay: i * 0.2, duration: 1.0, ease: [0.22, 1, 0.36, 1] }
+  })
+}
+
+const glowPulse = {
+  hidden: { opacity: 0, textShadow: '0 0 0px transparent' },
+  visible: (i: number = 0) => ({
+    opacity: 1,
+    textShadow: [`0 0 0px transparent`, `0 0 20px rgba(94,33,41,0.3)`, `0 0 0px transparent`],
+    transition: { delay: i * 0.2, duration: 2.5, ease: 'easeInOut' }
+  })
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EMOTIONAL GOLDEN QUOTE BLOCK
+// ═══════════════════════════════════════════════════════════════
+function EmotionalQuote({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
-      <BatikWatermark />
-      <motion.div
-        className="flex-1 flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-8 sm:py-12 relative z-10"
-        variants={staggerContainer} initial="hidden" animate="visible">
+    <motion.div
+      className={`relative my-4 sm:my-5 py-4 sm:py-5 px-5 sm:px-6 rounded-sm ${className}`}
+      style={{
+        backgroundColor: 'rgba(94,33,41,0.04)',
+        borderLeft: `3px solid ${BURGUNDY}40`,
+      }}
+      variants={emotionalReveal}
+      custom={3}>
+      {/* Soft inner glow */}
+      <div className="absolute inset-0 rounded-sm pointer-events-none"
+        style={{ boxShadow: `inset 0 0 30px rgba(94,33,41,0.03)` }} />
+      <p className="font-[family-name:var(--font-serif)] text-[14px] sm:text-[17px] leading-[1.9] italic relative z-10"
+        style={{ color: '#3E2723' }}>
+        {children}
+      </p>
+    </motion.div>
+  )
+}
 
-        <motion.p className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-[3px] uppercase mb-6"
-          style={{ color: GOLD }} variants={fadeSlideUp} custom={0}>
-          Kata Pengantar
-        </motion.p>
-        <motion.div className="h-px w-16 mb-8" style={{ backgroundColor: `${GOLD}30` }}
-          variants={fadeSlideUp} custom={1} />
+// ═══════════════════════════════════════════════════════════════
+// KATA PENGANTAR — 4 Emotional Parts
+// ═══════════════════════════════════════════════════════════════
+const KP_PARTS = 4
 
-        <div className="max-w-xl mx-auto space-y-5 sm:space-y-6">
-          <motion.p className="drop-cap font-[family-name:var(--font-serif)] text-[15px] sm:text-[19px] leading-[1.85]"
-            style={{ color: '#3E2723' }} variants={fadeSlideUp} custom={2}>
-            <span className="font-semibold tracking-wide" style={{ color: '#999', letterSpacing: '0.03em' }}>VOC</span> berdiri tahun 1602 dengan satu tujuan: mengeksploitasi
-            kekayaan Nusantara. Selama 347 tahun,{' '}
-            <span style={{ color: '#999' }}>Hindia Belanda</span> menghisap
-            rempah, emas, dan nyawa dari tanah yang subur — meninggalkan jejak luka yang masih
-            terasa hingga kini.
-          </motion.p>
+function KataPengantarPage({ part }: { part: number }) {
+  const pageRef = useRef<HTMLDivElement>(null)
 
-          <motion.p className="font-[family-name:var(--font-serif)] text-[15px] sm:text-[19px] leading-[1.85]"
-            style={{ color: '#3E2723' }} variants={fadeSlideUp} custom={3}>
-            Namun dari rahim penderitaan itu, lahir sebuah tekad yang tak bisa dipatahkan.{' '}
-            <motion.span className="font-semibold inline-block" style={{ color: BURGUNDY }}
-              initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}>KNBMP</motion.span> —{' '}
-            <span className="font-semibold" style={{ color: BURGUNDY }}>Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih</span>{' '}
-            — hadir sebagai{' '}
-            <span style={{ color: BURGUNDY }}>antitesis absolut</span> dari seluruh
-            sistem yang pernah menindas rakyat.
-          </motion.p>
+  const serif = 'font-[family-name:var(--font-serif)]'
+  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const txtBase = `${serif} text-[14px] sm:text-[17px] leading-[1.9]`
+  const txtSm = `${serif} text-[12px] sm:text-[15px] leading-[1.85]`
 
-          <motion.p className="font-[family-name:var(--font-serif)] text-[15px] sm:text-[19px] leading-[1.85]"
-            style={{ color: '#3E2723' }} variants={fadeSlideUp} custom={4}>
-            Buku ini bukan sekadar manual korporasi. Ia adalah{' '}
-            <span className="font-semibold" style={{ color: GOLD }}>72 anak tangga</span>{' '}
-            menuju kemerdekaan ekonomi yang sesungguhnya. Setiap domain mewakili
-            satu fungsi vital, setiap pilar menguatkan yang lain — sebuah arsitektur
-            peradaban yang dirancang untuk bertahan{' '}
-            <span className="font-semibold" style={{ color: GOLD }}>100 tahun ke depan</span>.
-          </motion.p>
+  const header = (
+    <motion.div className="flex items-center gap-3 mb-2" variants={fadeSlideUp} custom={0}>
+      <motion.p className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[3px] uppercase`}
+        style={{ color: GOLD }}>
+        Kata Pengantar
+      </motion.p>
+      <div className="flex gap-1">
+        {[1, 2, 3, 4].map(n => (
+          <motion.div key={n} className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: n === part ? GOLD : `${GOLD}30` }}
+            initial={{ scale: 0 }} animate={{ scale: 1 }}
+            transition={{ delay: 0.3 + n * 0.08 }} />
+        ))}
+      </div>
+    </motion.div>
+  )
+
+  const divider = (
+    <motion.div variants={fadeSlideUp} custom={1}>
+      <GoldDivider className="my-3" color={BURGUNDY} />
+    </motion.div>
+  )
+
+  const pageFooter = (
+    <motion.div className="flex-shrink-0 text-center pb-3 pt-2"
+      variants={fadeSlideUp} custom={20}>
+      <p className={`${bodyFont} text-[8px] tracking-[2px] uppercase`}
+        style={{ color: '#B0A898' }}>
+        Bagian {part} dari {KP_PARTS} &middot; Di Hadapan Sejarah
+      </p>
+    </motion.div>
+  )
+
+  // ═══ PART 1: Bismillah & Air Mata ═══
+  if (part === 1) {
+    return (
+      <div ref={pageRef} className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20" style={{ backgroundColor: BURGUNDY }} />
+        <BatikWatermark />
+        {/* Large watermark */}
+        <div className="absolute top-12 right-4 sm:top-16 sm:right-8 pointer-events-none select-none z-0"
+          style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(100px, 22vw, 220px)', color: `${BURGUNDY}06`, lineHeight: 1 }}>
+          بسم
         </div>
 
-        <motion.div className="max-w-xl mx-auto mt-8 w-full" variants={fadeSlideUp} custom={5}>
-          <div className="border rounded-lg p-4 sm:p-5"
-            style={{ borderColor: `${GOLD}25`, backgroundColor: PARCHMENT }}>
-            <div className="space-y-2">
-              {[
-                { label: 'Klasifikasi', value: 'Absolute Source of Truth' },
-                { label: 'Horizon', value: '100 Tahun (2025–2125)' },
-                { label: 'Cakupan', value: '83.763 Desa, 34 Provinsi' },
-                { label: 'Populasi Dampak', value: '275 Juta Jiwa' },
-              ].map((item, i) => (
-                <motion.div key={i} className="flex justify-between items-baseline"
-                  variants={fadeSlideUp} custom={6 + i}>
-                  <span className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs font-semibold uppercase tracking-wider"
-                    style={{ color: '#8B7D6B' }}>{item.label}</span>
-                  <span className="font-[family-name:var(--font-body)] text-xs sm:text-sm"
-                    style={{ color: '#3E2723' }}>{item.value}</span>
-                </motion.div>
-              ))}
-            </div>
+        <motion.div
+          className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-16 py-6 sm:py-10 relative z-10"
+          variants={staggerContainer} initial="hidden" animate="visible">
+
+          {header}
+          {divider}
+
+          {/* Bismillah — animated reveal */}
+          <motion.p className={`${serif} text-lg sm:text-xl text-center my-4 sm:my-6`}
+            style={{ color: BURGUNDY, direction: 'rtl', fontFamily: "'Amiri', serif" }}
+            variants={glowPulse} custom={2}>
+            بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم
+          </motion.p>
+
+          <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+            {/* Segala puji */}
+            <motion.p className={txtSm}
+              style={{ color: '#6B5E50' }}
+              variants={inkBleed} custom={3}>
+              Segala puji bagi Tuhan Semesta Alam, Pemilik mutlak atas segala kedaulatan, yang mengajarkan manusia apa yang tidak diketahuinya.
+            </motion.p>
+
+            {/* Core statement */}
+            <motion.p className={`${txtBase} drop-cap`}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={4}>
+              Buku yang Anda pegang saat ini, atau layar yang sedang Anda baca,{' '}
+              <span className="font-semibold" style={{ color: BURGUNDY }}>bukanlah sekadar kumpulan teks korporasi</span>. Ini bukanlah dokumen bisnis yang diracik oleh firma konsultan dengan bayaran jutaan dolar demi menyenangkan dewan direksi atau memaksimalkan dividen segelintir pemegang saham.
+            </motion.p>
+
+            <motion.p className={txtSm}
+              style={{ color: '#6B5E50' }}
+              variants={fadeSlideUp} custom={5}>
+              Jika Anda mencari jargon-jargon kosong tentang &ldquo;sinergi korporat&rdquo;, &ldquo;efisiensi modal kapitalis&rdquo;, atau retorika pasar bebas yang menindas,{' '}
+              <span className="font-semibold" style={{ color: '#999' }}>tutuplah dokumen ini sekarang</span>. Anda berada di tempat yang salah.
+            </motion.p>
+
+            {/* The killer line */}
+            <EmotionalQuote custom={6}>
+              Dokumen ini ditulis dengan{' '}
+              <span className="font-semibold" style={{ color: BURGUNDY }}>air mata, keringat, doa, dan luka sejarah bangsa kita</span>.
+            </EmotionalQuote>
+
+            {/* Economic suffering */}
+            <motion.p className={txtSm}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={7}>
+              Selama puluhan tahun, ekonomi kita sering kali mengajarkan bahwa agar seseorang bisa menang, orang lain harus kalah. Agar yang di atas bisa makmur, yang di bawah harus rela diinjak. Praktik tersebut melahirkan deretan gedung pencakar langit di ibu kota, namun menyisakan{' '}
+              <span className="font-semibold" style={{ color: '#999' }}>kegetiran di lumbung-lumbung padi di desa</span>. Koperasi yang seharusnya menjadi soko guru, sering kali hanya menjadi papan nama tanpa ruh, mati ditelan birokrasi atau dikerdilkan oleh sistem pasar yang buas.
+            </motion.p>
+
+            <motion.p className={txtSm}
+              style={{ color: '#6B5E50' }}
+              variants={fadeSlideUp} custom={8}>
+              Namun, luka ini sebenarnya berakar jauh lebih dalam dari sekadar kebijakan modern&hellip;
+            </motion.p>
+
+            {/* Transition arrow */}
+            <motion.div className="text-center pt-2"
+              variants={fadeSlideUp} custom={9}>
+              <motion.p className={`${bodyFont} text-[10px] tracking-[2px] uppercase`}
+                style={{ color: `${GOLD}80` }}
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}>
+                Empat abad yang lalu&hellip;
+              </motion.p>
+            </motion.div>
           </div>
+
+          {pageFooter}
         </motion.div>
-      </motion.div>
-    </div>
-  )
+      </div>
+    )
+  }
+
+  // ═══ PART 2: Luka 400 Tahun VOC ═══
+  if (part === 2) {
+    return (
+      <div ref={pageRef} className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20" style={{ backgroundColor: '#999' }} />
+        <BatikWatermark />
+        {/* VOC watermark */}
+        <div className="absolute bottom-8 right-4 sm:bottom-12 sm:right-8 pointer-events-none select-none z-0"
+          style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(80px, 18vw, 180px)', color: `${GOLD}05`, lineHeight: 1, fontWeight: 700 }}>
+          1602
+        </div>
+
+        <motion.div
+          className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-16 py-6 sm:py-10 relative z-10"
+          variants={staggerContainer} initial="hidden" animate="visible">
+
+          {header}
+          {divider}
+
+          <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+            {/* VOC arrives */}
+            <motion.p className={`${txtBase} drop-cap`}
+              style={{ color: '#3E2723' }}
+              variants={inkBleed} custom={2}>
+              <span className="font-semibold tracking-wide" style={{ color: '#999', letterSpacing: '0.03em' }}>Empat abad yang lalu</span>, sebuah mesin raksasa berwujud korporasi datang ke tanah Nusantara.{' '}
+              <span className="font-semibold tracking-wide" style={{ color: '#999', letterSpacing: '0.03em' }}>Vereenigde Oostindische Compagnie (VOC)</span>{' '}
+              bukanlah sekadar entitas dagang biasa; ia adalah korporasi multinasional pertama di dunia yang menggunakan instrumen modal, saham, dan monopoli sebagai senjata pemusnah massal kedaulatan kita.
+            </motion.p>
+
+            <motion.p className={txtSm}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={3}>
+              Mereka datang mencari rempah, namun yang mereka wariskan adalah{' '}
+              <span className="font-semibold" style={{ color: '#999' }}>darah, air mata, dan mentalitas keterjajahan</span>. VOC membuktikan kepada sejarah betapa mengerikannya instrumen perdagangan ketika ia dicabut dari akar moral, keadilan, dan kemanusiaan. Melalui taktik{' '}
+              <span className="italic">devide et impera</span> (pecah belah dan kuasai), mereka memonopoli hasil bumi, memiskinkan leluhur kita di lumbungnya sendiri, dan memusatkan seluruh kekayaan nusantara ke satu titik kekuasaan di Eropa.
+            </motion.p>
+
+            {/* The devastating truth */}
+            <EmotionalQuote custom={4}>
+              Penjajahan sejatinya{' '}
+              <span className="font-semibold" style={{ color: '#999' }}>tidak pernah dimulai oleh peluru atau meriam militer</span>; ia dimulai oleh{' '}
+              <span className="font-semibold" style={{ color: BURGUNDY }}>manipulasi perdagangan korporasi</span>.
+            </EmotionalQuote>
+
+            {/* The pivot */}
+            <motion.div className="my-5" variants={emotionalReveal} custom={5}>
+              <GoldDivider className="my-4" />
+              <motion.p className={`${serif} text-center text-lg sm:text-xl font-semibold`}
+                style={{ color: BURGUNDY }}
+                variants={glowPulse} custom={6}>
+                Hari ini, di tahun 2026, sejarah itu kita putar balik.
+              </motion.p>
+              <GoldDivider className="my-4" />
+            </motion.div>
+
+            {/* KNBMP introduction */}
+            <motion.p className={txtBase}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={7}>
+              Jika VOC adalah instrumen segelintir elite untuk menjajah nusantara melalui korporasi, maka{' '}
+              <motion.span className="font-bold inline-block" style={{ color: BURGUNDY }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.2, duration: 0.6, type: 'spring' }}>
+                KNBMP
+              </motion.span>{' '}
+              — <span className="font-semibold" style={{ color: BURGUNDY }}>Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih</span> — lahir sebagai instrumen Nusantara untuk membebaskan dirinya sendiri melalui kekuatan yang sama. Kita mengambil kembali senjata korporasi itu, membersihkannya, dan memberinya ruh baru. Kita membangun sebuah Korporasi raksasa, namun dengan jiwa dan jantung sebuah Koperasi.
+            </motion.p>
+
+            {/* Transition */}
+            <motion.div className="text-center pt-2"
+              variants={fadeSlideUp} custom={8}>
+              <motion.p className={`${bodyFont} text-[10px] tracking-[2px] uppercase`}
+                style={{ color: `${GOLD}80` }}
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}>
+                Antitesis Absolut&hellip;
+              </motion.p>
+            </motion.div>
+          </div>
+
+          {pageFooter}
+        </motion.div>
+      </div>
+    )
+  }
+
+  // ═══ PART 3: Antitesis Absolut — 3 Pilar Perbandingan ═══
+  if (part === 3) {
+    return (
+      <div ref={pageRef} className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20"
+          style={{ background: `linear-gradient(180deg, ${BURGUNDY}, ${GOLD})` }} />
+        <BatikWatermark />
+
+        <motion.div
+          className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-16 py-6 sm:py-10 relative z-10"
+          variants={staggerContainer} initial="hidden" animate="visible">
+
+          {header}
+          {divider}
+
+          <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+            {/* Antitesis title */}
+            <motion.p className={`${serif} text-lg sm:text-xl font-semibold`}
+              style={{ color: BURGUNDY }}
+              variants={glowPulse} custom={2}>
+              KNBMP adalah <span className="italic">Antitesis Absolut</span> dari VOC dan segala bentuk neokolonialisme ekonomi modern:
+            </motion.p>
+
+            {/* Comparison 1 */}
+            <motion.div className="relative p-3 sm:p-4 rounded-sm"
+              style={{ backgroundColor: 'rgba(94,33,41,0.03)', borderLeft: `3px solid ${BURGUNDY}30` }}
+              variants={emotionalReveal} custom={3}>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-1.5`}
+                style={{ color: BURGUNDY }}>
+                Tentang Sentralisasi
+              </p>
+              <p className={txtSm}>
+                <span style={{ color: '#999' }}>Jika VOC memusatkan kekayaan ke tangan segelintir <em>shareholder</em> di negeri jauh</span>,{' '}
+                <span style={{ color: BURGUNDY }}>KNBMP mendistribusikan kemakmuran ke <strong>83.763 desa</strong> di seluruh Nusantara</span>.
+              </p>
+            </motion.div>
+
+            {/* Comparison 2 */}
+            <motion.div className="relative p-3 sm:p-4 rounded-sm"
+              style={{ backgroundColor: 'rgba(94,33,41,0.03)', borderLeft: `3px solid ${BURGUNDY}30` }}
+              variants={emotionalReveal} custom={4}>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-1.5`}
+                style={{ color: BURGUNDY }}>
+                Tentang Kedaulatan
+              </p>
+              <p className={txtSm}>
+                <span style={{ color: '#999' }}>Jika VOC merampas hak petani atas tanah dan hasil buminya</span>,{' '}
+                <span style={{ color: BURGUNDY }}>KNBMP memberikan <strong>16 Hak Anggota</strong> — sebuah arsitektur yang memastikan setiap petani, nelayan, dan rakyat kecil memiliki &ldquo;saham&rdquo; mutlak atas keringatnya sendiri</span>.
+              </p>
+            </motion.div>
+
+            {/* Comparison 3 */}
+            <motion.div className="relative p-3 sm:p-4 rounded-sm"
+              style={{ backgroundColor: 'rgba(94,33,41,0.03)', borderLeft: `3px solid ${BURGUNDY}30` }}
+              variants={emotionalReveal} custom={5}>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold tracking-wider uppercase mb-1.5`}
+                style={{ color: BURGUNDY }}>
+                Tentang Persatuan
+              </p>
+              <p className={txtSm}>
+                <span style={{ color: '#999' }}>Jika VOC menggunakan taktik <em>devide et impera</em> untuk menghancurkan</span>,{' '}
+                <span style={{ color: BURGUNDY }}>KNBMP menggunakan arsitektur <strong>multipihak</strong> (Koperasi Korporasi Multipihak) sebagai Digital Operating System untuk menyatukan, memberdayakan, dan mengangkat derajat manusia dari desa hingga ke panggung global</span>.
+              </p>
+            </motion.div>
+
+            {/* The healing statement */}
+            <motion.div className="my-5" variants={emotionalReveal} custom={6}>
+              <GoldDivider className="my-4" color={BURGUNDY} />
+            </motion.div>
+
+            <EmotionalQuote custom={7}>
+              Kita tidak sedang bernostalgia dalam luka, dan kita sama sekali tidak sedang membalas dendam pada sejarah.{' '}
+              <span className="font-semibold" style={{ color: BURGUNDY }}>Kita sedang menyembuhkan luka peradaban</span>.
+            </EmotionalQuote>
+
+            {/* Transition */}
+            <motion.div className="text-center pt-2"
+              variants={fadeSlideUp} custom={8}>
+              <motion.p className={`${bodyFont} text-[10px] tracking-[2px] uppercase`}
+                style={{ color: `${GOLD}80` }}
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}>
+                Deklarasi Peradaban&hellip;
+              </motion.p>
+            </motion.div>
+          </div>
+
+          {pageFooter}
+        </motion.div>
+      </div>
+    )
+  }
+
+  // ═══ PART 4: Bahtera Peradaban — Closing ═══
+  if (part === 4) {
+    return (
+      <div ref={pageRef} className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 z-20"
+          style={{ background: `linear-gradient(180deg, ${GOLD}, ${BURGUNDY})` }} />
+        <BatikWatermark />
+        <GoldenParticles />
+        {/* Large watermark */}
+        <div className="absolute bottom-8 left-4 sm:bottom-12 sm:left-8 pointer-events-none select-none z-0"
+          style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(80px, 16vw, 160px)', color: `${GOLD}05`, lineHeight: 1 }}>
+          72
+        </div>
+
+        <motion.div
+          className="flex-1 overflow-y-auto px-6 sm:px-10 lg:px-16 py-6 sm:py-10 relative z-10"
+          variants={staggerContainer} initial="hidden" animate="visible">
+
+          {header}
+          {divider}
+
+          <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
+            {/* PGA-72 Architecture */}
+            <motion.p className={`${txtBase} drop-cap`}
+              style={{ color: '#3E2723' }}
+              variants={inkBleed} custom={2}>
+              Melalui <span className="font-bold" style={{ color: BURGUNDY }}>PGA-72 (Polymath Grand Architecture)</span> ini, kami meletakkan cetak biru peradaban baru. Sebuah arsitektur kelembagaan yang sangat canggih secara teknologi (berbasis Blockchain dan AI), namun berakar sangat dalam pada nilai ketuhanan dan gotong royong.
+            </motion.p>
+
+            {/* Declaration */}
+            <motion.p className={txtSm}
+              style={{ color: '#3E2723' }}
+              variants={fadeSlideUp} custom={3}>
+              Dokumen-dokumen dalam PGA-72 ini adalah{' '}
+              <span className="font-semibold" style={{ color: BURGUNDY }}>deklarasi peradaban</span> bahwa bangsa ini telah selesai menangisi masa lalunya. Kita tidak akan lagi menjadi bangsa kuli di antara bangsa-bangsa, dan kuli di antara bangsa sendiri.{' '}
+              <span className="font-semibold" style={{ color: GOLD }}>Mulai hari ini, perdagangan bukanlah alat untuk menindas, melainkan instrumen suci untuk memerdekakan</span>.
+            </motion.p>
+
+            {/* Generational promise — THE MOST EMOTIONAL PART */}
+            <motion.div className="my-5 p-4 sm:p-5 rounded-sm relative overflow-hidden"
+              style={{
+                backgroundColor: `linear-gradient(135deg, rgba(94,33,41,0.06), rgba(197,160,89,0.06))`,
+                border: `1px solid ${BURGUNDY}15`,
+              }}
+              variants={emotionalReveal} custom={4}>
+              <div className="absolute top-0 right-0 w-20 h-20 pointer-events-none"
+                style={{ background: `radial-gradient(circle at top right, ${GOLD}10, transparent)` }} />
+              <p className={`${serif} text-[14px] sm:text-[17px] leading-[1.9] italic relative z-10`}
+                style={{ color: '#3E2723' }}>
+                Kelak, ketika sejarah mencatat bagaimana Indonesia bertransformasi dari negara yang bergantung menjadi bangsa yang memimpin tatanan ekonomi dunia yang berkeadilan,{' '}
+                <span className="font-semibold" style={{ color: BURGUNDY }}>biarlah anak cucu kita melihat ke belakang</span> dan menemukan dokumen ini sebagai saksinya. Bahwa pada tahun 2026, ada sekelompok manusia yang berani menolak{' '}
+                <em>status quo</em>, mengubur mentalitas VOC selamanya, dan memutuskan untuk{' '}
+                <span className="font-semibold" style={{ color: GOLD }}>membangun bahtera peradaban</span>.
+              </p>
+            </motion.div>
+
+            {/* Final call — big and bold */}
+            <motion.div className="text-center my-6 sm:my-8" variants={emotionalReveal} custom={5}>
+              <motion.div className="mb-4">
+                <GoldDivider />
+              </motion.div>
+              <motion.p className={`${serif} text-xl sm:text-2xl md:text-3xl font-semibold leading-snug`}
+                style={{ color: BURGUNDY }}
+                variants={glowPulse} custom={6}>
+                Selamat datang di ekosistem
+                <br />ekonomi rakyat berdaulat.
+              </motion.p>
+              <motion.p className={`${serif} text-lg sm:text-xl mt-2`}
+                style={{ color: GOLD }}
+                variants={glowPulse} custom={7}>
+                Mari kita mulai bekerja.
+              </motion.p>
+              <motion.div className="mt-4">
+                <GoldDivider />
+              </motion.div>
+            </motion.div>
+
+            {/* Signature */}
+            <motion.div className="text-center mt-6"
+              variants={fadeSlideUp} custom={8}>
+              <p className={`${serif} text-sm font-semibold`} style={{ color: BURGUNDY }}>
+                The Founder&apos;s Office
+              </p>
+              <p className={`${serif} text-xs italic`} style={{ color: '#999' }}>
+                April 2026
+              </p>
+            </motion.div>
+          </div>
+
+          {pageFooter}
+        </motion.div>
+      </div>
+    )
+  }
+
+  return null
 }
 
 function TableOfContentsPage() {
@@ -871,7 +1260,7 @@ function BackCoverPage() {
 function renderPage(page: BookPage, index: number) {
   switch (page.type) {
     case 'cover': return <CoverPage key={`cover-${index}`} />
-    case 'dedication': return <DedicationPage key={`ded-${index}`} />
+    case 'kata-pengantar': return <KataPengantarPage key={`kp-${page.part}`} part={page.part} />
     case 'toc': return <TableOfContentsPage key={`toc-${index}`} />
     case 'domain-opener': return <DomainOpenerPage key={`do-${page.data.id}`} domain={page.data} />
     case 'pillar': return <PillarPage key={`p-${page.data.pillar.id}`} pillar={page.data.pillar} domain={page.data.domain} />
@@ -898,7 +1287,10 @@ export default function Home() {
 
   const bookPages = useMemo<BookPage[]>(() => [
     { type: 'cover' },
-    { type: 'dedication' },
+    { type: 'kata-pengantar' as const, part: 1 },
+    { type: 'kata-pengantar' as const, part: 2 },
+    { type: 'kata-pengantar' as const, part: 3 },
+    { type: 'kata-pengantar' as const, part: 4 },
     { type: 'toc' },
     ...domains.flatMap((domain) => [
       { type: 'domain-opener' as const, data: domain },
@@ -918,7 +1310,7 @@ export default function Home() {
     if (!page) return { domainColor: GOLD, domainName: '', pillarCode: '' }
     switch (page.type) {
       case 'cover': return { domainColor: GOLD, domainName: 'Sampul', pillarCode: '' }
-      case 'dedication': return { domainColor: BURGUNDY, domainName: 'Kata Pengantar', pillarCode: '' }
+      case 'kata-pengantar': return { domainColor: BURGUNDY, domainName: `Kata Pengantar (${page.part}/${KP_PARTS})`, pillarCode: '' }
       case 'toc': return { domainColor: BURGUNDY, domainName: 'Daftar Isi', pillarCode: '' }
       case 'domain-opener': return { domainColor: page.data.color, domainName: page.data.name, pillarCode: '' }
       case 'pillar': return { domainColor: page.data.domain.color, domainName: page.data.domain.name, pillarCode: page.data.pillar.code }

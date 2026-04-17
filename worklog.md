@@ -82,3 +82,29 @@ Stage Summary:
 - Daftar Isi matches uploaded document format EXACTLY — all 72 pillars with full names, English names, and descriptions
 - Luxury design elements: batik Kawung watermark, paper grain, page fold shadows, drop caps, chapter dividers, gold/burgundy ornamental lines
 - Lint passes cleanly, dev server compiles successfully
+
+---
+Task ID: 5
+Agent: Main
+Task: Implement emotional 4-part Kata Pengantar from uploaded text
+
+Work Log:
+- Read uploaded `kata-pengantar.txt` containing the full refined Kata Pengantar text (~108 lines)
+- Replaced single `DedicationPage` with 4-part `KataPengantarPage` component
+- Updated BookPage type: `{ type: 'dedication' }` → `{ type: 'kata-pengantar'; part: number }`
+- Updated bookPages array: 1 dedication page → 4 kata-pengantar pages (parts 1-4)
+- Updated renderPage switch, currentPageInfo for new page type
+- **Part 1 — Bismillah & Air Mata**: Arabic bismillah with glow animation, core statement, "Dokumen ini ditulis dengan air mata, keringat, doa, dan luka sejarah bangsa kita" emotional quote, economic suffering narrative
+- **Part 2 — Luka 400 Tahun VOC**: VOC history in grey, devastating quote, pivot line "Hari ini, di tahun 2026, sejarah itu kita putar balik" with glow, KNBMP spring animation
+- **Part 3 — Antitesis Absolut**: 3 comparison blocks (Sentralisasi, Kedaulatan, Persatuan), "Kita sedang menyembuhkan luka peradaban" quote
+- **Part 4 — Bahtera Peradaban**: PGA-72 architecture, declaration, generational promise, "Selamat datang di ekosistem ekonomi rakyat berdaulat" grand finale with glow, golden particles, Founder's Office signature
+- Added animation variants: inkBleed, emotionalReveal, glowPulse
+- Created EmotionalQuote component with burgundy border-left
+- VOC text in grey (#999), KNBMP in burgundy, gold highlights
+- Lint passes cleanly, dev server compiles successfully
+
+Stage Summary:
+- Kata Pengantar expanded from 1 page to 4 emotionally powerful pages using exact uploaded text
+- 3 new animation types: inkBleed, emotionalReveal, glowPulse
+- Semantic text coloring preserved throughout
+- Total pages now 90 (was 87)
