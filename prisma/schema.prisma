@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,16 +14,159 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
+  password  String?
+  role      String   @default("viewer")
+  avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  auditLogs AuditLog[]
+  pages     Page[]
 }
 
-model Post {
+model Page {
+  id          String   @id @default(cuid())
+  pageNumber  Int      @unique
+  pageType    String
+  title       String
+  subtitle    String?
+  content     String?
+  rawContent  String?
+  status      String   @default("draft")
+  publishedAt DateTime?
+  authorId    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author   User?     @relation(fields: [authorId], references: [id])
+  sections Section[]
+  media    Media[]
+}
+
+model Section {
+  id          String   @id @default(cuid())
+  pageId      String
+  sectionType String
+  title       String?
+  content     String?
+  rawContent  String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+}
+
+model Pilar {
+  id          String   @id @default(cuid())
+  pillarId    Int      @unique
+  code        String
+  name        String
+  nameEng     String?
+  description String?
+  domainId    Int
+  domainColor String?
+  badge       String?
+  vision      String?
+  status      String   @default("draft")
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  domain     Domain?  @relation(fields: [domainId], references: [id])
+  dimensions PilarDimension[]
+  principles PilarPrinciple[]
+  xrefs      PilarXref[]
+}
+
+model PilarDimension {
   id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
+  pilarId   String
+  label     String
+  value     String
+  sortOrder Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  pilar Pilar @relation(fields: [pilarId], references: [id], onDelete: Cascade)
+}
+
+model PilarPrinciple {
+  id        String   @id @default(cuid())
+  pilarId   String
+  content   String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pilar Pilar @relation(fields: [pilarId], references: [id], onDelete: Cascade)
+}
+
+model PilarXref {
+  id            String   @id @default(cuid())
+  pilarId       String
+  targetPilarId Int
+  createdAt     DateTime @default(now())
+
+  pilar Pilar @relation(fields: [pilarId], references: [id], onDelete: Cascade)
+}
+
+model Domain {
+  id           Int    @id
+  code         String
+  emoji        String
+  name         String
+  nameId       String
+  nameSubtitle String
+  pageRange    String
+  color        String
+  bgColor      String
+  borderColor  String
+  description  String
+  sortOrder    Int    @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  pilars Pilar[]
+}
+
+model Media {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  alt          String?
+  folder       String?
+  pageId       String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  page Page? @relation(fields: [pageId], references: [id], onDelete: SetNull)
+}
+
+model SiteSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String?
+  type        String   @default("string")
+  group       String?
+  label       String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entityType String
+  entityId  String?
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }

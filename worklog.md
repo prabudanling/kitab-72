@@ -161,3 +161,140 @@ Stage Summary:
 - 10 section types enable rich content rendering: stats grids, emotional quotes, card grids, timelines, tables, numbered lists, emphasis text, declamations, comparison tables, footer quotes
 - renderPage dispatcher updated with proper routing for pillar.id 1-8 and 13
 - File grew from 3264 to 4066 lines
+
+---
+Task ID: 2-3
+Agent: full-stack-developer
+Task: Build CMS Database Schema, Seed Data, API Routes
+
+Work Log:
+- Updated Prisma schema with 11 models: User, Page, Section, Pilar, PilarDimension, PilarPrinciple, PilarXref, Domain, Media, SiteSetting, AuditLog
+- Added proper relations: User→AuditLog, User→Pages, Page→Sections/Media, Pilar→Domain, Pilar→Dimensions/Principles/Xrefs
+- Installed bcryptjs for password hashing
+- Created seed.ts with: admin user (admin@knbmp.id / Admin123!), 9 domains, 72 pilars (with all dimensions, principles, xrefs from pillar-data.ts), 79 pages, 18 site settings
+- Added "seed" script to package.json
+- Created src/lib/auth.ts with: session management (cookie-based, in-memory store), password hashing, getAuthUser, requireAuth, logAudit, getClientIp helpers
+- Created 12 API route files:
+  1. /api/admin/auth — POST login/register, GET me, DELETE logout
+  2. /api/admin/pages — GET list (with filters/pagination), POST create
+  3. /api/admin/pages/[id] — GET detail, PATCH update, DELETE
+  4. /api/admin/pilars — GET list (with filters/pagination), POST create
+  5. /api/admin/pilars/[id] — GET detail, PATCH update, DELETE
+  6. /api/admin/pilars/[id]/dimensions — GET/POST/PATCH/DELETE dimensions
+  7. /api/admin/pilars/[id]/principles — GET/POST/PATCH/DELETE principles
+  8. /api/admin/domains — GET all domains with pilar stats
+  9. /api/admin/media — GET list, POST upload (multipart/form-data), DELETE
+  10. /api/admin/settings — GET key-value map, PATCH bulk update
+  11. /api/admin/audit — GET paginated audit logs
+  12. /api/flipbook — PUBLIC GET all published content (pages, domains, pilars, settings)
+- All admin routes require authentication (cookie-based session)
+- Zod validation on all input schemas
+- ESLint passes with 0 errors
+
+Stage Summary:
+- Database schema supports full CMS operations with 11 models
+- All 72 pilars seeded from pillar-data.ts with 9 domains
+- API routes ready for admin panel integration
+- Default admin: admin@knbmp.id / Admin123!
+- Session-based auth with httpOnly cookies
+- Public flipbook API returns all published content in single response
+
+---
+Task ID: 3b
+Agent: full-stack-developer
+Task: Verify seed data and API routes
+
+Work Log:
+- Verified seed.ts exists at prisma/seed.ts — correctly imports domains from pillar-data.ts
+- Verified Prisma schema (11 models) and package.json (bcryptjs, @types/bcryptjs installed)
+- Ran seed successfully — all 5 sections seeded without errors
+- Verified database counts: 1 user, 9 domains, 72 pilars, 186 dimensions, 126 principles, 325 xrefs, 79 pages, 18 settings
+- Confirmed admin user exists (admin@knbmp.id)
+- Confirmed PGA-01 ("Bintang Utara Peradaban") and PGA-72 ("Indeks Master & Kontrol Semesta") in database
+- Found bug: seed.ts used `create` (not `upsert`) for dimensions/principles/xrefs, causing duplicates on re-seed
+- Fixed seed.ts: added `deleteMany` for existing dimensions, principles, xrefs before each pilar's seed cycle (idempotent seeding)
+- Verified idempotency: ran seed twice, counts remain identical, 0 duplicate records
+- Tested all API endpoints:
+  - GET /api/flipbook — ✅ returns all pages with author info
+  - POST /api/admin/auth — ✅ login returns user object, sets session cookie
+  - GET /api/admin/pages — ✅ returns paginated pages with author and section counts
+  - GET /api/admin/pilars — ✅ returns paginated pilars with all fields
+  - GET /api/admin/domains — ✅ returns all 9 domains with descriptions
+  - GET /api/admin/settings — ✅ returns key-value settings map
+  - GET /api/admin/pilars/[id] — ✅ returns pilar with dimensions, principles, xrefs, domain
+  - GET /api/admin/pilars/[id]/dimensions — ✅ returns dimensions list
+  - GET /api/admin/pilars/[id]/principles — ✅ returns principles list
+  - GET /api/admin/audit — ✅ returns paginated audit logs (shows login entry)
+- Ran ESLint — 0 errors
+- Reset database (rm db/custom.db → db:push → seed) for clean verification
+
+Stage Summary:
+- Database seeded: 1 user, 9 domains, 72 pilars, 186 dimensions, 126 principles, 325 xrefs, 79 pages, 18 settings
+- All API routes verified working
+- Admin login: admin@knbmp.id / Admin123!
+- Seed is now idempotent — safe to re-run without data duplication
+- No lint errors
+
+---
+Task ID: 4
+Agent: full-stack-developer
+Task: Build Admin Panel CMS UI
+
+Work Log:
+- Created src/stores/admin-store.ts (Zustand store) with: user state, isAuthenticated, isPanelOpen, activeView, login/logout/checkSession/togglePanel actions, shared apiFetch helper
+- Created src/components/admin/AdminLogin.tsx: heritage-themed login form with email/password fields, show/hide password toggle, error display, animated lock icon
+- Created src/components/admin/AdminTrigger.tsx: floating shield button fixed bottom-right z-50, Framer Motion hover/tap animations, gold/burgundy theme
+- Created src/components/admin/AdminPanel.tsx (~1450 lines) — full CMS panel with:
+  - Dark sidebar navigation (7 items): Dashboard, Halaman, PGA-72, Domain, Media, Pengaturan, Log Audit
+  - Dashboard View: stats cards (pages, pilars, media, recent activity), recent audit log list
+  - Pages View: searchable/filterable table of all pages, status badges, click-to-edit dialog, quick publish/unpublish toggle
+  - PGA-72 View: domain grid (9 cards) → expandable pilar list → full pilar editor with tabs (Info, Dimensions, Principles), drag-and-drop reordering via @dnd-kit, add/delete dimensions and principles
+  - Domains View: grid of 9 domain cards with emoji, name, color, description, pilar stats (published/draft/review)
+  - Media View: upload via file input, grid with thumbnails, file size/type/date, hover-to-delete, empty state
+  - Settings View: grouped settings cards (general, SEO, theme), color picker for theme colors, text/textarea inputs, save button
+  - Audit Log View: filterable table (action type, entity type), pagination, color-coded action badges, user avatars
+  - Keyboard shortcut Ctrl+Shift+A to toggle panel
+  - Session check on panel open
+  - Semi-transparent backdrop with blur
+  - Slide-in animation from right via Framer Motion
+- Integrated into page.tsx: imported AdminTrigger and AdminPanel, rendered outside flipbook container before closing </main>
+- Fixed ESLint: renamed Lucide Image import to ImageIcon to avoid jsx-a11y/alt-text false positive, added Shield to imports
+- ESLint passes with 0 errors
+
+Stage Summary:
+- Full CMS admin panel with WordPress-like interface overlaying the flipbook
+- 7 views: Dashboard, Pages, PGA-72, Domains, Media, Settings, Audit Log
+- Drag & drop for dimensions and principles ordering via @dnd-kit
+- Heritage-themed design matching flipbook (burgundy, gold, parchment colors)
+- Accessible via floating shield button (bottom-right) or Ctrl+Shift+A keyboard shortcut
+- Login required before accessing any admin functionality
+- All admin panel components use 'use client' directive and proper TypeScript types
+- Indonesian language UI labels throughout
+
+
+---
+Task ID: 1-7
+Agent: Main Agent
+Task: Build complete CMS system — PRD document, database, API, admin panel, flipbook integration
+
+Work Log:
+- Created PRD document (38 pages, 10 chapters) at download/PRD-KNBMP-PGA72-CMS.docx
+- Updated Prisma schema with 11 models: User, Page, Section, Pilar, PilarDimension, PilarPrinciple, PilarXref, Domain, Media, SiteSetting, AuditLog
+- Created seed.ts: 1 admin user, 9 domains, 72 pilars, 79 pages, 18 site settings
+- Built 12 API route files for full CRUD (admin auth, pages, pilars, dimensions, principles, domains, media, settings, audit, public flipbook)
+- Created auth.ts utility with bcryptjs, cookie-based sessions, audit logging
+- Built Admin Panel CMS: Zustand store, Login overlay, Trigger button, full AdminPanel (Dashboard, Pages, PGA-72, Domains, Media, Settings, Audit Log views)
+- Integrated admin panel into page.tsx via AdminTrigger + AdminPanel components
+- Created useFlipbookData hook for database → flipbook integration with 30s auto-polling
+- Updated page.tsx to use live database data instead of static pillar-data.ts
+- Fixed renderPage function signature to accept domains parameter
+- Fixed TocPage component to accept domains prop
+
+Stage Summary:
+- PRD document: 38 pages, covers all aspects from upstream to downstream
+- Database: 72 pilars, 186 dimensions, 126 principles, 325 cross-references seeded
+- Admin login: admin@knbmp.id / Admin123!
+- Admin panel: accessible via floating shield button (bottom-right) or Ctrl+Shift+A
+- Flipbook: auto-updates every 30 seconds from database
+- API endpoint: GET /api/flipbook returns all published content (public)
+- All lint checks pass with 0 errors

@@ -3,7 +3,10 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import { ChevronLeft, ChevronRight, ChevronDown, Volume2, VolumeX } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { domains, type Domain, type Pillar } from '@/lib/pillar-data'
+import { type Domain, type Pillar } from '@/lib/pillar-data'
+import { useFlipbookData } from '@/hooks/use-flipbook-data'
+import { AdminTrigger } from '@/components/admin/AdminTrigger'
+import { AdminPanel } from '@/components/admin/AdminPanel'
 
 // ═══════════════════════════════════════════════════════════════
 // COLORS
@@ -1309,7 +1312,7 @@ function MukadimahPage({ part }: { part: number }) {
   return null
 }
 
-function TocPage({ tocPage }: { tocPage: number }) {
+function TocPage({ tocPage, domains }: { tocPage: number; domains: Domain[] }) {
   const domain = domains[tocPage]
   const scrollRef = useRef<HTMLDivElement>(null)
   if (!domain) return null
@@ -3756,7 +3759,7 @@ function BackCoverPage() {
 // ═══════════════════════════════════════════════════════════════
 // RENDER PAGE DISPATCHER
 // ═══════════════════════════════════════════════════════════════
-function renderPage(page: BookPage, index: number, total: number) {
+function renderPage(page: BookPage, index: number, total: number, domainsData: Domain[]) {
   const skipPageNumber = page.type === 'cover' || page.type === 'back-cover'
 
   const content = (() => {
@@ -3764,7 +3767,7 @@ function renderPage(page: BookPage, index: number, total: number) {
       case 'cover': return <CoverPage key={`cover-${index}`} />
       case 'kata-pengantar': return <KataPengantarPage key={`kp-${page.part}`} part={page.part} />
       case 'mukadimah': return <MukadimahPage key={`muk-${page.part}`} part={page.part} />
-      case 'toc-page': return <TocPage key={`toc-${page.tocPage}`} tocPage={page.tocPage} />
+      case 'toc-page': return <TocPage key={`toc-${page.tocPage}`} tocPage={page.tocPage} domains={domainsData} />
       case 'pillar-detail':
         return page.pillar.id === 1
           ? <PillarDetailPage01 key={`pga01`} />
@@ -3805,6 +3808,7 @@ export default function Home() {
   const [showHint, setShowHint] = useState(true)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [loading, setLoading] = useState(true)
+  const { domains: liveDomains, isLive, lastFetched, refresh: refreshFlipbookData } = useFlipbookData()
 
   const touchStartX = useRef(0)
   const touchStartY = useRef(0)
@@ -3820,12 +3824,12 @@ export default function Home() {
     { type: 'mukadimah' as const, part: 3 },
     { type: 'mukadimah' as const, part: 4 },
     { type: 'kata-pengantar' as const, part: 4 },
-    ...domains.map((_, i) => ({ type: 'toc-page' as const, tocPage: i })),
-    ...domains.flatMap(domain => domain.pillars.map(pillar => ({ type: 'pillar-detail' as const, pillar, domain }))),
+    ...liveDomains.map((_, i) => ({ type: 'toc-page' as const, tocPage: i })),
+    ...liveDomains.flatMap(domain => domain.pillars.map(pillar => ({ type: 'pillar-detail' as const, pillar, domain }))),
     { type: 'philosophy' as const },
     { type: 'covenant' as const },
     { type: 'back-cover' as const },
-  ], [])
+  ], [liveDomains])
 
   const totalPages = bookPages.length
 
@@ -3838,7 +3842,7 @@ export default function Home() {
       case 'cover': return { domainColor: GOLD, domainName: 'Sampul', pillarCode: '' }
       case 'kata-pengantar': return { domainColor: BURGUNDY, domainName: `Kata Pengantar (${page.part}/${KP_PARTS})`, pillarCode: '' }
       case 'mukadimah': return { domainColor: GOLD, domainName: `Mukadimah (${page.part}/${MUKADIMAH_PARTS})`, pillarCode: '' }
-      case 'toc-page': return { domainColor: BURGUNDY, domainName: `Daftar Isi (${page.tocPage + 1}/${domains.length})`, pillarCode: '' }
+      case 'toc-page': return { domainColor: BURGUNDY, domainName: `Daftar Isi (${page.tocPage + 1}/${liveDomains.length})`, pillarCode: '' }
       case 'pillar-detail': return { domainColor: page.domain.color, domainName: `${page.domain.emoji} ${page.pillar.code}: ${page.pillar.name}`, pillarCode: `Pilar ${page.pillar.id}/72` }
       case 'philosophy': return { domainColor: BURGUNDY, domainName: 'Filosofi', pillarCode: '' }
       case 'covenant': return { domainColor: BURGUNDY, domainName: 'Covenant', pillarCode: '' }
@@ -3933,7 +3937,7 @@ export default function Home() {
                   zIndex: getZIndex(index, currentLeaf, totalPages),
                   boxShadow: isFlipped ? '-5px 0 20px rgba(0,0,0,0.15)' : isCurrent ? '8px 0 30px rgba(0,0,0,0.25)' : '3px 0 10px rgba(0,0,0,0.15)',
                 }}>
-                {renderPage(page, index, totalPages)}
+                {renderPage(page, index, totalPages, liveDomains)}
               </div>
             )
           })}
@@ -3971,7 +3975,7 @@ export default function Home() {
                   zIndex: getZIndex(index, currentLeaf, totalPages),
                   boxShadow: isFlipped ? '-3px 0 10px rgba(0,0,0,0.15)' : isCurrent ? '4px 0 15px rgba(0,0,0,0.2)' : '2px 0 5px rgba(0,0,0,0.1)',
                 }}>
-                {renderPage(page, index, totalPages)}
+                {renderPage(page, index, totalPages, liveDomains)}
               </div>
             )
           })}
@@ -4061,6 +4065,10 @@ export default function Home() {
           ← → atau klik untuk berpindah halaman
         </p>
       </motion.div>
+
+      {/* ═══ Admin Panel ═══ */}
+      <AdminTrigger />
+      <AdminPanel />
     </main>
   )
 }
