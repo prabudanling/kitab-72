@@ -94,6 +94,50 @@
   --heritage-parchment: #FAF9F6;
   --heritage-cream: #F5F1EB;
   --heritage-warm-grey: #E0D8CC;
+  --heritage-deep-burgundy: #5E2129;
+}
+
+/* ═══ Drop Cap — Kata Pengantar ═══ */
+.drop-cap::first-letter {
+  float: left;
+  font-family: var(--font-heading), 'Playfair Display', Georgia, serif;
+  font-size: 3.4em;
+  line-height: 0.78;
+  padding-right: 0.45rem;
+  padding-top: 0.08rem;
+  color: var(--heritage-deep-burgundy);
+  font-weight: normal;
+}
+
+/* ═══ Page Content Reveal Animation ═══ */
+@keyframes pageContentReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-content-reveal {
+  animation: pageContentReveal 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ═══ Subtle Paper Grain Texture ═══ */
+.paper-grain {
+  background-image:
+    linear-gradient(135deg, rgba(139,125,107,0.015) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(139,125,107,0.015) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(139,125,107,0.015) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(139,125,107,0.015) 25%, transparent 25%);
+  background-size: 3px 3px;
+}
+
+/* ═══ Gutter / Page Fold Shadow ═══ */
+.page-fold-shadow {
+  box-shadow: inset -3px 0 8px rgba(0,0,0,0.04);
 }
 
 @layer base {
