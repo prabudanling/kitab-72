@@ -1466,7 +1466,7 @@ function TocPage({ tocPage }: { tocPage: number }) {
 // ═══════════════════════════════════════════════════════════════
 const DOMAIN1_COLOR = '#C4952A'
 
-const visionSentence = 'MEMBANGUN EKOSISTEM EKONOMI RAKYAT BERDAULAT YANG MENJADIKAN SETIAP MANUSIA BEBAS, MAKMUR, DAN BERDIGNITAS — DARI DESA KE DUNIA.'
+const visionSentence = 'MEMBANGUN EKOSISTEM EKONOMI RAKYAT BERDAULAT YANG MENJADIKAN SETIAP MANUSIA BEBAS, MAKMUR, DAN BERMARTABAT — DARI DESA KE DUNIA.'
 
 const visionParagraphs = [
   'KNBMP adalah gerakan membangun kembali kemandirian rakyat — bukan hanya dalam bicara, tetapi dalam kesaksian nyata.',
@@ -1827,8 +1827,8 @@ function PillarDetailPage01() {
               style={{ color: '#3E2723' }}
               variants={inkBleed}
               custom={17 + i}>
-              {para.split(/(ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERDIGNITAS)/gi).map((part, j) => {
-                const isHighlight = /ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERDIGNITAS/i.test(part)
+              {para.split(/(ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERMARTABAT)/gi).map((part, j) => {
+                const isHighlight = /ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERMARTABAT/i.test(part)
                 return isHighlight
                   ? <span key={j} className="font-semibold" style={{ color: BURGUNDY }}>{part}</span>
                   : <span key={j}>{part}</span>
@@ -1840,7 +1840,7 @@ function PillarDetailPage01() {
             style={{ color: BURGUNDY }}
             variants={glowPulse}
             custom={22}>
-            Inilah visi kami: Dunia di mana setiap manusia bebas, makmur, dan berdignitas.
+            Inilah visi kami: Dunia di mana setiap manusia bebas, makmur, dan bermartabat.
           </motion.p>
         </div>
 

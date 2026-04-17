@@ -27,3 +27,22 @@ Stage Summary:
 - Back cover redesigned with dark luxury aesthetic and AI-generated background
 - Page numbers active on all content pages
 - Scroll indicators active on pages with overflow content
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Fix typo "berdignitas" → "bermartabat" in PGA-01 Vision Statement
+
+Work Log:
+- Searched for "berdignitas" across project — found 3 instances in src/app/page.tsx
+- Line 1469: visionSentence constant — "BERDIGNITAS" → "BERMARTABAT"
+- Line 1830-1831: regex highlight pattern — updated to match "BERMARTABAT"
+- Line 1843: closing paragraph — "berdignitas" → "bermartabat"
+- "Bermartabat" is proper Indonesian for "dignified" (berdignitas is a misspelling)
+- Word count stays at 17 words (1:1 replacement), no other changes needed
+- Dev server compiled successfully, 0 remaining instances of "berdignitas"
+
+Stage Summary:
+- All 3 instances of "berdignitas" corrected to "bermartabat" in PGA-01
+- Vision Statement: "MEMBANGUN EKOSISTEM EKONOMI RAKYAT BERDAULAT YANG MENJADIKAN SETIAP MANUSIA BEBAS, MAKMUR, DAN BERMARTABAT — DARI DESA KE DUNIA."
+- Closing paragraph: "Inilah visi kami: Dunia di mana setiap manusia bebas, makmur, dan bermartabat."
