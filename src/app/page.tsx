@@ -1413,6 +1413,540 @@ function TocPage({ tocPage }: { tocPage: number }) {
   )
 }
 
+// ═══════════════════════════════════════════════════════════════
+// PGA-01 SPECIAL PAGE — Bintang Utara Peradaban / Vision Statement
+// ═══════════════════════════════════════════════════════════════
+const DOMAIN1_COLOR = '#C4952A'
+
+const visionSentence = 'MEMBANGUN EKOSISTEM EKONOMI RAKYAT BERDAULAT YANG MENJADIKAN SETIAP MANUSIA BEBAS, MAKMUR, DAN BERDIGNITAS — DARI DESA KE DUNIA.'
+
+const visionParagraphs = [
+  'KNBMP adalah gerakan membangun kembali kemandirian rakyat — bukan hanya dalam bicara, tetapi dalam kesaksian nyata.',
+  'Kami bermimpi dunia di mana setiap manusia — mulai dari petani di desa terpencil sampai wiraswasta di kota besar — memiliki akses yang sama ke pasar, modal, teknologi, dan kebijakan. Di mana keakurangan bukan lagi menentukan nasib, tetapi kemandirian dan kerja keras yang menentukan keberhasilan.',
+  'Di dunia ini, ekonomi berputar di sekitar manusia — bukan sebaliknya. Teknologi melayani rakyat — bukan menguasai mereka. Politik menjunjung kepentingan rakyat — bukan sekedar menggunakan mereka sebagai alat. Dan kekayaan didistribusikan dengan adil — bukan hanya menggumpal di tangan segelintir orang.',
+  'Kami bangun KNBMP sebagai bukti nyata: bahwa ekonomi rakyat bisa bersaing dengan korporasi mana pun. Bahwa kerjasama bisa melebihi kompetisi. Bahwa kesejahteraan bisa dicapai tanpa mengorbankan kemanusiaan. Dan bahwa satu ekosistem — dibangun dengan cinta, kerja keras, dan visi yang jelas — bisa mengubah jutaan kehidupan.',
+]
+
+const dimensions = [
+  { label: 'Ekonomi', desc: 'Material' },
+  { label: 'Politik', desc: 'Kedaulatan' },
+  { label: 'Sosial', desc: 'Kemanusiaan' },
+  { label: 'Spiritual', desc: 'Makna' },
+  { label: 'Geografis', desc: 'Cakupan' },
+  { label: 'Generasi', desc: 'Waktu' },
+]
+
+const impactCategories = [
+  {
+    title: 'Dampak Ekonomi',
+    icon: '◆',
+    metrics: [
+      '270M+ akses pasar digital',
+      '97M+ unbanked terlayani',
+      '64M+ UMKM naik kelas',
+      '83.763 desa terintegrasi',
+      'Rp25T+ total asset (2035)',
+    ],
+  },
+  {
+    title: 'Dampak Sosial',
+    icon: '◇',
+    metrics: [
+      '5M+ keluarga terintegrasi',
+      '10M+ pelatihan literasi digital',
+      '100K+ agen perubahan',
+      'Trust index naik 200%',
+      '10.000+ desa nutrition security',
+    ],
+  },
+  {
+    title: 'Dampak Anggota',
+    icon: '★',
+    subItems: [
+      { name: 'Dignitas', from: 'Ditinggalkan', to: 'Pebisnis & Pemimpin' },
+      { name: 'Capability', from: 'Tidak bisa', to: 'Bisa & Mandiri' },
+      { name: 'Opportunity', from: 'Terjebak', to: 'Bebas memilih' },
+      { name: 'Meaning', from: 'Survive', to: 'Bermakna & Memberi' },
+    ],
+  },
+  {
+    title: 'Dampak Bangsa',
+    icon: '▲',
+    metrics: [
+      'PDB naik $1,3T → $2T+',
+      'Gini ratio turun ke <0,25',
+      '38 provinsi terhubung',
+      'Model dunia — studi kasus global',
+    ],
+  },
+  {
+    title: 'Dampak Peradaban',
+    icon: '●',
+    metrics: [
+      'Case study global KNBMP',
+      'Wisdom Indonesia go global',
+      'Bukti sistem bisa diubah',
+      'Warisan MODEL & WISDOM',
+    ],
+  },
+  {
+    title: 'Dampak Spiritual',
+    icon: '✦',
+    metrics: [
+      'Setiap tindakan bermakna',
+      'Amanah sebagai budaya',
+      'Qalb memimpin — bukan akal',
+      'Warisan untuk cucu nyata',
+    ],
+  },
+]
+
+const sevenPrinciples = [
+  {
+    num: 1,
+    name: 'Rakyat Pertama, Selalu',
+    eng: 'Rakyat First',
+    desc: 'Dalam setiap keputusan, pertanyaan pertama adalah: "Apa yang terbaik untuk rakyat?" Bukan untuk profit, investor, atau manajemen.',
+    impl: 'Setiap produk/keputusan/kebijakan diuji: Apakah ini menguntungkan rakyat?',
+    redLine: 'Mengorbankan rakyat untuk profit',
+  },
+  {
+    num: 2,
+    name: 'Kedaulatan Ekonomi sebagai Hak Asasi',
+    eng: 'Sovereign Independence',
+    desc: 'KNBMP dibangun untuk BERDAULAT — tidak bergantung pada bank konvensional, investor asing, atau pemerintah. Kedaulatan bukan isolasionisme — tapi KEBEBASAN MEMILIH.',
+    impl: 'Diversifikasi sumber pembiayaan, bangun infrastruktur sendiri, kembangkan talenta lokal.',
+    redLine: 'Menggadaikan kedaulatan untuk pembiayaan murah',
+  },
+  {
+    num: 3,
+    name: 'Dari Desa — Bukan Dari Jakarta',
+    eng: 'Village First',
+    desc: 'Visi dimulai dari desa. Setiap model harus bekerja untuk petani di desa terpencil sebelum diskalakan ke kota.',
+    impl: 'Desa sebagai prioritas investasi, desain produk dari bawah, akses desa = prioritas.',
+    redLine: 'Jakarta-centric development',
+  },
+  {
+    num: 4,
+    name: 'Satu Anggota, Satu Suara',
+    eng: 'One Member, One Vote',
+    desc: 'KNBMP adalah DEMOKRASI dalam ekonomi. Setiap anggota memiliki suara yang sama — tidak peduli berapa banyak modal yang mereka investasikan.',
+    impl: 'RAT sebagai otoritas tertinggi, suara mayoritas, transparansi voting.',
+    redLine: 'Suara berdasarkan besarnya modal',
+  },
+  {
+    num: 5,
+    name: 'Keberlanjutan Lintas Generasi',
+    eng: 'Intergenerational Responsibility',
+    desc: 'Setiap keputusan harus bisa dipertanggungjawabkan kepada generasi mendatang. Apakah cucu kita akan bangga?',
+    impl: 'Evaluasi dampak lingkungan, investasi berkelanjutan 100 tahun, cadangan untuk masa depan.',
+    redLine: 'Menggadaikan masa depan untuk kesenangan sekarang',
+  },
+  {
+    num: 6,
+    name: 'Transparansi Total',
+    eng: 'Radical Transparency',
+    desc: 'Dalam KNBMP, tidak ada yang disembunyikan. Laporan keuangan terbuka. Gaji direksi terbuka. Transparansi adalah fondasi kepercayaan.',
+    impl: 'Laporan keuangan publik, gaji manajemen disclosed, kontrak bisa di-review anggota.',
+    redLine: 'Menyembunyikan informasi dari anggota',
+  },
+  {
+    num: 7,
+    name: 'Inovasi untuk Rakyat',
+    eng: 'Purpose Over Profit',
+    desc: 'Profit adalah ALAT, bukan TUJUAN. Tujuan KNBMP adalah kebahagiaan dan kesejahteraan anggota. Ketika fokus pada kebahagiaan, profit mengikuti.',
+    impl: 'KPI utama: kebahagiaan anggota, SHU didistribusikan adil, pertumbuhan diukur dari lives changed.',
+    redLine: 'Mengorbankan kesejahteraan untuk profit margin',
+  },
+]
+
+function PillarDetailPage01() {
+  const serif = 'font-[family-name:var(--font-serif)]'
+  const heading = 'font-[family-name:var(--font-heading)]'
+  const bodyFont = 'font-[family-name:var(--font-body)]'
+
+  const [visionRevealed, setVisionRevealed] = useState(false)
+  useEffect(() => { const t = setTimeout(() => setVisionRevealed(true), 1200); return () => clearTimeout(t) }, [])
+
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+      <BatikWatermark />
+      <GoldenParticles />
+      <div className="absolute left-0 top-0 bottom-0 w-2 z-20" style={{ backgroundColor: DOMAIN1_COLOR }} />
+
+      {/* Large "PGA-01" watermark */}
+      <div className="absolute top-[15%] right-2 sm:right-6 pointer-events-none select-none z-0"
+        style={{
+          fontFamily: 'var(--font-heading)',
+          fontSize: 'clamp(80px, 20vw, 200px)',
+          color: `${DOMAIN1_COLOR}05`,
+          lineHeight: 1,
+          fontWeight: 700,
+          letterSpacing: '0.05em',
+        }}>
+        PGA-01
+      </div>
+
+      <motion.div
+        className="flex-1 overflow-y-auto px-5 sm:px-8 lg:px-12 py-5 sm:py-7 relative z-10"
+        variants={staggerContainer} initial="hidden" animate="visible">
+
+        {/* ═══ SECTION A: Hero / Document Header ═══ */}
+        <motion.div className="mb-5 sm:mb-6" variants={fadeSlideUp} custom={0}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[3px] uppercase font-bold`}
+              style={{ color: DOMAIN1_COLOR }}>
+              Domain 1 &middot; Identity &amp; Civilization
+            </span>
+          </div>
+          <motion.div variants={fadeSlideUp} custom={1}>
+            <GoldDivider className="my-2" color={DOMAIN1_COLOR} />
+          </motion.div>
+        </motion.div>
+
+        {/* Classification Badge */}
+        <motion.div className="mb-4 sm:mb-5" variants={scaleIn} custom={2}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-sm"
+            style={{
+              backgroundColor: `${BURGUNDY}08`,
+              border: `1px solid ${BURGUNDY}25`,
+            }}>
+            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: BURGUNDY }} />
+            <span className={`${bodyFont} text-[10px] sm:text-xs tracking-[1.5px] uppercase font-bold`}
+              style={{ color: BURGUNDY }}>
+              Foundational Truth — Tidak Bisa Diubah Selama 100 Tahun
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Document Title */}
+        <motion.h1 className={`${heading} text-2xl sm:text-3xl lg:text-[2.5rem] font-bold leading-tight mb-1`}
+          style={{ color: CHARCOAL }}
+          variants={fadeSlideUp} custom={3}>
+          Bintang Utara Peradaban
+        </motion.h1>
+        <motion.p className={`${heading} text-sm sm:text-base lg:text-lg italic mb-3`}
+          style={{ color: '#8B7D6B' }}
+          variants={fadeSlideUp} custom={4}>
+          Vision Statement
+        </motion.p>
+
+        {/* Metadata Grid */}
+        <motion.div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 sm:mb-5" variants={fadeSlideUp} custom={5}>
+          {[
+            { label: 'Domain', value: 'Identity & Civilization' },
+            { label: 'Tier', value: 'SOVEREIGN-72' },
+            { label: 'Owner', value: 'Founder Office' },
+            { label: 'Version', value: '1.0.0' },
+          ].map((m, i) => (
+            <div key={i} className="p-2 rounded-sm"
+              style={{ backgroundColor: `${DOMAIN1_COLOR}05`, borderLeft: `2px solid ${DOMAIN1_COLOR}20` }}>
+              <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[1px] uppercase font-semibold mb-0.5`}
+                style={{ color: '#A09385' }}>{m.label}</p>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold`}
+                style={{ color: '#3E2723' }}>{m.value}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Warning Block */}
+        <motion.div className="mb-6 sm:mb-8 p-4 rounded-sm relative overflow-hidden"
+          style={{
+            backgroundColor: `${BURGUNDY}05`,
+            border: `1px solid ${BURGUNDY}15`,
+          }}
+          variants={fadeSlideUp} custom={6}>
+          <div className="absolute top-0 left-0 w-full h-0.5" style={{ backgroundColor: `${BURGUNDY}30` }} />
+          <div className="flex items-start gap-2">
+            <span className={`${bodyFont} text-base sm:text-lg leading-none mt-0.5`} style={{ color: BURGUNDY }}>⚠</span>
+            <div>
+              <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[1px] uppercase font-bold mb-1.5`}
+                style={{ color: BURGUNDY }}>
+                Peringatan
+              </p>
+              <p className={`${serif} text-[12px] sm:text-[14px] leading-[1.75] italic`}
+                style={{ color: '#4A3F32' }}>
+                Dokumen ini adalah{' '}
+                <span className="font-semibold" style={{ color: BURGUNDY }}>FONDASI PERADABAN</span>. Setiap kata telah dipilih
+                dengan sangat hati-hati. Setiap kalimat mengandung makna yang dalam.
+                Dokumen ini akan dibaca oleh cucu kita. Dokumen ini akan
+                <span className="font-semibold" style={{ color: BURGUNDY }}> MENGGERAKKAN DUNIA</span>.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ═══ SECTION B: Vision Statement — The Core ═══ */}
+        <motion.div className="mb-6 sm:mb-8" variants={fadeSlideUp} custom={7}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-4`}
+            style={{ color: DOMAIN1_COLOR }}>
+            ◆ Vision Statement Utama ◆
+          </p>
+        </motion.div>
+
+        {/* Golden Vision Box with Glow */}
+        <motion.div
+          className="relative p-5 sm:p-8 rounded-sm mb-4 overflow-hidden"
+          style={{
+            background: `linear-gradient(135deg, ${DOMAIN1_COLOR}08 0%, ${BURGUNDY}05 50%, ${DOMAIN1_COLOR}08 100%)`,
+            border: `2px solid ${DOMAIN1_COLOR}35`,
+          }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={visionRevealed ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
+
+          {/* Glow effect */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{
+              boxShadow: `inset 0 0 60px rgba(196,149,42,0.08), 0 0 40px rgba(196,149,42,0.05)`,
+            }} />
+
+          <CornerOrnament color={DOMAIN1_COLOR} size={30} />
+
+          {/* Letter-by-letter vision statement */}
+          <div className="relative z-10 text-center">
+            <p className={`${heading} text-base sm:text-lg lg:text-xl leading-[1.6] tracking-wide`}
+              style={{ color: CHARCOAL }}>
+              {visionSentence.split('').map((char, i) => (
+                <motion.span
+                  key={i}
+                  style={{ color: char === '—' ? DOMAIN1_COLOR : i < 9 ? BURGUNDY : CHARCOAL }}
+                  variants={letterReveal}
+                  custom={Math.floor(i / 3)}
+                  initial="hidden"
+                  animate={visionRevealed ? 'visible' : 'hidden'}
+                  className={char === ' ' ? '' : ''}>
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))}
+            </p>
+          </div>
+
+          <div className="absolute bottom-2 right-2 rotate-180 opacity-40">
+            <CornerOrnament color={DOMAIN1_COLOR} size={30} />
+          </div>
+        </motion.div>
+
+        {/* Analysis: 17 words, 6 dimensions */}
+        <motion.div className="flex flex-wrap items-center justify-center gap-2 mb-6 sm:mb-8"
+          variants={fadeSlideUp} custom={8}>
+          <span className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[1px] uppercase`}
+            style={{ color: '#A09385' }}>
+            17 kata &middot; 6 dimensi &middot; 1 visi
+          </span>
+          <div className="flex flex-wrap gap-1.5 justify-center">
+            {dimensions.map((d, i) => (
+              <motion.span
+                key={i}
+                className={`${bodyFont} text-[9px] sm:text-[10px] px-2.5 py-1 rounded-full font-semibold tracking-wide`}
+                style={{
+                  backgroundColor: `${DOMAIN1_COLOR}10`,
+                  color: DOMAIN1_COLOR,
+                  border: `1px solid ${DOMAIN1_COLOR}20`,
+                }}
+                variants={scaleIn}
+                custom={9 + i}>
+                {d.label}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div variants={fadeSlideUp} custom={15}>
+          <GoldDivider className="my-4" color={DOMAIN1_COLOR} />
+        </motion.div>
+
+        {/* ═══ SECTION C: Vision in Paragraph ═══ */}
+        <motion.div className="mb-4" variants={fadeSlideUp} custom={16}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-4`}
+            style={{ color: DOMAIN1_COLOR }}>
+            ◆ Visi Dalam Paragraf ◆
+          </p>
+        </motion.div>
+
+        <div className="max-w-lg mx-auto space-y-4 mb-6 sm:mb-8">
+          {visionParagraphs.map((para, i) => (
+            <motion.p
+              key={i}
+              className={`${serif} text-[13px] sm:text-[15px] leading-[1.85]`}
+              style={{ color: '#3E2723' }}
+              variants={inkBleed}
+              custom={17 + i}>
+              {para.split(/(ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERDIGNITAS)/gi).map((part, j) => {
+                const isHighlight = /ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERDIGNITAS/i.test(part)
+                return isHighlight
+                  ? <span key={j} className="font-semibold" style={{ color: BURGUNDY }}>{part}</span>
+                  : <span key={j}>{part}</span>
+              })}
+            </motion.p>
+          ))}
+          <motion.p
+            className={`${serif} text-[14px] sm:text-[17px] leading-[1.85] font-semibold text-center mt-5`}
+            style={{ color: BURGUNDY }}
+            variants={glowPulse}
+            custom={22}>
+            Inilah visi kami: Dunia di mana setiap manusia bebas, makmur, dan berdignitas.
+          </motion.p>
+        </div>
+
+        <motion.div variants={fadeSlideUp} custom={23}>
+          <GoldDivider className="my-4" color={DOMAIN1_COLOR} />
+        </motion.div>
+
+        {/* ═══ SECTION D: Impact Analysis ═══ */}
+        <motion.div className="mb-4" variants={fadeSlideUp} custom={24}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-1`}
+            style={{ color: DOMAIN1_COLOR }}>
+            ◆ Dampak Jika Visi Tercapai ◆
+          </p>
+          <p className={`${serif} text-[12px] sm:text-[13px] text-center italic`}
+            style={{ color: '#8B7D6B' }}>
+            6 kategori dampak yang mengubah segalanya
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 sm:mb-8">
+          {impactCategories.map((cat, idx) => (
+            <motion.div
+              key={idx}
+              className="p-3 sm:p-4 rounded-sm relative overflow-hidden"
+              style={{
+                backgroundColor: idx % 2 === 0 ? `${DOMAIN1_COLOR}04` : `${BURGUNDY}04`,
+                border: `1px solid ${idx % 2 === 0 ? DOMAIN1_COLOR : BURGUNDY}15`,
+              }}
+              variants={fadeSlideUp}
+              custom={25 + idx}>
+              {/* Header */}
+              <div className="flex items-center gap-2 mb-2.5">
+                <span className={`${heading} text-lg sm:text-xl`} style={{ color: idx % 2 === 0 ? DOMAIN1_COLOR : BURGUNDY }}>
+                  {cat.icon}
+                </span>
+                <h3 className={`${bodyFont} text-[11px] sm:text-xs tracking-[1px] uppercase font-bold`}
+                  style={{ color: idx % 2 === 0 ? DOMAIN1_COLOR : BURGUNDY }}>
+                  {cat.title}
+                </h3>
+              </div>
+
+              {/* Metrics */}
+              {cat.metrics && (
+                <ul className="space-y-1.5">
+                  {cat.metrics.map((m, mi) => (
+                    <li key={mi} className="flex items-start gap-1.5">
+                      <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
+                        style={{ backgroundColor: idx % 2 === 0 ? DOMAIN1_COLOR : BURGUNDY, opacity: 0.6 }} />
+                      <span className={`${bodyFont} text-[11px] sm:text-xs leading-relaxed`}
+                        style={{ color: '#4A3F32' }}>{m}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Sub-items for Anggota */}
+              {cat.subItems && (
+                <div className="space-y-2">
+                  {cat.subItems.map((sub, si) => (
+                    <div key={si} className="flex items-center gap-2">
+                      <span className={`${bodyFont} text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-sm`}
+                        style={{ backgroundColor: `${DOMAIN1_COLOR}15`, color: DOMAIN1_COLOR }}>
+                        {sub.name}
+                      </span>
+                      <span className={`${bodyFont} text-[10px] sm:text-xs`} style={{ color: '#8B7D6B' }}>
+                        {sub.from}
+                      </span>
+                      <span style={{ color: DOMAIN1_COLOR }}>→</span>
+                      <span className={`${bodyFont} text-[10px] sm:text-xs font-semibold`} style={{ color: '#3E2723' }}>
+                        {sub.to}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div variants={fadeSlideUp} custom={32}>
+          <GoldDivider className="my-4" color={DOMAIN1_COLOR} />
+        </motion.div>
+
+        {/* ═══ SECTION E: 7 Principles ═══ */}
+        <motion.div className="mb-4" variants={fadeSlideUp} custom={33}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-1`}
+            style={{ color: DOMAIN1_COLOR }}>
+            ◆ 7 Prinsip Visi — Non-Negotiable ◆
+          </p>
+          <p className={`${serif} text-[12px] sm:text-[13px] text-center italic`}
+            style={{ color: '#8B7D6B' }}>
+            Tidak bisa diganggu gugat
+          </p>
+        </motion.div>
+
+        <div className="space-y-3 mb-6 sm:mb-8">
+          {sevenPrinciples.map((pr, idx) => (
+            <motion.div
+              key={idx}
+              className="p-3 sm:p-4 rounded-sm"
+              style={{
+                backgroundColor: `${DOMAIN1_COLOR}${idx % 2 === 0 ? '04' : '02'}`,
+                borderLeft: `3px solid ${DOMAIN1_COLOR}${idx % 2 === 0 ? '40' : '25'}`,
+              }}
+              variants={fadeSlideUp}
+              custom={34 + idx}>
+              {/* Principle Header */}
+              <div className="flex items-center gap-2 mb-2">
+                <span className={`${heading} text-base sm:text-lg font-bold`}
+                  style={{ color: DOMAIN1_COLOR }}>{pr.num}.</span>
+                <div>
+                  <h4 className={`${bodyFont} text-xs sm:text-sm font-bold leading-tight`}
+                    style={{ color: CHARCOAL }}>{pr.name}</h4>
+                  <p className={`${bodyFont} text-[9px] sm:text-[10px] italic`}
+                    style={{ color: '#8B7D6B' }}>{pr.eng}</p>
+                </div>
+              </div>
+              {/* Description */}
+              <p className={`${bodyFont} text-[11px] sm:text-xs leading-[1.75] mb-2`}
+                style={{ color: '#4A3F32' }}>{pr.desc}</p>
+              {/* Implementation */}
+              <div className="flex items-start gap-1.5 mb-1.5">
+                <span className={`${bodyFont} text-[9px] font-bold tracking-[0.5px] uppercase`}
+                  style={{ color: DOMAIN1_COLOR }}>Implementasi:</span>
+                <span className={`${bodyFont} text-[10px] sm:text-[11px] leading-relaxed`}
+                  style={{ color: '#6B5E50' }}>{pr.impl}</span>
+              </div>
+              {/* Red Line */}
+              <div className="flex items-center gap-1.5 mt-2">
+                <span className={`${bodyFont} text-[10px]`}>✕</span>
+                <span className={`${bodyFont} text-[10px] sm:text-[11px] font-semibold`}
+                  style={{ color: BURGUNDY }}>{pr.redLine}</span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ═══ Page Footer ═══ */}
+        <motion.div className="text-center pt-4 pb-3" variants={fadeSlideUp} custom={42}>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-8" style={{ backgroundColor: `${DOMAIN1_COLOR}30` }} />
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 0L16 8L8 16L0 8Z" fill="none" stroke={DOMAIN1_COLOR} strokeWidth="0.6" />
+              <circle cx="8" cy="8" r="2" fill={DOMAIN1_COLOR} opacity="0.5" />
+            </svg>
+            <div className="h-px w-8" style={{ backgroundColor: `${DOMAIN1_COLOR}30` }} />
+          </div>
+          <p className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[2px] uppercase`}
+            style={{ color: '#B0A898' }}>
+            PGA-01 &middot; 1/72 &middot; ◆ Identity &amp; Civilization
+          </p>
+          <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[1px] uppercase mt-0.5`}
+            style={{ color: '#C0B8AA' }}>
+            Foundational Truth &middot; Bintang Utara Peradaban
+          </p>
+        </motion.div>
+      </motion.div>
+    </div>
+  )
+}
+
 function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }) {
   const badgeLabel = pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'
 
@@ -1708,7 +2242,10 @@ function renderPage(page: BookPage, index: number) {
     case 'kata-pengantar': return <KataPengantarPage key={`kp-${page.part}`} part={page.part} />
     case 'mukadimah': return <MukadimahPage key={`muk-${page.part}`} part={page.part} />
     case 'toc-page': return <TocPage key={`toc-${page.tocPage}`} tocPage={page.tocPage} />
-    case 'pillar-detail': return <PillarDetailPage key={`p-${page.pillar.id}`} pillar={page.pillar} domain={page.domain} />
+    case 'pillar-detail':
+      return page.pillar.id === 1
+        ? <PillarDetailPage01 key={`pga01`} />
+        : <PillarDetailPage key={`p-${page.pillar.id}`} pillar={page.pillar} domain={page.domain} />
     case 'philosophy': return <PhilosophyPage key={`phil-${index}`} />
     case 'covenant': return <CovenantPage key={`cov-${index}`} />
     case 'back-cover': return <BackCoverPage key={`bc-${index}`} />

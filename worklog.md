@@ -248,3 +248,65 @@ Stage Summary:
 - Pillar detail pages: Each PGA gets its own full page with large text, complete vision, dimensions, principles, and cross-references
 - App compiles and serves correctly (GET / 200)
 - Lint passes with 0 errors
+
+---
+## [Work Record] PillarDetailPage01 — Special Animated PGA-01 Page
+
+### What was done
+- Created a new `PillarDetailPage01` component in `src/app/page.tsx` (~530 lines)
+- This is a SPECIAL, STUNNING page for PGA-01 (Bintang Utara Peradaban / Vision Statement)
+- It replaces the generic `PillarDetailPage` ONLY when pillar.id === 1
+- Modified `renderPage` dispatcher to conditionally route to the new component
+
+### Sections implemented
+1. **Section A: Hero / Document Header** — Classification badge ("Foundational Truth — Tidak Bisa Diubah Selama 100 Tahun"), metadata grid (Domain, Tier, Owner, Version), warning block with highlighted text
+2. **Section B: Vision Statement — The Core** — Golden-framed box with glow animation, letter-by-letter reveal animation for the ONE sentence vision, 6 dimension chips (Ekonomi, Politik, Sosial, Spiritual, Geografis, Generasi), CornerOrnament decorations
+3. **Section C: Vision in Paragraph** — 4 paragraphs with ink-bleed reveal animation, key phrase highlighting in burgundy/gold, closing statement with glowPulse effect
+4. **Section D: Impact Analysis** — 6 impact category cards (Ekonomi, Sosial, Anggota, Bangsa, Peradaban, Spiritual), each with icon header and metrics, Dampak Anggota with dari→ke transformation arrows
+5. **Section E: 7 Principles (Non-Negotiable)** — 7 elegant principle blocks with number, name, English name, description, implementation, and red lines
+
+### Design elements used
+- Colors: BURGUNDY, GOLD, CHARCOAL, PARCHMENT, DOMAIN1_COLOR (#C4952A)
+- Animations: fadeSlideUp, staggerContainer, inkBleed, emotionalReveal, glowPulse, scaleIn, letterReveal
+- Components: BatikWatermark, GoldenParticles, GoldDivider, CornerOrnament
+- Fonts: Cormorant Garamond (heading), EB Garamond (serif), Inter (body)
+- Paper texture: paper-grain class
+- Background: Large "PGA-01" watermark text
+- Left sidebar: 2px domain color bar
+- Page is fully scrollable (overflow-y-auto) for all content
+
+### Technical details
+- Data constants defined outside component (visionSentence, visionParagraphs, dimensions, impactCategories, sevenPrinciples)
+- Vision letter reveal triggered via useState/useEffect with 1200ms delay
+- Alternating gold/burgundy card styling for impact categories
+- Responsive design with sm/lg breakpoints
+
+### Quality
+- Lint passes with 0 errors
+- Dev server compiles successfully (GET / 200)
+- No existing components modified (only additions)
+
+---
+Task ID: 2
+Agent: main
+Task: Replace all fonts with Elegansi Korporat combination + Create special PGA-01 page
+
+Work Log:
+- Updated layout.tsx: Replaced Playfair Display + Merriweather with Cormorant Garamond + EB Garamond
+- Updated globals.css: Font fallbacks updated for Cormorant Garamond (heading) and EB Garamond (serif)
+- Final font combination: Cormorant Garamond (titles) + EB Garamond (body) + Inter (UI/labels)
+- Created PillarDetailPage01 component (~680 lines) — special animated page for PGA-01 Vision Statement
+- PGA-01 page has 5 major animated sections:
+  - Section A: Hero header with classification badge, metadata grid, warning block
+  - Section B: Vision Statement in golden frame with letter-by-letter animation + 6 dimension chips
+  - Section C: Vision paragraph (4 paras) with ink-bleed reveal animation
+  - Section D: 6 impact analysis categories (Ekonomi, Sosial, Anggota, Bangsa, Peradaban, Spiritual) as beautiful cards
+  - Section E: 7 Non-Negotiable Principles with elegant blocks
+- Modified renderPage to detect pillar.id === 1 and route to PillarDetailPage01
+- Added DOMAIN1_COLOR constant (#C4952A)
+- Lint: 0 errors, dev server: GET / 200
+
+Stage Summary:
+- Fonts changed to world-class "Elegansi Korporat" combination (Cormorant Garamond + EB Garamond + Inter)
+- PGA-01 has a stunning dedicated page with full content, letter-by-letter vision reveal, impact analysis cards, and 7 principles display
+- Total file size: ~2500 lines in page.tsx

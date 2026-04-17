@@ -1,24 +1,28 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Merriweather } from "next/font/google";
+import { Cormorant_Garamond, EB_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const playfair = Playfair_Display({
+// Heading: Cormorant Garamond — elegant, dramatic, world-class titles
+const cormorant = Cormorant_Garamond({
   variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
+// Serif Body: EB Garamond — warm, senior-friendly, "buku warisan" readability
+const ebGaramond = EB_Garamond({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+// UI/Labels: Inter — clean, modern, Helvetica Neue equivalent
 const inter = Inter({
   variable: "--font-body",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const merriweather = Merriweather({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  weight: ["300", "400", "700"],
   display: "swap",
 });
 
@@ -52,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body
-        className={`${playfair.variable} ${inter.variable} ${merriweather.variable} antialiased`}
+        className={`${cormorant.variable} ${ebGaramond.variable} ${inter.variable} antialiased`}
       >
         {children}
         <Toaster />
