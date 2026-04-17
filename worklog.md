@@ -464,3 +464,29 @@ Stage Summary:
 - Hydration mismatch fully resolved — server and client render identical initial output
 - Page reload behavior: DigitalUnveiling appears briefly, then auto-skips to flipbook
 - Lint clean, dev server clean
+
+---
+Task ID: 5
+Agent: Main
+Task: Redesign passcode input as phone lock screen with auto-keyboard, backspace, shake
+
+Work Log:
+- Redesigned LOCKED/SYNTHESIZING phase as iPhone/Android lock screen passcode UI
+- 9 dot indicators showing typed chars (gold glow when correct match, dim when typed wrong)
+- Title "MASUKKAN KATA KUNCI" with gold heading font
+- Auto-focus input on mount (300ms delay for mobile keyboard to open)
+- Tap anywhere to focus (mobile-friendly)
+- "← HAPUS" button for backspace on mobile (focuses input after tap)
+- Desktop: Backspace key supported via keyboard listener
+- Shake animation (CSS keyframes) when wrong character detected
+- dotPulse animation when correct character matched
+- Progressive hints: "Ketuk di mana saja" (0-8s), "Warisan Sang Proklamator..." (20-40s), full password reveal (40s+)
+- Saron chime sounds on each correct character (already existed)
+- Removed old HINTS and PROGRESS INDICATOR sections (consolidated into new passcode UI)
+- Lint and dev server clean
+
+Stage Summary:
+- Passcode input now works like phone lock screen
+- Mobile: auto-shows keyboard, tap to focus, HAPUS button for backspace
+- Desktop: type directly, Backspace key works
+- Visual feedback: gold dots for correct, dim dots for wrong, shake on error

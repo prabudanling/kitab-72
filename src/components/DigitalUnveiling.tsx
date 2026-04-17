@@ -131,6 +131,15 @@ const CSS = `
   0%, 100% { opacity: 0.25; }
   50%      { opacity: 0.6; }
 }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+  20%, 40%, 60%, 80% { transform: translateX(6px); }
+}
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.4); }
+}
 `;
 
 /* ═══════════════════════════════════════════════════════════════
@@ -141,6 +150,8 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   const [phase, _setPhase] = useState<Phase>('LOCKED');
   const [matchProgress, setMatchProgress] = useState(0);
   const [elapsed, setElapsed] = useState(0);
+  const [shaking, setShaking] = useState(false);
+  const [typedCount, setTypedCount] = useState(0); // how many chars currently in buffer
 
   /* ── refs ── */
   const phaseRef = useRef<Phase>('LOCKED');
@@ -397,7 +408,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   }, []);
 
   /* ═══════════════════════════════════════════════════════════
-     CHARACTER PROCESSOR
+     CHARACTER PROCESSOR (with backspace + wrong-char shake)
      ═══════════════════════════════════════════════════════════ */
   const processChar = useCallback(
     (key: string) => {
@@ -413,6 +424,8 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
 
       // Append to rolling buffer (keep last 9)
       bufRef.current = (bufRef.current + key).slice(-9);
+      setTypedCount(bufRef.current.length);
+
       const buf = bufRef.current;
 
       // Find longest prefix of PASSWORD that is a suffix of buffer
@@ -429,6 +442,10 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
         setMatchProgress(match);
         rampDrone(match);
         playChime(match - 1);
+      } else if (match === 0 && buf.length > 0) {
+        // Wrong character — shake!
+        setShaking(true);
+        setTimeout(() => setShaking(false), 500);
       }
 
       // Password complete → Big Bang
@@ -440,6 +457,29 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
     [initAudio, startDrone, rampDrone, playChime, playBigBang, setPhase],
   );
 
+  const processBackspace = useCallback(() => {
+    const p = phaseRef.current;
+    if (p !== 'SYNTHESIZING') return;
+    if (bufRef.current.length === 0) return;
+
+    // Remove last char
+    bufRef.current = bufRef.current.slice(0, -1);
+    setTypedCount(bufRef.current.length);
+
+    // Recalculate match progress
+    const buf = bufRef.current;
+    let match = 0;
+    for (let i = PASSWORD.length; i >= 1; i--) {
+      if (buf.length >= i && buf.endsWith(PASSWORD.substring(0, i))) {
+        match = i;
+        break;
+      }
+    }
+    matchRef.current = match;
+    setMatchProgress(match);
+    rampDrone(match);
+  }, [rampDrone]);
+
   /* ═══════════════════════════════════════════════════════════
      EFFECTS
      ═══════════════════════════════════════════════════════════ */
@@ -447,13 +487,19 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   // Desktop keyboard listener
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key.length !== 1 || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        processBackspace();
+        return;
+      }
+      if (e.key.length !== 1) return;
       e.preventDefault();
       processChar(e.key.toLowerCase());
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [processChar]);
+  }, [processChar, processBackspace]);
 
   // Phase auto-transitions
   useEffect(() => {
@@ -491,7 +537,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
     return () => clearInterval(iv);
   }, [phase]);
 
-  // Mobile: tap → focus hidden input (also pre-init AudioContext)
+  // Mobile: tap anywhere → focus visible input (also pre-init AudioContext)
   useEffect(() => {
     if (phase !== 'LOCKED' && phase !== 'SYNTHESIZING') return;
     const handler = () => {
@@ -506,17 +552,38 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
     };
   }, [phase, initAudio]);
 
-  // Mobile hidden input handler
+  // Auto-focus input on mount
+  useEffect(() => {
+    // Delay focus to allow mobile keyboards to open
+    const t = setTimeout(() => hiddenRef.current?.focus(), 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Visible input handler — supports typing + backspace
   const onMobileInput = useCallback(
     (e: FormEvent<HTMLInputElement>) => {
-      const v = e.currentTarget.value;
-      if (v.length > 0) {
-        const ch = v[v.length - 1].toLowerCase();
-        if (ch >= 'a' && ch <= 'z') processChar(ch);
-        e.currentTarget.value = '';
+      const input = e.currentTarget;
+      const v = input.value;
+      if (v.length === 0) {
+        // Backspace detected (input was cleared by user pressing delete)
+        processBackspace();
+        return;
+      }
+      const ch = v[v.length - 1].toLowerCase();
+      if (ch >= 'a' && ch <= 'z') processChar(ch);
+      input.value = '';
+    },
+    [processChar, processBackspace],
+  );
+
+  // Handle backspace key on the input itself (for mobile)
+  const onMobileKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Backspace') {
+        // Let default happen — it clears input → onMobileInput handles it
       }
     },
-    [processChar],
+    [],
   );
 
   /* ═══════════════════════════════════════════════════════════
@@ -528,7 +595,6 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   const nodeGlow = (idx: number) =>
     phase === 'SYNTHESIZING' && idx < matchProgress * 8;
 
-  const showCursor = phase === 'LOCKED' && elapsed >= 8 && elapsed < 20;
   const showTextHint = phase === 'LOCKED' && elapsed >= 20 && elapsed < 40;
   const showFullHint = phase === 'LOCKED' && elapsed >= 40;
 
@@ -543,27 +609,176 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
       {/* ── Injected keyframes ── */}
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      {/* ── Hidden mobile input ── */}
-      <input
-        ref={hiddenRef}
-        type="text"
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        aria-hidden="true"
-        tabIndex={-1}
-        onInput={onMobileInput}
-        style={{
-          position: 'fixed',
-          top: '-200px',
-          left: '-200px',
-          opacity: 0,
-          width: '1px',
-          height: '1px',
-          border: 'none',
-          outline: 'none',
-        }}
-      />
+      {/* ── VISIBLE PASSCODE INPUT (phone lock screen style) ── */}
+      {(phase === 'LOCKED' || phase === 'SYNTHESIZING') && (
+        <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 sm:pb-24 px-6 z-10">
+          {/* Title */}
+          <motion.p
+            className="mb-8 sm:mb-12 text-center"
+            style={{
+              fontFamily: 'var(--font-heading)',
+              color: GOLD,
+              fontSize: 'clamp(14px, 3.5vw, 20px)',
+              fontWeight: 400,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              textShadow: '0 0 20px rgba(197,160,89,0.3)',
+            }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: phase === 'SYNTHESIZING' ? 0.6 : 0.85, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            Masukkan Kata Kunci
+          </motion.p>
+
+          {/* Dot indicators */}
+          <motion.div
+            className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8"
+            animate={shaking ? { animation: 'shake 0.5s ease-in-out' } : {}}
+            key={shaking ? 'shake' : 'still'}
+          >
+            {PASSWORD.split('').map((_, i) => {
+              const filled = i < matchProgress;
+              const typed = i < typedCount;
+              return (
+                <span
+                  key={i}
+                  className="block rounded-full"
+                  style={{
+                    width: 'clamp(12px, 3vw, 18px)',
+                    height: 'clamp(12px, 3vw, 18px)',
+                    backgroundColor: filled ? GOLD : typed ? 'rgba(197,160,89,0.2)' : 'rgba(197,160,89,0.08)',
+                    boxShadow: filled
+                      ? `0 0 10px rgba(197,160,89,0.6), 0 0 20px rgba(197,160,89,0.2)`
+                      : 'none',
+                    transition: 'background-color 0.3s, box-shadow 0.3s',
+                    animation: filled ? 'dotPulse 0.4s ease-out' : 'none',
+                  }}
+                />
+              );
+            })}
+          </motion.div>
+
+          {/* Visible input — always focused, shows cursor, triggers mobile keyboard */}
+          <input
+            ref={hiddenRef}
+            type="text"
+            inputMode="text"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            onInput={onMobileInput}
+            onKeyDown={onMobileKeyDown}
+            style={{
+              position: 'fixed',
+              top: '-200px',
+              left: '-200px',
+              opacity: 0,
+              width: '1px',
+              height: '1px',
+              border: 'none',
+              outline: 'none',
+            }}
+          />
+
+          {/* Backspace button for mobile */}
+          {typedCount > 0 && phase === 'SYNTHESIZING' && (
+            <motion.button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                processBackspace();
+                hiddenRef.current?.focus();
+              }}
+              className="mt-3 px-6 py-2.5 rounded-full cursor-pointer"
+              style={{
+                fontFamily: 'var(--font-body)',
+                color: GOLD,
+                fontSize: '12px',
+                letterSpacing: '0.15em',
+                border: '1px solid rgba(197,160,89,0.25)',
+                background: 'rgba(197,160,89,0.05)',
+                opacity: 0.5,
+              }}
+              whileHover={{ opacity: 0.8, backgroundColor: 'rgba(197,160,89,0.1)' }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 0.5, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              ← HAPUS
+            </motion.button>
+          )}
+
+          {/* Hints (only in LOCKED phase, after delay) */}
+          {phase === 'LOCKED' && showTextHint && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.25 }}
+              style={{
+                fontFamily: 'var(--font-body)',
+                color: GOLD,
+                fontSize: '11px',
+                marginTop: '20px',
+                animation: 'subtlePulse 3s ease-in-out infinite',
+                lineHeight: 1.6,
+              }}
+              className="text-center px-8"
+            >
+              Warisan Sang Proklamator menunggu untuk diaktifkan&hellip;
+            </motion.p>
+          )}
+          {phase === 'LOCKED' && showFullHint && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex flex-col items-center gap-1.5 mt-4"
+            >
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  color: GOLD,
+                  fontSize: '10px',
+                  opacity: 0.22,
+                  letterSpacing: '0.06em',
+                }}
+                className="text-center px-8"
+              >
+                Ajaran Bung Karno yang sempat terpause&thinsp;—&thinsp;kini kita lanjutkan.
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  color: GOLD,
+                  fontSize: '12px',
+                  opacity: 0.28,
+                  letterSpacing: '0.18em',
+                }}
+              >
+                b e r d i k a r i
+              </p>
+            </motion.div>
+          )}
+
+          {/* Tap to focus hint (mobile) */}
+          {phase === 'LOCKED' && elapsed < 8 && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.15, 0.35, 0.15] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+              style={{
+                fontFamily: 'var(--font-body)',
+                color: GOLD,
+                fontSize: '11px',
+                marginTop: '16px',
+              }}
+            >
+              Ketuk di mana saja untuk mulai
+            </motion.p>
+          )}
+        </div>
+      )}
 
       {/* ═══════════════════════════════════════════════════
           WISDOM NODES
@@ -929,104 +1144,6 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
             animate={{ opacity: 0 }}
             transition={{ duration: 1, ease: 'easeOut' }}
           />
-        )}
-      </AnimatePresence>
-
-      {/* ═══════════════════════════════════════════════════
-          HINTS (LOCKED phase)
-          ═══════════════════════════════════════════════════ */}
-      {(phase === 'LOCKED' || phase === 'SYNTHESIZING') && (
-        <div className="absolute bottom-10 left-0 right-0 flex flex-col items-center gap-2 pointer-events-none">
-          {/* Faint blinking cursor — 8s */}
-          {showCursor && (
-            <span
-              className="inline-block w-[2px] h-5 rounded-full"
-              style={{
-                background: GOLD,
-                opacity: 0.25,
-                animation: 'softBlink 2.2s ease-in-out infinite',
-              }}
-            />
-          )}
-
-          {/* Text hint — 20s */}
-          {showTextHint && (
-            <p
-              style={{
-                fontFamily: 'var(--font-body)',
-                color: GOLD,
-                fontSize: '12px',
-                opacity: 0.2,
-                animation: 'subtlePulse 3s ease-in-out infinite',
-                lineHeight: 1.6,
-              }}
-              className="text-center px-8"
-            >
-              Warisan Sang Proklamator menunggu untuk diaktifkan&hellip;
-            </p>
-          )}
-
-          {/* Full hint — 40s */}
-          {showFullHint && (
-            <div className="flex flex-col items-center gap-2">
-              <p
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  color: GOLD,
-                  fontSize: '11px',
-                  opacity: 0.22,
-                  letterSpacing: '0.08em',
-                }}
-                className="text-center px-8"
-              >
-                Ajaran Bung Karno yang sempat terpause&thinsp;—&thinsp;kini kita lanjutkan.
-              </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  color: GOLD,
-                  fontSize: '13px',
-                  opacity: 0.28,
-                  letterSpacing: '0.22em',
-                }}
-              >
-                Kata kunci:&ensp;b e r d i k a r i
-              </p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ═══════════════════════════════════════════════════
-          PROGRESS INDICATOR (SYNTHESIZING)
-          ═══════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {phase === 'SYNTHESIZING' && matchProgress > 0 && (
-          <motion.div
-            key="progress"
-            className="absolute bottom-10 left-0 right-0 flex justify-center pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <div className="flex gap-1.5">
-              {PASSWORD.split('').map((_, i) => (
-                <span
-                  key={i}
-                  className="block w-1.5 h-1.5 rounded-full"
-                  style={{
-                    background: i < matchProgress ? GOLD : 'rgba(197,160,89,0.12)',
-                    boxShadow:
-                      i < matchProgress
-                        ? `0 0 6px ${GOLD}`
-                        : 'none',
-                    transition: 'background 0.3s, box-shadow 0.3s',
-                  }}
-                />
-              ))}
-            </div>
-          </motion.div>
         )}
       </AnimatePresence>
     </div>
