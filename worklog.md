@@ -446,3 +446,21 @@ Stage Summary:
 - Sound design now authentically Javanese/royalty — Gong Ageng, Kempul, Saron timbres
 - Bronze beating effect (slightly detuned oscillator pairs) creates realistic metallic shimmer
 - Lint and dev server clean
+
+---
+Task ID: 4
+Agent: Main
+Task: Fix hydration mismatch on page reload (server renders Suspense, client renders main)
+
+Work Log:
+- Root cause: `ritualComplete` useState used `typeof window !== 'undefined'` check in initializer → server renders false (shows DigitalUnveiling/Suspense), client renders true from sessionStorage (shows <main>)
+- Fix in page.tsx: Changed to `useState(false)` always — no server/client branch in initializer
+- Fix in DigitalUnveiling.tsx: Added auto-skip useEffect that reads sessionStorage and fires `onComplete()` immediately if ritual was already completed
+- Used `useRef` pattern for `onComplete` to avoid stale closures (ref updated in useEffect, not render — per React 19 strict rules)
+- Added `skipRef` guard to prevent double-firing
+- Result: Server and client both start with `ritualComplete=false`, DigitalUnveiling mounts, auto-skips via sessionStorage check, then fires onComplete → seamless transition to flipbook
+
+Stage Summary:
+- Hydration mismatch fully resolved — server and client render identical initial output
+- Page reload behavior: DigitalUnveiling appears briefly, then auto-skips to flipbook
+- Lint clean, dev server clean

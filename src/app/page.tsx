@@ -4372,15 +4372,16 @@ export default function Home() {
   const [showHint, setShowHint] = useState(true)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [loading, setLoading] = useState(true)
-  const [ritualComplete, setRitualComplete] = useState(() => {
-    if (typeof window !== 'undefined') return sessionStorage.getItem('knbmp-ritual-complete') === 'true'
-    return false
-  })
+  // Always start false on both server & client to avoid hydration mismatch.
+  // The DigitalUnveiling component itself checks sessionStorage and fires
+  // onComplete immediately if the ritual was already completed, so the user
+  // is never stuck re-doing the ritual after a page reload.
+  const [ritualComplete, setRitualComplete] = useState(false)
   const { domains: liveDomains, isLive, lastFetched, refresh: refreshFlipbookData } = useFlipbookData()
 
   const handleRitualComplete = useCallback(() => {
     setRitualComplete(true)
-    if (typeof window !== 'undefined') sessionStorage.setItem('knbmp-ritual-complete', 'true')
+    try { sessionStorage.setItem('knbmp-ritual-complete', 'true') } catch { /* quota */ }
   }, [])
 
   const touchStartX = useRef(0)
