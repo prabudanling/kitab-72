@@ -1,1119 +1,1022 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { motion, AnimatePresence, useInView, useMotionValue, animate } from 'framer-motion'
-import {
-  Search, X, ChevronRight, ChevronDown, BookOpen, ArrowUp,
-  Shield, Target, Users, Zap, Globe, TrendingUp, Database, Award
-} from 'lucide-react'
-import {
-  domains, allPillars, getPillarByNumber, getDomainForPillar,
-  type Pillar, type Domain
-} from '@/lib/pillar-data'
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { domains, type Pillar, type Domain } from '@/lib/pillar-data'
 
 // ═══════════════════════════════════════════════════════════════
-// ANIMATED COUNTER
+// TYPES
 // ═══════════════════════════════════════════════════════════════
-function AnimatedCounter({ target, duration = 2 }: { target: number; duration?: number }) {
-  const [count, setCount] = useState(0)
-  const ref = useRef<HTMLSpanElement>(null)
-  const inView = useInView(ref, { once: true })
-  const mv = useMotionValue(0)
+type BookPage =
+  | { type: 'cover' }
+  | { type: 'dedication' }
+  | { type: 'toc' }
+  | { type: 'domain-opener'; data: Domain }
+  | { type: 'pillar'; data: { pillar: Pillar; domain: Domain } }
+  | { type: 'philosophy' }
+  | { type: 'covenant' }
+  | { type: 'back-cover' }
 
-  useEffect(() => {
-    if (!inView) return
-    const unsubscribe = mv.on('change', v => setCount(Math.round(v)))
-    animate(mv, target, { duration, ease: 'easeOut' })
-    return () => unsubscribe()
-  }, [inView, target, duration, mv])
-
-  return <span ref={ref}>{count.toLocaleString('id-ID')}</span>
+// ═══════════════════════════════════════════════════════════════
+// Z-INDEX FORMULA
+// ═══════════════════════════════════════════════════════════════
+const getZIndex = (index: number, currentLeaf: number, total: number) => {
+  if (index < currentLeaf) return index + 1
+  if (index === currentLeaf) return total + 1
+  return total - (index - currentLeaf)
 }
 
 // ═══════════════════════════════════════════════════════════════
-// ELEGANT DIVIDER
+// DECORATIVE ELEMENTS
 // ═══════════════════════════════════════════════════════════════
-function ElegantDivider({ color = '#C5A059' }: { color?: string }) {
+function GoldDivider({ color = '#C5A059', className = '' }: { color?: string; className?: string }) {
   return (
-    <div className="flex items-center justify-center gap-3 my-8">
-      <div className="h-px flex-1 max-w-[100px]" style={{ backgroundColor: `${color}30` }} />
-      <div className="w-2 h-2 rotate-45" style={{ backgroundColor: `${color}50` }} />
-      <div className="h-px flex-1 max-w-[100px]" style={{ backgroundColor: `${color}30` }} />
+    <div className={`flex items-center justify-center gap-3 ${className}`}>
+      <div className="h-px flex-1 max-w-[120px]" style={{ backgroundColor: `${color}40` }} />
+      <div className="w-2 h-2 rotate-45 flex-shrink-0" style={{ backgroundColor: `${color}60` }} />
+      <div className="h-px flex-1 max-w-[120px]" style={{ backgroundColor: `${color}40` }} />
     </div>
   )
 }
 
-// ═══════════════════════════════════════════════════════════════
-// SECTION HEADER
-// ═══════════════════════════════════════════════════════════════
-function SectionHeader({
-  label, title, subtitle
-}: {
-  label: string
-  title: string
-  subtitle?: string
-}) {
+function CornerOrnament({ color = '#C5A059', size = 40 }: { color?: string; size?: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.6 }}
-      className="text-center mb-12"
-    >
-      <span
-        className="inline-block text-xs font-sans tracking-[3px] uppercase mb-3"
-        style={{ color: '#C5A059' }}
-      >
-        {label}
-      </span>
-      <h2
-        className="font-[family-name:var(--font-heading)] text-2xl sm:text-3xl md:text-4xl font-normal"
-        style={{ color: '#3E2723' }}
-      >
-        {title}
-      </h2>
-      {subtitle && (
-        <p className="font-[family-name:var(--font-body)] text-base mt-3 max-w-2xl mx-auto" style={{ color: '#6B5E50' }}>
-          {subtitle}
-        </p>
-      )}
-    </motion.div>
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" className="opacity-40">
+      <path d="M2 38V12C2 6.48 6.48 2 12 2H38" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M2 28V16C2 8.26 8.26 2 16 2H28" stroke={color} strokeWidth="0.8" strokeLinecap="round" opacity="0.5" />
+    </svg>
   )
 }
 
 // ═══════════════════════════════════════════════════════════════
-// PILLAR DETAIL PANEL (Slide-in from right)
+// PAGE RENDERERS
 // ═══════════════════════════════════════════════════════════════
-function PillarDetailPanel({
-  pillar, onClose, onNavigate
-}: {
-  pillar: Pillar
-  onClose: () => void
-  onNavigate: (id: number) => void
-}) {
-  const domain = getDomainForPillar(pillar.id)!
-  const badgeConfig: Record<string, { label: string; bg: string; text: string }> = {
-    foundation: { label: 'Fondasi', bg: '#FFF8EB', text: '#92400E' },
-    strategic: { label: 'Strategis', bg: '#EFF6FF', text: '#1E40AF' },
-    operational: { label: 'Operasional', bg: '#ECFDF5', text: '#065F46' },
-  }
-  const badge = badgeConfig[pillar.badge]
 
+function CoverPage() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-50"
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-center px-8 py-12 overflow-hidden"
+      style={{ backgroundColor: '#FAF9F6' }}
     >
-      {/* Backdrop */}
+      {/* Double gold border */}
       <div
-        className="absolute inset-0 bg-black/30"
-        onClick={onClose}
+        className="absolute inset-4 pointer-events-none"
+        style={{
+          border: '2px solid #C5A05930',
+          borderRadius: 4,
+        }}
+      />
+      <div
+        className="absolute inset-6 pointer-events-none"
+        style={{
+          border: '1px solid #C5A05920',
+          borderRadius: 2,
+        }}
       />
 
-      {/* Panel */}
-      <motion.div
-        initial={{ x: '100%' }}
-        animate={{ x: 0 }}
-        exit={{ x: '100%' }}
-        transition={{ type: 'spring', stiffness: 300, damping: 32 }}
-        className="absolute top-0 right-0 h-full w-full sm:w-[520px] bg-white shadow-2xl flex flex-col overflow-hidden"
-      >
-        {/* Panel Header */}
-        <div className="flex-shrink-0 p-6 pb-5 border-b" style={{ borderColor: '#E0D8CC' }}>
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-3 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-            aria-label="Tutup panel"
-          >
-            <X className="w-5 h-5" style={{ color: '#6B5E50' }} />
-          </button>
+      {/* Corner ornaments */}
+      <div className="absolute top-6 left-6"><CornerOrnament /></div>
+      <div className="absolute top-6 right-6" style={{ transform: 'scaleX(-1)' }}><CornerOrnament /></div>
+      <div className="absolute bottom-6 left-6" style={{ transform: 'scaleY(-1)' }}><CornerOrnament /></div>
+      <div className="absolute bottom-6 right-6" style={{ transform: 'scale(-1,-1)' }}><CornerOrnament /></div>
 
-          <div className="flex items-center gap-2 mb-3 flex-wrap">
+      <div className="flex flex-col items-center gap-4 max-w-md text-center relative z-10">
+        {/* Classification */}
+        <p
+          className="font-[family-name:var(--font-body)] text-[9px] sm:text-[10px] tracking-[2px] uppercase"
+          style={{ color: '#8B7D6B' }}
+        >
+          Dokumen Super-Master &nbsp;|&nbsp; Klasifikasi: Absolut &nbsp;|&nbsp; Horizon: 100 Tahun
+        </p>
+
+        <GoldDivider />
+
+        {/* KNBMP */}
+        <h1
+          className="font-[family-name:var(--font-heading)] text-5xl sm:text-6xl md:text-7xl font-normal tracking-tight leading-none"
+          style={{ color: '#2C2417' }}
+        >
+          KNBMP
+        </h1>
+
+        {/* PGA-72 */}
+        <p
+          className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl tracking-[6px] font-normal"
+          style={{ color: '#4A3F32' }}
+        >
+          PGA-72
+        </p>
+
+        <GoldDivider />
+
+        {/* Anatomi Peradaban */}
+        <p
+          className="font-[family-name:var(--font-heading)] text-sm sm:text-base italic"
+          style={{ color: '#6B5E50' }}
+        >
+          Anatomi Peradaban:
+        </p>
+
+        <h2
+          className="font-[family-name:var(--font-heading)] text-lg sm:text-xl md:text-2xl leading-snug font-normal"
+          style={{ color: '#C5A059' }}
+        >
+          72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat
+        </h2>
+
+        <GoldDivider />
+
+        {/* Bottom subtitle */}
+        <p
+          className="font-[family-name:var(--font-body)] text-[8px] sm:text-[9px] tracking-[1.5px] uppercase mt-2"
+          style={{ color: '#A09385' }}
+        >
+          Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function DedicationPage() {
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col px-8 sm:px-12 py-10 sm:py-14 overflow-y-auto">
+      <div className="max-w-lg mx-auto flex flex-col gap-6 flex-1">
+        <p
+          className="font-[family-name:var(--font-body)] text-[10px] tracking-[2px] uppercase"
+          style={{ color: '#C5A059' }}
+        >
+          Pendahuluan
+        </p>
+
+        <div
+          className="h-px w-16"
+          style={{ backgroundColor: '#C5A05940' }}
+        />
+
+        <p
+          className="font-[family-name:var(--font-heading)] text-base sm:text-lg leading-relaxed italic text-center"
+          style={{ color: '#3E2723' }}
+        >
+          Buku ini bukan sekadar manual korporasi. Ini adalah 72 anak tangga menuju kemerdekaan ekonomi. Setiap domain mewakili satu fungsi vital dari ekosistem kita. Berikut adalah arsitektur lengkap beserta makna filosofis di balik setiap dokumennya.
+        </p>
+
+        {/* Classification box */}
+        <div
+          className="mt-auto border rounded-lg p-5 sm:p-6"
+          style={{
+            borderColor: '#C5A05930',
+            backgroundColor: '#FAF9F6',
+          }}
+        >
+          <div className="space-y-2">
+            {[
+              { label: 'Klasifikasi', value: 'Absolute Source of Truth' },
+              { label: 'Horizon', value: '100 Tahun (2025–2125)' },
+              { label: 'Cakupan', value: '83.763 Desa, 34 Provinsi' },
+              { label: 'Populasi Dampak', value: '275 Juta Jiwa' },
+            ].map((item, i) => (
+              <div key={i} className="flex justify-between items-baseline">
+                <span
+                  className="font-[family-name:var(--font-body)] text-xs font-semibold uppercase tracking-wider"
+                  style={{ color: '#8B7D6B' }}
+                >
+                  {item.label}
+                </span>
+                <span
+                  className="font-[family-name:var(--font-body)] text-sm"
+                  style={{ color: '#3E2723' }}
+                >
+                  {item.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function TableOfContentsPage() {
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col px-6 sm:px-10 py-8 sm:py-10 overflow-y-auto">
+      <h2
+        className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl font-normal mb-6 text-center"
+        style={{ color: '#2C2417' }}
+      >
+        Daftar Isi
+      </h2>
+
+      <div className="flex-1 space-y-3 sm:space-y-4">
+        {domains.map((domain) => (
+          <div key={domain.id}>
+            {/* Domain header */}
+            <div className="flex items-start gap-2 mb-1">
+              <span className="text-sm sm:text-base flex-shrink-0">{domain.emoji}</span>
+              <div className="min-w-0">
+                <p
+                  className="font-[family-name:var(--font-heading)] text-xs sm:text-sm font-semibold leading-tight"
+                  style={{ color: domain.color }}
+                >
+                  DOMAIN {domain.id}: {domain.name}
+                </p>
+                <p
+                  className="font-[family-name:var(--font-heading)] text-[10px] sm:text-xs italic"
+                  style={{ color: '#8B7D6B' }}
+                >
+                  ({domain.nameId} — {domain.nameSubtitle})
+                </p>
+                <p
+                  className="font-[family-name:var(--font-body)] text-[9px] sm:text-[10px]"
+                  style={{ color: '#A09385' }}
+                >
+                  {domain.range}
+                </p>
+              </div>
+            </div>
+
+            {/* Pillar list */}
+            <div className="ml-5 sm:ml-7 space-y-0.5 mb-3">
+              {domain.pillars.map((pillar) => (
+                <p
+                  key={pillar.id}
+                  className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs leading-relaxed"
+                  style={{ color: '#4A3F32' }}
+                >
+                  <span className="font-semibold" style={{ color: domain.color }}>{pillar.code}</span>
+                  {' '}{pillar.name}
+                </p>
+              ))}
+            </div>
+
+            {/* Separator */}
+            <div className="h-px" style={{ backgroundColor: '#E8E0D4' }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function DomainOpenerPage({ domain }: { domain: Domain }) {
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden">
+      {/* Left border */}
+      <div
+        className="absolute left-0 top-0 bottom-0 w-1.5"
+        style={{ backgroundColor: domain.color }}
+      />
+
+      <div className="flex flex-col px-8 sm:px-12 py-10 sm:py-14 flex-1">
+        {/* Domain number label */}
+        <p
+          className="font-[family-name:var(--font-body)] text-[10px] tracking-[3px] uppercase mb-4"
+          style={{ color: domain.color }}
+        >
+          Domain {domain.id}
+        </p>
+
+        {/* Title */}
+        <h2
+          className="font-[family-name:var(--font-heading)] text-2xl sm:text-3xl font-normal leading-tight mb-1"
+          style={{ color: '#2C2417' }}
+        >
+          {domain.emoji} {domain.name}
+        </h2>
+
+        {/* Subtitle */}
+        <p
+          className="font-[family-name:var(--font-heading)] text-sm sm:text-base italic mb-6"
+          style={{ color: domain.color }}
+        >
+          ({domain.nameId} — {domain.nameSubtitle})
+        </p>
+
+        {/* Description */}
+        <p
+          className="font-[family-name:var(--font-body)] text-sm sm:text-base leading-relaxed mb-auto"
+          style={{ color: '#3E2723' }}
+        >
+          {domain.description}
+        </p>
+
+        {/* Pillar count */}
+        <div className="mt-6 mb-2">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-6 h-px" style={{ backgroundColor: domain.color }} />
             <span
-              className="text-xs font-sans tracking-[2px] uppercase"
+              className="font-[family-name:var(--font-body)] text-xs font-semibold"
               style={{ color: domain.color }}
             >
-              {domain.code} &middot; {domain.emoji}
-            </span>
-            <span
-              className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold tracking-wide"
-              style={{ backgroundColor: badge.bg, color: badge.text }}
-            >
-              {badge.label}
+              {domain.pillars.length} Pilar
             </span>
           </div>
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            {domain.pillars.map((p) => (
+              <span
+                key={p.id}
+                className="font-[family-name:var(--font-body)] text-[10px]"
+                style={{ color: '#6B5E50' }}
+              >
+                {p.code}
+              </span>
+            ))}
+          </div>
+        </div>
 
-          <h2
-            className="font-[family-name:var(--font-heading)] text-2xl font-normal leading-tight pr-10"
-            style={{ color: '#3E2723' }}
+        {/* Range */}
+        <p
+          className="font-[family-name:var(--font-body)] text-sm font-semibold mt-4"
+          style={{ color: domain.color }}
+        >
+          {domain.range}
+        </p>
+
+        {/* Corner ornament */}
+        <div className="absolute bottom-4 right-4 opacity-30">
+          <CornerOrnament color={domain.color} size={50} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PillarPage({ pillar, domain }: { pillar: Pillar; domain: Domain }) {
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden">
+      {/* Top color strip */}
+      <div
+        className="flex items-center justify-between px-4 sm:px-6 py-2 flex-shrink-0"
+        style={{ backgroundColor: `${domain.color}08` }}
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: domain.color }} />
+          <span
+            className="font-[family-name:var(--font-body)] text-[9px] sm:text-[10px] font-semibold tracking-wider uppercase"
+            style={{ color: domain.color }}
+          >
+            {domain.code} &middot; {domain.nameId}
+          </span>
+        </div>
+        <span
+          className="font-[family-name:var(--font-body)] text-[9px] sm:text-[10px]"
+          style={{ color: '#A09385' }}
+        >
+          {pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'}
+        </span>
+      </div>
+
+      {/* Large faded background number */}
+      <div className="relative flex-1 overflow-y-auto px-5 sm:px-8 py-4 sm:py-5">
+        <div
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 font-[family-name:var(--font-heading)] font-bold pointer-events-none select-none"
+          style={{
+            fontSize: 'clamp(100px, 18vw, 200px)',
+            color: `${domain.color}08`,
+            lineHeight: 1,
+          }}
+        >
+          {pillar.id}
+        </div>
+
+        <div className="relative z-10 flex flex-col gap-3 sm:gap-4">
+          {/* Badge */}
+          <span
+            className="inline-block self-start px-3 py-1 rounded-full text-[10px] sm:text-xs font-[family-name:var(--font-body)] font-bold tracking-wider"
+            style={{
+              backgroundColor: `${domain.color}15`,
+              color: domain.color,
+            }}
+          >
+            {pillar.code}
+          </span>
+
+          {/* Pillar name */}
+          <h3
+            className="font-[family-name:var(--font-heading)] text-lg sm:text-xl font-normal leading-tight"
+            style={{ color: '#2C2417' }}
           >
             {pillar.name}
-          </h2>
+          </h3>
+
+          {/* English name */}
           <p
-            className="font-[family-name:var(--font-heading)] text-sm italic mt-1"
-            style={{ color: '#6B5E50' }}
+            className="font-[family-name:var(--font-heading)] text-xs sm:text-sm italic"
+            style={{ color: '#8B7D6B' }}
           >
             {pillar.eng}
           </p>
-        </div>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-7">
-          {/* Vision Quote */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="p-5 rounded-lg border-l-4"
+          {/* Gold line */}
+          <div className="h-px w-full max-w-[200px]" style={{ backgroundColor: '#C5A05940' }} />
+
+          {/* Description */}
+          <p
+            className="font-[family-name:var(--font-body)] text-[13px] sm:text-sm leading-relaxed"
+            style={{ color: '#3E2723' }}
+          >
+            {pillar.desc}
+          </p>
+
+          {/* Vision quote */}
+          <div
+            className="border-l-3 rounded-r p-3 sm:p-4"
             style={{
-              backgroundColor: `${domain.color}08`,
-              borderColor: domain.color,
+              backgroundColor: `${domain.color}06`,
+              borderColor: `${domain.color}60`,
+              borderLeftWidth: 3,
             }}
           >
             <p
-              className="font-[family-name:var(--font-heading)] text-sm leading-relaxed italic"
+              className="font-[family-name:var(--font-heading)] text-xs sm:text-[13px] leading-relaxed italic"
               style={{ color: '#3E2723' }}
             >
               {pillar.vision}
             </p>
-          </motion.div>
+          </div>
 
-          {/* Description */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-          >
-            <h4
-              className="text-xs font-sans tracking-[2px] uppercase mb-2"
-              style={{ color: '#6B5E50' }}
-            >
-              Deskripsi
-            </h4>
-            <p className="font-[family-name:var(--font-body)] text-base leading-relaxed" style={{ color: '#2C2C2C' }}>
-              {pillar.desc}
-            </p>
-          </motion.div>
-
-          {/* Dimensions Table */}
+          {/* Dimensions */}
           {pillar.dimensions.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <h4
-                className="text-xs font-sans tracking-[2px] uppercase mb-3"
-                style={{ color: '#6B5E50' }}
+            <div>
+              <p
+                className="font-[family-name:var(--font-body)] text-[10px] tracking-[2px] uppercase font-semibold mb-2"
+                style={{ color: '#8B7D6B' }}
               >
                 Dimensi
-              </h4>
-              <div className="rounded-lg border overflow-hidden" style={{ borderColor: '#E0D8CC' }}>
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
                 {pillar.dimensions.map((dim, i) => (
-                  <div
-                    key={i}
-                    className="flex items-start gap-4 px-4 py-3"
-                    style={{
-                      backgroundColor: i % 2 === 0 ? '#FAF9F6' : '#FFFFFF',
-                      borderBottom: i < pillar.dimensions.length - 1 ? '1px solid #E0D8CC' : 'none',
-                    }}
-                  >
-                    <span className="font-[family-name:var(--font-body)] text-sm font-semibold min-w-[120px]" style={{ color: '#3E2723' }}>
-                      {dim.label}
+                  <div key={i} className="flex items-baseline gap-2">
+                    <span
+                      className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs font-semibold flex-shrink-0"
+                      style={{ color: '#6B5E50' }}
+                    >
+                      {dim.label}:
                     </span>
-                    <span className="font-[family-name:var(--font-body)] text-sm" style={{ color: '#2C2C2C' }}>
+                    <span
+                      className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs"
+                      style={{ color: '#3E2723' }}
+                    >
                       {dim.value}
                     </span>
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           )}
 
           {/* Principles */}
           {pillar.principles.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 }}
-            >
-              <h4
-                className="text-xs font-sans tracking-[2px] uppercase mb-3"
-                style={{ color: '#6B5E50' }}
+            <div>
+              <p
+                className="font-[family-name:var(--font-body)] text-[10px] tracking-[2px] uppercase font-semibold mb-2"
+                style={{ color: '#8B7D6B' }}
               >
                 Prinsip Utama
-              </h4>
-              <ul className="space-y-3">
+              </p>
+              <ul className="space-y-1.5">
                 {pillar.principles.map((principle, i) => (
-                  <li key={i} className="flex items-start gap-3">
+                  <li key={i} className="flex items-start gap-2">
                     <span
-                      className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                      className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
                       style={{ backgroundColor: '#C5A059' }}
                     />
-                    <span className="font-[family-name:var(--font-body)] text-sm leading-relaxed" style={{ color: '#2C2C2C' }}>
+                    <span
+                      className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs leading-relaxed"
+                      style={{ color: '#3E2723' }}
+                    >
                       {principle}
                     </span>
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
           )}
 
-          {/* Cross References */}
+          {/* Cross references */}
           {pillar.xref.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <h4
-                className="text-xs font-sans tracking-[2px] uppercase mb-3"
-                style={{ color: '#6B5E50' }}
+            <div className="mt-1">
+              <p
+                className="font-[family-name:var(--font-body)] text-[10px] tracking-[2px] uppercase font-semibold mb-1.5"
+                style={{ color: '#8B7D6B' }}
               >
                 Referensi Silang
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {pillar.xref.map(refId => {
-                  const refPillar = getPillarByNumber(refId)
-                  if (!refPillar) return null
-                  const refDomain = getDomainForPillar(refId)!
-                  return (
-                    <button
-                      key={refId}
-                      onClick={() => onNavigate(refId)}
-                      className="px-3 py-1.5 rounded-md text-xs font-sans font-medium transition-all duration-200 hover:scale-105 cursor-pointer border"
-                      style={{
-                        backgroundColor: `${refDomain.color}10`,
-                        color: refDomain.color,
-                        borderColor: `${refDomain.color}30`,
-                      }}
-                    >
-                      {refPillar.code}: {refPillar.name}
-                    </button>
-                  )
-                })}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {pillar.xref.map((refId) => (
+                  <span
+                    key={refId}
+                    className="inline-block px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-[family-name:var(--font-body)] font-semibold"
+                    style={{
+                      backgroundColor: `${domain.color}10`,
+                      color: domain.color,
+                    }}
+                  >
+                    PGA-{String(refId).padStart(2, '0')}
+                  </span>
+                ))}
               </div>
-            </motion.div>
+            </div>
           )}
         </div>
+      </div>
 
-        {/* Panel Footer */}
-        <div className="flex-shrink-0 px-6 py-4 border-t" style={{ borderColor: '#E0D8CC', backgroundColor: '#FAF9F6' }}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: domain.color }} />
-              <span className="text-xs font-sans" style={{ color: '#6B5E50' }}>
-                {domain.code} &middot; {domain.name}
-              </span>
-            </div>
-            <span className="text-[10px] font-sans tracking-wider" style={{ color: '#A09385' }}>
-              Grand Architect&apos;s Office
-            </span>
-          </div>
+      {/* Bottom page indicator */}
+      <div className="flex-shrink-0 px-5 sm:px-8 py-2">
+        <div className="h-px w-full mb-1.5" style={{ backgroundColor: '#E8E0D4' }} />
+        <p
+          className="font-[family-name:var(--font-body)] text-[8px] sm:text-[9px] text-center tracking-wider"
+          style={{ color: '#B0A898' }}
+        >
+          {pillar.code} &middot; {pillar.id} / 72
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function PhilosophyPage() {
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden">
+      {/* Left gold border */}
+      <div className="absolute left-0 top-0 bottom-0 w-1.5" style={{ backgroundColor: '#C5A059' }} />
+
+      {/* Phi watermark */}
+      <div
+        className="absolute top-8 right-6 sm:top-12 sm:right-10 font-[family-name:var(--font-heading)] pointer-events-none select-none"
+        style={{
+          fontSize: 'clamp(120px, 25vw, 250px)',
+          color: '#C5A05910',
+          lineHeight: 1,
+        }}
+      >
+        φ
+      </div>
+
+      <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 py-10 sm:py-14 relative z-10">
+        <h2
+          className="font-[family-name:var(--font-heading)] text-2xl sm:text-3xl font-normal leading-tight mb-2"
+          style={{ color: '#2C2417' }}
+        >
+          Mengapa 72? Mengapa 9 Domain?
+        </h2>
+
+        <GoldDivider className="my-4" />
+
+        <p
+          className="font-[family-name:var(--font-body)] text-sm sm:text-base leading-relaxed mb-4"
+          style={{ color: '#3E2723' }}
+        >
+          Angka 72 bukan kebetulan. Ia adalah kelipatan dari Golden Ratio Fibonacci — 8 &times; 9 = 72. Delapan representasi arah mata angin dalam Nusantara, sembilan simbol kekuatan sembilan naga langit dalam filosofi Jawa kuno.
+        </p>
+
+        <p
+          className="font-[family-name:var(--font-body)] text-sm sm:text-base leading-relaxed"
+          style={{ color: '#3E2723' }}
+        >
+          Arsitektur PGA-72 dibangun dengan prinsip bahwa setiap domain saling bergantung — tidak ada satu pilar pun yang berdiri sendiri. Ketika satu pilar goyah, seluruh ekosistem merasakan getarannya. Inilah desain peradaban: terhubung, tangguh, dan abadi.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function CovenantPage() {
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col items-center justify-center px-8 sm:px-12 py-10 sm:py-14 overflow-y-auto">
+      <div className="flex flex-col items-center max-w-md text-center">
+        <h2
+          className="font-[family-name:var(--font-heading)] text-2xl sm:text-3xl font-normal"
+          style={{ color: '#2C2417' }}
+        >
+          Covenant of Civilization
+        </h2>
+
+        <p
+          className="font-[family-name:var(--font-heading)] text-sm italic mt-1 mb-6"
+          style={{ color: '#C5A059' }}
+        >
+          Perjanjian Suci
+        </p>
+
+        <GoldDivider />
+
+        <blockquote
+          className="font-[family-name:var(--font-heading)] text-sm sm:text-base leading-relaxed italic mt-6 mb-8"
+          style={{ color: '#3E2723' }}
+        >
+          &ldquo;Kami berjanji — di hadapan sejarah, di hadapan 275 juta rakyat Indonesia, dan di hadapan generasi yang belum lahir — bahwa kedaulatan ekonomi rakyat bukanlah impian. Ia adalah tujuan yang kami pertaruhkan dengan segala daya dan upaya.&rdquo;
+        </blockquote>
+
+        <GoldDivider />
+
+        <p
+          className="font-[family-name:var(--font-body)] text-xs tracking-wider uppercase mt-6"
+          style={{ color: '#A09385' }}
+        >
+          Grand Architect&apos;s Office &middot; KNBMP
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function BackCoverPage() {
+  return (
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-center px-8 py-12 overflow-hidden"
+      style={{ backgroundColor: '#FAF9F6' }}
+    >
+      {/* MERDEKA watermark */}
+      <div
+        className="absolute font-[family-name:var(--font-heading)] font-bold pointer-events-none select-none"
+        style={{
+          fontSize: 'clamp(60px, 15vw, 140px)',
+          color: '#C5A05908',
+          letterSpacing: '0.1em',
+          lineHeight: 1,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        MERDEKA
+      </div>
+
+      <div className="flex flex-col items-center gap-6 relative z-10">
+        <GoldDivider />
+
+        <p
+          className="font-[family-name:var(--font-heading)] text-lg sm:text-xl italic"
+          style={{ color: '#6B5E50' }}
+        >
+          Grand Architect&apos;s Office
+        </p>
+
+        <p
+          className="font-[family-name:var(--font-body)] text-xs tracking-[2px] uppercase"
+          style={{ color: '#A09385' }}
+        >
+          Klasifikasi: Absolute Source of Truth
+        </p>
+
+        <p
+          className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl font-normal"
+          style={{ color: '#C5A059' }}
+        >
+          2025
+        </p>
+
+        <GoldDivider />
+
+        {/* Small decorative element */}
+        <div className="flex items-center gap-2 mt-2">
+          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: '#C5A05940' }} />
+          <div className="w-3 h-px" style={{ backgroundColor: '#C5A05940' }} />
+          <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: '#C5A05940' }} />
+          <div className="w-3 h-px" style={{ backgroundColor: '#C5A05940' }} />
+          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: '#C5A05940' }} />
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }
 
 // ═══════════════════════════════════════════════════════════════
-// DOMAIN ICON MAP
+// RENDER PAGE DISPATCHER
 // ═══════════════════════════════════════════════════════════════
-const domainIconMap = [Shield, Target, BookOpen, Zap, TrendingUp, Database, Users, Award, Globe]
+function renderPage(page: BookPage, index: number) {
+  switch (page.type) {
+    case 'cover':
+      return <CoverPage key={`cover-${index}`} />
+    case 'dedication':
+      return <DedicationPage key={`ded-${index}`} />
+    case 'toc':
+      return <TableOfContentsPage key={`toc-${index}`} />
+    case 'domain-opener':
+      return <DomainOpenerPage key={`do-${page.data.id}`} domain={page.data} />
+    case 'pillar':
+      return (
+        <PillarPage
+          key={`p-${page.data.pillar.id}`}
+          pillar={page.data.pillar}
+          domain={page.data.domain}
+        />
+      )
+    case 'philosophy':
+      return <PhilosophyPage key={`phil-${index}`} />
+    case 'covenant':
+      return <CovenantPage key={`cov-${index}`} />
+    case 'back-cover':
+      return <BackCoverPage key={`bc-${index}`} />
+    default:
+      return null
+  }
+}
 
 // ═══════════════════════════════════════════════════════════════
-// MAIN PAGE
+// MAIN FLIPBOOK COMPONENT
 // ═══════════════════════════════════════════════════════════════
 export default function Home() {
-  const [selectedPillar, setSelectedPillar] = useState<Pillar | null>(null)
-  const [activeDomain, setActiveDomain] = useState<number | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [showScrollTop, setShowScrollTop] = useState(false)
+  const [currentLeaf, setCurrentLeaf] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [showHint, setShowHint] = useState(true)
 
-  // Refs for scroll targets
-  const daftarIsiRef = useRef<HTMLDivElement>(null)
-  const matrixRef = useRef<HTMLDivElement>(null)
+  const touchStartX = useRef(0)
+  const touchStartY = useRef(0)
 
-  // Scroll listener
+  // ── Generate book pages ──
+  const bookPages = useMemo<BookPage[]>(() => {
+    const pages: BookPage[] = [
+      { type: 'cover' },
+      { type: 'dedication' },
+      { type: 'toc' },
+      ...domains.flatMap((domain) => [
+        { type: 'domain-opener' as const, data: domain },
+        ...domain.pillars.map((pillar) => ({
+          type: 'pillar' as const,
+          data: { pillar, domain },
+        })),
+      ]),
+      { type: 'philosophy' as const },
+      { type: 'covenant' as const },
+      { type: 'back-cover' as const },
+    ]
+    return pages
+  }, [])
+
+  const totalPages = bookPages.length
+
+  // ── Hide hint after 5s ──
   useEffect(() => {
-    const handleScroll = () => setShowScrollTop(window.scrollY > 600)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    const t = setTimeout(() => setShowHint(false), 5000)
+    return () => clearTimeout(t)
   }, [])
 
-  // Filtered pillars for matrix
-  const filteredPillars = useMemo(() => {
-    let result = allPillars
-    if (activeDomain !== null) {
-      result = result.filter(p => p.domain === activeDomain)
+  // ── Navigation functions ──
+  const goNext = useCallback(() => {
+    if (isAnimating || currentLeaf >= totalPages - 1) return
+    setIsAnimating(true)
+    setCurrentLeaf((prev) => prev + 1)
+    setTimeout(() => setIsAnimating(false), 850)
+  }, [isAnimating, currentLeaf, totalPages])
+
+  const goPrev = useCallback(() => {
+    if (isAnimating || currentLeaf <= 0) return
+    setIsAnimating(true)
+    setCurrentLeaf((prev) => prev - 1)
+    setTimeout(() => setIsAnimating(false), 850)
+  }, [isAnimating, currentLeaf])
+
+  // ── Keyboard handler ──
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault()
+        goNext()
+      }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        goPrev()
+      }
     }
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase()
-      result = result.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.eng.toLowerCase().includes(q) ||
-        p.code.toLowerCase().includes(q) ||
-        p.desc.toLowerCase().includes(q) ||
-        String(p.id).includes(q)
-      )
-    }
-    return result
-  }, [activeDomain, searchQuery])
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [goNext, goPrev])
 
-  const handlePillarClick = useCallback((pillar: Pillar) => {
-    setSelectedPillar(pillar)
+  // ── Click handler (desktop: left/right halves) ──
+  const handleBookClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect()
+      const clickX = e.clientX - rect.left
+      const midX = rect.width / 2
+      if (clickX < midX) goPrev()
+      else goNext()
+    },
+    [goNext, goPrev]
+  )
+
+  // ── Touch handlers ──
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+    touchStartY.current = e.touches[0].clientY
   }, [])
 
-  const handleNavigate = useCallback((id: number) => {
-    const pillar = getPillarByNumber(id)
-    if (pillar) setSelectedPillar(pillar)
-  }, [])
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - touchStartX.current
+      const dy = e.changedTouches[0].clientY - touchStartY.current
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        if (dx < 0) goNext()
+        else goPrev()
+      }
+    },
+    [goNext, goPrev]
+  )
 
-  const scrollToDaftarIsi = () => {
-    daftarIsiRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  // ── Progress ──
+  const progress = ((currentLeaf + 1) / totalPages) * 100
+  const displayPage = currentLeaf + 1
 
-  const scrollToMatrix = () => {
-    matrixRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
+  // ═══════════════════════════════════════════════════════
+  // RENDER
+  // ═══════════════════════════════════════════════════════
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#FAF9F6' }}>
+    <main className="min-h-screen flex flex-col" style={{ backgroundColor: '#1A1814' }}>
+      {/* ── Desktop layout ── */}
+      <div className="hidden md:flex flex-1 items-center justify-center p-8 gap-6">
+        {/* Left nav arrow */}
+        <button
+          onClick={goPrev}
+          disabled={currentLeaf <= 0}
+          className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer disabled:opacity-20 disabled:cursor-default"
+          style={{
+            backgroundColor: '#2A2520',
+            color: '#C5A059',
+            border: '1px solid #3A3530',
+          }}
+          aria-label="Halaman sebelumnya"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
 
-      {/* ═══════════════════════════════════════════════════════
-          1. HEADER / NAVIGATION BAR
-          ═══════════════════════════════════════════════════════ */}
-      <header
-        className="sticky top-0 z-40 bg-white border-b"
-        style={{ borderColor: '#E0D8CC' }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
-            <div
-              className="w-8 h-8 rounded-md flex items-center justify-center font-[family-name:var(--font-heading)] text-sm font-semibold text-white"
-              style={{ backgroundColor: '#C5A059' }}
-            >
-              K
-            </div>
-            <span
-              className="font-[family-name:var(--font-heading)] text-lg font-semibold tracking-wide"
-              style={{ color: '#3E2723' }}
-            >
-              KNBMP &middot; PGA-72
-            </span>
-          </a>
-          <nav className="hidden sm:flex items-center gap-6">
-            <button
-              onClick={scrollToDaftarIsi}
-              className="text-sm font-sans cursor-pointer hover:opacity-70 transition-opacity"
-              style={{ color: '#6B5E50' }}
-            >
-              Daftar Isi
-            </button>
-            <button
-              onClick={scrollToMatrix}
-              className="text-sm font-sans cursor-pointer hover:opacity-70 transition-opacity"
-              style={{ color: '#6B5E50' }}
-            >
-              Matriks Pilar
-            </button>
-          </nav>
-        </div>
-      </header>
-
-      {/* ═══════════════════════════════════════════════════════
-          2. HERO SECTION
-          ═══════════════════════════════════════════════════════ */}
-      <section
-        className="relative py-16 sm:py-24 lg:py-32"
-        style={{ backgroundColor: '#FAF9F6' }}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Classification badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border mb-8"
-            style={{ borderColor: '#C5A05940', backgroundColor: '#C5A05908' }}
-          >
-            <span className="text-xs font-sans tracking-[3px] uppercase" style={{ color: '#C5A059' }}>
-              Dokumen Super-Master &nbsp;|&nbsp; Klasifikasi: Absolut &nbsp;|&nbsp; Horizon: 100 Tahun
-            </span>
-          </motion.div>
-
-          {/* KNBMP Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h1
-              className="font-[family-name:var(--font-heading)] text-5xl sm:text-6xl lg:text-7xl font-normal tracking-tight leading-none"
-              style={{ color: '#3E2723' }}
-            >
-              KNBMP
-            </h1>
-          </motion.div>
-
-          <ElegantDivider />
-
-          {/* Subtitle */}
-          <motion.h2
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.7 }}
-            className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl lg:text-3xl font-normal leading-snug max-w-3xl mx-auto"
-            style={{ color: '#3E2723' }}
-          >
-            Anatomi Peradaban:{' '}
-            <em className="italic" style={{ color: '#C5A059' }}>
-              72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat
-            </em>
-          </motion.h2>
-
-          {/* Tagline */}
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65, duration: 0.7 }}
-            className="font-[family-name:var(--font-heading)] text-base sm:text-lg italic mt-6 max-w-2xl mx-auto leading-relaxed"
-            style={{ color: '#6B5E50' }}
-          >
-            &ldquo;Dari desa-desa yang terlupakan, kami membangun kembali peradaban
-            yang menghormati martabat setiap manusia Indonesia.&rdquo;
-          </motion.p>
-
-          {/* CTA Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.7 }}
-            className="mt-10"
-          >
-            <button
-              onClick={scrollToDaftarIsi}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-lg text-base font-sans font-semibold tracking-wide transition-all duration-200 hover:opacity-90 cursor-pointer min-h-[48px]"
-              style={{
-                backgroundColor: '#C5A059',
-                color: '#FFFFFF',
-              }}
-            >
-              Jelajahi Daftar Isi
-              <ChevronDown className="w-5 h-5" />
-            </button>
-          </motion.div>
+        {/* Book */}
+        <div
+          className="relative flex-shrink-0 rounded-sm overflow-hidden cursor-pointer select-none"
+          style={{
+            width: 'min(780px, 80vw)',
+            height: 'min(90vh, 780px * 4/3)',
+            perspective: '2500px',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 1px rgba(197,160,89,0.3)',
+          }}
+          onClick={handleBookClick}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          role="book"
+          aria-label={`Halaman ${displayPage} dari ${totalPages}`}
+        >
+          {bookPages.map((page, index) => {
+            const isFlipped = index <= currentLeaf
+            const isCurrent = index === currentLeaf
+            return (
+              <div
+                key={index}
+                className="absolute inset-0 bg-white overflow-hidden"
+                style={{
+                  transformOrigin: 'left center',
+                  transform: isFlipped ? 'rotateY(-180deg)' : 'rotateY(0deg)',
+                  backfaceVisibility: 'hidden',
+                  transition: 'transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)',
+                  zIndex: getZIndex(index, currentLeaf, totalPages),
+                  boxShadow: isFlipped
+                    ? '-5px 0 20px rgba(0,0,0,0.15)'
+                    : isCurrent
+                      ? '8px 0 30px rgba(0,0,0,0.25)'
+                      : '3px 0 10px rgba(0,0,0,0.15)',
+                }}
+              >
+                {renderPage(page, index)}
+              </div>
+            )
+          })}
         </div>
 
-        {/* Stats Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.7 }}
-          className="mt-16 sm:mt-20 border-t border-b"
-          style={{ borderColor: '#E0D8CC', backgroundColor: '#FFFFFF' }}
+        {/* Right nav arrow */}
+        <button
+          onClick={goNext}
+          disabled={currentLeaf >= totalPages - 1}
+          className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer disabled:opacity-20 disabled:cursor-default"
+          style={{
+            backgroundColor: '#2A2520',
+            color: '#C5A059',
+            border: '1px solid #3A3530',
+          }}
+          aria-label="Halaman berikutnya"
         >
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 text-center">
-            <div>
-              <div
-                className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl font-normal"
-                style={{ color: '#C5A059' }}
-              >
-                <AnimatedCounter target={72} />
-              </div>
-              <div
-                className="text-xs font-sans tracking-[2px] uppercase mt-1"
-                style={{ color: '#6B5E50' }}
-              >
-                Pilar
-              </div>
-            </div>
-            <div>
-              <div
-                className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl font-normal"
-                style={{ color: '#C5A059' }}
-              >
-                <AnimatedCounter target={9} />
-              </div>
-              <div
-                className="text-xs font-sans tracking-[2px] uppercase mt-1"
-                style={{ color: '#6B5E50' }}
-              >
-                Domain
-              </div>
-            </div>
-            <div>
-              <div
-                className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl font-normal"
-                style={{ color: '#C5A059' }}
-              >
-                <AnimatedCounter target={100} />
-              </div>
-              <div
-                className="text-xs font-sans tracking-[2px] uppercase mt-1"
-                style={{ color: '#6B5E50' }}
-              >
-                Tahun
-              </div>
-            </div>
-            <div>
-              <div
-                className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl font-normal"
-                style={{ color: '#C5A059' }}
-              >
-                <AnimatedCounter target={83763} duration={3} />
-              </div>
-              <div
-                className="text-xs font-sans tracking-[2px] uppercase mt-1"
-                style={{ color: '#6B5E50' }}
-              >
-                Desa
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
 
-      <main className="flex-1">
-
-        {/* ═══════════════════════════════════════════════════════
-            3. DAFTAR ISI (TABLE OF CONTENTS) — CRITICAL SECTION
-            ═══════════════════════════════════════════════════════ */}
-        <section
-          ref={daftarIsiRef}
-          className="py-16 sm:py-20 lg:py-24"
-          style={{ backgroundColor: '#F5F1EB' }}
+      {/* ── Mobile layout ── */}
+      <div className="flex md:hidden flex-1 flex-col">
+        {/* Book area */}
+        <div
+          className="relative flex-1 overflow-hidden cursor-pointer select-none"
+          style={{ perspective: '2500px' }}
+          onClick={handleBookClick}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          role="book"
+          aria-label={`Halaman ${displayPage} dari ${totalPages}`}
         >
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader
-              label="Daftar Isi Lengkap"
-              title="Arsitektur 72 Pilar Fondasional"
-              subtitle="Buku ini bukan sekadar manual korporasi. Ini adalah 72 anak tangga menuju kemerdekaan ekonomi. Setiap domain mewakili satu fungsi vital dari ekosistem kita."
-            />
-
-            <div className="space-y-10 sm:space-y-14">
-              {domains.map((domain, dIdx) => (
-                <motion.div
-                  key={domain.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.5, delay: dIdx * 0.04 }}
-                  className="bg-white rounded-lg border shadow-sm overflow-hidden"
-                  style={{ borderColor: '#E0D8CC' }}
-                >
-                  {/* Domain Header */}
-                  <div
-                    className="p-5 sm:p-6 border-l-4"
-                    style={{ borderColor: domain.color, backgroundColor: `${domain.color}06` }}
-                  >
-                    <div className="flex items-start gap-3 mb-3">
-                      <span className="text-2xl mt-0.5">{domain.emoji}</span>
-                      <div>
-                        <h3
-                          className="font-[family-name:var(--font-heading)] text-lg sm:text-xl font-semibold leading-tight"
-                          style={{ color: '#3E2723' }}
-                        >
-                          DOMAIN {domain.id}: {domain.name}
-                        </h3>
-                        <p
-                          className="font-[family-name:var(--font-heading)] text-sm italic mt-0.5"
-                          style={{ color: domain.color }}
-                        >
-                          ({domain.nameId} &mdash; {domain.nameSubtitle})
-                        </p>
-                      </div>
-                    </div>
-                    <p
-                      className="font-[family-name:var(--font-body)] text-sm leading-relaxed"
-                      style={{ color: '#6B5E50' }}
-                    >
-                      {domain.description}
-                    </p>
-                    <p
-                      className="text-xs font-sans tracking-wider uppercase mt-2"
-                      style={{ color: '#A09385' }}
-                    >
-                      {domain.range}
-                    </p>
-                  </div>
-
-                  {/* Pillars List */}
-                  <div className="divide-y" style={{ borderColor: '#E0D8CC' }}>
-                    {domain.pillars.map((pillar, pIdx) => (
-                      <button
-                        key={pillar.id}
-                        onClick={() => handlePillarClick(pillar)}
-                        className="w-full text-left px-5 sm:px-6 py-4 flex items-start gap-3 sm:gap-4 transition-colors duration-150 cursor-pointer group hover:bg-[#FAF9F6]"
-                        style={{
-                          borderBottom: pIdx < domain.pillars.length - 1 ? '1px solid #E0D8CC' : 'none',
-                        }}
-                      >
-                        {/* Pillar Number */}
-                        <span
-                          className="flex-shrink-0 w-8 h-8 rounded-md flex items-center justify-center text-xs font-sans font-bold text-white mt-0.5"
-                          style={{ backgroundColor: domain.color }}
-                        >
-                          {pillar.id}
-                        </span>
-
-                        {/* Pillar Content */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span
-                              className="text-xs font-sans font-semibold tracking-wide"
-                              style={{ color: domain.color }}
-                            >
-                              {pillar.code}
-                            </span>
-                            <span className="hidden sm:inline text-gray-300">&middot;</span>
-                            <span
-                              className="font-[family-name:var(--font-heading)] text-sm sm:text-base font-semibold leading-tight"
-                              style={{ color: '#3E2723' }}
-                            >
-                              {pillar.name}
-                            </span>
-                            <span
-                              className="hidden sm:inline font-[family-name:var(--font-heading)] text-sm italic"
-                              style={{ color: '#6B5E50' }}
-                            >
-                              ({pillar.eng})
-                            </span>
-                          </div>
-                          <p
-                            className="font-[family-name:var(--font-body)] text-sm leading-relaxed mt-1"
-                            style={{ color: '#6B5E50' }}
-                          >
-                            {pillar.desc}
-                          </p>
-                          {/* Mobile: show English name on second line */}
-                          <span
-                            className="sm:hidden font-[family-name:var(--font-heading)] text-xs italic mt-0.5 inline-block"
-                            style={{ color: '#A09385' }}
-                          >
-                            ({pillar.eng})
-                          </span>
-                        </div>
-
-                        {/* Chevron */}
-                        <ChevronRight
-                          className="w-4 h-4 flex-shrink-0 mt-1.5 opacity-30 group-hover:opacity-70 transition-opacity"
-                          style={{ color: domain.color }}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════
-            4. INTERACTIVE PILLAR MATRIX
-            ═══════════════════════════════════════════════════════ */}
-        <section
-          ref={matrixRef}
-          className="py-16 sm:py-20 lg:py-24"
-          style={{ backgroundColor: '#FAF9F6' }}
-        >
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader
-              label="Matriks Interaktif"
-              title="Pilih Pilar"
-              subtitle="Klik angka untuk menjelajahi detail setiap pilar fondasional"
-            />
-
-            {/* Search Bar */}
-            <div className="max-w-md mx-auto mb-6">
-              <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#A09385' }} />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari pilar... (PGA-01, Bintang Utara, dll)"
-                  className="w-full pl-10 pr-10 py-3 rounded-lg border text-base font-[family-name:var(--font-body)] placeholder:font-[family-name:var(--font-body)] focus:outline-none transition-colors"
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderColor: '#E0D8CC',
-                    color: '#2C2C2C',
-                  }}
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md hover:bg-gray-100 transition-colors cursor-pointer"
-                  >
-                    <X className="w-4 h-4" style={{ color: '#A09385' }} />
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Domain Filter Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8" style={{ scrollbarWidth: 'none' }}>
-              <button
-                onClick={() => setActiveDomain(null)}
-                className="flex-shrink-0 px-4 py-2.5 rounded-lg text-sm font-sans font-medium transition-all duration-200 cursor-pointer border min-h-[44px]"
-                style={
-                  activeDomain === null
-                    ? { backgroundColor: '#C5A059', color: '#FFFFFF', borderColor: '#C5A059' }
-                    : { backgroundColor: '#FFFFFF', color: '#6B5E50', borderColor: '#E0D8CC' }
-                }
+          {bookPages.map((page, index) => {
+            const isFlipped = index <= currentLeaf
+            const isCurrent = index === currentLeaf
+            return (
+              <div
+                key={index}
+                className="absolute inset-0 bg-white overflow-hidden"
+                style={{
+                  transformOrigin: 'left center',
+                  transform: isFlipped ? 'rotateY(-180deg)' : 'rotateY(0deg)',
+                  backfaceVisibility: 'hidden',
+                  transition: 'transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)',
+                  zIndex: getZIndex(index, currentLeaf, totalPages),
+                  boxShadow: isFlipped
+                    ? '-3px 0 10px rgba(0,0,0,0.15)'
+                    : isCurrent
+                      ? '4px 0 15px rgba(0,0,0,0.2)'
+                      : '2px 0 5px rgba(0,0,0,0.1)',
+                }}
               >
-                Semua
-              </button>
-              {domains.map(domain => {
-                const Icon = domainIconMap[domain.id - 1] || Shield
-                return (
-                  <button
-                    key={domain.id}
-                    onClick={() => setActiveDomain(activeDomain === domain.id ? null : domain.id)}
-                    className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-sm font-sans font-medium transition-all duration-200 cursor-pointer border min-h-[44px]"
-                    style={
-                      activeDomain === domain.id
-                        ? {
-                            backgroundColor: domain.color,
-                            color: '#FFFFFF',
-                            borderColor: domain.color,
-                          }
-                        : {
-                            backgroundColor: '#FFFFFF',
-                            color: '#6B5E50',
-                            borderColor: '#E0D8CC',
-                          }
-                    }
-                  >
-                    <span className="text-base">{domain.emoji}</span>
-                    <span className="hidden sm:inline">{domain.code}</span>
-                  </button>
-                )
-              })}
-            </div>
-
-            {/* Filtered count */}
-            {filteredPillars.length !== 72 && (
-              <p className="text-sm font-sans text-center mb-6" style={{ color: '#6B5E50' }}>
-                Menampilkan {filteredPillars.length} dari 72 pilar
-              </p>
-            )}
-
-            {/* Number Grid */}
-            <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-9 lg:grid-cols-12 gap-2 sm:gap-3 max-w-4xl mx-auto">
-              {filteredPillars.map((pillar, index) => {
-                const domain = getDomainForPillar(pillar.id)!
-                const isActive = selectedPillar?.id === pillar.id
-                return (
-                  <motion.button
-                    key={pillar.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: Math.min(index * 0.015, 0.5), duration: 0.3 }}
-                    whileHover={{ scale: 1.08, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handlePillarClick(pillar)}
-                    className="aspect-square rounded-lg flex flex-col items-center justify-center gap-1 cursor-pointer border-2 transition-all duration-200"
-                    style={{
-                      borderColor: isActive ? domain.color : `${domain.color}30`,
-                      backgroundColor: isActive ? `${domain.color}15` : '#FFFFFF',
-                    }}
-                  >
-                    <span
-                      className="text-xl sm:text-2xl font-[family-name:var(--font-heading)] font-semibold"
-                      style={{ color: domain.color }}
-                    >
-                      {pillar.id}
-                    </span>
-                    <div
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: domain.color }}
-                    />
-                  </motion.button>
-                )
-              })}
-            </div>
-
-            {/* Empty state */}
-            {filteredPillars.length === 0 && (
-              <div className="text-center py-16">
-                <Search className="w-10 h-10 mx-auto mb-4" style={{ color: '#E0D8CC' }} />
-                <p className="text-base font-sans" style={{ color: '#6B5E50' }}>
-                  Tidak ada pilar yang cocok dengan pencarian &ldquo;{searchQuery}&rdquo;
-                </p>
-                <button
-                  onClick={() => { setSearchQuery(''); setActiveDomain(null) }}
-                  className="mt-4 px-5 py-2.5 rounded-lg text-sm font-sans font-medium cursor-pointer border transition-colors hover:opacity-80 min-h-[44px]"
-                  style={{ borderColor: '#C5A059', color: '#C5A059' }}
-                >
-                  Reset Filter
-                </button>
+                {renderPage(page, index)}
               </div>
-            )}
-          </div>
-        </section>
+            )
+          })}
+        </div>
 
-        {/* ═══════════════════════════════════════════════════════
-            5. DOMAIN OVERVIEW CARDS
-            ═══════════════════════════════════════════════════════ */}
-        <section
-          className="py-16 sm:py-20 lg:py-24"
-          style={{ backgroundColor: '#F5F1EB' }}
+        {/* Bottom navigation bar */}
+        <div
+          className="flex-shrink-0 flex items-center justify-between px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]"
+          style={{ backgroundColor: '#1A1814' }}
         >
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader
-              label="9 Domain Kebangkitan"
-              title="Arsitektur Peradaban"
-              subtitle="Setiap domain memiliki 8 pilar yang saling menguatkan, menciptakan fondasi yang kokoh untuk 100 tahun ke depan."
-            />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {domains.map((domain, i) => {
-                const Icon = domainIconMap[domain.id - 1] || Shield
-                return (
-                  <motion.div
-                    key={domain.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-40px' }}
-                    transition={{ delay: i * 0.06, duration: 0.4 }}
-                  >
-                    <button
-                      onClick={() => { setActiveDomain(domain.id); scrollToMatrix() }}
-                      className="w-full text-left p-5 sm:p-6 bg-white rounded-lg border border-[#E0D8CC] shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer group"
-                    >
-                      <div className="flex items-start gap-3 mb-3">
-                        <div
-                          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ backgroundColor: `${domain.color}15` }}
-                        >
-                          <Icon className="w-5 h-5" style={{ color: domain.color }} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">{domain.emoji}</span>
-                            <span
-                              className="text-[10px] font-sans tracking-[2px] uppercase"
-                              style={{ color: domain.color }}
-                            >
-                              {domain.code}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <h3
-                        className="font-[family-name:var(--font-heading)] text-base font-semibold leading-tight mb-1"
-                        style={{ color: '#3E2723' }}
-                      >
-                        {domain.nameId}
-                      </h3>
-                      <p
-                        className="font-[family-name:var(--font-heading)] text-xs italic mb-2"
-                        style={{ color: domain.color }}
-                      >
-                        {domain.nameSubtitle}
-                      </p>
-                      <p
-                        className="font-[family-name:var(--font-body)] text-sm leading-relaxed line-clamp-2"
-                        style={{ color: '#6B5E50' }}
-                      >
-                        {domain.description}
-                      </p>
-                      <div className="flex items-center gap-1.5 mt-4">
-                        <span
-                          className="text-lg font-[family-name:var(--font-heading)] font-semibold"
-                          style={{ color: domain.color }}
-                        >
-                          {domain.pillars.length}
-                        </span>
-                        <span
-                          className="text-xs font-sans"
-                          style={{ color: '#A09385' }}
-                        >
-                          Pilar &middot; {domain.range}
-                        </span>
-                      </div>
-                    </button>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════
-            6. PHILOSOPHY SECTION
-            ═══════════════════════════════════════════════════════ */}
-        <section
-          className="py-16 sm:py-20 lg:py-24"
-          style={{ backgroundColor: '#FAF9F6' }}
-        >
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6 }}
-              className="relative p-8 sm:p-10 lg:p-12 rounded-lg border-l-4 bg-white border border-[#E0D8CC] shadow-sm overflow-hidden"
-              style={{ borderLeftColor: '#C5A059' }}
-            >
-              {/* Background watermark */}
-              <span
-                className="absolute -right-6 -top-6 font-[family-name:var(--font-heading)] text-[160px] font-light select-none pointer-events-none"
-                style={{ color: '#C5A059', opacity: 0.04 }}
-              >
-                &phi;
-              </span>
-
-              <h2
-                className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl font-normal leading-relaxed mb-6"
-                style={{ color: '#3E2723' }}
-              >
-                Mengapa 72? Mengapa 9 Domain?
-              </h2>
-
-              <div className="space-y-4">
-                <p
-                  className="font-[family-name:var(--font-body)] text-base leading-relaxed"
-                  style={{ color: '#2C2C2C' }}
-                >
-                  Angka 72 dalam PGA-72 bukan kebetulan &mdash; ia mencerminkan
-                  kesempurnaan arsitektur peradaban. 9 domain &times; 8 pilar = 72
-                  fondasi yang saling menguatkan, menciptakan resiliensi yang tak bisa
-                  dihancurkan oleh serangan satu titik kelemahan.
-                </p>
-                <p
-                  className="font-[family-name:var(--font-body)] text-base leading-relaxed"
-                  style={{ color: '#2C2C2C' }}
-                >
-                  Setiap domain memiliki 8 pilar &mdash; angka yang dalam banyak tradisi
-                  melambangkan keberlanjutan, kelengkapan, dan keseimbangan.
-                  Bersama-sama, 72 pilar ini membentuk ekosistem yang mampu bertahan
-                  100 tahun, menghubungkan 83.763 desa, dan melayani 275 juta jiwa.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-      </main>
-
-      {/* ═══════════════════════════════════════════════════════
-          7. FOOTER
-          ═══════════════════════════════════════════════════════ */}
-      <footer
-        className="mt-auto border-t"
-        style={{ borderColor: '#E0D8CC', backgroundColor: '#FFFFFF' }}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 text-center">
-          <ElegantDivider />
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+          <button
+            onClick={goPrev}
+            disabled={currentLeaf <= 0}
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer disabled:opacity-20 disabled:cursor-default"
+            style={{
+              backgroundColor: '#2A2520',
+              color: '#C5A059',
+              border: '1px solid #3A3530',
+            }}
+            aria-label="Halaman sebelumnya"
           >
-            <span
-              className="text-xs font-sans tracking-[3px] uppercase"
-              style={{ color: '#C5A059' }}
-            >
-              Perjanjian Suci
-            </span>
-            <h2
-              className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl font-normal mt-2"
-              style={{ color: '#3E2723' }}
-            >
-              Covenant of Civilization
-            </h2>
-          </motion.div>
+            <ChevronLeft className="w-4 h-4" />
+          </button>
 
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15, duration: 0.5 }}
-            className="mt-8 p-6 sm:p-8 rounded-lg border bg-[#FAF9F6]"
-            style={{ borderColor: '#E0D8CC' }}
-          >
+          <div className="text-center">
             <p
-              className="font-[family-name:var(--font-heading)] text-base sm:text-lg italic leading-relaxed"
-              style={{ color: '#3E2723' }}
-            >
-              &ldquo;Kami berjanji &mdash; di hadapan sejarah, di hadapan 275 juta rakyat
-              Indonesia, dan di hadapan generasi yang belum lahir &mdash; bahwa 72 pilar
-              ini akan kami jaga, kami perjuangkan, dan kami wariskan. Bukan demi
-              kekuasaan, bukan demi kekayaan, melainkan demi martabat setiap manusia
-              Indonesia yang berhak atas kedaulatan ekonomi.&rdquo;
-            </p>
-          </motion.div>
-
-          {/* Signature */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="mt-10 pt-8 border-t"
-            style={{ borderColor: '#E0D8CC' }}
-          >
-            <span
-              className="text-[10px] font-sans tracking-[3px] uppercase"
-              style={{ color: '#C5A059' }}
-            >
-              Grand Architect&apos;s Office
-            </span>
-            <p
-              className="font-[family-name:var(--font-heading)] text-xl mt-2"
-              style={{ color: '#3E2723' }}
-            >
-              KNBMP
-            </p>
-            <p
-              className="font-[family-name:var(--font-body)] text-xs mt-2"
+              className="font-[family-name:var(--font-body)] text-xs tracking-wider"
               style={{ color: '#A09385' }}
             >
-              Klasifikasi: Absolute Source of Truth &nbsp;&bull;&nbsp; Horizon: 100 Tahun &nbsp;&bull;&nbsp; Tahun Fondasi: 2025
+              Halaman {displayPage} / {totalPages}
             </p>
-          </motion.div>
-        </div>
-      </footer>
+          </div>
 
-      {/* ═══════════════════════════════════════════════════════
-          PILLAR DETAIL PANEL (AnimatePresence)
-          ═══════════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {selectedPillar && (
-          <PillarDetailPanel
-            pillar={selectedPillar}
-            onClose={() => setSelectedPillar(null)}
-            onNavigate={handleNavigate}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* ═══════════════════════════════════════════════════════
-          SCROLL TO TOP BUTTON
-          ═══════════════════════════════════════════════════════ */}
-      <AnimatePresence>
-        {showScrollTop && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-6 right-6 z-40 p-3 rounded-full bg-white border shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-            style={{ borderColor: '#E0D8CC' }}
-            aria-label="Kembali ke atas"
+          <button
+            onClick={goNext}
+            disabled={currentLeaf >= totalPages - 1}
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer disabled:opacity-20 disabled:cursor-default"
+            style={{
+              backgroundColor: '#2A2520',
+              color: '#C5A059',
+              border: '1px solid #3A3530',
+            }}
+            aria-label="Halaman berikutnya"
           >
-            <ArrowUp className="w-5 h-5" style={{ color: '#C5A059' }} />
-          </motion.button>
-        )}
-      </AnimatePresence>
-    </div>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* ── Progress bar ── */}
+      <div className="fixed bottom-0 left-0 right-0 z-30 h-1 pointer-events-none">
+        <div
+          className="h-full transition-all duration-700 ease-out"
+          style={{
+            width: `${progress}%`,
+            backgroundColor: '#C5A059',
+            opacity: 0.6,
+          }}
+        />
+      </div>
+
+      {/* ── Desktop page indicator ── */}
+      <div className="hidden md:block fixed bottom-4 left-1/2 -translate-x-1/2 z-30">
+        <p
+          className="font-[family-name:var(--font-body)] text-xs tracking-wider px-4 py-1.5 rounded-full"
+          style={{
+            color: '#A09385',
+            backgroundColor: '#1A1814CC',
+          }}
+        >
+          Halaman {displayPage} / {totalPages}
+        </p>
+      </div>
+
+      {/* ── Keyboard hint (fades after 5s) ── */}
+      <div
+        className="fixed bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 z-20 transition-opacity duration-1000 pointer-events-none"
+        style={{ opacity: showHint ? 1 : 0 }}
+      >
+        <p
+          className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs tracking-wider"
+          style={{ color: '#6B5E50' }}
+        >
+          ← → atau klik untuk berpindah halaman
+        </p>
+      </div>
+    </main>
   )
 }

@@ -1,31 +1,43 @@
 ---
-Task ID: 2
+Task ID: 3
 Agent: Main
-Task: Complete UI/UX redesign following Professor's accessibility-first design critique — warm museum-quality design replacing dark Gen-Z aesthetic
+Task: Complete concept transformation from website to premium digital flipbook — immersive sequential reading experience
 
 Work Log:
-- Received detailed UI/UX professor critique about the dark-mode Gen-Z design being inaccessible for elderly users
-- Analyzed all design requirements: warm parchment palette, serif headings, sans-serif body, no dark mode, no glassmorphism
-- Read original document `daftar-isi-72-dokument-.txt` to extract exact daftar isi structure (9 domains, 72 pillars)
-- Updated `layout.tsx`: Replaced Geist fonts with Playfair Display (headings), Inter (body), Merriweather (serif)
-- Rewrote `globals.css`: Set warm design tokens — background #FAF9F6, foreground #2C2C2C, heritage colors (Gold #C5A059, Navy #1A3C5E, Terracotta #C75B39, Burgundy #6B2737, Forest #2E6B4F, etc.)
-- Completely rewrote `page.tsx` (1119 lines) with museum-quality design:
-  1. **Sticky Header**: Clean white bar with "KNBMP · PGA-72"
-  2. **Hero Section**: Warm parchment background, Playfair Display headings, italic tagline, animated stats bar, gold CTA button (48px min height)
-  3. **Daftar Isi Lengkap**: All 9 domains with 72 pillars listed exactly as original document — domain-colored left borders, clickable pillar rows with number badges, descriptions, and English names
-  4. **Interactive Matrix**: Number grid 1-72, warm-styled search bar, domain filter tabs
-  5. **Pillar Detail Panel**: WHITE background slide-in panel (not dark), warm text colors, gold-bordered vision quote, clean dimensions table, cross-reference navigation
-  6. **9 Domain Cards**: Clean white cards with heritage color accents
-  7. **Philosophy Section**: Gold left border quote block
-  8. **Footer**: Covenant text, sticky to bottom with mt-auto
-- Removed ALL: dark backgrounds, glassmorphism, neon glows, particle effects, orbital rings, complex gradients
-- Added: generous white space, readable typography (18px body, 1.7 line-height), accessible buttons (min 48px)
-- Lint passes cleanly, dev server compiles successfully
+- User requested full concept change: from multi-section website to a **digital flipbook** where readers focus on reading from front to back, page by page
+- Designed flipbook architecture: 87 pages total with CSS 3D page flip animation
+- Page structure:
+  - Page 1: Front Cover (warm parchment #FAF9F6, gold borders, KNBMP PGA-72 branding)
+  - Page 2: Dedication/Introduction (philosophy quote + classification box)
+  - Page 3: Table of Contents (all 9 domains with all 72 pillar names listed)
+  - Pages 4-84: 9 Domain Openers + 72 Individual Pillar Pages (dynamically generated from pillar-data.ts)
+  - Page 85: Philosophy (φ symbol, "Mengapa 72? Mengapa 9 Domain?")
+  - Page 86: Covenant of Civilization (sacred oath)
+  - Page 87: Back Cover (MERDEKA watermark, Grand Architect's Office)
+- CSS 3D page flip implementation:
+  - `transform-origin: left center` with `rotateY(-180deg)` for flipped pages
+  - `backface-visibility: hidden` for clean page hiding
+  - `perspective: 2500px` for realistic depth
+  - Cubic-bezier easing (0.645, 0.045, 0.355, 1) for natural page motion
+  - Dynamic box-shadow that changes during flip (right shadow → left shadow)
+  - Z-index management: current page always on top, proper stacking for flipped/unflipped pages
+- Navigation:
+  - Click left/right halves of book to navigate
+  - Arrow keys (Left/Right) and Spacebar
+  - Touch swipe (50px threshold) for mobile
+  - Animation lock (850ms) prevents rapid clicking
+- Responsive design:
+  - Desktop: Centered book with max-width 780px, 3:4 aspect ratio, navigation arrows outside
+  - Mobile: Full-screen pages with bottom navigation bar and safe area support
+- UI elements: Progress bar (gold), page indicator ("Halaman X / 87"), keyboard hint (fades after 5s)
+- Each pillar page shows: code badge, name, English name, description, vision quote (gold-bordered), dimensions grid, principles (gold bullets), cross-references
+- Book container uses dark warm background (#1A1814) for premium "reading under lamp" feel, while ALL page content is on WHITE backgrounds
+- Lint passes cleanly, dev server compiles successfully (GET / 200)
 
 Stage Summary:
-- Complete visual redesign from dark Gen-Z to warm museum-quality aesthetic
-- All 72 pillars present in daftar isi, matching original document structure exactly
-- Accessibility-first design targeting general public including elderly (50+)
-- Typography: Playfair Display (headings) + Inter (body) with 18px minimum body text
-- Color palette: Parchment (#FAF9F6), Charcoal (#2C2C2C), Heritage Gold (#C5A059), Navy (#1A3C5E)
-- Files modified: layout.tsx, globals.css, page.tsx
+- Complete transformation from website to digital flipbook experience
+- 87 pages: Cover + Dedication + TOC + 9 Domain Openers + 72 Pillar Pages + Philosophy + Covenant + Back Cover
+- Realistic CSS 3D page flip with proper z-index management and animation locking
+- All 72 pillars dynamically generated with full content (vision, dimensions, principles, cross-refs)
+- Navigation: click, keyboard, touch swipe
+- Files: page.tsx (1022 lines), layout.tsx (unchanged), globals.css (unchanged)
