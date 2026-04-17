@@ -537,3 +537,27 @@ Stage Summary:
 - REVELATION: Omega vision statement as cinematic reveal quote
 - REVEALED cover: God Mode badge + 3-line subtitle + Grand Architect credit
 - All text sourced from DOKUMEN-OMEGA-KNBMP-Sample-L0-L3.md
+
+---
+Task ID: 8
+Agent: full-stack-developer
+Task: Enrich pillar-data.ts and seed.ts with data from uploaded documents
+
+Work Log:
+- Read two uploaded documents: KNBMP-PGA-01-WorldClass.html and 00-Peta-Integrasi-Infrastruktur-Desa-GAP-KKNMP.md
+- Updated PGA-01 (id:1): enriched desc with Kata Pengantar narrative (278 juta jiwa, 64.2 juta UMKM, 83.763 desa, horizon 100 tahun), expanded dimensions 4→8 (added Populasi, UMKM, Versi, Tier, Jumlah Dokumen), expanded principles 5→9
+- Updated PGA-13 (id:13): massively enriched desc with executive summary about 15-25 lembaga per desa and silo syndrome, expanded dimensions 5→12 (added LKD Wajib, LKD Opsional, Badan Desa, Program Sektoral, Infrastruktur Fisik, Gap KRITIS, 6 Pilar Integrasi, Super-App kopnusa.id, Roadmap 3 Fase), expanded principles 7→12, expanded xrefs 9→17
+- Updated PGA-34 (id:34): enriched desc with Desa Cerdas Digital 6 sub-pillars, expanded dimensions 2→9, expanded principles 1→6, expanded xrefs 4→8
+- Updated PGA-25 (id:25): enriched desc with Super-App kopnusa.id 12 module architecture, expanded dimensions 2→11, expanded principles 1→5, expanded xrefs 4→8
+- Added 6 new site settings in seed.ts: organization_name_full, document_series, document_tier, document_status, member_registration_url, document_disclaimer
+- Added Kata Pengantar content to page pageNumber 2
+- Ran lint: 0 errors
+- Re-seeded database: 72 pilars, 213 dimensions, 144 principles, 341 xrefs, 23 settings, 79 pages
+
+Stage Summary:
+- PGA-01: desc length 1145 chars, 8 dimensions, 9 principles
+- PGA-13: desc length 969 chars, 12 dimensions, 12 principles, 17 xrefs — fully reflects GAP Analysis document
+- PGA-25: desc with Super-App 12 modules, 11 dimensions, 5 principles
+- PGA-34: desc with Desa Cerdas Digital 6 sub-pillars, 9 dimensions, 6 principles
+- Total data growth: 186→213 dimensions (+27), 126→144 principles (+18), 325→341 xrefs (+16), 18→23 settings (+5)
+- Dev server running cleanly, GET /api/flipbook 200

@@ -114,7 +114,8 @@ async function main() {
   // 4. Seed 93 pages
   const pageDefinitions = [
     { pageNumber: 1, pageType: 'cover', title: 'Cover' },
-    { pageNumber: 2, pageType: 'kata_pengantar', title: 'Kata Pengantar' },
+    { pageNumber: 2, pageType: 'kata_pengantar', title: 'Kata Pengantar',
+      content: 'Bismillahirrahmanirrahim.\n\nAda momen dalam sejarah sebuah bangsa — yang jarang terjadi, hanya sekali atau dua kali dalam satu abad — ketika sesuatu yang fundamental bergeser. Bukan karena bencana, bukan karena perang, tetapi karena sekelompok kecil manusia memutuskan bahwa cara lama tidak lagi cukup. Bahwa rakyat layak mendapatkan lebih dari yang telah mereka terima selama ini. Bahwa kemakmuran bukan hadiah dari atas, melainkan hak yang dilahirkan bersama setiap jiwa yang menghirup udara di muka bumi ini.\n\nKNBMP lahir dari keputusan itu.' },
     { pageNumber: 3, pageType: 'mukadimah', title: 'Mukadimah' },
     { pageNumber: 4, pageType: 'daftar_isi', title: 'Daftar Isi' },
   ];
@@ -166,7 +167,12 @@ async function main() {
     { key: 'site_name', value: 'KNBMP PGA-72 Flipbook', type: 'string', group: 'general', label: 'Site Name', description: 'The name of the flipbook application' },
     { key: 'site_description', value: 'Koperasi Nasional Multipihak — 72 Pilar Fondasional Kedaulatan Ekonomi Rakyat', type: 'string', group: 'general', label: 'Site Description', description: 'Brief description of the project' },
     { key: 'organization_name', value: 'KNBMP', type: 'string', group: 'general', label: 'Organization Name', description: 'Full organization name' },
-    { key: 'organization_name_full', value: 'Koperasi Nasional Multipihak', type: 'string', group: 'general', label: 'Full Organization Name', description: 'Full legal name' },
+    { key: 'organization_name_full', value: 'Kopi Korporasi Multipihak Nusa Berdikari Merah Putih', type: 'string', group: 'general', label: 'Nama Resmi Lengkap', description: 'Nama legal lengkap organisasi' },
+    { key: 'document_series', value: 'PGA-72 — Polymath Grand Architecture', type: 'string', group: 'general', label: 'Seri Dokumen', description: 'Nama seri dokumen' },
+    { key: 'document_tier', value: 'Sovereign-72 — Standar Emas Kelas Dunia', type: 'string', group: 'general', label: 'Tier Standar', description: 'Tingkat standar dokumen' },
+    { key: 'document_status', value: 'Foundational Truth — Tidak Berubah 100 Tahun', type: 'string', group: 'general', label: 'Status Dokumen', description: 'Status permanensi dokumen' },
+    { key: 'member_registration_url', value: 'www.kopnusa.id/kpa', type: 'string', group: 'general', label: 'URL Pendaftaran Member', description: 'Link pendaftaran anggota' },
+    { key: 'document_disclaimer', value: 'Seluruh isi dokumen ini dilindungi untuk kemaslahatan umat manusia. Penggandaan diizinkan untuk tujuan pendidikan dan pemberdayaan rakyat dengan mencantumkan sumber.', type: 'string', group: 'general', label: 'Disclaimer Dokumen', description: 'Pernyataan hak cipta dan penggunaan dokumen' },
     { key: 'primary_color', value: '#C4952A', type: 'color', group: 'theme', label: 'Primary Color', description: 'Main brand color' },
     { key: 'secondary_color', value: '#1a1a2e', type: 'color', group: 'theme', label: 'Secondary Color', description: 'Secondary brand color' },
     { key: 'accent_color', value: '#D4AF37', type: 'color', group: 'theme', label: 'Accent Color', description: 'Gold accent color' },
