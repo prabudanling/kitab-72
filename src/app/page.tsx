@@ -1402,14 +1402,14 @@ function KataPengantarPage({ part }: { part: number }) {
             <motion.p className={`${txtBase} drop-cap`}
               style={{ color: '#3E2723' }}
               variants={inkBleed} custom={2}>
-              Melalui <span className="font-bold" style={{ color: BURGUNDY }}>PGA-72 (72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat)</span> ini, kami meletakkan cetak biru peradaban baru. Sebuah arsitektur kelembagaan yang sangat canggih secara teknologi (berbasis Blockchain dan AI), namun berakar sangat dalam pada nilai ketuhanan dan gotong royong.
+              Melalui <span className="font-bold" style={{ color: BURGUNDY }}>PGA-72 (72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat)</span> ini, kami meletakkan cetak biru peradaban baru. Kedaulatan ekonomi nasional di abad ke-21 tidak lagi semata-mata diukur dari penguasaan lahan fisik, melainkan dari penguasaan data, integrasi teknologi, dan arsitektur finansial yang berkeadilan.
             </motion.p>
 
-            {/* 72 dokumen for 100 years */}
+            {/* Pentagon Kedaulatan & Digital OS Desa */}
             <motion.p className={txtSm}
               style={{ color: '#3E2723' }}
               variants={fadeSlideUp} custom={3}>
-              Kami telah merancang <span className="font-semibold" style={{ color: BURGUNDY }}>72 dokumen ini</span> agar mampu menghadapi ujian waktu selama <span className="font-semibold" style={{ color: GOLD }}>100 tahun ke depan</span>. Di dalamnya, Anda akan menemukan bagaimana kami menerjemahkan mimpi-mimpi terbesar ke dalam Standard Operating Procedure (SOP) yang terukur. Bagaimana kami mengawinkan demokrasi ekonomi nyata (<span className="font-semibold" style={{ color: BURGUNDY }}>1 Anggota = 1 Suara</span>) dengan kecepatan korporasi global. Bagaimana kami memastikan bahwa seorang petani rumput laut di Maluku memiliki martabat, kedaulatan, dan akses modal yang sama dengan seorang eksportir di Jakarta.
+              Untuk mewujudkan keadilan sosial bagi seluruh rakyat Indonesia sebagaimana diamanatkan dalam <span className="font-semibold" style={{ color: BURGUNDY }}>Pancasila dan UUD 1945</span>, kami merancang Digital Operating System Desa Indonesia yang mampu mengagregasi <span className="font-semibold" style={{ color: GOLD }}>83.763 desa</span> dan <span className="font-semibold" style={{ color: GOLD }}>8.506 kelurahan</span> ke dalam satu ekosistem ekonomi berdaulat — dikendalikan oleh kekuatan kolektif rakyat melalui aliansi <span className="font-semibold" style={{ color: BURGUNDY }}>Pentagon Kedaulatan</span>: produsen, konsumen, abdi negara, entitas bisnis, dan pemodal berwatak peradaban.
             </motion.p>
 
             {/* Written for you and grandchildren */}
@@ -3725,33 +3725,86 @@ function PillarDetailPage04() {
 // ═══════════════════════════════════════════════════════════════
 const pga05Data: SDData = {
   pgaCode: 'PGA-05',
-  title: 'Sepuluh Pilar Etika Absolut',
-  subtitle: 'Core Values Charter',
+  title: 'Kode Etik Kedaulatan KKMNMP',
+  subtitle: 'Sovereign Ethics Charter — Super Final v7',
   badge: 'ETIKA ABSOLUT — Tidak Bisa Dinegosiasi',
   badgeType: 'warning',
   footerLabel: 'PGA-05 · 5/72 · ◆ Identity & Civilization',
-  footerSub: 'Core Values Charter',
+  footerSub: 'Kode Etik Kedaulatan — 7 BAB',
   sections: [
     {
+      type: 'quote',
+      text: 'Kami tidak hanya membangun bisnis, kami sedang merajut kembali peradaban Nusantara. Oleh karena itu, setiap rupiah yang mengalir, setiap baris kode yang dieksekusi, dan setiap data yang disimpan di dalam ekosistem ini adalah amanah suci yang tidak boleh dinodai oleh keserakahan, manipulasi oligarki, maupun pengkhianatan.',
+    },
+    {
       type: 'cards',
-      title: '10 Nilai Inti',
+      title: '10 Pilar Nilai Inti',
       cols: 2,
       items: [
-        { title: '1. AMANAH', subtitle: 'Trust', desc: 'Kepercayaan yang harus dijaga di 4 dimensi: terhadap anggota, mitra, masyarakat, dan diri sendiri.', metric: '4 Dimensi' },
-        { title: '2. KEADILAN', subtitle: 'Justice', desc: 'Keadilan distributif, prosedural, interaksional, dan retributif — menyeluruh dan tidak diskriminatif.', metric: '4 Dimensi' },
-        { title: '3. TRANSPARANSI', subtitle: 'Transparency', desc: 'Imunitas terhadap korupsi. Setiap rupiah dan setiap keputusan harus bisa diakses oleh anggota.', metric: 'Anti-Korupsi' },
-        { title: '4. KEMASLAHATAN', subtitle: 'Beneficence', desc: 'Filter tertinggi untuk setiap keputusan: "Apakah ini membawa kemaslahatan terbesar untuk semua?"', metric: 'Filter Tertinggi' },
-        { title: '5. KESEDERHANAAN', subtitle: 'Simplicity', desc: 'Besar tanpa berlebihan. Kekayaan yang didistribusikan, bukan ditumpuk. Hidup sederhana, berkarya luar biasa.', metric: 'Zero Waste' },
-        { title: '6. KEBERSAMAAN', subtitle: 'Collectivism', desc: 'Kebersamaan yang mengangkat — bukan yang menarik ke bawah. Satu untuk semua, semua untuk satu.', metric: '1 untuk Semua' },
-        { title: '7. KELESTARIAN', subtitle: 'Sustainability', desc: 'Setiap keputusan harus mempertimbangkan dampak jangka panjang — untuk anak cucu kita.', metric: 'Generasi Mendatang' },
-        { title: '8. KEBERANIAN', subtitle: 'Courage', desc: 'Keberanian yang membangun — berani mengambil keputusan sulit, berani berubah, berani bertanggung jawab.', metric: 'Prinsip Non-Kompromi' },
-        { title: '9. KEJUJURAN', subtitle: 'Integrity', desc: 'Tidak ada kompromi dengan kejujuran. Satu kebohongan bisa meruntuhkan seluruh ekosistem kepercayaan.', metric: 'Zero Tolerance' },
-        { title: '10. KEMANDIRIAN', subtitle: 'Independence', desc: 'Kemandirian berdaulat — tidak tergantung pada pihak manapun. Kekuatan dari dalam, bukan dari luar.', metric: 'Kedaulatan Penuh' },
+        { title: '1. AMANAH', subtitle: 'Trust', desc: 'Kepercayaan di 4 dimensi: terhadap anggota, mitra, masyarakat, dan diri sendiri.', metric: '4 Dimensi' },
+        { title: '2. KEADILAN', subtitle: 'Justice', desc: 'Keadilan distributif, prosedural, interaksional, dan retributif — menyeluruh.', metric: '4 Dimensi' },
+        { title: '3. TRANSPARANSI', subtitle: 'Transparency', desc: 'Imunitas terhadap korupsi. Setiap rupiah dan keputusan harus bisa diakses.', metric: 'Anti-Korupsi' },
+        { title: '4. KEMASLAHATAN', subtitle: 'Beneficence', desc: 'Filter tertinggi: "Apakah ini membawa kemaslahatan terbesar untuk semua?"', metric: 'Filter Tertinggi' },
+        { title: '5. KESEDERHANAAN', subtitle: 'Simplicity', desc: 'Besar tanpa berlebihan. Kekayaan didistribusikan, bukan ditumpuk.', metric: 'Zero Waste' },
+        { title: '6. KEBERSAMAAN', subtitle: 'Collectivism', desc: 'Kebersamaan yang mengangkat — Satu untuk semua, semua untuk satu.', metric: 'Gotong Royong' },
+        { title: '7. KELESTARIAN', subtitle: 'Sustainability', desc: 'Setiap keputusan harus mempertimbangkan dampak jangka panjang.', metric: 'Generasi Mendatang' },
+        { title: '8. KEBERANIAN', subtitle: 'Courage', desc: 'Berani mengambil keputusan sulit, berani berubah, berani bertanggung jawab.', metric: 'Non-Kompromi' },
+        { title: '9. KEJUJURAN', subtitle: 'Integrity', desc: 'Satu kebohongan bisa meruntuhkan seluruh ekosistem kepercayaan.', metric: 'Zero Tolerance' },
+        { title: '10. KEMANDIRIAN', subtitle: 'Independence', desc: 'Kemandirian berdaulat — Kekuatan dari dalam, bukan dari luar.', metric: 'Kedaulatan Penuh' },
       ],
     },
     {
+      type: 'text',
+      emphasis: true,
+      content: 'Kode Etik ini ditegakkan sebagai pedoman perilaku mutlak bagi seluruh Pengurus (BAKORNAS), Pengawas, Panglima Teritorial, Investor, Mitra Aliansi, dan Anggota Koperasi.',
+    },
+    {
+      type: 'cards',
+      title: 'BAB I–II: Integritas Eksekutif & Anti-Oligarki',
+      cols: 2,
+      items: [
+        { title: 'Sumpah Pelayanan', subtitle: 'Pasal 1 — Tanpa Ekstraksi', desc: 'Pengurus adalah pelayan sistem, bukan pemilik. Haram hukumnya memperkaya diri melalui kickback, manipulasi tender, atau penyalahgunaan anggaran.', metric: 'Haram Hukum' },
+        { title: 'Konflik Kepentingan', subtitle: 'Pasal 2 — Arm\'s Length', desc: 'Setiap benturan kepentingan wajib dideklarasikan tertulis sebelum keputusan strategis. Transaksi afiliasi tunduk Kewajaran Harga Pasar.', metric: 'Deklarasi Wajib' },
+        { title: 'Modal Beradab', subtitle: 'Pasal 3 — Sovereign Capital', desc: 'Investor adalah tamu di rumah kedaulatan rakyat, bukan majikan. Dilarang keras Side-Deals untuk keistimewaan bunga atau hak suara ganda.', metric: 'Anti-Side Deal' },
+        { title: 'Larangan Sabotase', subtitle: 'Pasal 4 — Anti-Bank Rush', desc: 'Dilarang menarik modal agresif tanpa pemberitahuan atau menyebarkan rumor untuk Hostile Takeover.', metric: 'Anti-Takeover' },
+      ],
+    },
+    {
+      type: 'cards',
+      title: 'BAB III–IV: Wali Amanat Data & Panglima Teritorial',
+      cols: 2,
+      items: [
+        { title: 'Kedaulatan Privasi', subtitle: 'Pasal 5 — Data Fiduciary', desc: 'Data anggota adalah Aset Kedaulatan Tak Terasingkan. Pencurian, penjualan, atau pembocoran Big Data kepada pihak ketiga = pecat tidak hormat + pidana UU PDP.', metric: 'Tak Terasingkan' },
+        { title: 'Pantangan Panglima', subtitle: 'Pasal 6 — Anti Raja Kecil', desc: 'Korwil/Korda/Korcam/Kordes diharamkan: monopoli harga (Predatory Pricing), pungutan liar, dan intimidasi anggota.', metric: '3 Pantangan' },
+        { title: 'Literasi Wajib', subtitle: 'Pasal 7 — Pembinaan', desc: 'Panglima Teritorial wajib mendidik KPA-1 dan KPA-2 tentang teknologi ekosistem dengan penuh kesabaran dan adab.', metric: 'Kewajiban' },
+      ],
+    },
+    {
+      type: 'cards',
+      title: 'BAB V–VI: Firewall Politik & Aliansi Strategis',
+      cols: 2,
+      items: [
+        { title: 'Netralitas Absolut', subtitle: 'Pasal 8 — Firewall Politik', desc: 'Anggota KPA-3 wajib meninggalkan jubah politik. Dilarang: blast kampanye, paksa memilih kandidat, bawa atribut partai ke Rapat Anggota.', metric: '3 Larangan Berat' },
+        { title: 'Batas Kelembagaan', subtitle: 'Pasal 9 — Independensi', desc: 'KKMNMP/KNMP tetap Entitas Berdaulat Independen. Mitra strategis (termasuk JE-P3) dilarang mengintervensi kebijakan kas atau distribusi SHU.', metric: 'Arm\'s Length' },
+      ],
+    },
+    {
+      type: 'stats',
+      title: 'BAB VII: Mahkamah Kehormatan Etik (MKEK)',
+      statsItems: [
+        { value: 'Tertutup', label: 'Sidang MKEK — Menjaga kehormatan publik' },
+        { value: '4 Tingkat', label: 'Sanksi Progresif — Teguran → Hangus → Pecat → Pidana' },
+        { value: 'BANI', label: 'Badan Arbitrase Nasional Indonesia — Penyelesaian Final' },
+        { value: 'Ad-Hoc', label: 'Dibentuk oleh Badan Pengawas per Kasus' },
+      ],
+    },
+    {
+      type: 'quote',
+      text: 'Kedaulatan ekonomi di abad ke-21 tidak lagi diukur dari penguasaan lahan fisik, melainkan dari penguasaan data, integrasi teknologi, dan arsitektur finansial yang berkeadilan.',
+    },
+    {
       type: 'footer-quote',
-      text: 'Nilai adalah apa yang tetap bertahan ketika segalanya berubah.',
+      text: 'Setiap rupiah yang mengalir adalah amanah suci. Setiap data yang tersimpan adalah kedaulatan yang dijaga.',
     },
   ],
 }
@@ -3828,6 +3881,22 @@ const pga06Data: SDData = {
         { title: 'Visi Peradaban', subtitle: 'Horizon 100 Tahun', desc: 'Visi jangka panjang yang melihat KNBMP sebagai kontribusi Indonesia bagi peradaban dunia.' },
         { title: 'Kemanusiaan', subtitle: 'Nurani Sosial', desc: 'Jiwa kemanusiaan yang menjadi kompas — memastikan tidak ada satupun yang tertinggal.' },
       ],
+    },
+    {
+      type: 'stats',
+      title: 'Pentagon Kedaulatan — Parameter Finansial Absolut',
+      statsItems: [
+        { value: '5 × 20%', label: 'Bobot Suara — Setiap KPA pegang 20% di RAP' },
+        { value: 'Rp 100rb', label: 'Simpanan Pokok KPA-1 & KPA-2' },
+        { value: 'Rp 5jt', label: 'Simpanan Pokok KPA-4 (Entitas Bisnis)' },
+        { value: 'Rp 50jt', label: 'Barrier to Entry KPA-5 (Angel Investor)' },
+        { value: '24 Bulan', label: 'Lock-up Period — Anti Bank Rush' },
+        { value: '25-45-10-10-5-5', label: 'Formula SHU Ekuilibrium 100%' },
+      ],
+    },
+    {
+      type: 'quote',
+      text: 'Uang yang lebih besar tidak memberikan suara yang lebih banyak. Kedaulatan bukan komoditas yang bisa dibeli — ia adalah hak setiap manusia, terlepas dari isi dompetnya.',
     },
     {
       type: 'footer-quote',
