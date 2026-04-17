@@ -64,34 +64,123 @@ type BookPage =
   | { type: 'back-cover' }
 
 // ═══════════════════════════════════════════════════════════════
-// PAGE FLIP SOUND
+// PAGE FLIP SOUND — GOD MODE: Cinematic Paper Sound
 // ═══════════════════════════════════════════════════════════════
 function usePageFlipSound() {
   const audioCtxRef = useRef<AudioContext | null>(null)
+  const gainRef = useRef<GainNode | null>(null)
+
   return useCallback(() => {
     try {
-      if (!audioCtxRef.current) audioCtxRef.current = new AudioContext()
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new AudioContext()
+        gainRef.current = audioCtxRef.current.createGain()
+        gainRef.current.gain.value = 1.0
+        gainRef.current.connect(audioCtxRef.current.destination)
+      }
       const ctx = audioCtxRef.current
-      const duration = 0.18
-      const bufferSize = Math.floor(ctx.sampleRate * duration)
-      const buffer = ctx.createBuffer(2, bufferSize, ctx.sampleRate)
+      const masterGain = gainRef.current!
+
+      // ─── LAYER 1: Heavy paper crackle (low frequency body) ───
+      const dur1 = 0.35
+      const buf1 = ctx.createBuffer(2, Math.floor(ctx.sampleRate * dur1), ctx.sampleRate)
       for (let ch = 0; ch < 2; ch++) {
-        const data = buffer.getChannelData(ch)
-        for (let i = 0; i < bufferSize; i++) {
-          const t = i / bufferSize
-          const env = Math.exp(-t * (14 + ch * 4)) * Math.min(t * (80 + ch * 20), 1)
-          data[i] = (Math.random() * 2 - 1) * env * (ch === 0 ? 0.10 : 0.07)
+        const d = buf1.getChannelData(ch)
+        for (let i = 0; i < d.length; i++) {
+          const t = i / d.length
+          // Sharp attack, slow decay — like thick parchment turning
+          const env = Math.exp(-t * 6) * Math.min(t * 200, 1)
+          // Low frequency rumble (paper fiber tearing)
+          const rumble = Math.sin(t * Math.PI * 2 * 80 + ch * 0.3) * 0.3
+          // Mid crunch texture
+          const crunch = (Math.random() * 2 - 1) * 0.7
+          d[i] = (rumble + crunch) * env * 0.45
         }
       }
-      const src = ctx.createBufferSource()
-      src.buffer = buffer
-      const flt = ctx.createBiquadFilter()
-      flt.type = 'bandpass'
-      flt.frequency.value = 2500 + Math.random() * 1500
-      flt.Q.value = 0.6
-      src.connect(flt)
-      flt.connect(ctx.destination)
-      src.start(ctx.currentTime)
+      const src1 = ctx.createBufferSource()
+      src1.buffer = buf1
+      const lp1 = ctx.createBiquadFilter()
+      lp1.type = 'lowpass'
+      lp1.frequency.value = 1800 + Math.random() * 400
+      lp1.Q.value = 0.8
+      src1.connect(lp1).connect(masterGain)
+
+      // ─── LAYER 2: Crisp paper snap (high frequency detail) ───
+      const dur2 = 0.15
+      const buf2 = ctx.createBuffer(2, Math.floor(ctx.sampleRate * dur2), ctx.sampleRate)
+      for (let ch = 0; ch < 2; ch++) {
+        const d = buf2.getChannelData(ch)
+        for (let i = 0; i < d.length; i++) {
+          const t = i / d.length
+          // Very sharp attack — the snap of paper edge
+          const env = Math.exp(-t * 18) * Math.min(t * 300, 1)
+          const snap = (Math.random() * 2 - 1)
+          // Add subtle pitch variation for natural feel
+          const pitch = Math.sin(t * Math.PI * 2 * (3000 + ch * 500 + Math.random() * 1000)) * 0.15
+          d[i] = (snap + pitch) * env * 0.55
+        }
+      }
+      const src2 = ctx.createBufferSource()
+      src2.buffer = buf2
+      const hp2 = ctx.createBiquadFilter()
+      hp2.type = 'highpass'
+      hp2.frequency.value = 2000
+      const bp2 = ctx.createBiquadFilter()
+      bp2.type = 'bandpass'
+      bp2.frequency.value = 4000 + Math.random() * 2000
+      bp2.Q.value = 1.2
+      src2.connect(hp2).connect(bp2).connect(masterGain)
+
+      // ─── LAYER 3: Air whoosh (the sweep sound) ───
+      const dur3 = 0.28
+      const buf3 = ctx.createBuffer(2, Math.floor(ctx.sampleRate * dur3), ctx.sampleRate)
+      for (let ch = 0; ch < 2; ch++) {
+        const d = buf3.getChannelData(ch)
+        for (let i = 0; i < d.length; i++) {
+          const t = i / d.length
+          // Smooth envelope — air displaced by turning page
+          const env = Math.sin(t * Math.PI) * 0.6 * Math.exp(-t * 2)
+          const noise = (Math.random() * 2 - 1)
+          // Stereo offset for spatial feel (left ear hears slightly before right)
+          const offset = ch === 0 ? 0 : 0.02
+          const tShift = Math.max(0, Math.min(1, t - offset))
+          const envShift = Math.sin(tShift * Math.PI) * 0.6 * Math.exp(-tShift * 2)
+          d[i] = noise * envShift * 0.35
+        }
+      }
+      const src3 = ctx.createBufferSource()
+      src3.buffer = buf3
+      const bp3 = ctx.createBiquadFilter()
+      bp3.type = 'bandpass'
+      bp3.frequency.value = 800 + Math.random() * 600
+      bp3.Q.value = 0.5
+      src3.connect(bp3).connect(masterGain)
+
+      // ─── LAYER 4: Subtle resonance (the echo in a book) ───
+      const dur4 = 0.5
+      const buf4 = ctx.createBuffer(2, Math.floor(ctx.sampleRate * dur4), ctx.sampleRate)
+      for (let ch = 0; ch < 2; ch++) {
+        const d = buf4.getChannelData(ch)
+        for (let i = 0; i < d.length; i++) {
+          const t = i / d.length
+          const env = Math.exp(-t * 8) * Math.sin(t * Math.PI) * 0.15
+          d[i] = (Math.random() * 2 - 1) * env * 0.2
+        }
+      }
+      const src4 = ctx.createBufferSource()
+      src4.buffer = buf4
+      const lp4 = ctx.createBiquadFilter()
+      lp4.type = 'lowpass'
+      lp4.frequency.value = 600
+      lp4.Q.value = 2.0
+      src4.connect(lp4).connect(masterGain)
+
+      // Stagger the layers for realism
+      src4.start(ctx.currentTime)          // Resonance first
+      src1.start(ctx.currentTime + 0.005)  // Heavy body
+      src2.start(ctx.currentTime + 0.01)   // Snap
+      src3.start(ctx.currentTime + 0.008)  // Air whoosh
+
     } catch { /* silent */ }
   }, [])
 }
@@ -171,6 +260,106 @@ function GoldenParticles() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// GOD MODE: Enhanced Golden Particles — Luxurious & Dense
+// ═══════════════════════════════════════════════════════════════
+function GoldenParticlesGod() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const animRef = useRef<number>(0)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth * 2
+      canvas.height = canvas.offsetHeight * 2
+      ctx.scale(2, 2)
+    }
+    resize()
+
+    // More particles, varied sizes, some with trails
+    const particles: {
+      x: number; y: number; size: number; speedY: number; speedX: number;
+      opacity: number; fadeDir: number; glow: boolean; trail: boolean;
+    }[] = []
+
+    for (let i = 0; i < 60; i++) {
+      particles.push({
+        x: Math.random() * canvas.offsetWidth,
+        y: Math.random() * canvas.offsetHeight,
+        size: Math.random() * 2.5 + 0.3,
+        speedY: -(Math.random() * 0.4 + 0.05),
+        speedX: (Math.random() - 0.5) * 0.3,
+        opacity: Math.random() * 0.7 + 0.05,
+        fadeDir: Math.random() > 0.5 ? 0.004 : -0.004,
+        glow: Math.random() > 0.6, // 40% have glow
+        trail: Math.random() > 0.8, // 20% leave trails
+      })
+    }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight)
+      for (const p of particles) {
+        p.x += p.speedX
+        p.y += p.speedY
+        p.opacity += p.fadeDir
+        if (p.opacity >= 0.8) p.fadeDir = -0.004
+        if (p.opacity <= 0.02) {
+          p.fadeDir = 0.004
+          p.y = canvas.offsetHeight + 5
+          p.x = Math.random() * canvas.offsetWidth
+        }
+
+        // Trail effect
+        if (p.trail) {
+          ctx.beginPath()
+          ctx.moveTo(p.x, p.y)
+          ctx.lineTo(p.x - p.speedX * 8, p.y - p.speedY * 8)
+          ctx.strokeStyle = `rgba(197, 160, 89, ${p.opacity * 0.15})`
+          ctx.lineWidth = p.size * 0.5
+          ctx.stroke()
+        }
+
+        // Main particle
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(197, 160, 89, ${p.opacity})`
+        ctx.fill()
+
+        // Enhanced glow for special particles
+        if (p.glow) {
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(197, 160, 89, ${p.opacity * 0.12})`
+          ctx.fill()
+
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, p.size * 8, 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(197, 160, 89, ${p.opacity * 0.04})`
+          ctx.fill()
+        } else {
+          // Standard soft glow
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(197, 160, 89, ${p.opacity * 0.12})`
+          ctx.fill()
+        }
+      }
+      animRef.current = requestAnimationFrame(animate)
+    }
+    animate()
+
+    return () => {
+      cancelAnimationFrame(animRef.current)
+    }
+  }, [])
+
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-10" />
+}
+
+// ═══════════════════════════════════════════════════════════════
 // BATIK WATERMARK
 // ═══════════════════════════════════════════════════════════════
 function BatikWatermark() {
@@ -222,6 +411,78 @@ function CornerOrnament({ color = GOLD, size = 40 }: { color?: string; size?: nu
       <path d="M2 28V16C2 8.26 8.26 2 16 2H28" stroke={color} strokeWidth="0.8" strokeLinecap="round" opacity="0.5" />
     </motion.svg>
   )
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GOD MODE: Enhanced Corner Ornament
+// ═══════════════════════════════════════════════════════════════
+function CornerOrnamentGod() {
+  return (
+    <svg width="56" height="56" viewBox="0 0 56 56" fill="none" className="opacity-80">
+      {/* Main L-shape — thick gold */}
+      <path d="M4 52V16C4 9.37 9.37 4 16 4H52" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
+      {/* Secondary inner line */}
+      <path d="M8 44V18C8 12.48 12.48 8 18 8H44" stroke={GOLD} strokeWidth="0.8" strokeLinecap="round" opacity="0.5" />
+      {/* Kawung diamond accent */}
+      <path d="M16 4L20 8L16 12L12 8Z" fill={`${GOLD}30`} stroke={GOLD} strokeWidth="0.6" />
+      {/* Tiny dots */}
+      <circle cx="10" cy="10" r="1" fill={GOLD} opacity="0.6" />
+      <circle cx="6" cy="18" r="0.8" fill={GOLD} opacity="0.4" />
+      {/* Decorative swirl */}
+      <path d="M52 16C48 12 44 10 40 12" stroke={GOLD} strokeWidth="0.5" strokeLinecap="round" opacity="0.3" />
+    </svg>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GOD MODE: Gold Divider — Cinematic
+// ═══════════════════════════════════════════════════════════════
+function GoldDividerGod() {
+  return (
+    <div className="flex items-center justify-center gap-4 w-full max-w-xs">
+      {/* Left line — gradient fade */}
+      <div className="h-px flex-1"
+        style={{
+          background: `linear-gradient(90deg, transparent, ${GOLD}60, ${GOLD}30)`,
+        }} />
+      {/* Center diamond */}
+      <motion.div
+        className="w-2.5 h-2.5 rotate-45 flex-shrink-0"
+        style={{
+          backgroundColor: GOLD,
+          boxShadow: `0 0 8px ${GOLD}40, 0 0 16px ${GOLD}20`,
+        }}
+        animate={{
+          boxShadow: [
+            `0 0 8px ${GOLD}40, 0 0 16px ${GOLD}20`,
+            `0 0 12px ${GOLD}60, 0 0 24px ${GOLD}30`,
+            `0 0 8px ${GOLD}40, 0 0 16px ${GOLD}20`,
+          ],
+        }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }} />
+      {/* Right line — gradient fade */}
+      <div className="h-px flex-1"
+        style={{
+          background: `linear-gradient(90deg, ${GOLD}30, ${GOLD}60, transparent)`,
+        }} />
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GOD MODE: Cover Animations
+// ═══════════════════════════════════════════════════════════════
+const coverStagger = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.6 } }
+}
+
+const coverFadeSlide = {
+  hidden: { opacity: 0, y: 25, filter: 'blur(4px)' },
+  visible: {
+    opacity: 1, y: 0, filter: 'blur(0px)',
+    transition: { duration: 1.0, ease: [0.25, 0.46, 0.45, 0.94] }
+  }
 }
 
 function ChapterDivider() {
@@ -353,96 +614,212 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
 // ═══════════════════════════════════════════════════════════════
 
 function CoverPage() {
+  const [hovered, setHovered] = useState(false)
+
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden paper-grain"
-      style={{ backgroundColor: PARCHMENT }}>
-      {/* AI-generated background image */}
+    <div
+      className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden cursor-default"
+      style={{ backgroundColor: '#0D0B08' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* ═══ GOD MODE: Cinematic Background Layers ═══ */}
+
+      {/* Layer 1: AI Masterpiece — Full bleed, deep contrast */}
       <motion.div className="absolute inset-0 z-0"
-        initial={{ opacity: 0, scale: 1.1 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, ease: 'easeOut' }}>
-        <img src="/cover-bg.png" alt="" className="w-full h-full object-cover"
-          style={{ opacity: 0.12, mixBlendMode: 'multiply' }} />
+        initial={{ opacity: 0, scale: 1.15 }}
+        animate={{ opacity: 1, scale: hovered ? 1.02 : 1.05 }}
+        transition={{ duration: 2.5, ease: 'easeOut' }}>
+        <img src="/cover-bg-god.png" alt=""
+          className="w-full h-full object-cover"
+          style={{ opacity: 0.85, filter: 'contrast(1.15) saturate(1.2)' }} />
       </motion.div>
 
-      {/* Gradient overlay for readability */}
-      <div className="absolute inset-0 z-[1]"
-        style={{ background: 'linear-gradient(180deg, rgba(250,249,246,0.4) 0%, rgba(250,249,246,0.85) 40%, rgba(250,249,246,0.95) 100%)' }} />
+      {/* Layer 2: Radial vignette — draws eye to center */}
+      <div className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 20%, rgba(13,11,8,0.4) 55%, rgba(13,11,8,0.92) 100%)',
+        }} />
 
-      {/* Golden particles */}
-      <GoldenParticles />
+      {/* Layer 3: Top/bottom gradient for text readability */}
+      <div className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          background: 'linear-gradient(180deg, rgba(13,11,8,0.7) 0%, transparent 25%, transparent 55%, rgba(13,11,8,0.8) 100%)',
+        }} />
 
-      {/* Batik watermark */}
-      <BatikWatermark />
+      {/* Layer 4: Batik Kawung — ultra subtle gold */}
+      <div className="absolute inset-0 pointer-events-none z-[3]"
+        style={{ opacity: hovered ? 0.06 : 0.03, transition: 'opacity 0.8s ease' }}>
+        <BatikWatermark />
+      </div>
 
-      {/* Animated double gold border */}
-      <motion.div className="absolute pointer-events-none z-5"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 1 }}
-        style={{ inset: '16px', border: '2px solid rgba(197,160,89,0.19)', borderRadius: 4 }} />
-      <motion.div className="absolute pointer-events-none z-5"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0, duration: 1 }}
-        style={{ inset: '24px', border: '1px solid rgba(197,160,89,0.12)', borderRadius: 2 }} />
+      {/* Layer 5: Golden particles — enhanced density & glow */}
+      <GoldenParticlesGod />
 
-      {/* Corner ornaments */}
-      <div className="absolute top-6 left-6 z-10"><CornerOrnament /></div>
-      <div className="absolute top-6 right-6 z-10" style={{ transform: 'scaleX(-1)' }}><CornerOrnament /></div>
-      <div className="absolute bottom-6 left-6 z-10" style={{ transform: 'scaleY(-1)' }}><CornerOrnament /></div>
-      <div className="absolute bottom-6 right-6 z-10" style={{ transform: 'scale(-1,-1)' }}><CornerOrnament /></div>
+      {/* ═══ GOD MODE: Cinematic Border Frame ═══ */}
 
-      {/* Main content */}
+      {/* Outer frame — double gold line */}
+      <motion.div className="absolute pointer-events-none z-10"
+        initial={{ opacity: 0, inset: '12px' }}
+        animate={{ opacity: 1, inset: '14px' }}
+        transition={{ delay: 1.2, duration: 1.5, ease: 'easeOut' }}
+        style={{
+          border: '1.5px solid rgba(197,160,89,0.25)',
+          borderRadius: 6,
+          boxShadow: '0 0 40px rgba(197,160,89,0.08), inset 0 0 40px rgba(197,160,89,0.04)',
+        }} />
+
+      {/* Inner frame — thin elegant line */}
+      <motion.div className="absolute pointer-events-none z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1.2 }}
+        style={{ inset: '22px', border: '0.5px solid rgba(197,160,89,0.15)', borderRadius: 4 }} />
+
+      {/* ═══ GOD MODE: Corner Ornaments — Enhanced ═══ */}
+      <motion.div className="absolute top-4 left-4 z-10"
+        initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ delay: 0.8, duration: 0.8, type: 'spring' }}>
+        <CornerOrnamentGod />
+      </motion.div>
+      <motion.div className="absolute top-4 right-4 z-10"
+        initial={{ opacity: 0, scale: 0.5, rotate: 10 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ delay: 0.9, duration: 0.8, type: 'spring' }}
+        style={{ transform: 'scaleX(-1)' }}>
+        <CornerOrnamentGod />
+      </motion.div>
+      <motion.div className="absolute bottom-4 left-4 z-10"
+        initial={{ opacity: 0, scale: 0.5, rotate: 10 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ delay: 1.0, duration: 0.8, type: 'spring' }}
+        style={{ transform: 'scaleY(-1)' }}>
+        <CornerOrnamentGod />
+      </motion.div>
+      <motion.div className="absolute bottom-4 right-4 z-10"
+        initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ delay: 1.1, duration: 0.8, type: 'spring' }}
+        style={{ transform: 'scale(-1,-1)' }}>
+        <CornerOrnamentGod />
+      </motion.div>
+
+      {/* ═══ GOD MODE: Main Content — Cinematic Reveal ═══ */}
       <motion.div
-        className="flex flex-col items-center gap-4 max-w-md text-center relative z-20 px-8 py-12"
-        variants={staggerContainer}
-        initial="hidden" animate="visible">
+        className="flex flex-col items-center gap-3 max-w-md text-center relative z-20 px-6 sm:px-8 py-8 sm:py-12"
+        variants={coverStagger}
+        initial="hidden"
+        animate="visible">
 
-        {/* Classification */}
-        <motion.p className="font-[family-name:var(--font-body)] text-[9px] sm:text-[10px] tracking-[2px] uppercase"
-          style={{ color: '#8B7D6B' }}
-          variants={fadeSlideUp} custom={0}>
-          Dokumen Super-Master &nbsp;|&nbsp; Klasifikasi: Absolut &nbsp;|&nbsp; Horizon: 100 Tahun
+        {/* Classification line */}
+        <motion.p
+          className="font-[family-name:var(--font-body)] text-[8px] sm:text-[9px] tracking-[3px] uppercase"
+          style={{ color: `${GOLD}90` }}
+          variants={coverFadeSlide}>
+          Dokumen Super-Master &nbsp;&bull;&nbsp; Klasifikasi: Absolut &nbsp;&bull;&nbsp; Horizon: 100 Tahun
         </motion.p>
 
-        <motion.div variants={fadeSlideUp} custom={1}><GoldDivider /></motion.div>
+        {/* Top ornamental divider */}
+        <motion.div variants={coverFadeSlide}>
+          <GoldDividerGod />
+        </motion.div>
 
-        {/* KNBMP — Letter by letter reveal */}
-        <motion.h1 className="font-[family-name:var(--font-heading)] text-5xl sm:text-6xl md:text-7xl font-normal tracking-tight leading-none"
-          style={{ color: CHARCOAL }}
-          variants={fadeSlideUp} custom={2}>
-          <AnimatedLetters text="KNBMP" className="font-[family-name:var(--font-heading)] text-5xl sm:text-6xl md:text-7xl font-normal tracking-tight leading-none" delay={3} />
-        </motion.h1>
+        {/* KNBMP — EPIC letter reveal with gold glow */}
+        <motion.div className="relative" variants={coverFadeSlide}>
+          {/* Glow behind text */}
+          <motion.div
+            className="absolute inset-0 blur-xl pointer-events-none"
+            style={{ backgroundColor: `${GOLD}15` }}
+            animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.05, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} />
+          <h1 className="font-[family-name:var(--font-heading)] text-5xl sm:text-6xl md:text-8xl font-normal tracking-tight leading-none relative"
+            style={{
+              color: GOLD,
+              textShadow: `0 0 30px rgba(197,160,89,0.3), 0 0 60px rgba(197,160,89,0.15), 0 2px 4px rgba(0,0,0,0.5)`,
+            }}>
+            <AnimatedLetters text="KNBMP"
+              className="font-[family-name:var(--font-heading)] text-5xl sm:text-6xl md:text-8xl font-normal tracking-tight leading-none"
+              delay={3}
+              color={GOLD} />
+          </h1>
+        </motion.div>
 
-        {/* PGA-72 with glow */}
-        <motion.p className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl tracking-[6px] font-normal"
-          style={{ color: BURGUNDY }}
-          variants={fadeSlideUp} custom={6}>
+        {/* PGA-72 — refined */}
+        <motion.p
+          className="font-[family-name:var(--font-heading)] text-lg sm:text-xl md:text-2xl tracking-[8px] font-normal"
+          style={{ color: `${GOLD}CC` }}
+          variants={coverFadeSlide}>
           PGA-72
         </motion.p>
 
-        <motion.div variants={fadeSlideUp} custom={7}><GoldDivider /></motion.div>
+        {/* Center ornamental divider with diamond */}
+        <motion.div variants={coverFadeSlide}>
+          <GoldDividerGod />
+        </motion.div>
 
-        {/* Anatomi Peradaban */}
-        <motion.p className="font-[family-name:var(--font-heading)] text-sm sm:text-base italic"
-          style={{ color: '#6B5E50' }}
-          variants={fadeSlideUp} custom={8}>
+        {/* Anatomi Peradaban — italic subtitle */}
+        <motion.p
+          className="font-[family-name:var(--font-heading)] text-xs sm:text-sm italic"
+          style={{ color: `${GOLD}99` }}
+          variants={coverFadeSlide}>
           Anatomi Peradaban:
         </motion.p>
 
-        {/* Main subtitle */}
-        <motion.h2 className="font-[family-name:var(--font-heading)] text-lg sm:text-xl md:text-2xl leading-snug font-normal"
-          style={{ color: BURGUNDY }}
-          variants={fadeSlideUp} custom={9}>
-          72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat
+        {/* Main tagline — THE statement */}
+        <motion.h2
+          className="font-[family-name:var(--font-heading)] text-base sm:text-lg md:text-xl leading-snug font-normal max-w-sm"
+          style={{
+            color: '#FFF5E6',
+            textShadow: '0 1px 3px rgba(0,0,0,0.5), 0 0 20px rgba(197,160,89,0.1)',
+          }}
+          variants={coverFadeSlide}>
+          72 Pilar Kebangkitan
+          <br />
+          Ekonomi Rakyat Berdaulat
         </motion.h2>
 
-        <motion.div variants={fadeSlideUp} custom={10}><GoldDivider /></motion.div>
+        {/* Bottom ornamental divider */}
+        <motion.div variants={coverFadeSlide}>
+          <GoldDividerGod />
+        </motion.div>
 
-        {/* Bottom subtitle */}
-        <motion.p className="font-[family-name:var(--font-body)] text-[8px] sm:text-[9px] tracking-[1.5px] uppercase mt-2"
-          style={{ color: '#A09385' }}
-          variants={fadeSlideUp} custom={11}>
+        {/* Full organization name */}
+        <motion.p
+          className="font-[family-name:var(--font-body)] text-[7px] sm:text-[8px] tracking-[2px] uppercase mt-1"
+          style={{ color: `${GOLD}70` }}
+          variants={coverFadeSlide}>
           Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih
         </motion.p>
+
+        {/* Bottom classification */}
+        <motion.div
+          className="mt-3 flex items-center gap-2"
+          variants={coverFadeSlide}>
+          <div className="h-px w-6" style={{ backgroundColor: `${GOLD}40` }} />
+          <span className="font-[family-name:var(--font-body)] text-[6px] sm:text-[7px] tracking-[2px] uppercase"
+            style={{ color: `${GOLD}50` }}>
+            Est. 2026 &nbsp;&bull;&nbsp; Indonesia
+          </span>
+          <div className="h-px w-6" style={{ backgroundColor: `${GOLD}40` }} />
+        </motion.div>
       </motion.div>
+
+      {/* ═══ GOD MODE: Hover pulse ring ═══ */}
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            className="absolute inset-0 z-[5] pointer-events-none rounded-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            style={{
+              border: '2px solid rgba(197,160,89,0.12)',
+              borderRadius: 8,
+            }} />
+        )}
+      </AnimatePresence>
     </div>
   )
 }
