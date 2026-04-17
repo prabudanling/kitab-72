@@ -182,3 +182,69 @@ Stage Summary:
 - New total page count: 22 (was 94): Cover + 4 Kata Pengantar + 4 Mukadimah + TOC + 9 Domain-Pillar pages + Philosophy + Covenant + Back Cover
 - Domain-pillar pages use sticky header with scrollable pillar content below
 - All existing components (Cover, Kata Pengantar, Mukadimah, Philosophy, Covenant, BackCover) untouched
+
+---
+Task ID: 8
+Agent: Main
+Task: Restructure TOC & Pillar Pages — 9 TOC pages (1 domain each) + 72 individual pillar pages
+
+Work Log:
+- Read worklog.md and page.tsx (~1900 lines) to understand current structure
+- **BookPage type updated**: Replaced `{ type: 'toc' }` → `{ type: 'toc-page'; tocPage: number }` and `{ type: 'domain-pillars'; data: Domain }` → `{ type: 'pillar-detail'; pillar: Pillar; domain: Domain }`
+- Added `Pillar` type import from `@/lib/pillar-data`
+- **TocPage component created** (~150 lines): Shows ONE domain per TOC page with BIG, CLEAR fonts
+  - Header: "Master Index PGA-72" + "Daftar Isi · Halaman X dari 9" with gold dividers
+  - Large domain emoji (text-4xl sm:text-5xl), domain name (text-lg to text-2xl bold), Indonesian subtitle
+  - Domain range and pillar count in domain color
+  - Domain description in styled block with domain color left border
+  - 8 pillar listings with generous spacing (p-4 sm:p-5), BIG code badges (text-sm sm:text-base), pillar names (text-base to text-xl bold), English names (text-sm to text-base italic), readable descriptions (text-sm sm:text-base)
+  - Background watermark of domain number (D1-D9) in domain color
+  - Footer with page info and chapter divider
+  - Same heritage style: BURGUNDY left bar, BatikWatermark, paper-grain, framer-motion fadeSlideUp animations
+- **PillarDetailPage component created** (~180 lines): Shows ONE pillar per page with LARGE, CLEAR text
+  - Small domain header at top: Domain ID, code, Indonesian name
+  - Gold divider
+  - Big code badge (text-base sm:text-lg) + badge type (Fondasi/Strategis/Operasional) + "Pilar X dari 72"
+  - Pillar name VERY BIG (text-2xl sm:text-3xl lg:text-4xl bold)
+  - English name big italic (text-sm to text-lg)
+  - Gold divider
+  - Description large readable (text-base sm:text-lg leading-[1.8])
+  - Vision quote in EmotionalQuote style block
+  - Dimensions in grid of styled cards with domain color left border
+  - Principles with gold bullet points (text-sm sm:text-base)
+  - Cross-references as styled badges (text-xs sm:text-sm)
+  - Large background watermark of pillar number (#01-#72) in domain color
+  - Domain-colored left border, page footer with pillar code
+- **bookPages array updated**: `domains.map((_, i) => ({ type: 'toc-page', tocPage: i }))` + `domains.flatMap(domain => domain.pillars.map(pillar => ({ type: 'pillar-detail', pillar, domain })))`
+- **renderPage updated**: `case 'toc-page'` → TocPage, `case 'pillar-detail'` → PillarDetailPage
+- **currentPageInfo updated**: Shows `Daftar Isi (X/9)` for TOC pages, `emoji pillar.code: pillar.name` + `Pilar X/72` for pillar pages
+- Lint passes cleanly (0 errors), dev server compiles successfully (GET / 200)
+
+Stage Summary:
+- TOC restructured from 1 crammed page to 9 spacious pages (1 domain per page with big fonts)
+- Pillars restructured from 9 condensed domain pages to 72 individual detail pages with LARGE text
+- New total page count: 93 (was 22): Cover + 4 Kata Pengantar + 4 Mukadimah + 9 TOC Pages + 72 Pillar Detail Pages + Philosophy + Covenant + Back Cover
+- The book now feels like a real book with 93 pages to flip through
+- All existing components untouched
+---
+Task ID: 1
+Agent: main
+Task: Restructure flipbook TOC and pillar pages per user feedback
+
+Work Log:
+- Read and analyzed current page.tsx (1900 lines) and pillar-data.ts
+- Identified user's complaint: TOC crammed all 72 PGAs on 1 page with small text, domain pages grouped 8 pillars per page making it feel condensed
+- User wants: (a) TOC spread across multiple pages with BIG fonts, (b) Each PGA on its own page with LARGE text — book feel
+- Updated BookPage type: 'toc' → 'toc-page' (with tocPage number), 'domain-pillars' → 'pillar-detail' (with pillar + domain)
+- Created TocPage component: 1 domain per TOC page (9 pages total), big domain headers, large pillar listings with generous spacing
+- Created PillarDetailPage component: 1 pillar per page (72 pages total), very large pillar name, full vision/dimensions/principles/xref
+- Updated bookPages array to generate 9 TOC pages + 72 pillar detail pages
+- Updated renderPage dispatcher and currentPageInfo for new types
+- Total pages: 93 (was ~22) — real book feel
+
+Stage Summary:
+- Flipbook now has 93 pages: Cover + 4 KP + 4 Mukadimah + 9 TOC + 72 Pillar Detail + Philosophy + Covenant + Back Cover
+- TOC pages: Each domain gets its own page with BIG, clear fonts and generous spacing
+- Pillar detail pages: Each PGA gets its own full page with large text, complete vision, dimensions, principles, and cross-references
+- App compiles and serves correctly (GET / 200)
+- Lint passes with 0 errors
