@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KNBMP · PGA-72 · Master Index — Anatomi Peradaban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Crimson+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   CSS RESET & ROOT
+   ═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--navy:#09152B;--navy-mid:#122142;--navy-light:#1C3260;--navy-deep:#060E1E;
+--gold:#C4952A;--gold-l:#DEB96A;--gold-pale:#F0DFA0;--gold-sub:#F7F0DC;
+--gold-glow:rgba(196,149,42,.18);
+--cream:#F5F0E7;--cream-d:#E8E0D0;--cream-dd:#D8CEBC;
+--red:#B01C28;--red-d:#7A1219;
+--green:#008F3D;--green-dark:#006B2E;--green-pale:#E8F5EE;
+--txt:#18192C;--txt-m:#3A3C5E;--txt-l:#7A7C9C;--txt-x:#A8AABB;--wh:#FFFFFF;
+--d1:#C4952A;--d2:#1565C0;--d3:#6A1B9A;--d4:#008F3D;--d5:#E65100;
+--d6:#B01C28;--d7:#00695C;--d8:#AD1457;--d9:#1565C0;
+--ff-display:'Cormorant Garamond',Georgia,serif;
+--ff-body:'Crimson Pro',Georgia,serif;
+--ff-ui:'DM Sans',system-ui,sans-serif;
+--ff-mono:'DM Mono',monospace;
+--sidebar-w:260px;
+}
+html{scroll-behavior:smooth;font-size:16px;scroll-padding-top:80px}
+body{font-family:var(--ff-body);color:var(--txt);background:var(--cream);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+
+/* ═══════════════════════════════════════════
+   SCROLL PROGRESS BAR
+   ═══════════════════════════════════════════ */
+#scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-l));z-index:9999;width:0;transition:width .1s}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════════════ */
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--navy-deep);color:var(--gold-sub);z-index:1000;display:flex;flex-direction:column;transition:transform .3s ease;overflow:hidden;border-right:1px solid rgba(196,149,42,.15)}
+#sidebar.collapsed{transform:translateX(calc(-1 * var(--sidebar-w)))}
+.sb-header{padding:20px 16px;border-bottom:1px solid rgba(196,149,42,.15);flex-shrink:0}
+.sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sb-logo-text{font-family:var(--ff-display);font-size:22px;font-weight:600;color:var(--gold);letter-spacing:2px}
+.sb-badge{font-family:var(--ff-mono);font-size:9px;background:var(--gold);color:var(--navy-deep);padding:2px 7px;border-radius:3px;font-weight:500;letter-spacing:1px}
+.sb-search{position:relative;margin-top:10px}
+.sb-search input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(196,149,42,.2);border-radius:6px;padding:8px 10px 8px 32px;color:var(--cream);font-size:12px;font-family:var(--ff-ui);outline:none;transition:border-color .2s}
+.sb-search input:focus{border-color:var(--gold)}
+.sb-search input::placeholder{color:var(--txt-x)}
+.sb-search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--txt-x)}
+.sb-nav{flex:1;overflow-y:auto;padding:8px 0;scrollbar-width:thin;scrollbar-color:rgba(196,149,42,.3) transparent}
+.sb-nav::-webkit-scrollbar{width:4px}
+.sb-nav::-webkit-scrollbar-track{background:transparent}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(196,149,42,.3);border-radius:4px}
+.sb-section-label{font-family:var(--ff-ui);font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--txt-x);padding:12px 16px 4px;user-select:none}
+.sb-item{display:block;padding:6px 16px 6px 24px;font-size:12px;font-family:var(--ff-ui);color:var(--cream-d);cursor:pointer;transition:all .15s;border-left:2px solid transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-item:hover{background:rgba(196,149,42,.08);color:var(--gold-l)}
+.sb-item.active{background:rgba(196,149,42,.12);color:var(--gold);border-left-color:var(--gold);font-weight:500}
+.sb-item.domain-head{font-weight:600;color:var(--cream);font-size:11px;margin-top:2px;padding-left:16px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.sb-item.domain-head .arrow{transition:transform .2s;font-size:8px}
+.sb-item.domain-head.open .arrow{transform:rotate(90deg)}
+.sb-pillar-list{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.sb-pillar-list.open{max-height:400px}
+.sb-pillar-list .sb-item{padding-left:36px;font-size:11px;color:var(--txt-l)}
+.sb-close{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--gold);cursor:pointer;display:none;font-size:20px;z-index:10}
+
+/* ═══════════════════════════════════════════
+   HAMBURGER
+   ═══════════════════════════════════════════ */
+#hamburger{position:fixed;top:12px;left:12px;z-index:1001;background:var(--navy);border:1px solid rgba(196,149,42,.3);border-radius:6px;padding:8px;cursor:pointer;display:none;color:var(--gold);transition:background .2s}
+#hamburger:hover{background:var(--navy-mid)}
+#hamburger svg{width:22px;height:22px}
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none}
+#overlay.show{display:block}
+
+/* ═══════════════════════════════════════════
+   MAIN CONTENT
+   ═══════════════════════════════════════════ */
+#main{margin-left:var(--sidebar-w);min-height:100vh;transition:margin-left .3s}
+.page-section{max-width:960px;margin:0 auto;background:var(--wh);box-shadow:0 0 40px rgba(9,21,43,.06)}
+.page-inner{padding:60px 64px}
+@media(max-width:1100px){.page-inner{padding:48px 40px}}
+@media(max-width:900px){#sidebar{transform:translateX(calc(-1 * var(--sidebar-w)))}#sidebar.open{transform:translateX(0)}#main{margin-left:0}#hamburger{display:flex}.sb-close{display:block}}
+@media(max-width:600px){.page-inner{padding:32px 20px}}
+
+/* ═══════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════ */
+h1,h2,h3,h4,h5,h6{font-family:var(--ff-display);line-height:1.2;color:var(--navy)}
+h1{font-size:2.8rem;font-weight:300}
+h2{font-size:2.2rem;font-weight:400}
+h3{font-size:1.6rem;font-weight:500}
+h4{font-size:1.25rem;font-weight:600}
+.subtitle{font-family:var(--ff-body);font-size:1.05rem;color:var(--txt-m);font-style:italic;font-weight:300}
+.drop-cap::first-letter{float:left;font-family:var(--ff-display);font-size:4.5em;line-height:.75;padding-right:.1em;color:var(--gold);font-weight:600}
+.section-label{font-family:var(--ff-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+.ornament-divider{text-align:center;margin:32px 0;color:var(--gold);font-size:14px;letter-spacing:12px;user-select:none}
+.ornament-divider::before{content:"◆  ◆  ◆"}
+
+/* ═══════════════════════════════════════════
+   COVER PAGE
+   ═══════════════════════════════════════════ */
+#cover{min-height:100vh;background:var(--navy-deep);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--cream)}
+.cover-spine{position:absolute;left:0;top:0;bottom:0;width:72px;background:rgba(196,149,42,.06);border-right:1px solid rgba(196,149,42,.15);writing-mode:vertical-rl;text-orientation:mixed;display:flex;align-items:center;justify-content:center;font-family:var(--ff-mono);font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;padding:40px 0}
+.cover-glow{position:absolute;border-radius:50%;filter:blur(100px);opacity:.3;pointer-events:none}
+.cover-glow-1{width:500px;height:500px;background:radial-gradient(circle,var(--gold) 0%,transparent 70%);top:-100px;right:-100px}
+.cover-glow-2{width:400px;height:400px;background:radial-gradient(circle,var(--gold-l) 0%,transparent 70%);bottom:-80px;left:10%}
+.cover-content{position:relative;z-index:2;max-width:700px;padding:60px 40px 60px 100px}
+.cover-class{font-family:var(--ff-mono);font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:24px;text-align:center}
+.cover-org{font-family:var(--ff-ui);font-size:11px;letter-spacing:4px;color:var(--gold-l);text-transform:uppercase;text-align:center;margin-bottom:16px}
+.cover-acronym{font-family:var(--ff-display);font-size:132px;font-weight:300;text-align:center;letter-spacing:12px;line-height:1;margin-bottom:8px;color:var(--cream)}
+.cover-acronym .n-gold{color:var(--gold)}
+.cover-series{font-family:var(--ff-mono);font-size:12px;letter-spacing:3px;color:var(--gold);text-align:center;margin-top:20px;text-transform:uppercase}
+.cover-title{font-family:var(--ff-display);font-size:2rem;font-weight:400;text-align:center;color:var(--cream);margin-top:24px;line-height:1.4}
+.cover-title em{color:var(--gold-l);font-style:italic}
+.cover-tagline{font-family:var(--ff-body);font-style:italic;font-size:1.05rem;color:var(--cream-d);text-align:center;margin-top:20px;line-height:1.6}
+.cover-vision{border-left:3px solid var(--gold);padding:20px 24px;margin-top:32px;background:rgba(196,149,42,.06);font-family:var(--ff-body);font-size:.95rem;color:var(--cream-d);line-height:1.8}
+.cover-dedication{background:rgba(176,28,40,.1);border-left:3px solid var(--red);padding:16px 20px;margin-top:24px;font-family:var(--ff-body);font-size:.9rem;color:var(--cream-dd);line-height:1.7;font-style:italic}
+.cover-footer{margin-top:40px;text-align:center;font-family:var(--ff-mono);font-size:9px;letter-spacing:2px;color:var(--txt-x);text-transform:uppercase;line-height:2}
+.particle{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:.4;animation:float-particle linear infinite}
+@keyframes float-particle{0%{transform:translateY(0) translateX(0);opacity:.4}50%{opacity:.7}100%{transform:translateY(-100vh) translateX(30px);opacity:0}}
+
+/* ═══════════════════════════════════════════
+   COLOPHON
+   ═══════════════════════════════════════════ */
+#colophon{background:var(--navy-mid);color:var(--cream-d)}
+.colophon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:600px){.colophon-grid{grid-template-columns:1fr}}
+.colophon-item{padding:12px 0;border-bottom:1px solid rgba(196,149,42,.1)}
+.colophon-label{font-family:var(--ff-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.colophon-value{font-family:var(--ff-body);font-size:.95rem;color:var(--cream)}
+
+/* ═══════════════════════════════════════════
+   KATA PENGANTAR
+   ═══════════════════════════════════════════ */
+.arabic-opener{font-family:var(--ff-display);font-size:1.8rem;text-align:center;color:var(--gold);margin-bottom:24px;direction:rtl}
+.declaration-box{background:var(--navy);color:var(--cream);padding:32px;border-left:3px solid var(--gold);margin:24px 0;font-family:var(--ff-display);font-size:1.15rem;line-height:1.8}
+.pull-quote{border-left:3px solid var(--gold);padding:20px 24px;margin:32px 0;font-family:var(--ff-display);font-size:1.3rem;font-style:italic;color:var(--navy);line-height:1.6}
+.dark-banner{background:var(--navy-deep);color:var(--cream);padding:32px;border-radius:4px;margin:24px 0}
+.dark-banner h3{color:var(--gold)}
+.antithesis-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0}
+@media(max-width:600px){.antithesis-grid{grid-template-columns:1fr}}
+.antithesis-col{padding:20px;border-radius:4px}
+.antithesis-col.neg{background:rgba(176,28,40,.08);border:1px solid rgba(176,28,40,.2)}
+.antithesis-col.pos{background:rgba(0,143,61,.08);border:1px solid rgba(0,143,61,.2)}
+.antithesis-col h5{font-family:var(--ff-ui);font-size:11px;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.antithesis-col.neg h5{color:var(--red)}
+.antithesis-col.pos h5{color:var(--green)}
+.vision-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);color:var(--cream);padding:40px;border-radius:4px;margin:24px 0;text-align:center}
+.vision-hero h4{color:var(--gold);font-size:1.4rem;margin-bottom:16px}
+
+/* ═══════════════════════════════════════════
+   MASTER INDEX
+   ═══════════════════════════════════════════ */
+.phi-box{background:var(--navy);color:var(--cream);padding:32px;border-left:3px solid var(--gold);margin:24px 0;font-size:1.05rem;line-height:1.8}
+.domain-block{margin:32px 0;border-radius:6px;overflow:hidden;border:1px solid var(--cream-d);background:var(--wh)}
+.domain-header{padding:20px 24px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .2s}
+.domain-header:hover{filter:brightness(.97)}
+.domain-emoji{font-size:28px}
+.domain-meta{flex:1}
+.domain-id{font-family:var(--ff-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.domain-name{font-family:var(--ff-display);font-size:1.25rem;font-weight:600;margin-top:2px}
+.domain-range{font-family:var(--ff-mono);font-size:10px;color:var(--txt-l);margin-top:2px}
+.domain-expand{font-size:18px;color:var(--txt-l);transition:transform .2s}
+.domain-block.open .domain-expand{transform:rotate(180deg)}
+.pillar-list{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.domain-block.open .pillar-list{max-height:2000px}
+.pillar-row{display:flex;align-items:baseline;gap:12px;padding:12px 24px;border-top:1px solid var(--cream-d);transition:background .15s;cursor:pointer}
+.pillar-row:hover{background:var(--gold-sub)}
+.pillar-id{font-family:var(--ff-mono);font-size:11px;font-weight:500;flex-shrink:0;width:60px;color:var(--txt-m)}
+.pillar-name{font-family:var(--ff-display);font-size:1rem;font-weight:500;flex-shrink:0}
+.pillar-eng{font-family:var(--ff-body);font-size:.85rem;color:var(--txt-l);font-style:italic;flex-shrink:0}
+.pillar-dots{flex:1;border-bottom:1px dotted var(--cream-dd);margin:0 8px;min-width:20px;align-self:center}
+.pillar-desc{font-family:var(--ff-body);font-size:.85rem;color:var(--txt-m);flex-shrink:0}
+@media(max-width:600px){.pillar-row{flex-wrap:wrap;gap:4px}.pillar-dots{display:none}.pillar-eng{width:100%;margin-left:60px}}
+
+/* ═══════════════════════════════════════════
+   DOMAIN DETAIL
+   ═══════════════════════════════════════════ */
+.domain-detail-banner{background:var(--navy-deep);padding:48px 64px;position:relative;overflow:hidden}
+@media(max-width:600px){.domain-detail-banner{padding:32px 20px}}
+.domain-watermark{position:absolute;right:-20px;top:-20px;font-family:var(--ff-display);font-size:200px;font-weight:300;color:rgba(196,149,42,.06);line-height:1;pointer-events:none}
+.domain-detail-id{font-family:var(--ff-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase}
+.domain-detail-title{font-family:var(--ff-display);font-size:2.2rem;font-weight:400;color:var(--cream);margin-top:8px}
+.domain-detail-sub{font-family:var(--ff-body);font-size:1rem;color:var(--cream-d);font-style:italic;margin-top:4px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}
+@media(max-width:600px){.stats-grid{grid-template-columns:1fr}}
+.stat-card{background:var(--cream);border:1px solid var(--cream-d);border-radius:6px;padding:20px;text-align:center}
+.stat-num{font-family:var(--ff-display);font-size:2rem;font-weight:600;color:var(--navy)}
+.stat-label{font-family:var(--ff-ui);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--txt-l);margin-top:4px}
+.principles-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+@media(max-width:600px){.principles-grid{grid-template-columns:1fr}}
+.principle-card{border:1px solid var(--cream-d);border-radius:6px;padding:20px;position:relative;overflow:hidden}
+.principle-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}
+.principle-card .p-id{font-family:var(--ff-mono);font-size:10px;letter-spacing:2px;color:var(--txt-l)}
+.principle-card .p-name{font-family:var(--ff-display);font-size:1.1rem;font-weight:600;margin-top:4px}
+.principle-card .p-quote{font-family:var(--ff-body);font-style:italic;font-size:.9rem;color:var(--txt-m);margin-top:8px;line-height:1.5}
+.principle-card .p-points{margin-top:10px;padding-left:16px}
+.principle-card .p-points li{font-size:.85rem;color:var(--txt-m);margin-bottom:4px}
+.callout-box{border-left:3px solid var(--gold);padding:20px 24px;margin:24px 0;background:var(--gold-sub)}
+.callout-box.red{border-color:var(--red);background:rgba(176,28,40,.05)}
+.callout-box h5{font-family:var(--ff-ui);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:8px}
+.callout-box.red h5{color:var(--red)}
+.callout-box p{font-size:.95rem;line-height:1.7;color:var(--txt-m)}
+.timeline{position:relative;padding-left:32px;margin:24px 0}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--cream-dd)}
+.timeline-item{position:relative;margin-bottom:24px}
+.timeline-item::before{content:'';position:absolute;left:-28px;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid var(--gold);background:var(--wh)}
+.timeline-item .t-phase{font-family:var(--ff-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.timeline-item .t-title{font-family:var(--ff-display);font-size:1.1rem;font-weight:600;margin-top:2px}
+.timeline-item .t-desc{font-size:.9rem;color:var(--txt-m);margin-top:4px}
+
+/* ═══════════════════════════════════════════
+   PILLAR CARDS
+   ═══════════════════════════════════════════ */
+.pillar-card{border:1px solid var(--cream-d);border-radius:6px;margin:16px 0;overflow:hidden;background:var(--wh);transition:box-shadow .2s}
+.pillar-card:hover{box-shadow:0 4px 20px rgba(9,21,43,.08)}
+.pillar-card-header{padding:20px 24px;border-bottom:1px solid var(--cream-d);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pillar-card-id{font-family:var(--ff-mono);font-size:12px;font-weight:500}
+.pillar-card-name{font-family:var(--ff-display);font-size:1.2rem;font-weight:600}
+.pillar-card-eng{font-family:var(--ff-body);font-size:.9rem;font-style:italic;color:var(--txt-l)}
+.pillar-card-badge{font-family:var(--ff-ui);font-size:9px;padding:3px 8px;border-radius:3px;text-transform:uppercase;letter-spacing:1px;font-weight:600;flex-shrink:0}
+.badge-foundation{background:var(--gold-sub);color:var(--gold)}
+.badge-strategic{background:rgba(21,101,192,.1);color:#1565C0}
+.badge-operational{background:var(--green-pale);color:var(--green-dark)}
+.pillar-card-body{padding:20px 24px}
+.pillar-card-vision{font-family:var(--ff-display);font-size:1.05rem;font-style:italic;color:var(--navy);margin-bottom:16px;line-height:1.6;border-left:2px solid var(--gold);padding-left:12px}
+.pillar-card-dims{width:100%;border-collapse:collapse;margin-bottom:16px}
+.pillar-card-dims th{font-family:var(--ff-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;text-align:left;padding:6px 8px;background:var(--cream);color:var(--txt-l);border-bottom:1px solid var(--cream-d)}
+.pillar-card-dims td{font-size:.85rem;padding:6px 8px;border-bottom:1px solid var(--cream-d);color:var(--txt-m)}
+.pillar-card-dims td:first-child{font-weight:500;color:var(--txt)}
+.pillar-card-principles{margin-bottom:16px}
+.pillar-card-principles h6{font-family:var(--ff-ui);font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--txt-l);margin-bottom:8px}
+.pillar-card-principles ul{padding-left:18px}
+.pillar-card-principles li{font-size:.85rem;color:var(--txt-m);margin-bottom:4px;line-height:1.5}
+.pillar-card-xref{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+.pillar-card-xref span{font-family:var(--ff-mono);font-size:10px;padding:2px 8px;border-radius:3px;background:var(--cream);color:var(--txt-l);border:1px solid var(--cream-d)}
+.pillar-card-footer{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;background:var(--cream);font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)}
+.domain-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+
+/* ═══════════════════════════════════════════
+   ARCHITECTURE
+   ═══════════════════════════════════════════ */
+.arch-diagram{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:32px 0}
+.arch-node{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid;position:relative;font-size:11px;text-align:center;transition:transform .2s,box-shadow .2s}
+.arch-node:hover{transform:scale(1.08);box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.arch-node .arch-emoji{font-size:24px;margin-bottom:4px}
+.arch-node .arch-label{font-family:var(--ff-ui);font-size:9px;font-weight:600;letter-spacing:.5px;line-height:1.3}
+.arch-core{width:140px;height:140px;border-radius:50%;background:var(--navy);border:3px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--gold);z-index:2}
+.arch-core .core-text{font-family:var(--ff-display);font-size:1.4rem;font-weight:700;letter-spacing:2px}
+.arch-core .core-sub{font-family:var(--ff-ui);font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.xref-matrix{width:100%;border-collapse:collapse;margin:24px 0;font-size:11px}
+.xref-matrix th,.xref-matrix td{border:1px solid var(--cream-d);padding:8px 6px;text-align:center}
+.xref-matrix th{background:var(--navy);color:var(--gold);font-family:var(--ff-ui);font-size:9px;letter-spacing:1px;text-transform:uppercase}
+.xref-matrix td{font-family:var(--ff-mono);font-size:10px}
+.xref-matrix td.strong{background:var(--gold-sub);font-weight:600}
+
+/* ═══════════════════════════════════════════
+   COVENANT
+   ═══════════════════════════════════════════ */
+#covenant{background:var(--navy-deep);color:var(--cream);position:relative;overflow:hidden}
+.covenant-header{font-family:var(--ff-display);font-size:2.4rem;text-align:center;color:var(--gold);margin-bottom:8px}
+.covenant-sub{text-align:center;color:var(--cream-d);font-style:italic;margin-bottom:32px}
+.covenant-oath{border:1px solid rgba(196,149,42,.3);padding:32px;margin:24px 0;font-family:var(--ff-display);font-size:1.15rem;line-height:1.8;text-align:center;color:var(--cream)}
+.covenant-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
+.covenant-item{background:rgba(196,149,42,.06);border:1px solid rgba(196,149,42,.15);border-radius:6px;padding:20px;text-align:center}
+.covenant-item .ci-num{font-family:var(--ff-display);font-size:2rem;color:var(--gold);font-weight:300}
+.covenant-item .ci-label{font-family:var(--ff-ui);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cream-d);margin-top:4px}
+.covenant-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+@media(max-width:600px){.covenant-stats{grid-template-columns:repeat(2,1fr)}}
+.covenant-stat{text-align:center}
+.covenant-stat .cs-num{font-family:var(--ff-display);font-size:2.5rem;font-weight:300;color:var(--gold)}
+.covenant-stat .cs-label{font-family:var(--ff-ui);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--cream-d);margin-top:4px}
+.merdeka-watermark{font-family:var(--ff-display);font-size:120px;font-weight:300;color:rgba(196,149,42,.06);text-align:center;letter-spacing:20px;line-height:1;user-select:none;margin-top:40px}
+.signature-block{margin-top:32px;text-align:center;padding:24px;border-top:1px solid rgba(196,149,42,.2)}
+.signature-block .sig-title{font-family:var(--ff-ui);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+.signature-block .sig-name{font-family:var(--ff-display);font-size:1.4rem;color:var(--cream);margin-top:8px}
+.signature-block .sig-role{font-family:var(--ff-ui);font-size:11px;color:var(--cream-d);margin-top:4px}
+
+/* ═══════════════════════════════════════════
+   BACK TO TOP
+   ═══════════════════════════════════════════ */
+#back-to-top{position:fixed;bottom:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--navy);color:var(--gold);border:1px solid rgba(196,149,42,.3);cursor:pointer;display:none;align-items:center;justify-content:center;z-index:900;transition:opacity .2s,transform .2s;opacity:0;transform:translateY(10px);font-size:18px}
+#back-to-top.show{display:flex;opacity:1;transform:translateY(0)}
+#back-to-top:hover{background:var(--navy-mid)}
+
+/* ═══════════════════════════════════════════
+   FADE IN ANIMATION
+   ═══════════════════════════════════════════ */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* ═══════════════════════════════════════════
+   PRINT
+   ═══════════════════════════════════════════ */
+@media print{#sidebar,#hamburger,#back-to-top,#scroll-progress,#overlay{display:none!important}#main{margin-left:0!important}.page-section{box-shadow:none;max-width:100%}.page-inner{padding:24px}}
+</style>
+</head>
+<body>
+<!-- Scroll Progress -->
+<div id="scroll-progress"></div>
+
+<!-- Overlay -->
+<div id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- Hamburger -->
+<button id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+</button>
+
+<!-- ═══════════════════════════════════════════
+     SIDEBAR
+     ═══════════════════════════════════════════ -->
+<aside id="sidebar">
+<div class="sb-header">
+<button class="sb-close" onclick="toggleSidebar()" aria-label="Close">✕</button>
+<div class="sb-logo"><span class="sb-logo-text">KNBMP</span><span class="sb-badge">PGA-72</span></div>
+<div class="sb-search">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<input type="text" id="search-input" placeholder="Cari pilar..." oninput="filterPillars(this.value)">
+</div>
+</div>
+<nav class="sb-nav" id="sb-nav">
+<div class="sb-section-label">Dokumen</div>
+<a class="sb-item active" href="#cover" data-section="cover">Cover</a>
+<a class="sb-item" href="#colophon" data-section="colophon">Colophon</a>
+<a class="sb-item" href="#pengantar-1" data-section="pengantar-1">Kata Pengantar I</a>
+<a class="sb-item" href="#pengantar-2" data-section="pengantar-2">Kata Pengantar II</a>
+<a class="sb-item" href="#pengantar-3" data-section="pengantar-3">Kata Pengantar III</a>
+<a class="sb-item" href="#master-index" data-section="master-index">Master Index 72 Pilar</a>
+
+<div class="sb-section-label">9 Domain</div>
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="1"><span class="arrow">▶</span> 🏛️ D1 · Identitas</div>
+<div class="sb-pillar-list" id="sb-d1">
+<a class="sb-item" href="#p01" data-section="p01">PGA-01 Bintang Utara</a>
+<a class="sb-item" href="#p02" data-section="p02">PGA-02 Mandat Transformasi</a>
+<a class="sb-item" href="#p03" data-section="p03">PGA-03 Akar Hikmah</a>
+<a class="sb-item" href="#p04" data-section="p04">PGA-04 Sejarah & Luka</a>
+<a class="sb-item" href="#p05" data-section="p05">PGA-05 Etika Absolut</a>
+<a class="sb-item" href="#p06" data-section="p06">PGA-06 Antitesis Global</a>
+<a class="sb-item" href="#p07" data-section="p07">PGA-07 Deklarasi Pembebasan</a>
+<a class="sb-item" href="#p08" data-section="p08">PGA-08 Arsitektur Makro</a>
+</div>
+
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="2"><span class="arrow">▶</span> ♟️ D2 · Strategi</div>
+<div class="sb-pillar-list" id="sb-d2">
+<a class="sb-item" href="#p09" data-section="p09">PGA-09 Navigasi Dekade</a>
+<a class="sb-item" href="#p10" data-section="p10">PGA-10 Arsitektur Nilai</a>
+<a class="sb-item" href="#p11" data-section="p11">PGA-11 Peta Pertempuran</a>
+<a class="sb-item" href="#p12" data-section="p12">PGA-12 Penetrasi Urat Nadi</a>
+<a class="sb-item" href="#p13" data-section="p13">PGA-13 Orkestrasi Ekosistem</a>
+<a class="sb-item" href="#p14" data-section="p14">PGA-14 Gerbang Global</a>
+<a class="sb-item" href="#p15" data-section="p15">PGA-15 Benteng Kedaulatan</a>
+<a class="sb-item" href="#p16" data-section="p16">PGA-16 Skenario Krisis</a>
+</div>
+
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="3"><span class="arrow">▶</span> ⚖️ D3 · Tata Kelola</div>
+<div class="sb-pillar-list" id="sb-d3">
+<a class="sb-item" href="#p17" data-section="p17">PGA-17 Keseimbangan Kekuasaan</a>
+<a class="sb-item" href="#p18" data-section="p18">PGA-18 Anatomi Kelembagaan</a>
+<a class="sb-item" href="#p19" data-section="p19">PGA-19 Matriks Kewenangan</a>
+<a class="sb-item" href="#p20" data-section="p20">PGA-20 Protokol Keputusan</a>
+<a class="sb-item" href="#p21" data-section="p21">PGA-21 Perisai Hukum</a>
+<a class="sb-item" href="#p22" data-section="p22">PGA-22 Konstitusi Agung</a>
+<a class="sb-item" href="#p23" data-section="p23">PGA-23 Aturan Kemitraan</a>
+<a class="sb-item" href="#p24" data-section="p24">PGA-24 Registri Kebijakan</a>
+</div>
+
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="4"><span class="arrow">▶</span> ⚙️ D4 · Produk & Layanan</div>
+<div class="sb-pillar-list" id="sb-d4">
+<a class="sb-item" href="#p25" data-section="p25">PGA-25 Arsitektur 16 Hak</a>
+<a class="sb-item" href="#p26" data-section="p26">PGA-26 Mesin Digital</a>
+<a class="sb-item" href="#p27" data-section="p27">PGA-27 Peta Jalan Digital</a>
+<a class="sb-item" href="#p28" data-section="p28">PGA-28 Saraf Desa</a>
+<a class="sb-item" href="#p29" data-section="p29">PGA-29 Perjalanan Anggota</a>
+<a class="sb-item" href="#p30" data-section="p30">PGA-30 Mutu Kelas Dunia</a>
+<a class="sb-item" href="#p31" data-section="p31">PGA-31 Dapur Inovasi</a>
+<a class="sb-item" href="#p32" data-section="p32">PGA-32 Perubahan Platform</a>
+</div>
+
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="5"><span class="arrow">▶</span> 🚚 D5 · Operasional</div>
+<div class="sb-pillar-list" id="sb-d5">
+<a class="sb-item" href="#p33" data-section="p33">PGA-33 Kitab Operasional</a>
+<a class="sb-item" href="#p34" data-section="p34">PGA-34 Aliran Proses</a>
+<a class="sb-item" href="#p35" data-section="p35">PGA-35 Pelayanan Paripurna</a>
+<a class="sb-item" href="#p36" data-section="p36">PGA-36 Pengadaan & Pemasok</a>
+<a class="sb-item" href="#p37" data-section="p37">PGA-37 Kemitraan</a>
+<a class="sb-item" href="#p38" data-section="p38">PGA-38 Pemadam Kebakaran</a>
+<a class="sb-item" href="#p39" data-section="p39">PGA-39 Kebangkitan Bencana</a>
+<a class="sb-item" href="#p40" data-section="p40">PGA-40 Pasukan Lapangan</a>
+</div>
+
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="6"><span class="arrow">▶</span> 💰 D6 · Keuangan & Risiko</div>
+<div class="sb-pillar-list" id="sb-d6">
+<a class="sb-item" href="#p41" data-section="p41">PGA-41 Keuangan Masa Depan</a>
+<a class="sb-item" href="#p42" data-section="p42">PGA-42 Nadi Ekonomi</a>
+<a class="sb-item" href="#p43" data-section="p43">PGA-43 Kendali Kas</a>
+<a class="sb-item" href="#p44" data-section="p44">PGA-44 Kemakmuran</a>
+<a class="sb-item" href="#p45" data-section="p45">PGA-45 Radar Ancaman</a>
+<a class="sb-item" href="#p46" data-section="p46">PGA-46 Transparansi</a>
+<a class="sb-item" href="#p47" data-section="p47">PGA-47 Memorandum Investor</a>
+<a class="sb-item" href="#p48" data-section="p48">PGA-48 Penjaga Harta</a>
+</div>
+
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="7"><span class="arrow">▶</span> 👥 D7 · Sumber Daya & Budaya</div>
+<div class="sb-pillar-list" id="sb-d7">
+<a class="sb-item" href="#p49" data-section="p49">PGA-49 Menemukan Bintang</a>
+<a class="sb-item" href="#p50" data-section="p50">PGA-50 Kepemimpinan MP</a>
+<a class="sb-item" href="#p51" data-section="p51">PGA-51 Pengelolaan SDM</a>
+<a class="sb-item" href="#p52" data-section="p52">PGA-52 Cermin Prestasi</a>
+<a class="sb-item" href="#p53" data-section="p53">PGA-53 Candradimuka</a>
+<a class="sb-item" href="#p54" data-section="p54">PGA-54 Kode Budaya</a>
+<a class="sb-item" href="#p55" data-section="p55">PGA-55 Sumpah Etika</a>
+<a class="sb-item" href="#p56" data-section="p56">PGA-56 Pewaris Peradaban</a>
+</div>
+
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="8"><span class="arrow">▶</span> 📢 D8 · Merek & Pertumbuhan</div>
+<div class="sb-pillar-list" id="sb-d8">
+<a class="sb-item" href="#p57" data-section="p57">PGA-57 Estetika Kedaulatan</a>
+<a class="sb-item" href="#p58" data-section="p58">PGA-58 Narasi Penakluk</a>
+<a class="sb-item" href="#p59" data-section="p59">PGA-59 Api Komunitas</a>
+<a class="sb-item" href="#p60" data-section="p60">PGA-60 Konstelasi Pemangku</a>
+<a class="sb-item" href="#p61" data-section="p61">PGA-61 Buku Pintar Ekspansi</a>
+<a class="sb-item" href="#p62" data-section="p62">PGA-62 Diplomasi Pemerintahan</a>
+<a class="sb-item" href="#p63" data-section="p63">PGA-63 Mengguncang Investor</a>
+<a class="sb-item" href="#p64" data-section="p64">PGA-64 Manajemen Krisis</a>
+</div>
+
+<div class="sb-item domain-head" onclick="toggleDomainNav(this)" data-domain="9"><span class="arrow">▶</span> 💾 D9 · Data & Warisan</div>
+<div class="sb-pillar-list" id="sb-d9">
+<a class="sb-item" href="#p65" data-section="p65">PGA-65 Kedaulatan Data</a>
+<a class="sb-item" href="#p66" data-section="p66">PGA-66 Pertahanan Siber</a>
+<a class="sb-item" href="#p67" data-section="p67">PGA-67 Panel Kontrol</a>
+<a class="sb-item" href="#p68" data-section="p68">PGA-68 Perpustakaan</a>
+<a class="sb-item" href="#p69" data-section="p69">PGA-69 Intelijen Ekonomi</a>
+<a class="sb-item" href="#p70" data-section="p70">PGA-70 Bakti Bumi</a>
+<a class="sb-item" href="#p71" data-section="p71">PGA-71 Perjanjian 100 Tahun</a>
+<a class="sb-item" href="#p72" data-section="p72">PGA-72 Indeks Master</a>
+</div>
+
+<div class="sb-section-label">Lainnya</div>
+<a class="sb-item" href="#architecture" data-section="architecture">Arsitektur</a>
+<a class="sb-item" href="#covenant" data-section="covenant">Perjanjian Suci</a>
+</nav>
+</aside>
+
+<!-- ═══════════════════════════════════════════
+     MAIN CONTENT
+     ═══════════════════════════════════════════ -->
+<main id="main">
+
+
+<!-- ═══════════════════════════════════════════
+     COVER PAGE
+     ═══════════════════════════════════════════ -->
+<section id="cover" class="page-section" style="background:var(--navy-deep);min-height:100vh">
+<div class="cover-glow cover-glow-1"></div>
+<div class="cover-glow cover-glow-2"></div>
+<div class="cover-spine">PGA · POLYMATH GRAND ARCHITECTURE · 72</div>
+<div id="particles-container" style="position:absolute;inset:0;pointer-events:none;overflow:hidden"></div>
+<div class="cover-content">
+<div class="cover-class">Dokumen Fondasi Peradaban · Absolute Source of Truth</div>
+<div class="cover-org">Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih</div>
+<div class="ornament-divider" style="margin:20px 0"></div>
+<div class="cover-acronym">K<span class="n-gold">N</span>BMP</div>
+<div class="cover-series">PGA-72 · Polymath Grand Architecture</div>
+<div class="ornament-divider" style="margin:20px 0"></div>
+<div class="cover-title">Anatomi Peradaban:<br><em>72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat</em></div>
+<div class="cover-tagline">"Dari desa-desa yang terlupakan, kami membangun kembali peradaban yang menghormati martabat setiap manusia Indonesia — bukan dengan belas kasihan, melainkan dengan kedaulatan yang sesungguhnya."</div>
+<div class="cover-vision">
+<strong style="color:var(--gold);font-family:var(--ff-display);font-size:1.1rem">Visi Peradaban</strong><br><br>
+Mewujudkan ekosistem ekonomi rakyat berdaulat yang menghubungkan 83.763 desa, 275 juta jiwa, dan seluruh potensi Nusantara dalam satu arsitektur kooperasi multipihak — menjadi fondasi kebangkitan ekonomi peradaban Indonesia selama 100 tahun ke depan.
+</div>
+<div class="cover-dedication">
+Didedikasikan untuk para pejuang tanpa tanda jasa di pelosok Nusantara — petani, nelayan, guru, bidan, dan seluruh anak bangsa yang tak pernah menyerah menanti keadilan ekonomi yang sesungguhnya.
+</div>
+<div class="cover-footer">
+Klasifikasi: Absolute Source of Truth &nbsp;◆&nbsp; Horizon: 100 Tahun &nbsp;◆&nbsp; Pilar: 72 &nbsp;◆&nbsp; Domain: 9<br>
+Tahun Fondasi: 2025 &nbsp;◆&nbsp; Geografi: Republik Indonesia
+</div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     COLOPHON
+     ═══════════════════════════════════════════ -->
+<section id="colophon" class="page-section">
+<div class="page-inner" style="background:var(--navy-mid);color:var(--cream-d)">
+<div class="section-label" style="color:var(--gold);margin-bottom:8px">Colophon</div>
+<h2 style="color:var(--cream);margin-bottom:24px">Informasi Dokumen</h2>
+<div class="ornament-divider" style="margin:16px 0 32px"></div>
+<div class="colophon-grid">
+<div class="colophon-item"><div class="colophon-label">Nama Resmi</div><div class="colophon-value">Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih</div></div>
+<div class="colophon-item"><div class="colophon-label">Nama Singkat</div><div class="colophon-value">KNBMP</div></div>
+<div class="colophon-item"><div class="colophon-label">Situs Web</div><div class="colophon-value">knbmp.or.id</div></div>
+<div class="colophon-item"><div class="colophon-label">Seri Dokumen</div><div class="colophon-value">PGA-72 · Polymath Grand Architecture</div></div>
+<div class="colophon-item"><div class="colophon-label">Total Dokumen</div><div class="colophon-value">72 Pilar Fondasional</div></div>
+<div class="colophon-item"><div class="colophon-label">Status</div><div class="colophon-value" style="color:var(--gold)">Living Document · Absolute Source of Truth</div></div>
+<div class="colophon-item"><div class="colophon-label">Tahun Fondasi</div><div class="colophon-value">2025</div></div>
+<div class="colophon-item"><div class="colophon-label">Horizon</div><div class="colophon-value">100 Tahun (2025–2125)</div></div>
+<div class="colophon-item"><div class="colophon-label">Geografi</div><div class="colophon-value">Republik Indonesia · 34 Provinsi · 83.763 Desa</div></div>
+<div class="colophon-item"><div class="colophon-label">Bentuk Entitas</div><div class="colophon-value">Koperasi Korporasi Multipihak</div></div>
+<div class="colophon-item"><div class="colophon-label">Kantor Pendiri</div><div class="colophon-value">Grand Architect's Office</div></div>
+<div class="colophon-item"><div class="colophon-label">Pendaftaran</div><div class="colophon-value">Kementerian Koperasi & UKM RI</div></div>
+</div>
+<div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(196,149,42,.15);font-size:.85rem;color:var(--txt-x);line-height:1.8">
+<strong style="color:var(--gold)">Disclaimer:</strong> Dokumen ini merupakan Absolute Source of Truth bagi seluruh ekosistem KNBMP. Setiap penyimpangan dari dokumen ini harus mendapat persetujuan tertulis dari Grand Architect's Office. Segala interpretasi yang bertentangan dengan semangat dan substansi dokumen ini dinyatakan batal demi hukum. Dokumen ini bersifat living document dan diperbarui sesuai dengan mekanisme perubahan yang diatur dalam PGA-32 dan PGA-72.
+</div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KATA PENGANTAR I — Di Hadapan Sejarah
+     ═══════════════════════════════════════════ -->
+<section id="pengantar-1" class="page-section">
+<div class="page-inner">
+<div class="section-label">Kata Pengantar · Bagian I</div>
+<h2 style="margin-top:8px">Di Hadapan Sejarah</h2>
+<p class="subtitle">Ketika sebuah bangsa berhenti bermimpi, ia mulai mati. KNBMP hadir untuk memastikan mimpi itu tidak pernah padam.</p>
+<div class="ornament-divider"></div>
+
+<div class="arabic-opener">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+
+<div class="declaration-box">
+Dengan penuh kesadaran dan tanggung jawab di hadapan sejarah, kami menyatakan bahwa dokumen ini bukan sekadar kumpulan kata-kata — ini adalah cetak biru peradaban baru. Sebuah peradaban yang dibangun bukan atas dasar eksploitasi, melainkan atas fondasi kedaulatan, keadilan, dan martabat manusia seutuhnya.
+</div>
+
+<p class="drop-cap">Lebih dari empat abad telah berlalu sejak VOC menancapkan kuku kolonialismenya di bumi Nusantara. Empat abad penghisapan sistematis, pencurian sumber daya, dan penghancuran martabat bangsa. Dan meskipun bendera Merah Putih telah berkibar sejak 1945, bayang-bayang kolonialisme ekonomi belum pernah benar-benar pergi. Ia hanya berganti wajah — dari kapal-kapal VOC menjadi lembaga-lembaga keuangan global, dari tanam paksa menjadi utang luar negeri, dari penjajahan fisik menjadi penjajahan ekonomi.</p>
+
+<p style="margin-top:16px">Kami yang menandatangani dokumen ini tidak hadir untuk mengeluh. Kami hadir untuk membangun. Kami hadir dengan sebuah keyakinan yang tak tergoyahkan: bahwa bangsa Indonesia mampu membangun sistem ekonominya sendiri, untuk rakyatnya sendiri, oleh rakyatnya sendiri. Bukan dengan menutup diri dari dunia, melainkan dengan berdiri tegak sebagai entitas yang berdaulat di tengah pergaulan bangsa-bangsa.</p>
+
+<div class="pull-quote">
+"Kemerdekaan yang sesungguhnya bukan hanya soal bendera dan lagu kebangsaan — ia adalah kemampuan sebuah bangsa untuk menentukan nasib ekonominya sendiri, tanpa harus memohon kepada siapa pun."
+</div>
+
+<p>KNBMP lahir dari rahim penderitaan yang berkepanjangan, namun dibesarkan oleh harapan yang tak pernah padam. Kami tidak meminta izin untuk hadir — kami hadir karena sejarah menuntut kehadiran kami. Kami tidak mencari legitimasi dari sistem yang telah gagal — kami membangun legitimasi dari hasil nyata yang menyentuh kehidupan jutaan manusia.</p>
+
+<p style="margin-top:16px">Dokumen yang Anda baca ini — PGA-72, Polymath Grand Architecture — adalah peta jalan menuju peradaban baru. Bukan peradaban yang mengkotak-kotakkan manusia berdasarkan kekayaan atau kekuasaan, melainkan peradaban yang menghormati setiap kontribusi, menghargai setiap potensi, dan memastikan bahwa kemakmuran adalah hak semua, bukan privilese segelintir.</p>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KATA PENGANTAR II — Menjawab Tantangan 400 Tahun
+     ═══════════════════════════════════════════ -->
+<section id="pengantar-2" class="page-section">
+<div class="page-inner">
+<div class="section-label">Kata Pengantar · Bagian II</div>
+<h2 style="margin-top:8px">Menjawab Tantangan 400 Tahun</h2>
+<p class="subtitle">Dari warisan kolonialisme menuju arsitektur kedaulatan — perjalanan yang tidak bisa ditunda lagi.</p>
+<div class="ornament-divider"></div>
+
+<div class="dark-banner">
+<h3>Antitesis Sistem Global</h3>
+<p style="margin-top:12px;font-size:.95rem">Selama empat abad, bangsa kita hidup dalam sistem yang dirancang untuk mengalirkan kekayaan dari periferi ke pusat. Dari desa-desa Indonesia ke ibukota kolonial, dari koloni ke metropolis, dari yang miskin ke yang kaya. Sistem ini tidak pernah benar-benar dirombak — hanya diubah namanya.</p>
+</div>
+
+<div class="antithesis-grid">
+<div class="antithesis-col neg">
+<h5>❌ Sistem VOC — Warisan Kolonial</h5>
+<ul style="padding-left:18px;font-size:.9rem;line-height:2">
+<li>Monopoli untuk segelintir elite</li>
+<li>Ekstraksi sumber daya tanpa kompensasi adil</li>
+<li>Centralisasi kekuasaan di tangan asing</li>
+<li>Utang sebagai instrumen pengendalian</li>
+<li>Rakyat sebagai objek, bukan subjek</li>
+<li>Ketergantungan sistemik pada pihak luar</li>
+</ul>
+</div>
+<div class="antithesis-col pos">
+<h5>✅ Sistem KNBMP — Arsitektur Kedaulatan</h5>
+<ul style="padding-left:18px;font-size:.9rem;line-height:2">
+<li>Kepemilikan kolektif oleh 83.763 desa</li>
+<li>Distribusi nilai adil ke seluruh pemangku kepentingan</li>
+<li>Desentralisasi dengan koordinasi nasional</li>
+<li>Mandiri secara finansial dan operasional</li>
+<li>Rakyat sebagai pemilik, pengelola, dan penerima manfaat</li>
+<li>Kedaulatan ekonomi sebagai fondasi kemandirian</li>
+</ul>
+</div>
+</div>
+
+<div class="vision-hero">
+<h4>"Kami bukan anti-sistem — kami membangun sistem yang lebih adil"</h4>
+<p style="font-size:1rem;line-height:1.8;max-width:600px;margin:0 auto">KNBMP tidak menolak kerja sama internasional. Kami menolak ketidakadilan yang berkedok kerja sama. Kami menolak ketergantungan yang dikemas sebagai bantuan. Kami membangun hubungan setara — antara bangsa yang merdeka, untuk masa depan yang merdeka.</p>
+</div>
+
+<p style="margin-top:24px" class="drop-cap">Fakta-fakta yang tidak bisa kita hindari: 275 juta jiwa Indonesia pantas mendapat lebih dari apa yang selama ini diberikan oleh sistem ekonomi yang ada. 83.763 desa di seluruh Nusantara menyimpan kekayaan yang selama ini dieksploitasi tanpa imbalan yang adil. Potensi digital, sumber daya alam, dan paling penting — potensi manusia Indonesia — semuanya menanti untuk dibebaskan dari jerat sistem yang tidak dirancang untuk kepentingan mereka.</p>
+
+<p style="margin-top:16px">Inilah mengapa kami membangun 72 pilar. Bukan karena angka itu indah — melainkan karena setiap pilar menjawab satu kebutuhan nyata yang selama ini diabaikan. Setiap pilar adalah fondasi yang tidak bisa diabaikan tanpa membahayakan seluruh bangunan. Dan setiap pilar dirancang untuk berdiri selama 100 tahun — bukan untuk generasi kita saja, melainkan untuk cucu-cucu kita yang belum lahir.</p>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     KATA PENGANTAR III — Filosofi Arsitektur Peradaban
+     ═══════════════════════════════════════════ -->
+<section id="pengantar-3" class="page-section">
+<div class="page-inner">
+<div class="section-label">Kata Pengantar · Bagian III</div>
+<h2 style="margin-top:8px">Filosofi Arsitektur Peradaban</h2>
+<p class="subtitle">Mengapa 72 pilar, 9 domain, dan satu tekad yang tak tergoyahkan.</p>
+<div class="ornament-divider"></div>
+
+<p class="drop-cap">Arsitektur bukan sekadar teknik merancang bangunan — ia adalah seni menciptakan ruang bagi kehidupan untuk berkembang. Dan ketika kita berbicara tentang arsitektur peradaban, kita sedang merancang ruang bagi 275 juta jiwa untuk hidup bermartabat, berkembang secara berkelanjutan, dan mewariskan sesuatu yang lebih baik kepada generasi berikutnya.</p>
+
+<p style="margin-top:16px"><strong style="color:var(--gold)">Mengapa 9 Domain?</strong> Sembilan domain dalam PGA-72 mencerminkan keseluruhan dimensi kehidupan organisasi yang ingin bertahan selama 100 tahun. Sebuah organisasi yang hanya fokus pada keuangan tanpa identitas akan kehilangan arah. Yang hanya fokus pada operasional tanpa tata kelola akan runtuh dari dalam. Yang hanya fokus pada pertumbuhan tanpa fondasi etika akan menjadi monster yang memangsa penciptanya. Kesembilan domain ini saling menguatkan, saling menjaga, dan saling melengkapi — persis seperti pilar-pilar dalam sebuah bangunan peradaban yang sejati.</p>
+
+<p style="margin-top:16px"><strong style="color:var(--gold)">Mengapa 72 Pilar?</strong> Angka 72 bukan arbitrer. Ia berasal dari kedalaman pemikiran bahwa setiap domain membutuhkan tepat 8 pilar untuk berdiri dengan kokoh. Delapan pilar per domain mencerminkan delapan penjuru mata angin — keserbagunaan, kelengkapan, dan keseimbangan. 9 domain × 8 pilar = 72 fondasi yang masing-masing memiliki fungsi unik namun tak tergantikan.</p>
+
+<p style="margin-top:16px"><strong style="color:var(--gold)">Mengapa 100 Tahun?</strong> Karena kita tidak membangun untuk hari ini. Kita membangun untuk abad mendatang. Setiap keputusan, setiap pilar, setiap kata dalam dokumen ini diukur dengan satu kriteria: apakah ini akan bertahan dan relevan seratus tahun dari sekarang? Jika jawabannya tidak, maka ia belum cukup baik.</p>
+
+<div class="phi-box">
+"Buku ini bukan sekadar manual korporasi. Ini adalah cetak biru peradaban — arsitektur yang dirancang untuk bertahan melewati badai, gempa, dan bahkan perubahan zaman. Setiap pilar telah ditempa dalam perenungan mendalam, diuji dalam perdebatan sengit, dan disahkan dengan keyakinan yang tak tergoyahkan bahwa bangsa Indonesia layak memiliki sistem ekonomi yang lebih adil, lebih berdaulat, dan lebih manusiawi."
+</div>
+
+<p style="margin-top:16px">Arsitektur PGA-72 menempatkan <strong>Domain 1: Identitas & Peradaban</strong> sebagai fondasi pertama — karena bangsa yang tidak mengenal dirinya sendiri tidak akan mampu membangun masa depan. Dari sana, arsitektur berkembang secara organik: <strong>Strategi</strong> memberikan arah, <strong>Tata Kelola</strong> memberikan kepastian, <strong>Produk & Layanan</strong> memberikan nilai nyata, <strong>Operasional</strong> memberikan kemampuan eksekusi, <strong>Keuangan</strong> memberikan keberlanjutan, <strong>Sumber Daya Manusia</strong> memberikan nyawa, <strong>Merek & Pertumbuhan</strong> memberikan jangkauan, dan <strong>Data & Warisan</strong> memberikan kebijaksanaan untuk melintas batas waktu.</p>
+
+<p style="margin-top:16px">Setiap domain saling terhubung melalui jaringan referensi silang yang memastikan koherensi dan konsistensi. Perubahan pada satu pilar akan terdeteksi dampaknya pada pilar-pilar lain. Tidak ada yang berdiri sendiri — semua adalah bagian dari satu kesatuan yang utuh, satu arsitektur peradaban yang bernama KNBMP.</p>
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     MASTER INDEX — 72 PILAR
+     ═══════════════════════════════════════════ -->
+<section id="master-index" class="page-section">
+<div class="page-inner">
+<div class="section-label">Master Index</div>
+<h1 style="margin-top:8px;font-size:2.4rem">72 Pilar Peradaban</h1>
+<p class="subtitle" style="font-size:1.1rem">Arsitektur Lengkap Ekosistem Ekonomi Rakyat Berdaulat</p>
+<div class="ornament-divider"></div>
+
+<div class="phi-box">
+"Buku ini bukan sekadar manual korporasi. Ini adalah cetak biru peradaban yang dirancang untuk mentransformasi 83.763 desa Indonesia dari objek pembangunan menjadi subjek kedaulatan ekonomi. Setiap pilar adalah fondasi yang tidak bisa diabaikan tanpa membahayakan seluruh bangunan. Setiap kata dipilih dengan penuh tanggung jawab di hadapan sejarah dan di hadapan jutaan rakyat yang menanti keadilan."
+</div>
+
+<!-- DOMAIN 1 -->
+<div class="domain-block open fade-in" id="dm1" style="border-left:4px solid var(--d1)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(196,149,42,.06)">
+<span class="domain-emoji">🏛️</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d1)">Domain 1</div>
+<div class="domain-name">Identity & Civilization</div>
+<div class="domain-range">PGA-01 — PGA-08</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p01')"><span class="pillar-id" style="color:var(--d1)">PGA-01</span><span class="pillar-name">Bintang Utara Peradaban</span><span class="pillar-eng">Vision Statement</span><span class="pillar-dots"></span><span class="pillar-desc">Kompas abadi yang menuntun seluruh gerak ekosistem</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p02')"><span class="pillar-id" style="color:var(--d1)">PGA-02</span><span class="pillar-name">Mandat Transformasi Nyata</span><span class="pillar-eng">Mission Statement</span><span class="pillar-dots"></span><span class="pillar-desc">Janji konkret untuk perubahan yang terukur</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p03')"><span class="pillar-id" style="color:var(--d1)">PGA-03</span><span class="pillar-name">Akar Hikmah Para Pendiri</span><span class="pillar-eng">Founders Philosophy</span><span class="pillar-dots"></span><span class="pillar-desc">Filsafat yang mengakar dari tanah kelahiran</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p04')"><span class="pillar-id" style="color:var(--d1)">PGA-04</span><span class="pillar-name">Sejarah & Luka yang Menyembuhkan</span><span class="pillar-eng">Story of Origin</span><span class="pillar-dots"></span><span class="pillar-desc">Narasi asal-usul yang menjadi kekuatan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p05')"><span class="pillar-id" style="color:var(--d1)">PGA-05</span><span class="pillar-name">Tujuh Pilar Etika Absolut</span><span class="pillar-eng">Core Values Charter</span><span class="pillar-dots"></span><span class="pillar-desc">Pancangan moral yang tidak bisa ditawar</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p06')"><span class="pillar-id" style="color:var(--d1)">PGA-06</span><span class="pillar-name">Antitesis Sistem Global</span><span class="pillar-eng">Identity & Positioning Paper</span><span class="pillar-dots"></span><span class="pillar-desc">Posisi tegas terhadap ketidakadilan struktur</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p07')"><span class="pillar-id" style="color:var(--d1)">PGA-07</span><span class="pillar-name">Deklarasi Pembebasan Ekonomi</span><span class="pillar-eng">Manifesto / Declaration</span><span class="pillar-dots"></span><span class="pillar-desc">Pernyataan kemerdekaan ekonomi rakyat</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p08')"><span class="pillar-id" style="color:var(--d1)">PGA-08</span><span class="pillar-name">Arsitektur Konseptual Makro</span><span class="pillar-eng">Whitepaper</span><span class="pillar-dots"></span><span class="pillar-desc">Kerangka berpikir keseluruhan ekosistem</span></div>
+</div>
+</div>
+
+<!-- DOMAIN 2 -->
+<div class="domain-block open fade-in" id="dm2" style="border-left:4px solid var(--d2)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(21,101,192,.06)">
+<span class="domain-emoji">♟️</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d2)">Domain 2</div>
+<div class="domain-name">Strategy & Direction</div>
+<div class="domain-range">PGA-09 — PGA-16</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p09')"><span class="pillar-id" style="color:var(--d2)">PGA-09</span><span class="pillar-name">Navigasi Dekade Pertama</span><span class="pillar-eng">Strategic Masterplan 3-10 Years</span><span class="pillar-dots"></span><span class="pillar-desc">Peta strategis perjalanan dekade awal</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p10')"><span class="pillar-id" style="color:var(--d2)">PGA-10</span><span class="pillar-name">Arsitektur Nilai Multipihak</span><span class="pillar-eng">Business Model & Value Architecture</span><span class="pillar-dots"></span><span class="pillar-desc">Rancangan penciptaan nilai untuk semua pihak</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p11')"><span class="pillar-id" style="color:var(--d2)">PGA-11</span><span class="pillar-name">Peta Pertempuran & Lanskap Industri</span><span class="pillar-eng">Market Landscape</span><span class="pillar-dots"></span><span class="pillar-desc">Pemetaan medan dan posisi kompetitif</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p12')"><span class="pillar-id" style="color:var(--d2)">PGA-12</span><span class="pillar-name">Strategi Penetrasi Urat Nadi</span><span class="pillar-eng">Go-To-Market Strategy</span><span class="pillar-dots"></span><span class="pillar-desc">Taktik masuk ke jantung pasar rakyat</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p13')"><span class="pillar-id" style="color:var(--d2)">PGA-13</span><span class="pillar-name">Orkestrasi Ekosistem</span><span class="pillar-eng">Ecosystem Strategy</span><span class="pillar-dots"></span><span class="pillar-desc">Harmonisasi seluruh komponen ekosistem</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p14')"><span class="pillar-id" style="color:var(--d2)">PGA-14</span><span class="pillar-name">Gerbang Penaklukan Global</span><span class="pillar-eng">Expansion / International Strategy</span><span class="pillar-dots"></span><span class="pillar-desc">Strategi ekspansi lintas perbatasan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p15')"><span class="pillar-id" style="color:var(--d2)">PGA-15</span><span class="pillar-name">Benteng Kedaulatan</span><span class="pillar-eng">Competitive Moat & Advantage</span><span class="pillar-dots"></span><span class="pillar-desc">Parit pelindung keunggulan kompetitif</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p16')"><span class="pillar-id" style="color:var(--d2)">PGA-16</span><span class="pillar-name">Skenario Krisis & Opsi Strategis</span><span class="pillar-eng">Scenario Planning</span><span class="pillar-dots"></span><span class="pillar-desc">Kesiapan menghadapi berbagai kemungkinan</span></div>
+</div>
+</div>
+
+<!-- DOMAIN 3 -->
+<div class="domain-block open fade-in" id="dm3" style="border-left:4px solid var(--d3)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(106,27,154,.06)">
+<span class="domain-emoji">⚖️</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d3)">Domain 3</div>
+<div class="domain-name">Governance & Legal</div>
+<div class="domain-range">PGA-17 — PGA-24</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p17')"><span class="pillar-id" style="color:var(--d3)">PGA-17</span><span class="pillar-name">Keseimbangan Kekuasaan</span><span class="pillar-eng">Governance Charter</span><span class="pillar-dots"></span><span class="pillar-desc">Piagam tata kelola yang menjaga keseimbangan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p18')"><span class="pillar-id" style="color:var(--d3)">PGA-18</span><span class="pillar-name">Anatomi Kelembagaan</span><span class="pillar-eng">Organizational Structure</span><span class="pillar-dots"></span><span class="pillar-desc">Struktur organisasi yang hidup dan adaptif</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p19')"><span class="pillar-id" style="color:var(--d3)">PGA-19</span><span class="pillar-name">Matriks Kewenangan Mutlak</span><span class="pillar-eng">Role & Authority Matrix</span><span class="pillar-dots"></span><span class="pillar-desc">Pembagian wewenang yang tegas dan jelas</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p20')"><span class="pillar-id" style="color:var(--d3)">PGA-20</span><span class="pillar-name">Protokol Pengambilan Keputusan</span><span class="pillar-eng">Decision-Making Protocol</span><span class="pillar-dots"></span><span class="pillar-desc">Mekanisme keputusan yang terukur dan akuntabel</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p21')"><span class="pillar-id" style="color:var(--d3)">PGA-21</span><span class="pillar-name">Perisai Hukum & Kepatuhan</span><span class="pillar-eng">Legal Compliance Pack</span><span class="pillar-dots"></span><span class="pillar-desc">Perlindungan hukum dan kepatuhan regulasi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p22')"><span class="pillar-id" style="color:var(--d3)">PGA-22</span><span class="pillar-name">Konstitusi Agung & AD-ART</span><span class="pillar-eng">Constitutional Documents</span><span class="pillar-dots"></span><span class="pillar-desc">Hukum tertinggi organisasi yang mengikat</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p23')"><span class="pillar-id" style="color:var(--d3)">PGA-23</span><span class="pillar-name">Tata Aturan Kemitraan</span><span class="pillar-eng">Contracting Framework</span><span class="pillar-dots"></span><span class="pillar-desc">Kerangka kontrak yang adil dan melindungi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p24')"><span class="pillar-id" style="color:var(--d3)">PGA-24</span><span class="pillar-name">Registri Kebijakan</span><span class="pillar-eng">Policy Register & Tracker</span><span class="pillar-dots"></span><span class="pillar-desc">Pencatatan dan pelacakan seluruh kebijakan</span></div>
+</div>
+</div>
+
+<!-- DOMAIN 4 -->
+<div class="domain-block open fade-in" id="dm4" style="border-left:4px solid var(--d4)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(0,143,61,.06)">
+<span class="domain-emoji">⚙️</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d4)">Domain 4</div>
+<div class="domain-name">Product / Service / Solution</div>
+<div class="domain-range">PGA-25 — PGA-32</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p25')"><span class="pillar-id" style="color:var(--d4)">PGA-25</span><span class="pillar-name">Arsitektur 16 Hak Anggota</span><span class="pillar-eng">Product / Service Architecture</span><span class="pillar-dots"></span><span class="pillar-desc">Rancangan lengkap produk dan layanan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p26')"><span class="pillar-id" style="color:var(--d4)">PGA-26</span><span class="pillar-name">Spesifikasi Mesin Digital</span><span class="pillar-eng">Product Requirement Document</span><span class="pillar-dots"></span><span class="pillar-desc">Detail teknis platform digital</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p27')"><span class="pillar-id" style="color:var(--d4)">PGA-27</span><span class="pillar-name">Peta Jalan Transformasi Digital</span><span class="pillar-eng">Product Strategy & Roadmap</span><span class="pillar-dots"></span><span class="pillar-desc">Rencana strategis pengembangan produk</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p28')"><span class="pillar-id" style="color:var(--d4)">PGA-28</span><span class="pillar-name">Cetak Biru Sistem Saraf Desa</span><span class="pillar-eng">System Architecture / Blueprint</span><span class="pillar-dots"></span><span class="pillar-desc">Arsitektur teknis yang menghubungkan desa</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p29')"><span class="pillar-id" style="color:var(--d4)">PGA-29</span><span class="pillar-name">Peta Perjalanan Kehidupan Anggota</span><span class="pillar-eng">User Journey Map</span><span class="pillar-dots"></span><span class="pillar-desc">Pengalaman anggota dari awal hingga akhir</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p30')"><span class="pillar-id" style="color:var(--d4)">PGA-30</span><span class="pillar-name">Standar Mutu Kelas Dunia</span><span class="pillar-eng">Quality Standard & Acceptance</span><span class="pillar-dots"></span><span class="pillar-desc">Jaminan kualitas tanpa kompromi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p31')"><span class="pillar-id" style="color:var(--d4)">PGA-31</span><span class="pillar-name">Dapur Inovasi Berkelanjutan</span><span class="pillar-eng">Innovation Pipeline</span><span class="pillar-dots"></span><span class="pillar-desc">Mesin penciptaan inovasi yang tak padam</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p32')"><span class="pillar-id" style="color:var(--d4)">PGA-32</span><span class="pillar-name">Protokol Perubahan Platform</span><span class="pillar-eng">Change Request Governance</span><span class="pillar-dots"></span><span class="pillar-desc">Tata kelola perubahan yang terkontrol</span></div>
+</div>
+</div>
+
+<!-- DOMAIN 5 -->
+<div class="domain-block open fade-in" id="dm5" style="border-left:4px solid var(--d5)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(230,81,0,.06)">
+<span class="domain-emoji">🚚</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d5)">Domain 5</div>
+<div class="domain-name">Operations & Delivery</div>
+<div class="domain-range">PGA-33 — PGA-40</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p33')"><span class="pillar-id" style="color:var(--d5)">PGA-33</span><span class="pillar-name">Kitab Suci Operasional</span><span class="pillar-eng">Master Operational SOP</span><span class="pillar-dots"></span><span class="pillar-desc">Panduan operasional utama seluruh ekosistem</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p34')"><span class="pillar-id" style="color:var(--d5)">PGA-34</span><span class="pillar-name">Peta Aliran Proses Abadi</span><span class="pillar-eng">Process Map End-to-End</span><span class="pillar-dots"></span><span class="pillar-desc">Pemetaan proses dari hulu ke hilir</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p35')"><span class="pillar-id" style="color:var(--d5)">PGA-35</span><span class="pillar-name">Panduan Pelayanan Paripurna</span><span class="pillar-eng">Service Delivery Manual</span><span class="pillar-dots"></span><span class="pillar-desc">Standar pelayanan sempurna kepada anggota</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p36')"><span class="pillar-id" style="color:var(--d5)">PGA-36</span><span class="pillar-name">Panduan Pengadaan & Pemasok</span><span class="pillar-eng">Procurement & Vendor Playbook</span><span class="pillar-dots"></span><span class="pillar-desc">Pengelolaan pengadaan yang transparan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p37')"><span class="pillar-id" style="color:var(--d5)">PGA-37</span><span class="pillar-name">Tata Krama Kemitraan</span><span class="pillar-eng">Partnership Playbook</span><span class="pillar-dots"></span><span class="pillar-desc">Etika dan mekanisme bermitra</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p38')"><span class="pillar-id" style="color:var(--d5)">PGA-38</span><span class="pillar-name">Protokol Pemadam Kebakaran</span><span class="pillar-eng">Incident & Escalation SOP</span><span class="pillar-dots"></span><span class="pillar-desc">Penanganan insiden dan eskalasi darurat</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p39')"><span class="pillar-id" style="color:var(--d5)">PGA-39</span><span class="pillar-name">Rencana Kebangkitan dari Bencana</span><span class="pillar-eng">Business Continuity</span><span class="pillar-dots"></span><span class="pillar-desc">Kesiapan bangkit dari krisis terburuk</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p40')"><span class="pillar-id" style="color:var(--d5)">PGA-40</span><span class="pillar-name">Panduan Pasukan Lapangan</span><span class="pillar-eng">Field / Branch Deployment SOP</span><span class="pillar-dots"></span><span class="pillar-desc">Prosedur penempatan dan operasi lapangan</span></div>
+</div>
+</div>
+
+<!-- DOMAIN 6 -->
+<div class="domain-block open fade-in" id="dm6" style="border-left:4px solid var(--d6)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(176,28,40,.06)">
+<span class="domain-emoji">💰</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d6)">Domain 6</div>
+<div class="domain-name">Finance, Risk & Control</div>
+<div class="domain-range">PGA-41 — PGA-48</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p41')"><span class="pillar-id" style="color:var(--d6)">PGA-41</span><span class="pillar-name">Anatomi Keuangan Masa Depan</span><span class="pillar-eng">Financial Model & Projection</span><span class="pillar-dots"></span><span class="pillar-desc">Model keuangan yang meramal masa depan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p42')"><span class="pillar-id" style="color:var(--d6)">PGA-42</span><span class="pillar-name">Hitungan Nadi Ekonomi</span><span class="pillar-eng">Unit Economics</span><span class="pillar-dots"></span><span class="pillar-desc">Ekonomi per unit yang menjamin keberlanjutan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p43')"><span class="pillar-id" style="color:var(--d6)">PGA-43</span><span class="pillar-name">Protokol Kendali Kas</span><span class="pillar-eng">Budgeting & Cash Control SOP</span><span class="pillar-dots"></span><span class="pillar-desc">Pengendalian arus kas dengan disiplin tinggi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p44')"><span class="pillar-id" style="color:var(--d6)">PGA-44</span><span class="pillar-name">Mesin Penghasil Kemakmuran</span><span class="pillar-eng">Revenue Model & Monetization</span><span class="pillar-dots"></span><span class="pillar-desc">Model pendapatan yang mengalir ke seluruh ekosistem</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p45')"><span class="pillar-id" style="color:var(--d6)">PGA-45</span><span class="pillar-name">Peta Radar Ancaman</span><span class="pillar-eng">Risk Register & Mitigation Plan</span><span class="pillar-dots"></span><span class="pillar-desc">Pemetaan risiko dan rencana mitigasi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p46')"><span class="pillar-id" style="color:var(--d6)">PGA-46</span><span class="pillar-name">Mata Langit Transparansi</span><span class="pillar-eng">Audit & Internal Control</span><span class="pillar-dots"></span><span class="pillar-desc">Pengawasan dan audit yang tak bisa ditipu</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p47')"><span class="pillar-id" style="color:var(--d6)">PGA-47</span><span class="pillar-name">Memorandum Kepercayaan Investor</span><span class="pillar-eng">Investment / Funding Memorandum</span><span class="pillar-dots"></span><span class="pillar-desc">Dokumen kepercayaan untuk mitra pendanaan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p48')"><span class="pillar-id" style="color:var(--d6)">PGA-48</span><span class="pillar-name">Penjaga Harta Karun</span><span class="pillar-eng">Treasury, Asset & Reserve Policy</span><span class="pillar-dots"></span><span class="pillar-desc">Perlindungan aset dan cadangan strategis</span></div>
+</div>
+</div>
+
+<!-- DOMAIN 7 -->
+<div class="domain-block open fade-in" id="dm7" style="border-left:4px solid var(--d7)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(0,105,92,.06)">
+<span class="domain-emoji">👥</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d7)">Domain 7</div>
+<div class="domain-name">People, Culture & Leadership</div>
+<div class="domain-range">PGA-49 — PGA-56</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p49')"><span class="pillar-id" style="color:var(--d7)">PGA-49</span><span class="pillar-name">Seni Menemukan Bintang</span><span class="pillar-eng">Talent & Recruitment Framework</span><span class="pillar-dots"></span><span class="pillar-desc">Kerangka merekrut talenta terbaik bangsa</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p50')"><span class="pillar-id" style="color:var(--d7)">PGA-50</span><span class="pillar-name">Model Kepemimpinan Merah Putih</span><span class="pillar-eng">Leadership Model</span><span class="pillar-dots"></span><span class="pillar-desc">Model pemimpin yang melayani rakyat</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p51')"><span class="pillar-id" style="color:var(--d7)">PGA-51</span><span class="pillar-name">Panduan Pengelolaan SDM</span><span class="pillar-eng">HR Operating Manual</span><span class="pillar-dots"></span><span class="pillar-desc">Manual operasional pengelolaan manusia</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p52')"><span class="pillar-id" style="color:var(--d7)">PGA-52</span><span class="pillar-name">Cermin Prestasi Objektif</span><span class="pillar-eng">Performance Management System</span><span class="pillar-dots"></span><span class="pillar-desc">Sistem evaluasi yang adil dan membangun</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p53')"><span class="pillar-id" style="color:var(--d7)">PGA-53</span><span class="pillar-name">Kawah Candradimuka Akademi</span><span class="pillar-eng">Training & Certification</span><span class="pillar-dots"></span><span class="pillar-desc">Tempat pembinaan dan sertifikasi kompetensi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p54')"><span class="pillar-id" style="color:var(--d7)">PGA-54</span><span class="pillar-name">Kode Sandi Budaya</span><span class="pillar-eng">Culture Code</span><span class="pillar-dots"></span><span class="pillar-desc">Sandi budaya yang membentuk karakter</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p55')"><span class="pillar-id" style="color:var(--d7)">PGA-55</span><span class="pillar-name">Sumpah Etika Kesatria</span><span class="pillar-eng">Ethics & Conduct Code</span><span class="pillar-dots"></span><span class="pillar-desc">Kode etik yang dijunjung tinggi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p56')"><span class="pillar-id" style="color:var(--d7)">PGA-56</span><span class="pillar-name">Rantai Pewaris Peradaban</span><span class="pillar-eng">Succession & Continuity Plan</span><span class="pillar-dots"></span><span class="pillar-desc">Rencana suksesi untuk keberlanjutan</span></div>
+</div>
+</div>
+
+<!-- DOMAIN 8 -->
+<div class="domain-block open fade-in" id="dm8" style="border-left:4px solid var(--d8)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(173,20,87,.06)">
+<span class="domain-emoji">📢</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d8)">Domain 8</div>
+<div class="domain-name">Brand, Growth & Stakeholders</div>
+<div class="domain-range">PGA-57 — PGA-64</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p57')"><span class="pillar-id" style="color:var(--d8)">PGA-57</span><span class="pillar-name">Estetika Kedaulatan</span><span class="pillar-eng">Brand & Communication Guideline</span><span class="pillar-dots"></span><span class="pillar-desc">Identitas visual yang memancarkan kedaulatan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p58')"><span class="pillar-id" style="color:var(--d8)">PGA-58</span><span class="pillar-name">Matriks Narasi Penakluk Pikiran</span><span class="pillar-eng">Narrative & Messaging</span><span class="pillar-dots"></span><span class="pillar-desc">Kerangka narasi yang menggerakkan hati</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p59')"><span class="pillar-id" style="color:var(--d8)">PGA-59</span><span class="pillar-name">Strategi Api Komunitas</span><span class="pillar-eng">Community & Engagement</span><span class="pillar-dots"></span><span class="pillar-desc">Strategi menyalakan semangat komunitas</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p60')"><span class="pillar-id" style="color:var(--d8)">PGA-60</span><span class="pillar-name">Konstelasi Pemangku Kepentingan</span><span class="pillar-eng">Stakeholder Map</span><span class="pillar-dots"></span><span class="pillar-desc">Pemetaan hubungan dengan seluruh pemangku</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p61')"><span class="pillar-id" style="color:var(--d8)">PGA-61</span><span class="pillar-name">Buku Pintar Ekspansi</span><span class="pillar-eng">Sales / Acquisition Playbook</span><span class="pillar-dots"></span><span class="pillar-desc">Panduan akuisisi anggota dan mitra</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p62')"><span class="pillar-id" style="color:var(--d8)">PGA-62</span><span class="pillar-name">Diplomasi Pemerintahan</span><span class="pillar-eng">Public Affairs / Gov. Relations</span><span class="pillar-dots"></span><span class="pillar-desc">Hubungan strategis dengan pemerintah</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p63')"><span class="pillar-id" style="color:var(--d8)">PGA-63</span><span class="pillar-name">Deklarasi Mengguncang Investor</span><span class="pillar-eng">Investor / Partner Deck</span><span class="pillar-dots"></span><span class="pillar-desc">Presentasi yang menggerakkan investor</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p64')"><span class="pillar-id" style="color:var(--d8)">PGA-64</span><span class="pillar-name">Manajemen Krisis & Badai</span><span class="pillar-eng">Media & Crisis Communication</span><span class="pillar-dots"></span><span class="pillar-desc">Protokol komunikasi saat badai melanda</span></div>
+</div>
+</div>
+
+<!-- DOMAIN 9 -->
+<div class="domain-block open fade-in" id="dm9" style="border-left:4px solid var(--d9)">
+<div class="domain-header" onclick="toggleDomain(this)" style="background:rgba(21,101,192,.06)">
+<span class="domain-emoji">💾</span>
+<div class="domain-meta">
+<div class="domain-id" style="color:var(--d9)">Domain 9</div>
+<div class="domain-name">Data, Intelligence & Legacy</div>
+<div class="domain-range">PGA-65 — PGA-72</div>
+</div>
+<span class="domain-expand">▼</span>
+</div>
+<div class="pillar-list">
+<div class="pillar-row" onclick="scrollToPillar('p65')"><span class="pillar-id" style="color:var(--d9)">PGA-65</span><span class="pillar-name">Kedaulatan Data Suci</span><span class="pillar-eng">Data Governance & Privacy</span><span class="pillar-dots"></span><span class="pillar-desc">Tata kelola data yang menjaga kedaulatan</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p66')"><span class="pillar-id" style="color:var(--d9)">PGA-66</span><span class="pillar-name">Benteng Pertahanan Siber</span><span class="pillar-eng">Security & Cyber Compliance</span><span class="pillar-dots"></span><span class="pillar-desc">Keamanan siber yang tak tertembus</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p67')"><span class="pillar-id" style="color:var(--d9)">PGA-67</span><span class="pillar-name">Panel Kontrol Alam Semesta</span><span class="pillar-eng">KPI Dashboard & North Star Metrics</span><span class="pillar-dots"></span><span class="pillar-desc">Dasbor indikator kinerja utama</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p68')"><span class="pillar-id" style="color:var(--d9)">PGA-68</span><span class="pillar-name">Perpustakaan Kebijaksanaan</span><span class="pillar-eng">Knowledge Management</span><span class="pillar-dots"></span><span class="pillar-desc">Pengelolaan pengetahuan organisasi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p69')"><span class="pillar-id" style="color:var(--d9)">PGA-69</span><span class="pillar-name">Radar Intelijen Ekonomi</span><span class="pillar-eng">Research & Benchmark Register</span><span class="pillar-dots"></span><span class="pillar-desc">Riset dan tolok ukur terkini</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p70')"><span class="pillar-id" style="color:var(--d9)">PGA-70</span><span class="pillar-name">Bakti Pada Bumi & Manusia</span><span class="pillar-eng">ESG / Sustainability Framework</span><span class="pillar-dots"></span><span class="pillar-desc">Kerangka keberlanjutan dan tanggung jawab</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p71')"><span class="pillar-id" style="color:var(--d9)">PGA-71</span><span class="pillar-name">Perjanjian Suci 100 Tahun</span><span class="pillar-eng">Legacy / 100-Year Covenant</span><span class="pillar-dots"></span><span class="pillar-desc">Pakta suci warisan lintas generasi</span></div>
+<div class="pillar-row" onclick="scrollToPillar('p72')"><span class="pillar-id" style="color:var(--d9)">PGA-72</span><span class="pillar-name">Indeks Master & Kontrol Semesta</span><span class="pillar-eng">Master Index & Document Control</span><span class="pillar-dots"></span><span class="pillar-desc">Indeks induk dan pengendalian dokumen</span></div>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     72 PILLAR DETAIL CARDS
+     ═══════════════════════════════════════════ -->
+
+<!-- DOMAIN 1 DETAIL -->
+<section id="domain-1" class="page-section">
+<div class="domain-detail-banner">
+<span class="domain-watermark">1</span>
+<div class="domain-detail-id" style="color:var(--d1)">Domain 1 · Identity & Civilization</div>
+<div class="domain-detail-title">Identitas & Peradaban</div>
+<div class="domain-detail-sub">Fondasi pertama: mengenal diri sebelum membangun masa depan</div>
+</div>
+<div class="page-inner fade-in">
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-num" style="color:var(--d1)">8</div><div class="stat-label">Pilar Fondasional</div></div>
+<div class="stat-card"><div class="stat-num" style="color:var(--d1)">PGA-01</div><div class="stat-label">Pilar Pertama</div></div>
+<div class="stat-card"><div class="stat-num" style="color:var(--d1)">100 Tahun</div><div class="stat-label">Horizon Identitas</div></div>
+</div>
+
+<div class="callout-box"><h5>Filosofi Domain</h5><p>Bangsa yang tidak mengenal identitasnya sendiri bagaikan kapal tanpa kompas — mungkin bergerak, tetapi tidak pernah sampai. Domain ini meletakkan fondasi filosofis, historis, dan moral yang menjadi jiwa seluruh arsitektur KNBMP. Tanpa identitas yang jelas, strategi hanyalah ilusi; tanpa nilai yang teguh, pertumbuhan hanyalah kehampaan.</p></div>
+
+<!-- PGA-01 -->
+<div class="pillar-card fade-in" id="p01">
+<div class="pillar-card-header" style="border-left:4px solid var(--d1)">
+<div><span class="pillar-card-id" style="color:var(--d1)">PGA-01</span><span class="pillar-card-name"> Bintang Utara Peradaban</span><br><span class="pillar-card-eng">Vision Statement</span></div>
+<span class="pillar-card-badge badge-foundation">Foundational</span>
+</div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Menjadi bintang utara yang tidak pernah tenggelam — menerangi jalan bagi 83.763 desa menuju kedaulatan ekonomi yang sesungguhnya, bukan untuk satu generasi, melainkan untuk seratus tahun ke depan."</div>
+<table class="pillar-card-dims">
+<tr><th>Dimensi</th><th>Deskripsi</th></tr>
+<tr><td>Horizon Waktu</td><td>100 Tahun (2025–2125)</td></tr>
+<tr><td>Cakupan Geografis</td><td>83.763 Desa, 34 Provinsi</td></tr>
+<tr><td>Populasi dampak</td><td>275 Juta Jiwa Indonesia</td></tr>
+<tr><td>Entitas Pemilik</td><td>Koperasi Korporasi Multipihak</td></tr>
+</table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul>
+<li>Kedaulatan ekonomi rakyat sebagai tujuan tertinggi yang tidak bisa ditawar</li>
+<li>Keberlanjutan lintas generasi: keputusan hari ini harus relevan 100 tahun ke depan</li>
+<li>Inklusi total: tidak ada satu pun desa yang tertinggal dalam arsitektur ini</li>
+<li>Kemandirian sebagai fondasi, kerja sama sebagai perluasan — bukan ketergantungan</li>
+<li>Peradaban baru yang memanusiakan manusia, bukan mengobjektifikasi</li>
+</ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-07</span><span>PGA-08</span><span>PGA-09</span><span>PGA-71</span></div>
+</div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d1)"></span>Domain 1 · Identity & Civilization</span><span>Grand Architect's Office</span></div>
+</div>
+
+<!-- PGA-02 -->
+<div class="pillar-card fade-in" id="p02">
+<div class="pillar-card-header" style="border-left:4px solid var(--d1)">
+<div><span class="pillar-card-id" style="color:var(--d1)">PGA-02</span><span class="pillar-card-name"> Mandat Transformasi Nyata</span><br><span class="pillar-card-eng">Mission Statement</span></div>
+<span class="pillar-card-badge badge-foundation">Foundational</span>
+</div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Mentransformasi ekosistem ekonomi rakyat dari objek pembangunan menjadi subjek kedaulatan — melalui koperasi multipihak yang menghubungkan setiap desa, setiap potensi, dan setiap mimpi menjadi kekuatan nyata yang tak terbantahkan."</div>
+<table class="pillar-card-dims">
+<tr><th>Dimensi</th><th>Deskripsi</th></tr>
+<tr><td>Misi Inti</td><td>Transformasi sistemik ekonomi rakyat</td></tr>
+<tr><td>Mekanisme</td><td>Koperasi Korporasi Multipihak</td></tr>
+<tr><td>Target Awal</td><td>1.000 Desa Pioneer (Tahun 1-3)</td></tr>
+<tr><td>Target Puncak</td><td>83.763 Desa Terkoneksi</td></tr>
+</table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul>
+<li>Transformasi nyata, bukan retorika: setiap kata harus memiliki padanan dalam tindakan terukur</li>
+<li>Pemberdayaan sebagai proses, bukan proyek: membangun kapasitas, bukan menciptakan ketergantungan</li>
+<li>Bottom-up revolution: perubahan dimulai dari desa, bukan diinstruksikan dari atas</li>
+<li>Akuntabilitas total: setiap janji harus dapat diverifikasi oleh setiap anggota</li>
+</ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-01</span><span>PGA-09</span><span>PGA-25</span><span>PGA-33</span></div>
+</div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d1)"></span>Domain 1 · Identity & Civilization</span><span>Grand Architect's Office</span></div>
+</div>
+
+<!-- PGA-03 -->
+<div class="pillar-card fade-in" id="p03">
+<div class="pillar-card-header" style="border-left:4px solid var(--d1)">
+<div><span class="pillar-card-id" style="color:var(--d1)">PGA-03</span><span class="pillar-card-name"> Akar Hikmah Para Pendiri</span><br><span class="pillar-card-eng">Founders Philosophy</span></div>
+<span class="pillar-card-badge badge-foundation">Foundational</span>
+</div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Kami tidak memulai dari nol — kami memulai dari akar yang telah tertanam selama berabad-abad. Akar gotong royong, akar musyawarah, akar kedaulatan yang telah lama terkubur oleh kolonialisme dan dilupakan oleh modernisme yang buta."</div>
+<table class="pillar-card-dims">
+<tr><th>Dimensi</th><th>Deskripsi</th></tr>
+<tr><td>Sumber Filosofi</td><td>Gotong Royong, Musyawarah, Kedaulatan</td></tr>
+<tr><td>Akar Historis</td><td>Tradisi Koperasi Indonesia (1847–kini)</td></tr>
+<tr><td>Inspirasi Global</td><td>Mondragón, Emilia-Romagna, Kumaran</td></tr>
+<tr><td>Keunikan KNBMP</td><td>Korporasi Multipihak berbasis Desa</td></tr>
+</table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul>
+<li>Gotong royong bukan sekadar slogan — ia adalah sistem ekonomi yang terbukti efektif selama berabad-abad</li>
+<li>Kedaulatan lokal sebagai fondasi kedaulatan nasional: desa yang kuat membangun negara yang kuat</li>
+<li>Filsafat Nusantara: keberagaman sebagai kekuatan, bukan kelemahan</li>
+<li>Pendiri sebagai pelayan, bukan penguasa: kepemimpinan dalam semangat merdeka</li>
+</ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-04</span><span>PGA-05</span><span>PGA-50</span><span>PGA-54</span></div>
+</div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d1)"></span>Domain 1 · Identity & Civilization</span><span>Grand Architect's Office</span></div>
+</div>
+
+<!-- PGA-04 -->
+<div class="pillar-card fade-in" id="p04">
+<div class="pillar-card-header" style="border-left:4px solid var(--d1)">
+<div><span class="pillar-card-id" style="color:var(--d1)">PGA-04</span><span class="pillar-card-name"> Sejarah & Luka yang Menyembuhkan</span><br><span class="pillar-card-eng">Story of Origin</span></div>
+<span class="pillar-card-badge badge-foundation">Foundational</span>
+</div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Dari luka kolonialisme yang berlangsung 400 tahun, dari kemerdekaan yang belum sepenuhnya merdeka secara ekonomi, lahirlah tekad yang tidak bisa dipatahkan: bangsa ini akan membangun sistem ekonominya sendiri, dengan tangannya sendiri, untuk rakyatnya sendiri."</div>
+<table class="pillar-card-dims">
+<tr><th>Dimensi</th><th>Deskripsi</th></tr>
+<tr><td>Periode Kolonial</td><td>1602–1945 (VOC & Hindia Belanda)</td></tr>
+<tr><td>Era Kemerdekaan</td><td>1945–1998 (Orde Lama & Orde Baru)</td></tr>
+<tr><td>Era Reformasi</td><td>1998–2025 (Transisi & Disrupsi)</td></tr>
+<tr><td>Era KNBMP</td><td>2025–2125 (Kedaulatan Ekonomi)</td></tr>
+</table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul>
+<li>Mengakui luka adalah langkah pertama penyembuhan — kita tidak bisa menyembuhkan apa yang kita tidak akui</li>
+<li>Sejarah bukan beban, melainkan guru: setiap kegagalan masa lalu adalah pelajaran berharga</li>
+<li>Transformasi membutuhkan narasi yang membebaskan, bukan narasi yang mengikat</li>
+<li>KNBMP lahir dari rahim penderitaan, tetapi dibesarkan oleh harapan yang tak padam</li>
+</ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-03</span><span>PGA-06</span><span>PGA-07</span><span>PGA-71</span></div>
+</div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d1)"></span>Domain 1 · Identity & Civilization</span><span>Grand Architect's Office</span></div>
+</div>
+
+<!-- PGA-05 -->
+<div class="pillar-card fade-in" id="p05">
+<div class="pillar-card-header" style="border-left:4px solid var(--d1)">
+<div><span class="pillar-card-id" style="color:var(--d1)">PGA-05</span><span class="pillar-card-name"> Tujuh Pilar Etika Absolut</span><br><span class="pillar-card-eng">Core Values Charter</span></div>
+<span class="pillar-card-badge badge-foundation">Foundational</span>
+</div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Ada nilai-nilai yang tidak bisa ditawar, tidak bisa dikompromikan, dan tidak bisa dilupakan — mereka adalah DNA moral KNBMP yang membedakan kita dari sekadar entitas bisnis biasa."</div>
+<table class="pillar-card-dims">
+<tr><th>Nilai</th><th>Makna</th></tr>
+<tr><td>Kedaulatan</td><td>Hak mutlak menentukan nasib sendiri</td></tr>
+<tr><td>Keberlimpahan</td><td>Cukup untuk semua, bukan lebih untuk segelintir</td></tr>
+<tr><td>Integritas</td><td>Kata dan perbuatan adalah satu kesatuan</td></tr>
+<tr><td>Inklusi</td><td>Setiap manusia bermartabat setara</td></tr>
+<tr><td>Inovasi</td><td>Pembaruan tanpa henti demi kemajuan</td></tr>
+<tr><td>Keberlanjutan</td><td>Bertanggung jawab pada 100 tahun ke depan</td></tr>
+<tr><td>Pengabdian</td><td>Melayani rakyat, bukan dilayani rakyat</td></tr>
+</table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul>
+<li>Tujuh nilai ini bersifat absolut — tidak ada keadaan yang membenarkan pelanggaran</li>
+<li>Setiap keputusan strategis harus melewati uji ketujuh nilai ini</li>
+<li>Pelanggaran etika oleh siapa pun, termasuk pendiri, tetap pelanggaran</li>
+<li>Budaya etika dibangun dari atas, dijalankan dari bawah</li>
+</ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-03</span><span>PGA-22</span><span>PGA-54</span><span>PGA-55</span></div>
+</div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d1)"></span>Domain 1 · Identity & Civilization</span><span>Grand Architect's Office</span></div>
+</div>
+
+<!-- PGA-06 -->
+<div class="pillar-card fade-in" id="p06">
+<div class="pillar-card-header" style="border-left:4px solid var(--d1)">
+<div><span class="pillar-card-id" style="color:var(--d1)">PGA-06</span><span class="pillar-card-name"> Antitesis Sistem Global</span><br><span class="pillar-card-eng">Identity & Positioning Paper</span></div>
+<span class="pillar-card-badge badge-foundation">Foundational</span>
+</div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"KNBMP bukan sekadar alternatif — ia adalah antitesis. Antitesis terhadap sistem yang telah gagal mensejahterakan mayoritas. Antitesis terhadap eksploitasi yang berkedok pembangunan. Antitesis terhadap ketergantungan yang dikemas sebagai bantuan."</div>
+<table class="pillar-card-dims">
+<tr><th>Dimensi</th><th>Deskripsi</th></tr>
+<tr><td>Posisi</td><td>Antitesis kolonialisme ekonomi modern</td></tr>
+<tr><td>Pendekatan</td><td>Konstruktif, bukan destruktif</td></tr>
+<tr><td>Strategi</td><td>Membangun yang baru, bukan menghancurkan yang lama</td></tr>
+<tr><td>Diferensiasi</td><td>Kedaulatan desa vs. ekstraksi pusat</td></tr>
+</table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul>
+<li>KNBMP tidak anti-kapitalisme — KNBMP anti-ketidakadilan</li>
+<li>Posisi yang jelas membutuhkan keberanian untuk tidak menyenangkan semua pihak</li>
+<li>Identitas dibangun dari apa yang kita lawan dan apa yang kita bangun</li>
+<li>Kritik tanpa alternatif adalah keluhan; alternatif tanpa aksi adalah ilusi</li>
+</ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-04</span><span>PGA-07</span><span>PGA-15</span><span>PGA-57</span></div>
+</div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d1)"></span>Domain 1 · Identity & Civilization</span><span>Grand Architect's Office</span></div>
+</div>
+
+<!-- PGA-07 -->
+<div class="pillar-card fade-in" id="p07">
+<div class="pillar-card-header" style="border-left:4px solid var(--d1)">
+<div><span class="pillar-card-id" style="color:var(--d1)">PGA-07</span><span class="pillar-card-name"> Deklarasi Pembebasan Ekonomi</span><br><span class="pillar-card-eng">Manifesto / Declaration</span></div>
+<span class="pillar-card-badge badge-foundation">Foundational</span>
+</div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Kami, para perwakilan rakyat ekonomi Indonesia, dengan ini menyatakan bahwa kemerdekaan ekonomi adalah hak asasi setiap manusia — bukan pemberian negara, bukan hadiah lembaga internasional, melainkan hak yang melekat pada martabat manusia itu sendiri."</div>
+<table class="pillar-card-dims">
+<tr><th>Dimensi</th><th>Deskripsi</th></tr>
+<tr><td>Natur Dokumen</td><td>Manifesto / Deklarasi Kemerdekaan Ekonomi</td></tr>
+<tr><td>Status Hukum</td><td>Berlaku sebagai bagian dari Konstitusi KNBMP</td></tr>
+<tr><td>Penerima</td><td>Seluruh rakyat ekonomi Indonesia</td></tr>
+<tr><td>Kekuatan</td><td>Mengikat secara moral dan organisasional</td></tr>
+</table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul>
+<li>Deklarasi ini bersifat permanen dan tidak dapat dicabut oleh entitas apa pun</li>
+<li>Pembebasan ekonomi dimulai dari kesadaran, diwujudkan melalui aksi kolektif</li>
+<li>Setiap anggota KNBMP adalah penjaga deklarasi ini</li>
+<li>Kemerdekaan ekonomi bukan tujuan akhir — ia adalah prasyarat untuk martabat manusia</li>
+</ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-01</span><span>PGA-06</span><span>PGA-22</span><span>PGA-71</span></div>
+</div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d1)"></span>Domain 1 · Identity & Civilization</span><span>Grand Architect's Office</span></div>
+</div>
+
+<!-- PGA-08 -->
+<div class="pillar-card fade-in" id="p08">
+<div class="pillar-card-header" style="border-left:4px solid var(--d1)">
+<div><span class="pillar-card-id" style="color:var(--d1)">PGA-08</span><span class="pillar-card-name"> Arsitektur Konseptual Makro</span><br><span class="pillar-card-eng">Whitepaper</span></div>
+<span class="pillar-card-badge badge-foundation">Foundational</span>
+</div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Arsitektur PGA-72 bukan kumpulan dokumen yang berdiri sendiri — ia adalah organisme hidup yang saling terhubung, di mana setiap pilar menguatkan yang lain, dan kelemahan satu dapat mengancam seluruh bangunan."</div>
+<table class="pillar-card-dims">
+<tr><th>Dimensi</th><th>Deskripsi</th></tr>
+<tr><td>Skema Arsitektur</td><td>9 Domain, 72 Pilar, 100 Tahun</td></tr>
+<tr><td>Prinsip Desain</td><td>Interkoneksi, Modularitas, Adaptabilitas</td></tr>
+<tr><td>Mekanisme Perubahan</td><td>Dijaga oleh PGA-32 & PGA-72</td></tr>
+<tr><td>Garansi Kualitas</td><td>PGA-30, PGA-46, PGA-67</td></tr>
+</table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul>
+<li>Arsitektur ini dirancang untuk bertahan 100 tahun — setiap komponen harus melewati uji waktu</li>
+<li>Modularitas memungkinkan perbaikan tanpa menghancurkan keseluruhan</li>
+<li>Interkoneksi antar-pilar menciptakan resiliensi alami</li>
+<li>Whitepaper ini adalah peta, bukan wilayah — realitas selalu lebih kaya dari rencana</li>
+</ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-01</span><span>PGA-09</span><span>PGA-32</span><span>PGA-72</span></div>
+</div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d1)"></span>Domain 1 · Identity & Civilization</span><span>Grand Architect's Office</span></div>
+</div>
+
+</div>
+</section>
+
+
+<!-- DOMAIN 2 DETAIL -->
+<section id="domain-2" class="page-section">
+<div class="domain-detail-banner">
+<span class="domain-watermark">2</span>
+<div class="domain-detail-id" style="color:var(--d2)">Domain 2 · Strategy & Direction</div>
+<div class="domain-detail-title">Strategi & Arah</div>
+<div class="domain-detail-sub">Dari visi ke aksi: peta jalan menuju kedaulatan ekonomi yang terukur dan terarah</div>
+</div>
+<div class="page-inner fade-in">
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-num" style="color:var(--d2)">8</div><div class="stat-label">Pilar Strategis</div></div>
+<div class="stat-card"><div class="stat-num" style="color:var(--d2)">3-10</div><div class="stat-label">Tahun Masterplan</div></div>
+<div class="stat-card"><div class="stat-num" style="color:var(--d2)">83.763</div><div class="stat-label">Target Desa</div></div>
+</div>
+<div class="callout-box"><h5>Filosofi Domain</h5><p>Strategi tanpa identitas adalah kapal tanpa kompas; identitas tanpa strategi adalah kompas tanpa kapal. Domain ini menerjemahkan visi peradaban ke dalam peta jalan yang dapat dieksekusi, diukur, dan disesuaikan dengan dinamika zaman.</p></div>
+
+<div class="pillar-card fade-in" id="p09">
+<div class="pillar-card-header" style="border-left:4px solid var(--d2)"><div><span class="pillar-card-id" style="color:var(--d2)">PGA-09</span><span class="pillar-card-name"> Navigasi Dekade Pertama</span><br><span class="pillar-card-eng">Strategic Masterplan 3-10 Years</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Dekade pertama menentukan apakah KNBMP menjadi revolusi yang sesungguhnya atau sekadar proyek yang terlupakan. Tiga fase: Fondasi (Tahun 1-3), Akselerasi (Tahun 4-7), dan Transformasi (Tahun 8-10)."</div>
+<table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Fase 1: Fondasi</td><td>1.000 Desa Pioneer, validasi model, pembangunan infrastruktur dasar</td></tr><tr><td>Fase 2: Akselerasi</td><td>10.000 Desa, skalasi operasi, diversifikasi layanan</td></tr><tr><td>Fase 3: Transformasi</td><td>83.763 Desa, kedaulatan penuh, ekosistem mandiri</td></tr></table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Setiap fase memiliki metrik keberhasilan yang jelas dan tidak bisa dimanipulasi</li><li>Transisi antar fase hanya terjadi ketika KPI fase sebelumnya tercapai minimal 80%</li><li>Fleksibilitas taktis dengan ketegasan strategis: cara boleh berubah, tujuan tidak</li><li>Learning agility: kegagalan di fase awal adalah data berharga, bukan alasan menyerah</li></ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-01</span><span>PGA-10</span><span>PGA-13</span><span>PGA-67</span></div></div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d2)"></span>Domain 2 · Strategy & Direction</span><span>Chief Strategy Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p10">
+<div class="pillar-card-header" style="border-left:4px solid var(--d2)"><div><span class="pillar-card-id" style="color:var(--d2)">PGA-10</span><span class="pillar-card-name"> Arsitektur Nilai Multipihak</span><br><span class="pillar-card-eng">Business Model & Value Architecture</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Nilai yang hanya mengalir ke satu pihak bukanlah nilai — itu eksploitasi. KNBMP merancang arsitektur di mana setiap pemangku kepentingan menerima manfaat yang adil dan proporsional."</div>
+<table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Pihak 1: Anggota Desa</td><td>Akses layanan, bagi hasil, kepemilikan kolektif</td></tr><tr><td>Pihak 2: Mitra Usaha</td><td>Pasar terjamin, kolaborasi berkelanjutan</td></tr><tr><td>Pihak 3: Pemerintah</td><td>Peningkatan ekonomi daerah, stabilitas sosial</td></tr><tr><td>Pihak 4: KNBMP</td><td>Keberlanjutan operasional, pembiayaan ekosistem</td></tr></table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Win-win-win-win: tidak ada pihak yang dirugikan dalam arsitektur nilai ini</li><li>Transparansi alokasi: setiap rupiah yang masuk dapat dilacak distribusinya</li><li>Value creation before value capture: ciptakan nilai dulu, bagilah kemudian</li></ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-09</span><span>PGA-25</span><span>PGA-41</span><span>PGA-44</span></div></div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d2)"></span>Domain 2 · Strategy & Direction</span><span>Chief Strategy Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p11">
+<div class="pillar-card-header" style="border-left:4px solid var(--d2)"><div><span class="pillar-card-id" style="color:var(--d2)">PGA-11</span><span class="pillar-card-name"> Peta Pertempuran & Lanskap Industri</span><br><span class="pillar-card-eng">Market Landscape</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Kenali medan perang sebelum berperang. Pemetaan lanskap industri, posisi kompetitor, dan peluang pasar yang belum tersentuh menjadi dasar setiap keputusan strategis KNBMP."</div>
+<table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Analisis PESTEL</td><td>Political, Economic, Social, Technological, Environmental, Legal</td></tr><tr><td>Peta Kompetitor</td><td>Direct, Indirect, Substitute, Emerging</td></tr><tr><td>Blue Ocean</td><td>Ruang pasar yang belum tergarap oleh siapa pun</td></tr><tr><td>Trend Megatrend</td><td>Digitalisasi, Deglobalisasi, Demografi, Decarbonization</td></tr></table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Data-driven strategy: keputusan berbasis bukti, bukan asumsi</li><li>Continuous intelligence: lanskap berubah, pemantauan harus terus berjalan</li><li>Strategi kompetitif yang etis: menang karena lebih baik, bukan karena menghancurkan</li></ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-09</span><span>PGA-12</span><span>PGA-15</span><span>PGA-69</span></div></div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d2)"></span>Domain 2 · Strategy & Direction</span><span>Chief Strategy Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p12">
+<div class="pillar-card-header" style="border-left:4px solid var(--d2)"><div><span class="pillar-card-id" style="color:var(--d2)">PGA-12</span><span class="pillar-card-name"> Strategi Penetrasi Urat Nadi</span><br><span class="pillar-card-eng">Go-To-Market Strategy</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Kami tidak masuk pasar dari atas — kami merangkak melalui urat nadi desa-desa, menyentuh kehidupan nyata, dan membangun kepercayaan dari bawah. Inilah penetrasi yang sesungguhnya."</div>
+<table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Segmen Awal</td><td>Desa dengan kesiapan digital tertinggi</td></tr><tr><td>Kanal Distribusi</td><td>Digital-first dengan agen lapangan</td></tr><tr><td>Strategi Harga</td><td>Freemium untuk dasar, berbayar untuk premium</td></tr><tr><td>Adopsi</td><td>Community-driven, bukan sales-driven</td></tr></table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Desa-first approach: desain untuk desa, bukan adaptasi dari kota</li><li>Trust before transaction: bangun kepercayaan sebelum menawarkan produk</li><li>Viral loop organik: anggota yang puas menjadi duta terbaik</li></ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-11</span><span>PGA-25</span><span>PGA-29</span><span>PGA-61</span></div></div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d2)"></span>Domain 2 · Strategy & Direction</span><span>Chief Strategy Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p13">
+<div class="pillar-card-header" style="border-left:4px solid var(--d2)"><div><span class="pillar-card-id" style="color:var(--d2)">PGA-13</span><span class="pillar-card-name"> Orkestrasi Ekosistem</span><br><span class="pillar-card-eng">Ecosystem Strategy</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Ekosistem yang sehat bukan yang dikuasai satu entitas — melainkan yang diorkestrasi oleh kepentingan bersama. KNBMP adalah konduktor, bukan diktator."</div>
+<table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Ekosistem Inti</td><td>Desa, Koperasi, Mitra Usaha, Pemerintah</td></tr><tr><td>Platform</td><td>Infrastruktur digital penghubung ekosistem</td></tr><tr><td>Governance</td><td>Aturan main yang adil dan transparan</td></tr><tr><td>Network Effect</td><td>Setiap anggota baru meningkatkan nilai seluruh jaringan</td></tr></table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Orkestrasi, bukan dominasi: kuat tanpa menindas, besar tanpa menelan</li><li>Network effect yang inklusif: nilai tumbuh bersama, bukan terkonsentrasi</li><li>Interoperabilitas sebagai prinsip: sistem yang terbuka untuk kolaborasi</li></ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-09</span><span>PGA-10</span><span>PGA-28</span><span>PGA-37</span></div></div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d2)"></span>Domain 2 · Strategy & Direction</span><span>Chief Strategy Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p14">
+<div class="pillar-card-header" style="border-left:4px solid var(--d2)"><div><span class="pillar-card-id" style="color:var(--d2)">PGA-14</span><span class="pillar-card-name"> Gerbang Penaklukan Global</span><br><span class="pillar-card-eng">Expansion / International Strategy</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Kedaulatan dimulai dari dalam, tetapi tidak berakhir di perbatasan. KNBMP akan membawa model ekonomi rakyat Indonesia ke panggung dunia — bukan sebagai pengekor, melainkan sebagai pionir."</div>
+<table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Fase 1: Domestik</td><td>83.763 Desa Indonesia terkoneksi</td></tr><tr><td>Fase 2: Regional</td><td>ASEAN & negara-negara berkembang</td></tr><tr><td>Fase 3: Global</td><td>Gerakan koperasi multipihak internasional</td></tr><tr><td>Prinsip</td><td>Ekspor model, bukan eksploitasi sumber daya</td></tr></table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Domestik first: ekspansi global hanya setelah fondasi domestik kuat</li><li>Ekspor kebaikan: berbagi model, bukan mengeksploitasi negara lain</li><li>Kedaulatan bersama: kerja sama internasional yang setara dan saling menghormati</li></ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-09</span><span>PGA-15</span><span>PGA-62</span><span>PGA-63</span></div></div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d2)"></span>Domain 2 · Strategy & Direction</span><span>Chief Strategy Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p15">
+<div class="pillar-card-header" style="border-left:4px solid var(--d2)"><div><span class="pillar-card-id" style="color:var(--d2)">PGA-15</span><span class="pillar-card-name"> Benteng Kedaulatan</span><br><span class="pillar-card-eng">Competitive Moat & Advantage</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Keunggulan kompetitif KNBMP bukan terletak pada teknologi atau modal — melainkan pada jaringan 83.763 desa yang tidak dapat direplikasi oleh siapa pun dalam waktu singkat."</div>
+<table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Moat 1: Jaringan</td><td>83.763 node desa yang terkoneksi</td></tr><tr><td>Moat 2: Kepercayaan</td><td>Gotong royong sebagai social capital</td></tr><tr><td>Moat 3: Regulasi</td><td>Status koperasi dengan perlindungan hukum</td></tr><tr><td>Moat 4: Data</td><td>Data desa yang dimiliki kolektif</td></tr></table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Competitive moat dibangun dari waktu dan kepercayaan, bukan dari uang</li><li>Keunggulan yang etis: menang karena lebih baik, bukan karena menghambat</li><li>Moat harus terus diperkuat — tidak ada keunggulan yang permanen tanpa pemeliharaan</li></ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-06</span><span>PGA-14</span><span>PGA-65</span><span>PGA-66</span></div></div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d2)"></span>Domain 2 · Strategy & Direction</span><span>Chief Strategy Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p16">
+<div class="pillar-card-header" style="border-left:4px solid var(--d2)"><div><span class="pillar-card-id" style="color:var(--d2)">PGA-16</span><span class="pillar-card-name"> Skenario Krisis & Opsi Strategis</span><br><span class="pillar-card-eng">Scenario Planning</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div>
+<div class="pillar-card-body">
+<div class="pillar-card-vision">"Organisasi yang hanya merencanakan skenario terbaik adalah organisasi yang siap mati. KNBMP merencanakan bahkan skenario terburuk — bukan karena pesimis, melainkan karena bertanggung jawab."</div>
+<table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Skenario Hijau</td><td>Pertumbuhan sesuai rencana, ekspansi lancar</td></tr><tr><td>Skenario Kuning</td><td>Pertumbuhan lambat, adaptasi diperlukan</td></tr><tr><td>Skenario Merah</td><td>Krisis ekonomi/politik, mode bertahan</td></tr><tr><td>Skenario Hitam</td><td>Black swan, protokol kelangsungan hidup</td></tr></table>
+<div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Scenario planning bukan pesimisme — ia adalah tanggung jawab</li><li>Setiap skenario memiliki playbook yang telah ditulis sebelumnya</li><li>Stress test berkala: simulasi krisis untuk menguji kesiapan</li></ul></div>
+<div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-09</span><span>PGA-38</span><span>PGA-39</span><span>PGA-45</span></div></div>
+<div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d2)"></span>Domain 2 · Strategy & Direction</span><span>Chief Strategy Office</span></div></div>
+</div>
+</section>
+
+
+<!-- DOMAIN 3 DETAIL -->
+<section id="domain-3" class="page-section">
+<div class="domain-detail-banner"><span class="domain-watermark">3</span><div class="domain-detail-id" style="color:var(--d3)">Domain 3 · Governance & Legal</div><div class="domain-detail-title">Tata Kelola & Hukum</div><div class="domain-detail-sub">Kekuasaan yang terkendali, kepastian yang melindungi, dan transparansi yang tak tergoyahkan</div></div>
+<div class="page-inner fade-in">
+<div class="stats-grid"><div class="stat-card"><div class="stat-num" style="color:var(--d3)">8</div><div class="stat-label">Pilar Tata Kelola</div></div><div class="stat-card"><div class="stat-num" style="color:var(--d3)">4</div><div class="stat-label">Tinggi Kewenangan</div></div><div class="stat-card"><div class="stat-num" style="color:var(--d3)">100%</div><div class="stat-label">Target Kepatuhan</div></div></div>
+<div class="callout-box"><h5>Filosofi Domain</h5><p>Tata kelola yang baik bukan pembatas — ia adalah pelindung. Ia melindungi organisasi dari dirinya sendiri, dari niat baik yang melenceng, dan dari kekuasaan yang tidak terkontrol. KNBMP membangun tata kelola yang memastikan kedaulatan tetap di tangan rakyat.</p></div>
+
+<div class="pillar-card fade-in" id="p17"><div class="pillar-card-header" style="border-left:4px solid var(--d3)"><div><span class="pillar-card-id" style="color:var(--d3)">PGA-17</span><span class="pillar-card-name"> Keseimbangan Kekuasaan</span><br><span class="pillar-card-eng">Governance Charter</span></div><span class="pillar-card-badge badge-foundation">Foundational</span></div><div class="pillar-card-body"><div class="pillar-card-vision">"Kekuasaan tanpa keseimbangan adalah tirani; keseimbangan tanpa kekuasaan adalah kekacauan. KNBMP merancang sistem di mana kekuasaan tersebar, saling mengawasi, dan selalu bertanggung jawab."</div><table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Pemisahan Kekuasaan</td><td>Legislatif, Eksekutif, Pengawas</td></tr><tr><td>Checks & Balances</td><td>Saling mengawasi dan mengimbangi</td></tr><tr><td>Akuntabilitas</td><td>Pelaporan wajib kepada seluruh anggota</td></tr><tr><td>Transparansi</td><td>Informasi terbuka kecuali yang bersifat rahasia strategis</td></tr></table><div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Tidak ada satu orang atau satu lembaga yang memiliki kekuasaan absolut</li><li>Mekanisme pengawasan aktif, bukan pasif menunggu laporan</li><li>Whistleblower protection: melindungi yang berani bicara kebenaran</li></ul></div><div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-18</span><span>PGA-19</span><span>PGA-22</span><span>PGA-46</span></div></div><div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d3)"></span>Domain 3 · Governance & Legal</span><span>Chief Governance Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p18"><div class="pillar-card-header" style="border-left:4px solid var(--d3)"><div><span class="pillar-card-id" style="color:var(--d3)">PGA-18</span><span class="pillar-card-name"> Anatomi Kelembagaan</span><br><span class="pillar-card-eng">Organizational Structure</span></div><span class="pillar-card-badge badge-strategic">Strategic</span></div><div class="pillar-card-body"><div class="pillar-card-vision">"Struktur organisasi KNBMP dirancang seperti organisme hidup — memiliki sistem saraf pusat, sistem peredaran darah, dan sistem imun yang bekerja secara otonom namun terkoordinasi."</div><table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Puncak</td><td>Grand Architect's Office & Supreme Council</td></tr><tr><td>Tengah</td><td>Domain Offices (9 domain strategis)</td></tr><tr><td>Dasar</td><td>Desa Hubs & Community Nodes</td></tr><tr><td>Prinsip</td><td>Distributed authority, coordinated execution</td></tr></table><div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Flat hierarchy: seminimal mungkin lapisan birokrasi</li><li>Autonomi lokal: setiap desa hub memiliki wewenang operasional</li><li>Koordinasi pusat: standar, protokol, dan quality assurance terpusat</li></ul></div><div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-17</span><span>PGA-19</span><span>PGA-40</span><span>PGA-49</span></div></div><div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d3)"></span>Domain 3 · Governance & Legal</span><span>Chief Governance Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p19"><div class="pillar-card-header" style="border-left:4px solid var(--d3)"><div><span class="pillar-card-id" style="color:var(--d3)">PGA-19</span><span class="pillar-card-name"> Matriks Kewenangan Mutlak</span><br><span class="pillar-card-eng">Role & Authority Matrix</span></div><span class="pillar-card-badge badge-foundation">Foundational</span></div><div class="pillar-card-body"><div class="pillar-card-vision">"Ambiguitas kewenangan adalah bibit korupsi. Setiap peran, setiap wewenang, dan setiap batas tanggung jawab harus tertulis jelas — tanpa ruang untuk interpretasi yang merugikan."</div><table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>RACI Matrix</td><td>Responsible, Accountable, Consulted, Informed</td></tr><tr><td>Approval Thresholds</td><td>Batas kewenangan setiap level</td></tr><tr><td>Delegasi</td><td>Aturan delegasi yang ketat dan terbatas</td></tr><tr><td>Eskalasi</td><td>Prosedur eskalasi ketika kewenangan tumpang tindih</td></tr></table><div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Setiap keputusan harus memiliki tepat satu Accountable person</li><li>Delegasi tanpa pengawasan adalah jalan menuju penyalahgunaan</li><li>Batas kewenangan direview setiap tahun</li></ul></div><div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-17</span><span>PGA-18</span><span>PGA-20</span><span>PGA-22</span></div></div><div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d3)"></span>Domain 3 · Governance & Legal</span><span>Chief Governance Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p20"><div class="pillar-card-header" style="border-left:4px solid var(--d3)"><div><span class="pillar-card-id" style="color:var(--d3)">PGA-20</span><span class="pillar-card-name"> Protokol Pengambilan Keputusan</span><br><span class="pillar-card-eng">Decision-Making Protocol</span></div><span class="pillar-card-badge badge-operational">Operational</span></div><div class="pillar-card-body"><div class="pillar-card-vision">"Keputusan yang baik lahir dari proses yang baik. KNBMP tidak mengandalkan kejeniusan individu — kami mengandalkan keunggulan sistem pengambilan keputusan."</div><table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Decisions Type</td><td>Strategic, Tactical, Operational, Crisis</td></tr><tr><td>Mekanisme</td><td>Musyawarah, Voting, Consensus, Decree</td></tr><tr><td>Documentation</td><td>Setiap keputusan terdokumentasi beserta rasionalnya</td></tr><tr><td>Review</td><td>Post-decision review setiap kuartal</td></tr></table><div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Musyawarah untuk mufakat, voting sebagai last resort</li><li>Keputusan yang terburu-buru adalah keputusan yang menyesatkan</li><li>Setiap keputusan dapat ditinjau kembali dengan bukti baru</li></ul></div><div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-17</span><span>PGA-19</span><span>PGA-24</span><span>PGA-38</span></div></div><div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d3)"></span>Domain 3 · Governance & Legal</span><span>Chief Governance Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p21"><div class="pillar-card-header" style="border-left:4px solid var(--d3)"><div><span class="pillar-card-id" style="color:var(--d3)">PGA-21</span><span class="pillar-card-name"> Perisai Hukum & Kepatuhan</span><br><span class="pillar-card-eng">Legal Compliance Pack</span></div><span class="pillar-card-badge badge-foundation">Foundational</span></div><div class="pillar-card-body"><div class="pillar-card-vision">"Kepatuhan hukum bukan beban — ia adalah perisai. Perisai yang melindungi KNBMP dari serangan hukum, melindungi anggota dari eksploitasi, dan melindungi visi dari pembajakan."</div><table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Regulasi Utama</td><td>UU Koperasi, UU Perlindungan Data, OJK</td></tr><tr><td>Compliance Framework</td><td>Periodic review, audit, certification</td></tr><tr><td>Legal Shield</td><td>Legal defense fund & representation</td></tr><tr><td>Proactive Compliance</td><td>Beyond minimum, toward best practice</td></tr></table><div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Proactive compliance: mematuhi sebelum dipaksa, melampaui sebelum dituntut</li><li>Legal defense ready: siap mempertahankan hak secara hukum kapan saja</li><li>Etika di atas hukum: ketika hukum tidak adil, etika tetap menjadi kompas</li></ul></div><div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-22</span><span>PGA-23</span><span>PGA-46</span><span>PGA-66</span></div></div><div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d3)"></span>Domain 3 · Governance & Legal</span><span>Chief Legal Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p22"><div class="pillar-card-header" style="border-left:4px solid var(--d3)"><div><span class="pillar-card-id" style="color:var(--d3)">PGA-22</span><span class="pillar-card-name"> Konstitusi Agung & AD-ART</span><br><span class="pillar-card-eng">Constitutional Documents</span></div><span class="pillar-card-badge badge-foundation">Foundational</span></div><div class="pillar-card-body"><div class="pillar-card-vision">"Konstitusi KNBMP adalah hukum tertinggi yang mengikat seluruh organ, anggota, dan mitra. Ia tidak bisa ditabrak oleh keputusan siapa pun — termasuk pendiri."</div><table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Anggaran Dasar</td><td>Prinsip-prinsip dasar yang tidak bisa diubah tanpa 75% suara</td></tr><tr><td>Anggaran Rumah Tangga</td><td>Aturan operasional yang dapat disesuaikan</td></tr><tr><td>Amandemen</td><td>Proses perubahan yang deliberatif dan ketat</td></tr><tr><td>Pengawasan</td><td>Constitutional review oleh independent body</td></tr></table><div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Konstitusi adalah hukum tertinggi — tidak ada keputusan organ yang boleh bertentangan</li><li>Perubahan konstitusi membutuhkan konsensus luas, bukan keputusan sepihak</li><li>Setiap anggota berhak menguji konstitusionalitas setiap keputusan</li></ul></div><div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-05</span><span>PGA-07</span><span>PGA-17</span><span>PGA-71</span></div></div><div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d3)"></span>Domain 3 · Governance & Legal</span><span>Chief Legal Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p23"><div class="pillar-card-header" style="border-left:4px solid var(--d3)"><div><span class="pillar-card-id" style="color:var(--d3)">PGA-23</span><span class="pillar-card-name"> Tata Aturan Kemitraan</span><br><span class="pillar-card-eng">Contracting Framework</span></div><span class="pillar-card-badge badge-operational">Operational</span></div><div class="pillar-card-body"><div class="pillar-card-vision">"Setiap kemitraan harus adil, transparan, dan melindungi kepentingan rakyat. Kontrak yang tidak adil adalah pengkhianatan terhadap prinsip KNBMP."</div><table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Template Kontrak</td><td>Standar kontrak yang melindungi kedua belah pihak</td></tr><tr><td>Due Diligence</td><td>Proses evaluasi mitra yang ketat</td></tr><tr><td>SLA</td><td>Service Level Agreement yang terukur</td></tr><tr><td>Exit Clause</td><td>Klausul pengakhiran yang adil</td></tr></table><div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Kemitraan yang setara: tidak ada pihak yang mendominasi kontrak</li><li>Exit strategy wajib: setiap kemitraan harus memiliki jalan keluar yang adil</li><li>Performance-based: kontrak diperpanjang berdasarkan kinerja, bukan hubungan</li></ul></div><div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-21</span><span>PGA-37</span><span>PGA-47</span><span>PGA-60</span></div></div><div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d3)"></span>Domain 3 · Governance & Legal</span><span>Chief Legal Office</span></div></div>
+
+<div class="pillar-card fade-in" id="p24"><div class="pillar-card-header" style="border-left:4px solid var(--d3)"><div><span class="pillar-card-id" style="color:var(--d3)">PGA-24</span><span class="pillar-card-name"> Registri Kebijakan</span><br><span class="pillar-card-eng">Policy Register & Tracker</span></div><span class="pillar-card-badge badge-operational">Operational</span></div><div class="pillar-card-body"><div class="pillar-card-vision">"Kebijakan yang tidak tercatat adalah kebijakan yang tidak ada. KNBMP memastikan setiap kebijakan terdokumentasi, terlacak, dan dapat diakses oleh setiap anggota."</div><table class="pillar-card-dims"><tr><th>Dimensi</th><th>Deskripsi</th></tr><tr><td>Policy Registry</td><td>Database seluruh kebijakan yang berlaku</td></tr><tr><td>Version Control</td><th>Pelacakan perubahan setiap kebijakan</td></tr><tr><td>Impact Assessment</td><td>Evaluasi dampak setiap kebijakan baru</td></tr><tr><td>Sunset Clause</td><td>Kebijakan memiliki masa berlaku dan harus direview</td></tr></table><div class="pillar-card-principles"><h6>Prinsip Utama</h6><ul><li>Semua kebijakan bersifat publik kecuali yang berdampak keamanan</li><li>Kebijakan tanpa sunset clause adalah kebijakan yang berpotensi menjadi beban</li><li>Impact assessment wajib sebelum setiap kebijakan baru diberlakukan</li></ul></div><div class="pillar-card-xref"><span style="font-family:var(--ff-ui);font-size:10px;color:var(--txt-l)">Referensi Silang:</span> <span>PGA-20</span><span>PGA-32</span><span>PGA-68</span><span>PGA-72</span></div></div><div class="pillar-card-footer"><span><span class="domain-dot" style="background:var(--d3)"></span>Domain 3 · Governance & Legal</span><span>Chief Governance Office</span></div></div>
+</div>
+</section>
+
