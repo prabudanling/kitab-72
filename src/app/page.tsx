@@ -1402,7 +1402,7 @@ function KataPengantarPage({ part }: { part: number }) {
             <motion.p className={`${txtBase} drop-cap`}
               style={{ color: '#3E2723' }}
               variants={inkBleed} custom={2}>
-              Melalui <span className="font-bold" style={{ color: BURGUNDY }}>PGA-72 (Polymath Grand Architecture)</span> ini, kami meletakkan cetak biru peradaban baru. Sebuah arsitektur kelembagaan yang sangat canggih secara teknologi (berbasis Blockchain dan AI), namun berakar sangat dalam pada nilai ketuhanan dan gotong royong.
+              Melalui <span className="font-bold" style={{ color: BURGUNDY }}>PGA-72 (72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat)</span> ini, kami meletakkan cetak biru peradaban baru. Sebuah arsitektur kelembagaan yang sangat canggih secara teknologi (berbasis Blockchain dan AI), namun berakar sangat dalam pada nilai ketuhanan dan gotong royong.
             </motion.p>
 
             {/* 72 dokumen for 100 years */}
@@ -3687,12 +3687,12 @@ const pga04Data: SDData = {
     },
     {
       type: 'cards',
-      title: '4 Identitas Pendiri',
+      title: '4 Pilar Fondasi Pendirian',
       items: [
-        { title: 'Gugun Gunara', subtitle: 'Bisnis-Negara', metric: 'Dominan', desc: 'Sang arsitek bisnis yang merancang model ekonomi KNBMP dengan presisi dan ambisi global.' },
-        { title: 'Muhammad Lutfi Azmi', subtitle: 'Ruhani-Ilmiah', metric: 'Sekunder', desc: 'Jiwa spiritual dan intelektual yang memberikan fondasi nilai dan etika pada gerakan ini.' },
-        { title: 'Prabu Danling', subtitle: 'Visi Peradaban', metric: 'Tersembunyi', desc: 'Visi besar yang melihat KNBMP bukan sekadar koperasi, tapi peradaban baru.' },
-        { title: 'Santri Angon', subtitle: 'Kemanusiaan', metric: 'Tersembunyi', desc: 'Nurani kemanusiaan yang memastikan setiap langkah KNBMP menyentuh kehidupan nyata.' },
+        { title: 'Kedaulatan Ekonomi', subtitle: 'Pilar Bisnis-Negara', metric: 'Fondasi Utama', desc: 'Model ekonomi yang memadukan logika korporat dengan naluri negara — menguntungkan rakyat, bukan segelintir.' },
+        { title: 'Nilai & Etika', subtitle: 'Pilar Ruhani-Ilmiah', metric: 'Kompas Moral', desc: 'Fondasi moral dan intelektual yang memastikan setiap keputusan berpijak pada keadilan dan kebenaran.' },
+        { title: 'Visi Peradaban', subtitle: 'Pilar Horizon 100 Tahun', metric: 'Warisan Abadi', desc: 'Melampaui koperasi biasa — membangun fondasi peradaban baru yang akan diwariskan lintas generasi.' },
+        { title: 'Kemanusiaan', subtitle: 'Pilar Nurani Sosial', metric: 'Panggilan Jiwa', desc: 'Komitmen bahwa tidak ada satu pun rakyat yang boleh tertinggal dalam arsitektur kesejahteraan ini.' },
       ],
     },
     {
@@ -3821,12 +3821,12 @@ const pga06Data: SDData = {
     },
     {
       type: 'cards',
-      title: '4 Identitas Terintegrasi',
+      title: '4 Dimensi Identitas Gerakan',
       items: [
-        { title: 'Gugun Gunara', subtitle: 'Bisnis-Negara', desc: 'Arsitek model bisnis yang memadukan logika korporat dengan naluri negara — memastikan setiap strategi menguntungkan rakyat.' },
-        { title: 'Muhammad Lutfi Azmi', subtitle: 'Ruhani-Ilmiah', desc: 'Fondasi moral dan intelektual yang memastikan KNBMP selalu berpijak pada nilai-nilai etika absolut.' },
-        { title: 'Prabu Danling', subtitle: 'Visi Peradaban', desc: 'Visi jangka panjang yang melihat KNBMP sebagai kontribusi Indonesia bagi peradaban dunia.' },
-        { title: 'Santri Angon', subtitle: 'Kemanusiaan', desc: 'Jiwa kemanusiaan yang menjadi kompas — memastikan tidak ada satupun yang tertinggal.' },
+        { title: 'Kedaulatan Ekonomi', subtitle: 'Bisnis-Negara', desc: 'Arsitek model bisnis yang memadukan logika korporat dengan naluri negara — memastikan setiap strategi menguntungkan rakyat.' },
+        { title: 'Fondasi Moral', subtitle: 'Ruhani-Ilmiah', desc: 'Fondasi moral dan intelektual yang memastikan KNBMP selalu berpijak pada nilai-nilai etika absolut.' },
+        { title: 'Visi Peradaban', subtitle: 'Horizon 100 Tahun', desc: 'Visi jangka panjang yang melihat KNBMP sebagai kontribusi Indonesia bagi peradaban dunia.' },
+        { title: 'Kemanusiaan', subtitle: 'Nurani Sosial', desc: 'Jiwa kemanusiaan yang menjadi kompas — memastikan tidak ada satupun yang tertinggal.' },
       ],
     },
     {
@@ -4255,7 +4255,7 @@ function CovenantPage() {
         <motion.div variants={fadeSlideUp} custom={4}><GoldDivider /></motion.div>
         <motion.p className="font-[family-name:var(--font-body)] text-xs tracking-wider uppercase mt-6"
           style={{ color: '#A09385' }} variants={fadeSlideUp} custom={5}>
-          Grand Architect&apos;s Office &middot; KNBMP
+          Dewan Pendiri KNBMP &middot; Warisan Negara Republik Indonesia
         </motion.p>
         <motion.div className="w-16 h-px mt-6" style={{ backgroundColor: BURGUNDY }}
           initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 1, duration: 0.8 }} />
@@ -4297,7 +4297,7 @@ function BackCoverPage() {
         <motion.div variants={fadeSlideUp} custom={0}><GoldDivider color={GOLD} /></motion.div>
         <motion.p className="font-[family-name:var(--font-heading)] text-lg sm:text-xl italic"
           style={{ color: `${GOLD}CC` }} variants={fadeSlideUp} custom={1}>
-          Grand Architect&apos;s Office
+          Dewan Pendiri KNBMP
         </motion.p>
         <motion.p className="font-[family-name:var(--font-body)] text-xs tracking-[2px] uppercase"
           style={{ color: '#A09385' }} variants={fadeSlideUp} custom={2}>

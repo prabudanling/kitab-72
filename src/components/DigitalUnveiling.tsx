@@ -1324,7 +1324,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         Meneruskan Perjuangan Para Pendiri Republik Indonesia
                       </p>
 
-                      {/* Grand Architect credit */}
+                      {/* Institutional credit — Warisan Negara */}
                       <p
                         className="text-center"
                         style={{
@@ -1335,7 +1335,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                           opacity: 0.28,
                         }}
                       >
-                        Grand Architect: Tn. H. Gugun Gunara, CMC, MBA Int&rsquo;l, CFA, PMP
+                        Disusun oleh Dewan Pendiri KNBMP&ensp;&bull;&ensp;Warisan Negara Republik Indonesia
                       </p>
 
                       {/* Buka Kitab button */}

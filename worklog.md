@@ -561,3 +561,26 @@ Stage Summary:
 - PGA-34: desc with Desa Cerdas Digital 6 sub-pillars, 9 dimensions, 6 principles
 - Total data growth: 186→213 dimensions (+27), 126→144 principles (+18), 325→341 xrefs (+16), 18→23 settings (+5)
 - Dev server running cleanly, GET /api/flipbook 200
+
+---
+Task ID: 8
+Agent: Main Agent
+Task: Hapus semua referensi personal "Grand Architect" dan nama individu dari seluruh aplikasi — ubah menjadi warisan negara
+
+Work Log:
+- Removed "Grand Architect: Tn. H. Gugun Gunara, CMC, MBA Int'l, CFA, PMP" from DigitalUnveiling.tsx REVEALED state (line 1327-1339)
+- Replaced with institutional: "Disusun oleh Dewan Pendiri KNBMP · Warisan Negara Republik Indonesia"
+- Changed Covenant page footer from "Grand Architect's Office · KNBMP" to "Dewan Pendiri KNBMP · Warisan Negara Republik Indonesia"
+- Changed Back Cover from "Grand Architect's Office" to "Dewan Pendiri KNBMP"
+- Replaced PGA-04 "4 Identitas Pendiri" personal name cards → "4 Pilar Fondasi Pendirian" (Kedaulatan Ekonomi, Nilai & Etika, Visi Peradaban, Kemanusiaan)
+- Replaced PGA-06 "4 Identitas Terintegrasi" personal name cards → "4 Dimensi Identitas Gerakan"
+- Updated kata pengantar: "PGA-72 (Polymath Grand Architecture)" → "PGA-72 (72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat)"
+- Updated layout.tsx: removed "Polymath Grand Architecture" from description, changed author from "Grand Architect's Office" to "Dewan Pendiri KNBMP"
+- Updated seed.ts: document_series from "PGA-72 — Polymath Grand Architecture" to "PGA-72 — 72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat"
+- Lint passes clean, dev server running, GET /api/flipbook 200
+
+Stage Summary:
+- All personal references (Grand Architect, Gugun Gunara, Muhammad Lutfi Azmi, Prabu Danling, Santri Angon) removed from UI
+- Document now presents itself as institutional warisan negara (national heritage)
+- No personal names visible on cover, revelation, covenant, back cover, or inner pages
+- Credit replaced with collective institutional references (Dewan Pendiri KNBMP)

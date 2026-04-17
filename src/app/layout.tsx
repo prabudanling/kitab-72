@@ -29,7 +29,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "KNBMP · PGA-72 — Anatomi Peradaban: 72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat",
   description:
-    "72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat — Polymath Grand Architecture. Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih. Dokumen Super-Master | Klasifikasi: Absolut | Horizon: 100 Tahun.",
+    "72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat — Koperasi Korporasi Multipihak Nusa Berdikari Merah Putih. Dokumen Super-Master | Klasifikasi: Absolut | Horizon: 100 Tahun.",
   keywords: [
     "KNBMP",
     "PGA-72",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     "Desa",
     "Merdeka",
   ],
-  authors: [{ name: "Grand Architect's Office" }],
+  authors: [{ name: "Dewan Pendiri KNBMP" }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },

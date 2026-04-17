@@ -168,7 +168,7 @@ async function main() {
     { key: 'site_description', value: 'Koperasi Nasional Multipihak — 72 Pilar Fondasional Kedaulatan Ekonomi Rakyat', type: 'string', group: 'general', label: 'Site Description', description: 'Brief description of the project' },
     { key: 'organization_name', value: 'KNBMP', type: 'string', group: 'general', label: 'Organization Name', description: 'Full organization name' },
     { key: 'organization_name_full', value: 'Kopi Korporasi Multipihak Nusa Berdikari Merah Putih', type: 'string', group: 'general', label: 'Nama Resmi Lengkap', description: 'Nama legal lengkap organisasi' },
-    { key: 'document_series', value: 'PGA-72 — Polymath Grand Architecture', type: 'string', group: 'general', label: 'Seri Dokumen', description: 'Nama seri dokumen' },
+    { key: 'document_series', value: 'PGA-72 — 72 Pilar Kebangkitan Ekonomi Rakyat Berdaulat', type: 'string', group: 'general', label: 'Seri Dokumen', description: 'Nama seri dokumen' },
     { key: 'document_tier', value: 'Sovereign-72 — Standar Emas Kelas Dunia', type: 'string', group: 'general', label: 'Tier Standar', description: 'Tingkat standar dokumen' },
     { key: 'document_status', value: 'Foundational Truth — Tidak Berubah 100 Tahun', type: 'string', group: 'general', label: 'Status Dokumen', description: 'Status permanensi dokumen' },
     { key: 'member_registration_url', value: 'www.kopnusa.id/kpa', type: 'string', group: 'general', label: 'URL Pendaftaran Member', description: 'Link pendaftaran anggota' },
