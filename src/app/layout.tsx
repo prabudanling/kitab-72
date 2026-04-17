@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, EB_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Libre_Baskerville, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -11,11 +11,11 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-// Serif Body: EB Garamond — warm, senior-friendly, "buku warisan" readability
-const ebGaramond = EB_Garamond({
+// Serif Body: Libre Baskerville — tegak, jelas, bold kuat, ramah mata senior
+const libreBaskerville = Libre_Baskerville({
   variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body
-        className={`${cormorant.variable} ${ebGaramond.variable} ${inter.variable} antialiased`}
+        className={`${cormorant.variable} ${libreBaskerville.variable} ${inter.variable} antialiased`}
       >
         {children}
         <Toaster />
