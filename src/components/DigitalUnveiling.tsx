@@ -141,14 +141,11 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   const [phase, _setPhase] = useState<Phase>('LOCKED');
   const [matchProgress, setMatchProgress] = useState(0);
   const [elapsed, setElapsed] = useState(0);
-  const onCompleteRef = useRef(onComplete);
-  useEffect(() => { onCompleteRef.current = onComplete; });
 
   /* ── refs ── */
   const phaseRef = useRef<Phase>('LOCKED');
   const matchRef = useRef(0);
   const bufRef = useRef('');
-  const skipRef = useRef(true); // guard: only fire onComplete once
 
   // Audio
   const actxRef = useRef<AudioContext | null>(null);
@@ -162,14 +159,6 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   /* ── memoised data ── */
   const nodes = useMemo(() => buildNodes(), []);
   const particles = useMemo(() => buildParticles(), []);
-
-  /* ── auto-skip: if ritual already completed, skip to flipbook ── */
-  useEffect(() => {
-    if (skipRef.current && sessionStorage.getItem('knbmp-ritual-complete') === 'true') {
-      skipRef.current = false;
-      onCompleteRef.current();
-    }
-  }, []);
 
   /* ── stable phase setter ── */
   const setPhase = useCallback((p: Phase) => {

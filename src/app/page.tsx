@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
 import dynamic from 'next/dynamic'
-import { ChevronLeft, ChevronRight, ChevronDown, Volume2, VolumeX } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronDown, Volume2, VolumeX, Lock } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { type Domain, type Pillar } from '@/lib/pillar-data'
 import { useFlipbookData } from '@/hooks/use-flipbook-data'
@@ -4384,6 +4384,12 @@ export default function Home() {
     try { sessionStorage.setItem('knbmp-ritual-complete', 'true') } catch { /* quota */ }
   }, [])
 
+  const handleLockKitab = useCallback(() => {
+    setRitualComplete(false)
+    setCurrentLeaf(0)
+    try { sessionStorage.removeItem('knbmp-ritual-complete') } catch { /* quota */ }
+  }, [])
+
   const touchStartX = useRef(0)
   const touchStartY = useRef(0)
   const playFlipSound = usePageFlipSound()
@@ -4632,6 +4638,15 @@ export default function Home() {
             whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}
             aria-label={soundEnabled ? 'Mute' : 'Unmute'}>
             {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+          </motion.button>
+          <div className="w-px h-5" style={{ backgroundColor: '#3A3530' }} />
+          <motion.button
+            onClick={(e) => { e.stopPropagation(); handleLockKitab() }}
+            className="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer"
+            style={{ color: '#6B5E50' }}
+            whileHover={{ scale: 1.15, color: '#C5A059' }} whileTap={{ scale: 0.9 }}
+            aria-label="Kunci Kitab">
+            <Lock className="w-3.5 h-3.5" />
           </motion.button>
         </motion.div>
       </div>
