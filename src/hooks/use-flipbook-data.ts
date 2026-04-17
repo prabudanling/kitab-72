@@ -84,7 +84,7 @@ function transformPilar(db: DbPilar): Pillar {
     vision: db.vision ?? '',
     dimensions: db.dimensions.map(d => ({ label: d.label, value: d.value })),
     principles: db.principles.map(p => p.content),
-    xref: db.xrefs.map(x => x.targetPilarId),
+    xref: [...new Set(db.xrefs.map(x => x.targetPilarId))],
   }
 }
 

@@ -1,13 +1,20 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import { ChevronLeft, ChevronRight, ChevronDown, Volume2, VolumeX } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { type Domain, type Pillar } from '@/lib/pillar-data'
 import { useFlipbookData } from '@/hooks/use-flipbook-data'
 import { AdminTrigger } from '@/components/admin/AdminTrigger'
 import { AdminPanel } from '@/components/admin/AdminPanel'
-import { DigitalUnveiling } from '@/components/DigitalUnveiling'
+
+// DigitalUnveiling uses random CSS positioning + border shorthands that expand
+// differently on server vs client → dynamic import with ssr:false avoids hydration mismatch
+const DigitalUnveiling = dynamic(
+  () => import('@/components/DigitalUnveiling').then((m) => m.DigitalUnveiling),
+  { ssr: false },
+)
 
 // ═══════════════════════════════════════════════════════════════
 // COLORS

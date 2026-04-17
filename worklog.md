@@ -391,3 +391,21 @@ Stage Summary:
 - Integration: page.tsx imports component, uses sessionStorage for persistence
 - User types "berdikari" → cinematic sequence → flipbook revealed
 - Returning users skip ritual via sessionStorage
+---
+Task ID: 1
+Agent: Main
+Task: Fix hydration mismatch (DigitalUnveiling) and duplicate key error (PillarDetailPage)
+
+Work Log:
+- Read DigitalUnveiling.tsx — confirmed seeded PRNG (mulberry32) already used for deterministic node positions, but CSS border shorthand expands differently on server vs client
+- Applied fix: changed `DigitalUnveiling` import in page.tsx from static to `dynamic()` with `ssr: false` to skip SSR entirely for this component
+- Read PillarDetailPage xref rendering — `pillar.xref.map((refId) => <span key={refId}>)` caused duplicate key `64`
+- Root cause: CMS database PilarXref table had duplicate rows for same pillar+target pair
+- Applied fix in use-flipbook-data.ts transformPilar: deduplicated with `[...new Set(db.xrefs.map(...))]`
+- Reinstalled dependencies to clear @swc/helpers module resolution errors
+- Verified dev server compiles and runs cleanly with no console errors
+
+Stage Summary:
+- **Hydration mismatch fixed**: DigitalUnveiling now loaded via `next/dynamic` with `ssr: false` — no SSR, no hydration mismatch possible
+- **Duplicate key fixed**: xref array deduplicated in data transform layer
+- Dev server running cleanly, GET / 200, GET /api/flipbook 200
