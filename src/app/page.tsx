@@ -2003,6 +2003,332 @@ function PillarDetailPage01() {
   )
 }
 
+// ═══════════════════════════════════════════════════════════════
+// PGA-13 SPECIAL PAGE — Dual-Track Integration Strategy
+// ═══════════════════════════════════════════════════════════════
+const DOMAIN2_COLOR = '#1565C0'
+
+const dualTrackPrinciples = [
+  { num: 1, text: 'Fleksibilitas Strategis', desc: 'Kami tidak menunggu izin untuk bertindak. Kami tidak bergantung pada persetujuan untuk bergerak.' },
+  { num: 2, text: 'Kemandirian sebagai Kekuatan', desc: 'Kemandirian bukan kelemahan. Kemandirian adalah bukti bahwa kami percaya pada misi kami cukup kuat.' },
+  { num: 3, text: 'Kolaborasi sebagai Akselerator', desc: 'Jika pemerintah mau bergabung, kami berjalan lebih cepat. Jika tidak, kami berjalan lebih jauh.' },
+  { num: 4, text: 'People Power sebagai Fondasi', desc: 'Perubahan sejati datang dari rakyat, bukan dari pemerintah.' },
+  { num: 5, text: 'Tidak Ada Plan B', desc: 'Kami memiliki SATU visi yang dicapai dengan DUA jalur. Keduanya adalah Plan A.' },
+]
+
+const trackAItems = [
+  { icon: '🏛️', label: 'MOU dengan Kemendesa', desc: 'Integrasi langsung dengan sistem pemerintah' },
+  { icon: '🔗', label: 'API SID & Prodeskel', desc: 'Akses data potensi desa real-time' },
+  { icon: '📋', label: 'KDMP Alignment', desc: 'Selaras dengan data koperasi desa nasional' },
+  { icon: '💰', label: 'Dana Desa Rp60,6T', desc: 'Injeksi dana program pemerintah' },
+  { icon: '🏢', label: '16 Kementerian Support', desc: 'Dukungan lintas kementerian' },
+]
+
+const trackBItems = [
+  { icon: '👥', label: 'People Power Mobilization', desc: 'Gerakan bawah dari rakyat untuk rakyat' },
+  { icon: '🌱', label: 'Grassroots Movement', desc: 'Akar rumput kuat di setiap desa' },
+  { icon: '💸', label: 'Independent Funding', desc: 'Pembiayaan mandiri tanpa ketergantungan' },
+  { icon: '📱', label: 'Viral Growth', desc: 'Pertumbuhan organik melalui anggota' },
+  { icon: '🌐', label: 'Network Effects', desc: 'Efek jaringan yang semakin kuat' },
+]
+
+const siloData = [
+  { institution: 'PKK', count: '83.763', status: 'Manual', gap: 'Data terpisah' },
+  { institution: 'BUMDes', count: '46.668', status: 'Sebagian digital', gap: 'Uang terpisah' },
+  { institution: 'Posyandu', count: '300.000+', status: 'Sebagian digital', gap: 'Data kesehatan terpisah' },
+  { institution: 'Gapoktan', count: '50.000+', status: 'Manual', gap: 'Produksi terpisah' },
+  { institution: 'KUD', count: '~22.000', status: 'Banyak zombie', gap: 'Tidak terkoneksi' },
+  { institution: 'RT/RW', count: '~1.500.000', status: 'Manual', gap: 'Pendataan manual' },
+]
+
+function PillarDetailPage13({ domain }: { domain: Domain }) {
+  const bodyFont = 'font-[family-name:var(--font-body)]'
+  const heading = 'font-[family-name:var(--font-heading)]'
+  const serif = 'font-[family-name:var(--font-serif)]'
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
+      <BatikWatermark />
+      <div className="absolute left-0 top-0 bottom-0 w-2 z-20" style={{ backgroundColor: DOMAIN2_COLOR }} />
+
+      {/* Large "PGA-13" watermark */}
+      <div className="absolute top-[12%] right-2 sm:right-6 pointer-events-none select-none z-0"
+        style={{
+          fontFamily: 'var(--font-heading)',
+          fontSize: 'clamp(80px, 20vw, 200px)',
+          color: `${DOMAIN2_COLOR}05`,
+          lineHeight: 1,
+          fontWeight: 700,
+          letterSpacing: '0.05em',
+        }}>
+        PGA-13
+      </div>
+
+      <motion.div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto px-5 sm:px-8 lg:px-12 pt-5 sm:pt-7 pb-14 sm:pb-16 relative z-10"
+        variants={staggerContainer} initial="hidden" animate="visible">
+
+        {/* ═══ HEADER ═══ */}
+        <motion.div className="mb-4 sm:mb-5" variants={fadeSlideUp} custom={0}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[3px] uppercase font-bold`}
+              style={{ color: DOMAIN2_COLOR }}>
+              Domain 2 &middot; Strategy &amp; Direction
+            </span>
+          </div>
+          <motion.div variants={fadeSlideUp} custom={1}>
+            <GoldDivider className="my-2" color={DOMAIN2_COLOR} />
+          </motion.div>
+        </motion.div>
+
+        {/* Badge */}
+        <motion.div className="mb-4" variants={scaleIn} custom={2}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-sm"
+            style={{ backgroundColor: `${DOMAIN2_COLOR}08`, border: `1px solid ${DOMAIN2_COLOR}25` }}>
+            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: DOMAIN2_COLOR }} />
+            <span className={`${bodyFont} text-[10px] sm:text-xs tracking-[1.5px] uppercase font-bold`}
+              style={{ color: DOMAIN2_COLOR }}>
+              Master Integration Whitepaper — Dual-Track Strategy
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Title */}
+        <motion.h1 className={`${heading} text-xl sm:text-2xl lg:text-3xl font-bold leading-tight mb-1`}
+          style={{ color: CHARCOAL }}
+          variants={fadeSlideUp} custom={3}>
+          Dual-Track: Orkestrasi Ekosistem Desa
+        </motion.h1>
+        <motion.p className={`${heading} text-xs sm:text-sm italic mb-4`}
+          style={{ color: '#8B7D6B' }}
+          variants={fadeSlideUp} custom={4}>
+          Dua Jalur, Satu Tujuan — Dengan atau Tanpa Pemerintah
+        </motion.p>
+
+        {/* Key Stats */}
+        <motion.div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-5" variants={fadeSlideUp} custom={5}>
+          {[
+            { label: 'Infrastruktur', value: '500K+', unit: 'unit' },
+            { label: 'Desa', value: '83.763', unit: 'desa' },
+            { label: 'Penduduk', value: '270M+', unit: 'jiwa' },
+            { label: 'Dana Desa', value: 'Rp60,6T', unit: '/tahun' },
+            { label: 'Platform', value: 'kopnusa', unit: '.com' },
+          ].map((s, i) => (
+            <div key={i} className="p-2 rounded-sm text-center"
+              style={{ backgroundColor: `${DOMAIN2_COLOR}05`, borderLeft: `2px solid ${DOMAIN2_COLOR}20` }}>
+              <p className={`${bodyFont} text-base sm:text-lg font-bold`} style={{ color: DOMAIN2_COLOR }}>{s.value}</p>
+              <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#A09385' }}>{s.label}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        <motion.div variants={fadeSlideUp} custom={6}>
+          <GoldDivider className="my-3" color={DOMAIN2_COLOR} />
+        </motion.div>
+
+        {/* ═══ DUAL-TRACK PHILOSOPHY ═══ */}
+        <motion.div className="mb-5" variants={fadeSlideUp} custom={7}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-3`}
+            style={{ color: DOMAIN2_COLOR }}>
+            ◆ Dual-Track Philosophy ◆
+          </p>
+          <p className={`${serif} text-[13px] sm:text-[15px] leading-[1.8] text-center italic`}
+            style={{ color: '#3E2723' }}>
+            &ldquo;Kami bukan sekadar koperasi. Kami adalah{' '}
+            <span className="font-semibold" style={{ color: DOMAIN2_COLOR }}>Digital Nervous System</span> yang menghubungkan seluruh infrastruktur desa menjadi satu ekosistem yang hidup —{' '}
+            <span className="font-semibold" style={{ color: BURGUNDY }}>dengan dukungan pemerintah atau tanpa dukungan pemerintah, kami akan tetap maju.</span>&rdquo;
+          </p>
+        </motion.div>
+
+        {/* ═══ TRACK A vs TRACK B ═══ */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+          {/* Track A */}
+          <motion.div className="p-4 rounded-sm"
+            style={{ backgroundColor: `${DOMAIN2_COLOR}06`, border: `2px solid ${DOMAIN2_COLOR}30` }}
+            variants={fadeSlideUp} custom={8}>
+            <div className="flex items-center gap-2 mb-3">
+              <span className={`${heading} text-xl`} style={{ color: DOMAIN2_COLOR }}>A</span>
+              <div>
+                <h3 className={`${bodyFont} text-xs sm:text-sm font-bold`} style={{ color: DOMAIN2_COLOR }}>TRACK A</h3>
+                <p className={`${bodyFont} text-[9px] sm:text-[10px] italic`} style={{ color: '#8B7D6B' }}>With Government Partnership</p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              {trackAItems.map((item, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <span className="text-sm mt-0.5">{item.icon}</span>
+                  <div>
+                    <p className={`${bodyFont} text-[11px] sm:text-xs font-semibold`} style={{ color: '#3E2723' }}>{item.label}</p>
+                    <p className={`${bodyFont} text-[9px] sm:text-[10px]`} style={{ color: '#8B7D6B' }}>{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Track B */}
+          <motion.div className="p-4 rounded-sm"
+            style={{ backgroundColor: `${BURGUNDY}06`, border: `2px solid ${BURGUNDY}30` }}
+            variants={fadeSlideUp} custom={9}>
+            <div className="flex items-center gap-2 mb-3">
+              <span className={`${heading} text-xl`} style={{ color: BURGUNDY }}>B</span>
+              <div>
+                <h3 className={`${bodyFont} text-xs sm:text-sm font-bold`} style={{ color: BURGUNDY }}>TRACK B</h3>
+                <p className={`${bodyFont} text-[9px] sm:text-[10px] italic`} style={{ color: '#8B7D6B' }}>With People Power (Independent)</p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              {trackBItems.map((item, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <span className="text-sm mt-0.5">{item.icon}</span>
+                  <div>
+                    <p className={`${bodyFont} text-[11px] sm:text-xs font-semibold`} style={{ color: '#3E2723' }}>{item.label}</p>
+                    <p className={`${bodyFont} text-[9px] sm:text-[10px]`} style={{ color: '#8B7D6B' }}>{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Merger indicator */}
+        <motion.div className="text-center mb-5" variants={fadeSlideUp} custom={10}>
+          <div className="inline-flex items-center gap-3 px-6 py-2 rounded-full"
+            style={{ backgroundColor: `${DOMAIN2_COLOR}08`, border: `1px solid ${DOMAIN2_COLOR}20` }}>
+            <span className={`${bodyFont} text-[10px] font-bold`} style={{ color: DOMAIN2_COLOR }}>TRACK A</span>
+            <span style={{ color: DOMAIN2_COLOR }}>+</span>
+            <span className={`${bodyFont} text-[10px] font-bold`} style={{ color: BURGUNDY }}>TRACK B</span>
+            <span style={{ color: CHARCOAL }}>=</span>
+            <span className={`${bodyFont} text-[10px] font-bold`} style={{ color: CHARCOAL }}>KEDAULATAN</span>
+          </div>
+        </motion.div>
+
+        <motion.div variants={fadeSlideUp} custom={11}>
+          <GoldDivider className="my-3" color={DOMAIN2_COLOR} />
+        </motion.div>
+
+        {/* ═══ SILO SYNDROME — THE PROBLEM ═══ */}
+        <motion.div className="mb-5" variants={fadeSlideUp} custom={12}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-1`}
+            style={{ color: BURGUNDY }}>
+            ◆ Masalah: Silo Syndrome ◆
+          </p>
+          <p className={`${serif} text-[12px] sm:text-sm text-center italic mb-3`}
+            style={{ color: '#8B7D6B' }}>
+            500.000+ unit kelembagaan desa berjalan dalam silo terputus
+          </p>
+        </motion.div>
+
+        <div className="overflow-x-auto mb-5">
+          <table className="w-full text-left" style={{ fontSize: '11px' }}>
+            <thead>
+              <tr style={{ borderBottom: `2px solid ${DOMAIN2_COLOR}30` }}>
+                <th className={`${bodyFont} py-2 pr-3 font-bold uppercase tracking-wider`} style={{ color: DOMAIN2_COLOR }}>Lembaga</th>
+                <th className={`${bodyFont} py-2 pr-3 font-bold uppercase tracking-wider`} style={{ color: DOMAIN2_COLOR }}>Jumlah</th>
+                <th className={`${bodyFont} py-2 pr-3 font-bold uppercase tracking-wider`} style={{ color: DOMAIN2_COLOR }}>Status</th>
+                <th className={`${bodyFont} py-2 font-bold uppercase tracking-wider`} style={{ color: BURGUNDY }}>Gap</th>
+              </tr>
+            </thead>
+            <tbody>
+              {siloData.map((row, i) => (
+                <motion.tr key={i} variants={fadeSlideUp} custom={13 + i}
+                  style={{ borderBottom: `1px solid #f0ece4` }}>
+                  <td className={`${bodyFont} py-2 pr-3 font-semibold`} style={{ color: '#3E2723' }}>{row.institution}</td>
+                  <td className={`${bodyFont} py-2 pr-3`} style={{ color: '#6B5E50' }}>{row.count}</td>
+                  <td className={`${bodyFont} py-2 pr-3`} style={{ color: row.status === 'Manual' ? BURGUNDY : DOMAIN2_COLOR }}>{row.status}</td>
+                  <td className={`${bodyFont} py-2 italic`} style={{ color: '#A09385' }}>{row.gap}</td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <motion.div variants={fadeSlideUp} custom={19}>
+          <GoldDivider className="my-3" color={DOMAIN2_COLOR} />
+        </motion.div>
+
+        {/* ═══ 5 PRINSIP DUAL-TRACK ═══ */}
+        <motion.div className="mb-5" variants={fadeSlideUp} custom={20}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-1`}
+            style={{ color: DOMAIN2_COLOR }}>
+            ◆ 5 Prinsip Dual-Track — Non-Negotiable ◆
+          </p>
+        </motion.div>
+
+        <div className="space-y-2.5 mb-5">
+          {dualTrackPrinciples.map((pr, idx) => (
+            <motion.div key={idx} className="p-3 rounded-sm"
+              style={{
+                backgroundColor: `${DOMAIN2_COLOR}${idx % 2 === 0 ? '04' : '02'}`,
+                borderLeft: `3px solid ${DOMAIN2_COLOR}${idx % 2 === 0 ? '40' : '25'}`,
+              }}
+              variants={fadeSlideUp} custom={21 + idx}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className={`${heading} text-sm sm:text-base font-bold`} style={{ color: DOMAIN2_COLOR }}>{pr.num}.</span>
+                <h4 className={`${bodyFont} text-xs sm:text-sm font-bold`} style={{ color: CHARCOAL }}>{pr.text}</h4>
+              </div>
+              <p className={`${bodyFont} text-[11px] sm:text-xs leading-[1.7]`} style={{ color: '#6B5E50' }}>{pr.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div variants={fadeSlideUp} custom={27}>
+          <GoldDivider className="my-3" color={DOMAIN2_COLOR} />
+        </motion.div>
+
+        {/* ═══ kopnusa.com PLATFORM ═══ */}
+        <motion.div className="mb-5" variants={fadeSlideUp} custom={28}>
+          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-1`}
+            style={{ color: DOMAIN2_COLOR }}>
+            ◆ kopnusa.com — Digital Nervous System ◆
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-5">
+          {[
+            { icon: '📊', label: 'Village Dashboard', desc: 'Analitik terintegrasi' },
+            { icon: '🏥', label: 'Health System', desc: 'Pencegahan stunting' },
+            { icon: '🛒', label: 'Marketplace', desc: 'Petani ↔ Pembeli' },
+            { icon: '💳', label: 'JP3 Pay', desc: 'Inklusi keuangan' },
+            { icon: '🚛', label: 'Logistics', desc: 'Cold chain & ekspor' },
+            { icon: '📚', label: 'Academy', desc: 'Capacity building' },
+            { icon: '💧', label: 'Smart Resource', desc: 'Alokasi cerdas' },
+            { icon: '🔗', label: 'API Hub', desc: 'SID, Prodeskel, KDMP' },
+          ].map((mod, i) => (
+            <motion.div key={i} className="p-2.5 rounded-sm text-center"
+              style={{ backgroundColor: `${DOMAIN2_COLOR}05`, border: `1px solid ${DOMAIN2_COLOR}15` }}
+              variants={scaleIn} custom={29 + i}>
+              <span className="text-lg sm:text-xl">{mod.icon}</span>
+              <p className={`${bodyFont} text-[10px] sm:text-xs font-bold mt-1`} style={{ color: '#3E2723' }}>{mod.label}</p>
+              <p className={`${bodyFont} text-[8px] sm:text-[9px]`} style={{ color: '#A09385' }}>{mod.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ═══ PAGE FOOTER ═══ */}
+        <motion.div className="text-center pt-3 pb-2" variants={fadeSlideUp} custom={38}>
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-8" style={{ backgroundColor: `${DOMAIN2_COLOR}30` }} />
+            <span className="block w-2 h-2 rotate-45" style={{ backgroundColor: `${DOMAIN2_COLOR}50` }} />
+            <div className="h-px w-8" style={{ backgroundColor: `${DOMAIN2_COLOR}30` }} />
+          </div>
+          <p className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[2px] uppercase`}
+            style={{ color: '#B0A898' }}>
+            PGA-13 &middot; 13/72 &middot; ◆ Strategy &amp; Direction
+          </p>
+          <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[1px] uppercase mt-0.5`}
+            style={{ color: '#C0B8AA' }}>
+            Master Integration Whitepaper &middot; Dual-Track Strategy
+          </p>
+        </motion.div>
+      </motion.div>
+      <ScrollIndicator containerRef={scrollRef} />
+    </div>
+  )
+}
+
 function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }) {
   const badgeLabel = pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -2326,6 +2652,8 @@ function renderPage(page: BookPage, index: number, total: number) {
       case 'pillar-detail':
         return page.pillar.id === 1
           ? <PillarDetailPage01 key={`pga01`} />
+          : page.pillar.id === 13
+          ? <PillarDetailPage13 key={`pga13`} domain={page.domain} />
           : <PillarDetailPage key={`p-${page.pillar.id}`} pillar={page.pillar} domain={page.domain} />
       case 'philosophy': return <PhilosophyPage key={`phil-${index}`} />
       case 'covenant': return <CovenantPage key={`cov-${index}`} />
