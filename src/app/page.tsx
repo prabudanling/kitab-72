@@ -1615,7 +1615,7 @@ function PillarDetailPage01() {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const [visionRevealed, setVisionRevealed] = useState(false)
-  useEffect(() => { const t = setTimeout(() => setVisionRevealed(true), 1200); return () => clearTimeout(t) }, [])
+  useEffect(() => { const t = setTimeout(() => setVisionRevealed(true), 800); return () => clearTimeout(t) }, [])
 
   return (
     <div className="absolute inset-0 bg-white flex flex-col overflow-hidden paper-grain page-fold-shadow">
@@ -1726,46 +1726,51 @@ function PillarDetailPage01() {
           </div>
         </motion.div>
 
-        {/* ═══ SECTION B: Vision Statement — The Core ═══ */}
-        <motion.div className="mb-6 sm:mb-8" variants={fadeSlideUp} custom={7}>
-          <p className={`${bodyFont} text-[10px] sm:text-xs tracking-[3px] uppercase font-bold text-center mb-4`}
-            style={{ color: DOMAIN1_COLOR }}>
-            ◆ Vision Statement Utama ◆
-          </p>
+        {/* ═══ SECTION B: Vision Statement Utama — The Core ═══ */}
+        <motion.div className="mb-4 sm:mb-6" variants={fadeSlideUp} custom={7}>
+          <motion.div className="text-center mb-5">
+            <p className={`${heading} text-base sm:text-xl lg:text-2xl font-bold tracking-wide leading-tight`}
+              style={{ color: BURGUNDY }}>
+              VISION STATEMENT UTAMA
+            </p>
+            <div className="flex items-center justify-center gap-3 mt-2">
+              <div className="h-px w-12 sm:w-16" style={{ backgroundColor: `${DOMAIN1_COLOR}50` }} />
+              <span className="block w-2.5 h-2.5 rotate-45" style={{ backgroundColor: `${DOMAIN1_COLOR}60` }} />
+              <div className="h-px w-12 sm:w-16" style={{ backgroundColor: `${DOMAIN1_COLOR}50` }} />
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* Golden Vision Box with Glow */}
         <motion.div
-          className="relative p-5 sm:p-8 rounded-sm mb-4 overflow-hidden"
+          className="relative p-5 sm:p-7 lg:p-8 rounded-sm mb-4"
           style={{
-            background: `linear-gradient(135deg, ${DOMAIN1_COLOR}08 0%, ${BURGUNDY}05 50%, ${DOMAIN1_COLOR}08 100%)`,
-            border: `2px solid ${DOMAIN1_COLOR}35`,
+            perspective: '1000px',
+            background: `linear-gradient(135deg, ${DOMAIN1_COLOR}10 0%, ${BURGUNDY}06 50%, ${DOMAIN1_COLOR}10 100%)`,
+            border: `2px solid ${DOMAIN1_COLOR}40`,
+            boxShadow: `0 0 30px rgba(196,149,42,0.08), inset 0 0 30px rgba(196,149,42,0.05)`,
           }}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={visionRevealed ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}>
+          transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}>
 
-          {/* Glow effect */}
-          <div className="absolute inset-0 pointer-events-none"
-            style={{
-              boxShadow: `inset 0 0 60px rgba(196,149,42,0.08), 0 0 40px rgba(196,149,42,0.05)`,
-            }} />
-
-          <CornerOrnament color={DOMAIN1_COLOR} size={30} />
+          <CornerOrnament color={DOMAIN1_COLOR} size={28} />
 
           {/* Letter-by-letter vision statement */}
-          <div className="relative z-10 text-center">
-            <p className={`${heading} text-base sm:text-lg lg:text-xl leading-[1.6] tracking-wide`}
+          <div className="relative z-10 text-center py-2" style={{ perspective: '800px' }}>
+            <p className={`${heading} text-[15px] sm:text-lg lg:text-xl leading-[1.7] tracking-wide`}
               style={{ color: CHARCOAL }}>
               {visionSentence.split('').map((char, i) => (
                 <motion.span
                   key={i}
-                  style={{ color: char === '—' ? DOMAIN1_COLOR : i < 9 ? BURGUNDY : CHARCOAL }}
+                  style={{
+                    color: char === '—' ? DOMAIN1_COLOR : i < 9 ? BURGUNDY : CHARCOAL,
+                    display: 'inline-block',
+                  }}
                   variants={letterReveal}
                   custom={Math.floor(i / 3)}
                   initial="hidden"
-                  animate={visionRevealed ? 'visible' : 'hidden'}
-                  className={char === ' ' ? '' : ''}>
+                  animate={visionRevealed ? 'visible' : 'hidden'}>
                   {char === ' ' ? '\u00A0' : char}
                 </motion.span>
               ))}
@@ -1773,7 +1778,7 @@ function PillarDetailPage01() {
           </div>
 
           <div className="absolute bottom-2 right-2 rotate-180 opacity-40">
-            <CornerOrnament color={DOMAIN1_COLOR} size={30} />
+            <CornerOrnament color={DOMAIN1_COLOR} size={28} />
           </div>
         </motion.div>
 
@@ -2252,18 +2257,37 @@ function CovenantPage() {
 
 function BackCoverPage() {
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center px-8 py-12 overflow-hidden paper-grain"
-      style={{ backgroundColor: PARCHMENT }}>
+    <div className="absolute inset-0 flex flex-col items-center justify-center px-8 py-12 overflow-hidden"
+      style={{ backgroundColor: DARK_BG }}>
+      {/* AI-generated background */}
+      <motion.div className="absolute inset-0 z-0"
+        initial={{ opacity: 0, scale: 1.05 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.5, ease: 'easeOut' }}>
+        <img src="/backcover-bg.png" alt="" className="w-full h-full object-cover"
+          style={{ opacity: 0.2, mixBlendMode: 'screen' }} />
+      </motion.div>
+      {/* Dark overlay */}
+      <div className="absolute inset-0 z-[1]"
+        style={{ background: `linear-gradient(180deg, rgba(26,24,20,0.6) 0%, rgba(26,24,20,0.85) 50%, rgba(26,24,20,0.95) 100%)` }} />
+
+      <GoldenParticles />
       <BatikWatermark />
       <div className="absolute font-[family-name:var(--font-heading)] font-bold pointer-events-none select-none"
         style={{ fontSize: 'clamp(60px, 15vw, 140px)', color: `${BURGUNDY}06`, letterSpacing: '0.1em', lineHeight: 1, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
         MERDEKA
       </div>
+
+      {/* Gold border */}
+      <motion.div className="absolute pointer-events-none z-5"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 1 }}
+        style={{ inset: '20px', border: '1px solid rgba(197,160,89,0.15)', borderRadius: 4 }} />
+
       <motion.div className="flex flex-col items-center gap-6 relative z-10"
         variants={staggerContainer} initial="hidden" animate="visible">
-        <motion.div variants={fadeSlideUp} custom={0}><GoldDivider color={BURGUNDY} /></motion.div>
+        <motion.div variants={fadeSlideUp} custom={0}><GoldDivider color={GOLD} /></motion.div>
         <motion.p className="font-[family-name:var(--font-heading)] text-lg sm:text-xl italic"
-          style={{ color: '#6B5E50' }} variants={fadeSlideUp} custom={1}>
+          style={{ color: `${GOLD}CC` }} variants={fadeSlideUp} custom={1}>
           Grand Architect&apos;s Office
         </motion.p>
         <motion.p className="font-[family-name:var(--font-body)] text-xs tracking-[2px] uppercase"
@@ -2274,13 +2298,13 @@ function BackCoverPage() {
           style={{ color: GOLD }} variants={fadeSlideUp} custom={3}>
           2025
         </motion.p>
-        <motion.div variants={fadeSlideUp} custom={4}><GoldDivider color={BURGUNDY} /></motion.div>
+        <motion.div variants={fadeSlideUp} custom={4}><GoldDivider color={GOLD} /></motion.div>
         <motion.div className="flex items-center gap-2 mt-2" variants={fadeSlideUp} custom={5}>
-          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: `${BURGUNDY}30` }} />
-          <div className="w-3 h-px" style={{ backgroundColor: `${BURGUNDY}30` }} />
+          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: `${GOLD}30` }} />
+          <div className="w-3 h-px" style={{ backgroundColor: `${GOLD}30` }} />
           <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: `${GOLD}40` }} />
-          <div className="w-3 h-px" style={{ backgroundColor: `${BURGUNDY}30` }} />
-          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: `${BURGUNDY}30` }} />
+          <div className="w-3 h-px" style={{ backgroundColor: `${GOLD}30` }} />
+          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: `${GOLD}30` }} />
         </motion.div>
       </motion.div>
     </div>
