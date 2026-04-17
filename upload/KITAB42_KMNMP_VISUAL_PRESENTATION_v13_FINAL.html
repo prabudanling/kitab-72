@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KITAB 42 — JE-P3 × KMNMP | Peradaban Ekonomi Digital Indonesia v13.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════
+   KITAB 42 KMNMP v13.0 — MASTER DESIGN SYSTEM
+   Koperasi Multipihak Nusa Merah Putih
+   Grand Architect: Tn. H. Gugun Gunara, S.E., M.M.
+   17 Maret 2026
+══════════════════════════════════════════════════════════ */
+
+:root {
+  --red:        #CC0000;
+  --red-dark:   #8B0000;
+  --red-glow:   rgba(204,0,0,0.35);
+  --green:      #00A550;
+  --green-dark: #006B30;
+  --green-glow: rgba(0,165,80,0.35);
+  --gold:       #D4AF37;
+  --gold-light: #FFD700;
+  --white:      #FFFFFF;
+  --off-white:  #F8FFFE;
+  --bg:         #F3F6F4;
+  --dark:       #050D08;
+  --dark2:      #0A1A0F;
+  --dark3:      #0F2418;
+  --text:       #111B14;
+  --text-mid:   #3A4D3E;
+  --text-soft:  #6B7F70;
+  --border:     #D1E0D5;
+  --border2:    rgba(0,165,80,0.2);
+  --glass:      rgba(255,255,255,0.07);
+  --glass2:     rgba(255,255,255,0.12);
+  --font-head:  'Outfit', system-ui, sans-serif;
+  --font-body:  'Outfit', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Courier New', monospace;
+  --font-serif: 'Lora', Georgia, serif;
+  --shadow:     0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg:  0 12px 48px rgba(0,0,0,0.14);
+  --r:          12px;
+  --r-lg:       20px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.65;
+  font-size: 16px;
+}
+
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
+/* ══════════════════════════════════════════════════════════
+   NAVIGATION v13 — REDESIGNED: RAPI, ELEGAN, ULTRA-READABLE
+══════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  background: rgba(4,16,10,0.97);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(0,165,80,0.22);
+  height: 72px;
+  display: flex; align-items: center;
+  padding: 0 18px 0 22px; gap: 14px; overflow: hidden;
+}
+/* Brand block */
+.nav-brand { display:flex; align-items:center; gap:11px; flex-shrink:0; }
+.nav-icon { font-size:1.9rem; line-height:1; filter:drop-shadow(0 0 8px rgba(0,200,100,0.4)); }
+.nav-brand-text { display:flex; flex-direction:column; gap:3px; }
+.nav-brand-title { font-family:var(--font-mono); font-size:0.98rem; font-weight:700; color:var(--green-bright); letter-spacing:3px; line-height:1; }
+.nav-brand-sub { font-family:var(--font-mono); font-size:0.74rem; color:rgba(255,255,255,0.52); letter-spacing:1.5px; line-height:1; }
+.nav-brand-sub em { color:rgba(255,110,100,0.9); font-style:normal; }
+.nav-sep { width:1px; height:40px; background:rgba(255,255,255,0.1); flex-shrink:0; }
+/* Scrollable tabs */
+.nav-tabs {
+  flex:1; min-width:0;
+  display:flex; gap:4px;
+  overflow-x:auto; scrollbar-width:none;
+  align-items:center; padding:4px 2px;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 20px,#000 calc(100% - 20px),transparent);
+  mask-image:linear-gradient(to right,transparent,#000 20px,#000 calc(100% - 20px),transparent);
+}
+.nav-tabs::-webkit-scrollbar { display:none; }
+/* Prev/Counter/Next */
+.nav-ctrl { display:flex; align-items:center; gap:7px; flex-shrink:0; }
+.nav-arr {
+  width:36px; height:36px;
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.13);
+  border-radius:9px; color:rgba(255,255,255,0.88);
+  font-size:1.4rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s; line-height:1;
+}
+.nav-arr:hover { background:rgba(0,165,80,0.22); border-color:var(--green-mid); color:#fff; }
+.nav-arr:disabled { opacity:0.22; cursor:default; pointer-events:none; }
+.nav-counter {
+  font-family:var(--font-mono); font-size:0.85rem; font-weight:700;
+  color:rgba(255,255,255,0.75); min-width:56px; text-align:center;
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+  padding:6px 9px; border-radius:7px;
+}
+/* Hamburger */
+.nav-ham {
+  display:none; width:42px; height:42px;
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.13);
+  border-radius:9px; color:rgba(255,255,255,0.88);
+  font-size:1.25rem; cursor:pointer;
+  align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s;
+}
+.nav-ham:hover { background:rgba(0,165,80,0.2); border-color:var(--green-mid); }
+/* Mobile overlay */
+.nav-overlay {
+  display:none; position:fixed;
+  top:72px; left:0; right:0;
+  background:rgba(4,16,10,0.99); backdrop-filter:blur(24px);
+  z-index:998; padding:18px;
+  border-bottom:1px solid rgba(0,165,80,0.2);
+  grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
+  gap:8px; max-height:calc(100vh - 72px); overflow-y:auto;
+}
+.nav-overlay.open { display:grid; }
+.nav-overlay .nb { padding:13px 15px; font-size:0.9rem; justify-content:flex-start; width:100%; }
+@media(max-width:900px) { .nav-tabs,.nav-sep { display:none; } .nav-ham { display:flex; } }
+@media(max-width:480px) {
+  .nav { padding:0 12px; gap:8px; }
+  .nav-brand-sub { display:none; }
+  .nav-brand-title { font-size:0.82rem; }
+  .nav-counter { min-width:40px; font-size:0.76rem; padding:5px 7px; }
+}
+/* NAV BUTTON */
+.nav-logo { display:none; }
+.nav-links { display:none; }
+.nb {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.75);
+  padding: 7px 13px; border-radius: 9px;
+  font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s ease;
+  white-space: nowrap; flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: 6px; line-height: 1;
+}
+.nb:hover { background:rgba(0,165,80,0.18); border-color:rgba(0,165,80,0.55); color:#fff; transform:translateY(-1px); }
+.nb.on { background:linear-gradient(135deg,rgba(0,140,70,0.32),rgba(0,100,50,0.22)); border-color:var(--green-mid); color:#fff; box-shadow:0 0 18px rgba(0,165,80,0.22),inset 0 1px 0 rgba(255,255,255,0.1); }
+.nav-prog {
+  position: absolute; bottom: 0; left: 0;
+  height: 3px; background: linear-gradient(to right, var(--green-mid), var(--gold), var(--red)); box-shadow:0 0 8px rgba(0,165,80,0.45);
+  transition: width 0.4s ease;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE BASE
+══════════════════════════════════════════════════════════ */
+.slide { display:none; min-height:100vh; padding-top:72px; }
+.slide.on { display:block; animation:slideIn 0.38s cubic-bezier(0.4,0,0.2,1) both; }
+@keyframes slideIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.slide.on { display:block; }
+.wrap { max-width:1240px; margin:0 auto; padding:40px 24px 72px; }
+
+/* ══ SLIDE HEADER ══ */
+.sh { margin-bottom:32px; }
+.stag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem; font-weight:700;
+  color: var(--green); letter-spacing:2px;
+  text-transform: uppercase; margin-bottom:10px;
+}
+.stag::before {
+  content:''; display:inline-block;
+  width:24px; height:3px;
+  background: linear-gradient(to right,var(--green),var(--gold));
+  border-radius:2px;
+}
+.stitle {
+  font-family: var(--font-head);
+  font-size: clamp(2rem,3.8vw,3rem);
+  font-weight: 800; color: var(--text);
+  line-height: 1.15; margin-bottom:10px;
+  letter-spacing: -0.5px;
+}
+.stitle .g { color: var(--green); }
+.stitle .r { color: var(--red); }
+.stitle .gold { color: var(--gold); }
+.sdesc {
+  font-size: 1.05rem; color: var(--text-soft);
+  max-width: 700px; line-height: 1.7;
+}
+.hdiv {
+  height: 1px;
+  background: linear-gradient(to right, var(--green), var(--red), transparent);
+  margin: 20px 0 32px; border:none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════════════════════ */
+@keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+@keyframes shimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes counterUp { from{opacity:0;transform:scale(0.7)} to{opacity:1;transform:scale(1)} }
+@keyframes glowPulse { 0%,100%{box-shadow:0 0 20px var(--green-glow)} 50%{box-shadow:0 0 40px var(--green-glow),0 0 80px var(--green-glow)} }
+@keyframes scanline { 0%{top:-100%} 100%{top:100%} }
+@keyframes borderFlow {
+  0%{border-image:linear-gradient(0deg,var(--green),var(--gold),var(--red)) 1}
+  33%{border-image:linear-gradient(120deg,var(--green),var(--gold),var(--red)) 1}
+  66%{border-image:linear-gradient(240deg,var(--green),var(--gold),var(--red)) 1}
+  100%{border-image:linear-gradient(360deg,var(--green),var(--gold),var(--red)) 1}
+}
+@keyframes typing { from{width:0} to{width:100%} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.a-fadeup { animation: fadeUp 0.7s ease both; }
+.a-fadein { animation: fadeIn 0.5s ease both; }
+.a-float { animation: float 3s ease-in-out infinite; }
+.a-d1 { animation-delay:0.1s }
+.a-d2 { animation-delay:0.2s }
+.a-d3 { animation-delay:0.3s }
+.a-d4 { animation-delay:0.4s }
+.a-d5 { animation-delay:0.5s }
+.a-d6 { animation-delay:0.6s }
+.a-d7 { animation-delay:0.7s }
+.a-d8 { animation-delay:0.8s }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 0 — COVER
+══════════════════════════════════════════════════════════ */
+#s0 {
+  background: var(--dark);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; text-align: center;
+}
+#canvas-bg {
+  position:absolute; inset:0; z-index:0;
+  pointer-events:none;
+}
+.cover-top-bar {
+  position:absolute; top:0; left:0; right:0;
+  height:3px;
+  background: linear-gradient(to right,var(--green) 0%,var(--green) 33%,var(--gold) 33%,var(--gold) 66%,var(--red) 66%,var(--red) 100%);
+  z-index:10;
+}
+.cover-bottom-bar {
+  position:absolute; bottom:0; left:0; right:0;
+  height:3px;
+  background: linear-gradient(to right,var(--red),var(--gold),var(--green));
+  z-index:10;
+}
+.cover-inner {
+  position:relative; z-index:5;
+  max-width:920px; padding:40px 24px;
+}
+.cover-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background: rgba(0,165,80,0.12);
+  border: 1px solid rgba(0,165,80,0.5);
+  padding:8px 24px; border-radius:100px;
+  font-family: var(--font-mono);
+  font-size:0.875rem; font-weight:700;
+  color:#3DDB80; letter-spacing:2.5px;
+  text-transform:uppercase; margin-bottom:24px;
+  animation: fadeUp 0.8s ease both;
+}
+.cover-eye {
+  font-family: var(--font-mono);
+  font-size:0.87rem; color:rgba(255,255,255,0.4);
+  letter-spacing:4px; text-transform:uppercase;
+  margin-bottom:16px;
+  animation: fadeUp 0.8s ease 0.1s both;
+}
+.cover-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.8rem,7vw,5.5rem);
+  font-weight:900; line-height:1.0;
+  color:#fff; letter-spacing:-2px;
+  margin-bottom:8px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+.cover-title .g {
+  background: linear-gradient(135deg,var(--green),#4DDB8A);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.cover-title .r {
+  background: linear-gradient(135deg,#FF4444,var(--red));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.cover-sub {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem,2vw,1.4rem);
+  color:rgba(255,255,255,0.7);
+  font-style:italic; margin-bottom:24px;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+.cover-divider {
+  width:200px; height:1px;
+  background: linear-gradient(to right,transparent,var(--green),var(--gold),var(--red),transparent);
+  margin:0 auto 24px;
+  animation: fadeIn 1s ease 0.4s both;
+}
+.cover-desc {
+  font-size:1rem; color:rgba(255,255,255,0.6);
+  line-height:1.8; max-width:640px;
+  margin:0 auto 36px;
+  animation: fadeUp 0.8s ease 0.4s both;
+}
+.cover-stats {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:14px; max-width:720px; margin:0 auto 32px;
+  animation: fadeUp 0.8s ease 0.5s both;
+}
+.cstat {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(0,165,80,0.3);
+  border-radius:var(--r);
+  padding:18px 12px;
+  transition: all 0.3s;
+  cursor:default;
+}
+.cstat:hover {
+  background: rgba(0,165,80,0.12);
+  border-color:var(--green-mid);
+  transform:translateY(-4px);
+}
+.cstat-num {
+  font-family: var(--font-mono);
+  font-size:1.6rem; font-weight:700;
+  color:#4DDB8A; display:block;
+  line-height:1.1; margin-bottom:6px;
+}
+.cstat-label {
+  font-family: var(--font-mono);
+  font-size:0.78rem; letter-spacing:1.5px;
+  color:rgba(255,255,255,0.4); text-transform:uppercase;
+}
+.cover-chips {
+  display:flex; gap:8px;
+  justify-content:center; flex-wrap:wrap;
+  animation: fadeUp 0.8s ease 0.6s both;
+}
+.chip {
+  background: rgba(204,0,0,0.15);
+  border: 1px solid rgba(204,0,0,0.4);
+  padding:5px 14px; border-radius:100px;
+  font-family: var(--font-mono);
+  font-size:0.8rem; font-weight:700;
+  color:#FF9999; letter-spacing:1px;
+  text-transform:uppercase;
+}
+.cover-author {
+  margin-top:32px;
+  font-family: var(--font-mono);
+  font-size:0.85rem; color:rgba(255,255,255,0.3);
+  letter-spacing:1.5px;
+  animation: fadeUp 0.8s ease 0.7s both;
+}
+.cover-author span { color:rgba(255,255,255,0.6); }
+.cover-scroll {
+  position:absolute; bottom:30px; left:50%;
+  transform:translateX(-50%); z-index:5;
+  display:flex; flex-direction:column;
+  align-items:center; gap:8px;
+  animation: float 2s ease-in-out infinite;
+}
+.cover-scroll-line {
+  width:1px; height:50px;
+  background: linear-gradient(to bottom, var(--green), transparent);
+}
+.cover-scroll-txt {
+  font-family:var(--font-mono); font-size:0.75rem;
+  color:rgba(255,255,255,0.3); letter-spacing:2px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CARD COMPONENTS
+══════════════════════════════════════════════════════════ */
+.card {
+  background:#fff; border:1px solid var(--border);
+  border-radius:var(--r); box-shadow:var(--shadow);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+.card-dark {
+  background: var(--dark3);
+  border: 1px solid rgba(0,165,80,0.2);
+  border-radius:var(--r); box-shadow:var(--shadow);
+}
+.card-glass {
+  background: var(--glass2);
+  backdrop-filter:blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius:var(--r);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 1 — EVOLUSI 5 GENERASI
+══════════════════════════════════════════════════════════ */
+.timeline {
+  display:flex; gap:0;
+  margin-bottom:40px;
+  overflow-x:auto; padding-bottom:8px;
+}
+.tl-item {
+  flex:1; min-width:160px;
+  position:relative; padding:0 12px;
+  text-align:center;
+}
+.tl-line {
+  position:absolute; top:26px; left:0; right:0; height:3px;
+  background: linear-gradient(to right,var(--green),rgba(0,165,80,0.3));
+}
+.tl-item:first-child .tl-line { left:50%; }
+.tl-item:last-child .tl-line { right:50%; }
+.tl-dot {
+  width:52px; height:52px;
+  background: #fff; border:3px solid var(--green);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-mono); font-size:0.78rem; font-weight:700;
+  color:var(--green); margin:0 auto 14px;
+  position:relative; z-index:1;
+  box-shadow:0 0 20px rgba(0,165,80,0.2);
+  text-align:center;
+}
+.tl-item.now .tl-dot {
+  border-color:var(--red); color:var(--red); background:#FFF5F5;
+  box-shadow:0 0 25px var(--red-glow);
+  animation: glowPulse 2s ease-in-out infinite;
+}
+.tl-era {
+  font-family:var(--font-mono); font-size:0.8rem; font-weight:700;
+  color:var(--red); text-transform:uppercase; letter-spacing:1px;
+  margin-bottom:5px;
+}
+.tl-name {
+  font-family:var(--font-head); font-size:0.9rem; font-weight:700;
+  color:var(--text); margin-bottom:5px;
+}
+.tl-item.now .tl-name { color:var(--red); }
+.tl-sub {
+  font-size:0.88rem; color:var(--text-soft); line-height:1.55;
+}
+.tl-badge {
+  display:inline-block;
+  background:rgba(0,165,80,0.1); border:1px solid var(--green);
+  padding:3px 10px; border-radius:100px;
+  font-family:var(--font-mono); font-size:0.78rem; font-weight:700;
+  color:var(--green); margin-top:8px;
+}
+.tl-item.now .tl-badge {
+  background:rgba(204,0,0,0.1); border-color:var(--red); color:var(--red);
+}
+
+/* Terobosan */
+.terobosan-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:32px; }
+.tb-card {
+  background:#fff; border:1px solid var(--border);
+  border-left:4px solid var(--red);
+  border-radius:var(--r); padding:18px;
+  box-shadow:var(--shadow);
+}
+.tb-num { font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:var(--red); margin-bottom:8px; letter-spacing:1px; }
+.tb-body { font-size:0.88rem; color:var(--text-soft); line-height:1.65; }
+.tb-body strong { color:var(--text); }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 2 — 13 DEWAN PENDIRI
+══════════════════════════════════════════════════════════ */
+.founders-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px; margin-top:8px;
+}
+.founder-card {
+  background:#fff; border:1px solid var(--border);
+  border-radius:var(--r); padding:18px;
+  box-shadow:var(--shadow); position:relative;
+  overflow:hidden; transition:all 0.3s;
+}
+.founder-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-lg); border-color:var(--green-mid); }
+.founder-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(to right,var(--green),var(--gold));
+}
+.founder-card.new-founder {
+  border-color:rgba(212,175,55,0.4);
+  background: linear-gradient(135deg,#FFFDF0,#fff);
+}
+.founder-card.new-founder::before {
+  background: linear-gradient(to right,var(--gold),var(--red));
+  animation: shimmer 2s ease infinite;
+  background-size:200% auto;
+}
+.f-num {
+  font-family:var(--font-mono); font-size:0.8rem; font-weight:700;
+  color:var(--green); letter-spacing:2px; margin-bottom:8px;
+}
+.f-num.gold-num { color:var(--gold-dark); }
+.f-badge {
+  display:inline-block;
+  background:rgba(212,175,55,0.15); border:1px solid var(--gold);
+  padding:2px 10px; border-radius:100px;
+  font-family:var(--font-mono); font-size:0.78rem; font-weight:700;
+  color:var(--gold-dark); margin-bottom:8px;
+}
+.f-name {
+  font-family:var(--font-head); font-size:0.95rem; font-weight:700;
+  color:var(--text); margin-bottom:4px; line-height:1.3;
+}
+.f-jabatan {
+  font-size:0.78rem; color:var(--red); font-weight:600;
+  margin-bottom:8px; line-height:1.4;
+}
+.f-peran {
+  font-size:0.89rem; color:var(--text-soft); line-height:1.55;
+}
+.f-avatar {
+  width:44px; height:44px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem; margin-bottom:10px;
+  border:2px solid var(--border);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 3 — DUAL ENTITY
+══════════════════════════════════════════════════════════ */
+.dual-wrap {
+  display:grid; grid-template-columns:1fr auto 1fr;
+  gap:0; align-items:start; margin:28px 0;
+}
+.entity {
+  border:2px solid; border-radius:var(--r-lg);
+  padding:26px; background:#fff; box-shadow:var(--shadow);
+}
+.e-jep3 { border-color:var(--green-mid); }
+.e-kmnmp { border-color:var(--red); }
+.e-label {
+  font-family:var(--font-head); font-size:1.3rem; font-weight:800;
+  margin-bottom:4px;
+}
+.e-jep3 .e-label { color:var(--green); }
+.e-kmnmp .e-label { color:var(--red); }
+.e-role { font-size:0.85rem; color:var(--text-soft); font-style:italic; margin-bottom:16px; }
+.e-feat { list-style:none; }
+.e-feat li {
+  font-size:0.88rem; color:var(--text);
+  padding:6px 0; border-bottom:1px solid var(--bg);
+  display:flex; gap:8px; align-items:flex-start;
+}
+.e-jep3 .e-feat li::before { content:'▸'; color:var(--green); flex-shrink:0; margin-top:2px; }
+.e-kmnmp .e-feat li::before { content:'▸'; color:var(--red); flex-shrink:0; margin-top:2px; }
+.e-meta { margin-top:14px; padding:12px; border-radius:8px; font-size:0.78rem; line-height:1.7; }
+.e-jep3 .e-meta { background:rgba(0,165,80,0.06); border:1px solid rgba(0,165,80,0.15); }
+.e-kmnmp .e-meta { background:rgba(204,0,0,0.06); border:1px solid rgba(204,0,0,0.15); }
+.connector {
+  display:flex; flex-direction:column; align-items:center;
+  justify-content:center; padding:0 18px; gap:8px; min-width:120px;
+}
+.jsc-box {
+  background:#FFF8E1; border:2px solid #F9A825;
+  border-radius:8px; padding:10px 14px;
+  text-align:center; width:110px;
+}
+.jsc-title { font-family:var(--font-mono); font-size:0.87rem; font-weight:700; color:#E65100; letter-spacing:1px; }
+.jsc-sub { font-size:0.8rem; color:var(--text-soft); margin-top:2px; }
+.conn-line { width:2px; height:40px; background:linear-gradient(to bottom,var(--green),var(--red)); margin:2px auto; }
+
+/* Red lines grid */
+.rl-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:24px; }
+.rl-box { padding:16px; border-radius:var(--r); }
+.rl-red { background:rgba(204,0,0,0.05); border:1px solid rgba(204,0,0,0.2); }
+.rl-green { background:rgba(0,165,80,0.05); border:1px solid rgba(0,165,80,0.2); }
+.rl-title { font-family:var(--font-mono); font-size:0.87rem; font-weight:700; margin-bottom:10px; letter-spacing:1px; }
+.rl-red .rl-title { color:var(--red); }
+.rl-green .rl-title { color:var(--green); }
+.rl-items { display:grid; grid-template-columns:repeat(2,1fr); gap:5px; }
+.rl-item { font-size:0.78rem; color:var(--text-soft); padding:3px 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 4 — GAP ANALYSIS + 5 PILAR
+══════════════════════════════════════════════════════════ */
+.tier-block { margin-bottom:18px; border-radius:var(--r); overflow:hidden; box-shadow:var(--shadow); }
+.tier-hdr {
+  background: linear-gradient(to right,var(--green-dark),var(--green));
+  padding:10px 16px;
+  display:flex; align-items:center; gap:10px;
+}
+.tier-hdr.red-hdr { background: linear-gradient(to right,var(--red-dark),var(--red)); }
+.tier-hdr.gold-hdr { background: linear-gradient(to right,#8B7500,var(--gold)); }
+.tier-num-badge {
+  font-family:var(--font-mono); font-size:0.82rem; font-weight:700;
+  color:#fff; background:rgba(255,255,255,0.2);
+  padding:2px 10px; border-radius:4px; letter-spacing:1px;
+}
+.tier-hdr-name { font-family:var(--font-head); font-size:0.9rem; font-weight:700; color:#fff; }
+.tier-hdr-count { margin-left:auto; font-family:var(--font-mono); font-size:0.82rem; color:rgba(255,255,255,0.75); }
+.tier-items-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:1px; background:var(--border);
+}
+.ti { background:#fff; padding:10px 14px; }
+.ti-name { font-family:var(--font-head); font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:2px; }
+.ti-func { font-size:0.87rem; color:var(--text-soft); margin-bottom:5px; }
+.ti-status {
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:var(--font-mono); font-size:0.8rem; font-weight:700;
+  padding:2px 8px; border-radius:100px;
+}
+.s-manual { background:#FDEAEA; color:#7B0000; border:1px solid #F5AAAA; }
+.s-partial { background:#FFF8E1; color:#7B4000; border:1px solid #FFD082; }
+.s-active { background:rgba(0,165,80,0.08); color:var(--green-dark); border:1px solid rgba(0,165,80,0.3); }
+.s-kritis { background:rgba(204,0,0,0.08); color:var(--red); border:1px solid rgba(204,0,0,0.3); }
+
+/* Pillars */
+.pillars-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin:24px 0; }
+.pillar {
+  background:#fff; border-radius:var(--r);
+  padding:20px 14px; border:1.5px solid var(--border);
+  position:relative; overflow:hidden;
+  transition:transform 0.25s,box-shadow 0.25s;
+  box-shadow:var(--shadow);
+}
+.pillar:hover { transform:translateY(-6px); box-shadow:var(--shadow-lg); }
+.pillar::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.p1::before{background:var(--green)}
+.p2::before{background:var(--green-dark)}
+.p3::before{background:#1565C0}
+.p4::before{background:var(--red)}
+.p5::before{background:#6A1B9A}
+.pillar-icon { font-size:2rem; margin-bottom:10px; display:block; }
+.pillar-num { font-family:var(--font-mono); font-size:0.8rem; font-weight:700; color:var(--green); letter-spacing:2px; margin-bottom:5px; }
+.pillar-title { font-family:var(--font-head); font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:8px; line-height:1.3; }
+.pillar-sub { font-size:0.87rem; color:var(--text-soft); line-height:1.55; }
+.pillar-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:10px; }
+.ptag {
+  background:var(--bg); border:1px solid var(--border);
+  padding:2px 7px; border-radius:4px;
+  font-family:var(--font-mono); font-size:0.78rem; font-weight:600; color:var(--text-soft);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 5 — PLATFORM 16 MODUL
+══════════════════════════════════════════════════════════ */
+.modules-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:20px 0; }
+.mod {
+  background:#fff; border:1.5px solid var(--border);
+  border-radius:var(--r); padding:14px;
+  position:relative; overflow:hidden;
+  transition:all 0.25s; box-shadow:var(--shadow);
+}
+.mod:hover { transform:translateY(-3px); box-shadow:var(--shadow-lg); border-color:var(--green-mid); }
+.mod::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; }
+.mc1::after,.mc2::after{background:var(--green)}
+.mc3::after{background:#1565C0}
+.mc4::after,.mc8::after{background:var(--red)}
+.mc5::after{background:#6A1B9A}
+.mc6::after{background:#E65100}
+.mc7::after{background:#00695C}
+.mc9::after{background:var(--gold)}
+.mod-icon { font-size:1.5rem; margin-bottom:6px; display:block; }
+.mod-code { font-family:var(--font-mono); font-size:0.78rem; font-weight:700; color:var(--green); margin-bottom:4px; letter-spacing:1px; text-transform:uppercase; }
+.mod-name { font-family:var(--font-head); font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:4px; line-height:1.3; }
+.mod-connects { font-size:0.85rem; color:var(--text-soft); line-height:1.45; }
+.mod.star-mod { border-color:rgba(212,175,55,0.3); background:linear-gradient(135deg,#FFFDF0,#fff); }
+.mod.star-mod .mod-code { color:var(--gold-dark); }
+.mod.star-mod .mod-name { color:var(--red); }
+
+/* Tech stack */
+.tech-stack { display:grid; grid-template-columns:repeat(9,1fr); gap:6px; margin-top:20px; }
+.ts-item {
+  text-align:center; padding:10px 4px;
+  background:#fff; border-radius:8px;
+  border:1px solid var(--border);
+  border-top-width:3px;
+  transition:transform 0.2s;
+}
+.ts-item:hover { transform:translateY(-3px); }
+.ts-name { font-family:var(--font-mono); font-size:0.82rem; font-weight:700; margin-bottom:3px; }
+.ts-sub { font-size:0.75rem; color:var(--text-soft); line-height:1.4; }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 6 — NIAK
+══════════════════════════════════════════════════════════ */
+.niak-display {
+  background: var(--dark);
+  border-radius:var(--r-lg); padding:32px;
+  text-align:center; margin-bottom:24px;
+  position:relative; overflow:hidden;
+}
+.niak-display::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(0,165,80,0.08),transparent 70%);
+}
+.niak-code {
+  font-family: var(--font-mono);
+  font-size: clamp(1.4rem,3.5vw,2.4rem);
+  font-weight:700; color:#4DDB8A;
+  letter-spacing:4px;
+  position:relative; z-index:1;
+  text-shadow:0 0 30px rgba(77,219,138,0.5);
+}
+.niak-segments {
+  display:flex; justify-content:center; gap:0;
+  margin-top:12px; position:relative; z-index:1;
+  flex-wrap:wrap;
+}
+.nseg {
+  padding:6px 10px; text-align:center;
+  border-right:1px solid rgba(255,255,255,0.08);
+}
+.nseg:last-child { border-right:none; }
+.nseg-val { font-family:var(--font-mono); font-size:1rem; font-weight:700; }
+.nseg-label { font-size:0.78rem; color:rgba(255,255,255,0.4); margin-top:3px; letter-spacing:1px; }
+.niak-table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; }
+thead tr { background:var(--green-dark); }
+thead th { font-family:var(--font-head); font-size:0.78rem; font-weight:700; color:#fff; padding:10px 12px; text-align:left; letter-spacing:0.5px; }
+tbody tr:nth-child(even) { background:var(--bg); }
+tbody tr:hover { background:rgba(0,165,80,0.06); }
+tbody td { font-size:0.92rem; color:var(--text); padding:9px 12px; border-bottom:1px solid var(--border); }
+.code-block {
+  background:var(--dark); border-radius:var(--r);
+  padding:20px 24px; font-family:var(--font-mono);
+  font-size:0.8rem; color:#4DDB8A;
+  line-height:1.8; overflow-x:auto;
+}
+.code-comment { color:rgba(255,255,255,0.3); }
+.code-keyword { color:#FF9F40; }
+.code-fn { color:#61DAFB; }
+.code-val { color:#CE9178; }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 7 — FINANCIAL
+══════════════════════════════════════════════════════════ */
+.fin-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:24px 0; }
+.chart-box { background:#fff; border:1.5px solid var(--border); border-radius:var(--r-lg); padding:22px; box-shadow:var(--shadow); }
+.chart-head {
+  font-family:var(--font-head); font-size:0.88rem; font-weight:700;
+  color:var(--red); margin-bottom:18px;
+  display:flex; align-items:center; gap:8px;
+}
+.chart-head::before { content:''; display:inline-block; width:3px; height:18px; background:var(--green); border-radius:2px; }
+.bar-chart { display:flex; flex-direction:column; gap:10px; }
+.bar-row { display:flex; align-items:center; gap:10px; }
+.bar-label { font-family:var(--font-mono); font-size:0.82rem; color:var(--text-soft); min-width:44px; text-align:right; font-weight:700; }
+.bar-track { flex:1; height:22px; background:var(--bg); border-radius:4px; overflow:hidden; border:1px solid var(--border); }
+.bar-fill { height:100%; border-radius:4px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; transition:width 1.5s cubic-bezier(0.4,0,0.2,1); }
+.bar-val { font-family:var(--font-mono); font-size:0.8rem; font-weight:700; color:#fff; white-space:nowrap; }
+.shu-list { display:flex; flex-direction:column; gap:8px; }
+.shu-row { display:flex; align-items:center; gap:10px; }
+.shu-dot { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
+.shu-name { flex:1; font-size:0.88rem; color:var(--text); }
+.shu-pct { font-family:var(--font-mono); font-size:0.9rem; color:var(--text); font-weight:700; }
+.rev-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:20px; }
+.rev-item { background:var(--bg); border:1px solid var(--border); border-left:3px solid var(--green); padding:10px 12px; border-radius:6px; }
+.rev-name { font-family:var(--font-head); font-size:0.75rem; color:var(--text-soft); margin-bottom:4px; font-weight:600; }
+.rev-2030 { font-family:var(--font-mono); font-size:0.88rem; color:var(--green); font-weight:700; }
+.rev-2045 { font-size:0.88rem; color:var(--red); font-weight:600; }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 8 — ROADMAP
+══════════════════════════════════════════════════════════ */
+.phases { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:24px 0; }
+.phase {
+  border-radius:var(--r-lg); padding:24px;
+  background:#fff; border:1.5px solid;
+  position:relative; overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.ph1{border-color:var(--green-mid)} .ph2{border-color:#1565C0} .ph3{border-color:var(--red)}
+.phase::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:5px;
+}
+.ph1::before{background:linear-gradient(to right,var(--green-dark),var(--green))}
+.ph2::before{background:linear-gradient(to right,#0D47A1,#1565C0)}
+.ph3::before{background:linear-gradient(to right,var(--red-dark),var(--red))}
+.phase-year {
+  font-family:var(--font-mono); font-size:0.82rem; font-weight:700;
+  letter-spacing:2px; margin-bottom:6px;
+}
+.ph1 .phase-year{color:var(--green)} .ph2 .phase-year{color:#1565C0} .ph3 .phase-year{color:var(--red)}
+.phase-name {
+  font-family:var(--font-head); font-size:1.1rem; font-weight:800;
+  color:var(--text); margin-bottom:16px; line-height:1.3;
+}
+.phase-miles { list-style:none; margin-bottom:16px; }
+.phase-miles li {
+  font-size:0.8rem; color:var(--text-soft);
+  padding:4px 0 4px 16px; position:relative;
+  border-bottom:1px solid rgba(0,0,0,0.04);
+  line-height:1.45;
+}
+.ph1 .phase-miles li::before{content:'✓';position:absolute;left:0;color:var(--green);font-size:0.87rem}
+.ph2 .phase-miles li::before{content:'◎';position:absolute;left:0;color:#1565C0;font-size:0.87rem}
+.ph3 .phase-miles li::before{content:'★';position:absolute;left:0;color:var(--red);font-size:0.87rem}
+.phase-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:14px; }
+.pkpi { text-align:center; padding:10px 6px; background:var(--bg); border-radius:8px; }
+.pkpi-val { font-family:var(--font-mono); font-size:0.9rem; font-weight:700; display:block; }
+.pkpi-key { font-family:var(--font-mono); font-size:0.75rem; color:var(--text-soft); letter-spacing:1px; margin-top:2px; }
+.ph1 .pkpi-val{color:var(--green)} .ph2 .pkpi-val{color:#1565C0} .ph3 .pkpi-val{color:var(--red)}
+
+.benchmark { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:24px; }
+.bm-card { padding:14px; border-radius:var(--r); text-align:center; }
+.bm-red{background:rgba(204,0,0,0.05);border:1px solid rgba(204,0,0,0.2)}
+.bm-green{background:rgba(0,165,80,0.05);border:1px solid rgba(0,165,80,0.2)}
+.bm-blue{background:rgba(21,101,192,0.05);border:1px solid rgba(21,101,192,0.2)}
+.bm-gold{background:rgba(212,175,55,0.08);border:1px solid rgba(212,175,55,0.3)}
+.bm-name { font-family:var(--font-head); font-size:0.75rem; font-weight:700; color:var(--text); margin-bottom:4px; }
+.bm-country { font-size:0.82rem; color:var(--text-soft); margin-bottom:8px; }
+.bm-val { font-family:var(--font-mono); font-size:1rem; font-weight:700; }
+.bm-red .bm-val{color:var(--red)} .bm-green .bm-val{color:var(--green)} .bm-blue .bm-val{color:#1565C0} .bm-gold .bm-val{color:var(--gold-dark)}
+.bm-label { font-size:0.8rem; color:var(--text-soft); letter-spacing:1px; }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 9 — SDGs + WIN SOLUTION
+══════════════════════════════════════════════════════════ */
+.sdg-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:24px 0; }
+.sdg-card {
+  padding:16px; border-radius:var(--r);
+  background:#fff; border:1.5px solid var(--border);
+  box-shadow:var(--shadow); transition:transform 0.25s;
+}
+.sdg-card:hover { transform:translateY(-4px); }
+.sdg-icon { font-size:1.6rem; margin-bottom:8px; display:block; }
+.sdg-num { font-family:var(--font-mono); font-size:0.8rem; font-weight:700; color:var(--green); letter-spacing:2px; margin-bottom:4px; }
+.sdg-title { font-family:var(--font-head); font-size:0.85rem; font-weight:700; color:var(--text); margin-bottom:6px; }
+.sdg-target { font-size:0.78rem; color:var(--text-soft); margin-bottom:4px; line-height:1.5; }
+.sdg-instr { font-family:var(--font-mono); font-size:0.82rem; color:var(--red); font-weight:700; }
+
+.win-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:24px; }
+.win-card {
+  background: linear-gradient(135deg,var(--dark3),var(--dark2));
+  border:1px solid rgba(0,165,80,0.3);
+  border-radius:var(--r); padding:18px 14px;
+  text-align:center; position:relative; overflow:hidden;
+  transition:transform 0.3s;
+}
+.win-card:hover { transform:translateY(-5px); }
+.win-card::before {
+  content:''; position:absolute; top:-30px; right:-30px;
+  width:80px; height:80px; border-radius:50%;
+  background:rgba(0,165,80,0.06);
+}
+.win-num { font-family:var(--font-mono); font-size:2rem; font-weight:700; color:#4DDB8A; display:block; line-height:1; margin-bottom:8px; }
+.win-title { font-family:var(--font-head); font-size:0.8rem; font-weight:700; color:#fff; margin-bottom:6px; }
+.win-body { font-size:0.88rem; color:rgba(255,255,255,0.55); line-height:1.55; }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 10 — 12 SUPER IDE BRILIAN
+══════════════════════════════════════════════════════════ */
+.ideas-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.idea-card {
+  background:#fff; border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:20px;
+  box-shadow:var(--shadow); position:relative;
+  overflow:hidden; transition:all 0.3s;
+}
+.idea-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-lg); }
+.idea-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(to right,var(--green),var(--gold),var(--red));
+  animation: shimmer 3s ease infinite;
+  background-size:200% auto;
+}
+.idea-glow {
+  position:absolute; top:-20px; right:-20px;
+  width:80px; height:80px; border-radius:50%;
+  background:radial-gradient(circle,rgba(0,165,80,0.1),transparent);
+  pointer-events:none;
+}
+.idea-code { font-family:var(--font-mono); font-size:0.82rem; font-weight:700; color:var(--gold-dark); letter-spacing:2px; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+.idea-code::before { content:''; display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--gold); animation:pulse 1.5s ease-in-out infinite; }
+.idea-name { font-family:var(--font-head); font-size:1rem; font-weight:800; color:var(--text); margin-bottom:10px; line-height:1.3; }
+.idea-desc { font-size:0.8rem; color:var(--text-soft); line-height:1.65; margin-bottom:12px; }
+.idea-impact {
+  background: linear-gradient(135deg,rgba(0,165,80,0.06),rgba(212,175,55,0.06));
+  border:1px solid rgba(0,165,80,0.15);
+  border-radius:8px; padding:8px 12px;
+}
+.idea-impact-label { font-family:var(--font-mono); font-size:0.8rem; font-weight:700; color:var(--red); letter-spacing:1px; margin-bottom:3px; }
+.idea-impact-val { font-size:0.78rem; color:var(--green-dark); font-weight:600; }
+.idea-cat {
+  position:absolute; top:16px; right:16px;
+  background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.3);
+  padding:3px 8px; border-radius:100px;
+  font-family:var(--font-mono); font-size:0.75rem; font-weight:700; color:var(--gold-dark);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 11 — 42 DOKUMEN
+══════════════════════════════════════════════════════════ */
+.doc-level { margin-bottom:24px; }
+.doc-lhdr {
+  display:flex; align-items:center; gap:12px; margin-bottom:12px;
+}
+.doc-lnum {
+  font-family:var(--font-mono); font-size:0.82rem; font-weight:700;
+  background:var(--green); color:#fff;
+  padding:3px 10px; border-radius:4px; letter-spacing:1px;
+}
+.doc-lnum.red { background:var(--red); }
+.doc-lnum.gold { background:var(--gold); color:var(--dark); }
+.doc-lname { font-family:var(--font-head); font-size:0.88rem; font-weight:700; color:var(--text); }
+.doc-lline { flex:1; height:1px; background:var(--border); }
+.docs-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.doc-chip {
+  background:#fff; border:1px solid var(--border);
+  border-radius:10px; padding:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  transition:all 0.2s;
+}
+.doc-chip:hover { border-color:var(--green-mid); transform:translateY(-2px); }
+.doc-chip.doc-new { border-color:rgba(212,175,55,0.3); background:linear-gradient(135deg,#FFFDF0,#fff); }
+.doc-chip-num { font-family:var(--font-mono); font-size:0.8rem; font-weight:700; color:var(--green); margin-bottom:5px; }
+.doc-chip.doc-new .doc-chip-num { color:var(--gold-dark); }
+.doc-chip-title { font-size:0.78rem; color:var(--text); font-weight:600; margin-bottom:4px; line-height:1.35; }
+.doc-chip-lead { font-size:0.82rem; color:var(--text-soft); }
+
+/* ══════════════════════════════════════════════════════════
+   SLIDE 12 — COVENANT
+══════════════════════════════════════════════════════════ */
+#s12 {
+  background: linear-gradient(135deg,var(--dark) 0%,var(--dark2) 50%,var(--dark3) 100%);
+  position:relative; overflow:hidden;
+}
+#s12::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,165,80,0.06),transparent);
+}
+.covenant-wrap { max-width:820px; margin:0 auto; text-align:center; padding:60px 24px 80px; position:relative; z-index:2; }
+.cov-eyebrow { font-family:var(--font-mono); font-size:0.82rem; color:rgba(255,255,255,0.35); letter-spacing:4px; text-transform:uppercase; margin-bottom:24px; }
+.cov-from { font-family:var(--font-serif); font-size:clamp(2rem,5vw,4rem); font-style:italic; }
+.cov-desa {
+  background:linear-gradient(135deg,#FF4444,var(--red));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.cov-untuk { font-family:var(--font-serif); font-size:clamp(1.5rem,4vw,3rem); font-style:italic; }
+.cov-dunia {
+  background:linear-gradient(135deg,var(--green),#4DDB8A);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.cov-divider { width:240px; height:1px; background:linear-gradient(to right,transparent,var(--green),var(--gold),var(--red),transparent); margin:28px auto 32px; }
+.cov-quote {
+  font-family:var(--font-serif);
+  font-size:1.05rem; font-style:italic;
+  color:rgba(255,255,255,0.65); line-height:1.85;
+  max-width:680px; margin:0 auto 36px;
+  border-left:3px solid var(--green);
+  padding-left:20px; text-align:left;
+}
+.sumpah-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:0 auto 36px; max-width:700px; text-align:left; }
+.sumpah-item {
+  background:rgba(255,255,255,0.04); border:1px solid rgba(0,165,80,0.2);
+  border-radius:var(--r); padding:14px;
+  display:flex; gap:10px; align-items:flex-start;
+}
+.sumpah-num { font-family:var(--font-mono); font-size:1rem; font-weight:700; color:#4DDB8A; flex-shrink:0; }
+.sumpah-text { font-size:0.82rem; color:rgba(255,255,255,0.6); line-height:1.6; }
+.cov-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; max-width:600px; margin:0 auto 36px; }
+.cst { padding:16px; background:rgba(255,255,255,0.04); border:1px solid rgba(204,0,0,0.25); border-radius:var(--r); text-align:center; }
+.cst-val { font-family:var(--font-mono); font-size:1.8rem; font-weight:700; color:#4DDB8A; display:block; margin-bottom:4px; }
+.cst-key { font-family:var(--font-mono); font-size:0.75rem; color:rgba(255,255,255,0.35); letter-spacing:1.5px; text-transform:uppercase; }
+.cov-architect {
+  display:inline-block;
+  background:rgba(255,255,255,0.04); border:1px solid rgba(204,0,0,0.3);
+  padding:16px 28px; border-radius:var(--r-lg); margin-bottom:24px;
+}
+.ca-role { font-family:var(--font-mono); font-size:0.82rem; color:rgba(255,255,255,0.3); letter-spacing:2px; margin-bottom:6px; }
+.ca-name { font-family:var(--font-head); font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:4px; }
+.ca-sub { font-size:0.78rem; color:rgba(255,255,255,0.4); font-style:italic; margin-bottom:8px; }
+.ca-creds { font-family:var(--font-mono); font-size:0.82rem; color:rgba(204,0,0,0.7); letter-spacing:1px; }
+.cov-footer { font-family:var(--font-mono); font-size:0.8rem; color:rgba(255,255,255,0.2); letter-spacing:1.5px; line-height:2; }
+
+/* ══════════════════════════════════════════════════════════
+   INFO BOXES
+══════════════════════════════════════════════════════════ */
+.ibox { background:#fff; border:1px solid var(--border); border-left:5px solid var(--green); border-radius:var(--r); padding:16px 20px; box-shadow:var(--shadow); margin-bottom:14px; }
+.ibox-red { border-left-color:var(--red); }
+.ibox-gold { border-left-color:var(--gold-dark); }
+.ibox-title { font-family:var(--font-mono); font-size:0.85rem; font-weight:700; color:var(--green); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+.ibox-red .ibox-title { color:var(--red); }
+.ibox-gold .ibox-title { color:var(--gold-dark); }
+.ibox-body { font-size:0.96rem; color:var(--text-soft); line-height:1.7; }
+
+/* Stat cards */
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+.scard { background:#fff; border:1.5px solid var(--border); border-radius:var(--r); padding:18px; text-align:center; box-shadow:var(--shadow); transition:transform 0.2s; }
+.scard:hover { transform:translateY(-3px); }
+.scard-val { font-family:var(--font-mono); font-size:1.8rem; font-weight:700; color:var(--green); display:block; line-height:1.1; margin-bottom:6px; }
+.scard-key { font-family:var(--font-mono); font-size:0.8rem; color:var(--text-soft); text-transform:uppercase; letter-spacing:1.5px; }
+.scard.red .scard-val { color:var(--red); }
+.scard.gold .scard-val { color:var(--gold-dark); }
+
+/* Responsive */
+@media(max-width:900px){
+  .pillars-grid,.modules-grid,.phases,.benchmark,.win-grid{ grid-template-columns:repeat(2,1fr); }
+  .docs-row,.ideas-grid,.sdg-grid,.sumpah-grid{ grid-template-columns:repeat(2,1fr); }
+  .dual-wrap{ grid-template-columns:1fr; }
+  .tech-stack{ grid-template-columns:repeat(3,1fr); }
+  .cov-stats{ grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:600px){
+  .pillars-grid,.modules-grid,.phases,.ideas-grid{ grid-template-columns:1fr; }
+  .terobosan-grid,.rl-grid,.fin-grid{ grid-template-columns:1fr; }
+  .cover-stats{ grid-template-columns:repeat(2,1fr); }
+  .docs-row,.founders-grid{ grid-template-columns:1fr; }
+  .tech-stack{ grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="nav-icon">📚</span>
+    <div class="nav-brand-text">
+      <span class="nav-brand-title">KITAB 42</span>
+      <span class="nav-brand-sub">JE-P3 × <em>KMNMP</em></span>
+    </div>
+  </div>
+  <div class="nav-sep"></div>
+  <div class="nav-tabs" id="navLinks">
+    <button class="nb on" onclick="go(0)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">01</span> COVER</button>
+    <button class="nb" onclick="go(1)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">02</span> EVOLUSI</button>
+    <button class="nb" onclick="go(2)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">03</span> 13 PENDIRI ★</button>
+    <button class="nb" onclick="go(3)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">04</span> DUAL ENTITY</button>
+    <button class="nb" onclick="go(4)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">05</span> GAP + PILAR</button>
+    <button class="nb" onclick="go(5)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">06</span> PLATFORM</button>
+    <button class="nb" onclick="go(6)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">07</span> NIAK</button>
+    <button class="nb" onclick="go(7)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">08</span> FINANSIAL</button>
+    <button class="nb" onclick="go(8)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">09</span> ROADMAP</button>
+    <button class="nb" onclick="go(9)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">10</span> SDGs &amp; WIN</button>
+    <button class="nb" onclick="go(10)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">11</span> SUPER IDE ★</button>
+    <button class="nb" onclick="go(11)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">12</span> 42 DOKUMEN</button>
+    <button class="nb" onclick="go(12)"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">13</span> COVENANT</button>
+  </div>
+  <div class="nav-ctrl">
+    <button class="nav-arr" id="navPrev" onclick="if(cur>0)go(cur-1)" disabled>&#8249;</button>
+    <span class="nav-counter" id="navCounter">01 / 13</span>
+    <button class="nav-arr" id="navNext" onclick="if(cur<12)go(cur+1)">&#8250;</button>
+  </div>
+  <button class="nav-ham" id="navHam" onclick="toggleMenu()">&#9776;</button>
+  <div class="nav-prog" id="prog" style="width:0%"></div>
+</nav>
+
+<!-- Mobile overlay menu -->
+<div class="nav-overlay" id="navOverlay">
+  <button class="nb on" onclick="go(0);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">01</span> COVER</button>
+  <button class="nb" onclick="go(1);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">02</span> EVOLUSI 5 GENERASI</button>
+  <button class="nb" onclick="go(2);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">03</span> 13 DEWAN PENDIRI ★</button>
+  <button class="nb" onclick="go(3);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">04</span> DUAL ENTITY</button>
+  <button class="nb" onclick="go(4);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">05</span> GAP + 5 PILAR</button>
+  <button class="nb" onclick="go(5);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">06</span> 16 MODUL PLATFORM</button>
+  <button class="nb" onclick="go(6);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">07</span> SISTEM NIAK</button>
+  <button class="nb" onclick="go(7);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">08</span> MODEL FINANSIAL</button>
+  <button class="nb" onclick="go(8);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">09</span> ROADMAP 2026–2045</button>
+  <button class="nb" onclick="go(9);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">10</span> SDGs &amp; WIN SOLUTION</button>
+  <button class="nb" onclick="go(10);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">11</span> 12 SUPER IDE BRILIAN ★</button>
+  <button class="nb" onclick="go(11);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">12</span> 42 DOKUMEN PERADABAN</button>
+  <button class="nb" onclick="go(12);closeMenu()"><span style="font-size:0.67rem;opacity:0.5;font-weight:700">13</span> 100-YEAR COVENANT</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 0 — COVER
+══════════════════════════════════════════════════════════ -->
+<div class="slide on" id="s0">
+  <canvas id="canvas-bg"></canvas>
+  <div class="cover-top-bar"></div>
+  <div class="cover-bottom-bar"></div>
+  <div class="cover-inner">
+    <div class="cover-badge">🇮🇩 Peradaban Ekonomi Digital Indonesia · v13.0</div>
+    <div class="cover-eye">FINAL INTEGRATED VERSION 13.0 — 17 MARET 2026</div>
+    <div class="cover-title">KITAB 42 <span class="g">DOKUMEN</span></div>
+    <div class="cover-sub">JE-P3 × Koperasi <span style="font-style:normal;font-weight:900">Multipihak</span> Nusa Merah Putih</div>
+    <div class="cover-divider"></div>
+    <div class="cover-desc">
+      Super-Ekosistem Peradaban 2026–2045 · Digital OS Desa Indonesia Terbesar di Dunia ·
+      Mengintegrasikan 45+ Kelembagaan dari 83.763 Desa → 195 Negara ·
+      Dua Badan, Satu Peradaban · 13 Dewan Pendiri · 12 Super Ide Brilian
+    </div>
+    <div class="cover-stats">
+      <div class="cstat"><span class="cstat-num" data-count="42">42</span><span class="cstat-label">Dokumen Peradaban</span></div>
+      <div class="cstat"><span class="cstat-num">83.763</span><span class="cstat-label">Desa Target</span></div>
+      <div class="cstat"><span class="cstat-num" data-count="13">13</span><span class="cstat-label">Dewan Pendiri</span></div>
+      <div class="cstat"><span class="cstat-num">10 Juta</span><span class="cstat-label">Target Anggota 2045</span></div>
+      <div class="cstat"><span class="cstat-num">Rp500T</span><span class="cstat-label">Transaksi 2045</span></div>
+      <div class="cstat"><span class="cstat-num" data-count="195">195</span><span class="cstat-label">Negara Tujuan</span></div>
+    </div>
+    <div class="cover-chips">
+      <span class="chip">UU 25/1992</span><span class="chip">Permenkop 8/2021</span>
+      <span class="chip">Inpres 9/2025</span><span class="chip">UU PDP 27/2022</span>
+      <span class="chip">Blockchain Verified</span><span class="chip">ICA Aligned</span>
+      <span class="chip">AD/ART Super Final 2026</span>
+    </div>
+    <div class="cover-author">
+      Grand Architect & COO: <span>Tn. H. Gugun Gunara, S.E., M.M.</span> (Muhammad Lutfi Azmi) — Prabu Danling & Santri Angon<br>
+      CMC · MBA International Business · CFA · PMP · CBP · Six Sigma Black Belt
+    </div>
+  </div>
+  <div class="cover-scroll"><div class="cover-scroll-line"></div><div class="cover-scroll-txt">SCROLL</div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 1 — EVOLUSI
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s1">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// GRAND NARRATIVE</div>
+    <div class="stitle">Evolusi <span class="g">5 Generasi</span> Peradaban</div>
+    <div class="sdesc">Dari bisnisPPP (2016) menuju KMNMP Digital OS Desa (2026+) — satu dekade membangun arsitektur peradaban ekonomi dari desa untuk dunia</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="timeline a-fadeup a-d2">
+    <div class="tl-item"><div class="tl-line"></div><div class="tl-dot">2016–19</div><div class="tl-era">GEN 1</div><div class="tl-name">bisnisPPP</div><div class="tl-sub">Networking pengusaha PPP, komunitas informal lokal-nasional</div><div style="text-align:center"><span class="tl-badge">Lokal</span></div></div>
+    <div class="tl-item"><div class="tl-line"></div><div class="tl-dot">2020–25</div><div class="tl-era">GEN 2</div><div class="tl-name">JP3</div><div class="tl-sub">Ekosistem Digital 6.0, Whitepaper Global, 38 Provinsi aktif</div><div style="text-align:center"><span class="tl-badge">Nasional</span></div></div>
+    <div class="tl-item now"><div class="tl-line"></div><div class="tl-dot">2026–30</div><div class="tl-era">GEN 3 ★</div><div class="tl-name">JE-P3 + KMNMP</div><div class="tl-sub">Dual-Entity, Digital OS Desa, KDMP Orchestrator, 45+ Integrasi, 13 Pendiri</div><div style="text-align:center"><span class="tl-badge">SEKARANG</span></div></div>
+    <div class="tl-item"><div class="tl-line"></div><div class="tl-dot">2030–35</div><div class="tl-era">GEN 4</div><div class="tl-name">KMNMP Civilization</div><div class="tl-sub">20+ Negara, ICA Reference Model, Cooperative Digital Transformation</div><div style="text-align:center"><span class="tl-badge">Global</span></div></div>
+    <div class="tl-item"><div class="tl-line"></div><div class="tl-dot">2036–45</div><div class="tl-era">GEN 5</div><div class="tl-name">Full Coverage</div><div class="tl-sub">83.763 Desa 100%, 10 Juta Anggota, Rp500T Transaksi — Setara Mondragon</div><div style="text-align:center"><span class="tl-badge">Peradaban</span></div></div>
+  </div>
+  <div style="margin-top:8px;font-family:var(--font-mono);font-size:0.7rem;color:var(--red);letter-spacing:2px;margin-bottom:14px;font-weight:700;">▸ 5 TEROBOSAN FUNDAMENTAL v13.0</div>
+  <div class="terobosan-grid a-fadeup a-d3">
+    <div class="tb-card"><div class="tb-num">① DIGITAL OS DESA — PERTAMA DI DUNIA</div><div class="tb-body">KMNMP bukan sekadar koperasi — melainkan <strong>"Digital Operating System Desa"</strong> yang mengintegrasikan 45+ infrastruktur kelembagaan desa via kopnusa.id. Posisi unik ini belum dimiliki program apapun termasuk KDMP pemerintah.</div></div>
+    <div class="tb-card"><div class="tb-num">② 13 DEWAN PENDIRI — KUADRAN KEKUATAN</div><div class="tb-body">Penambahan 4 pendiri baru membentuk <strong>Kuadran Kekuatan: Siber (Dharma Pongrekun) + Militer (Panglima TNI) + Politik/Pemerintah (Hashim Djojohadikusumo) + Kapital (Prajogo Pangestu Rp418T).</strong></div></div>
+    <div class="tb-card"><div class="tb-num">③ KOPERASI MULTIPIHAK — NAMA RESMI BARU</div><div class="tb-body">Nama resmi diperbarui menjadi <strong>Koperasi Multipihak Nusa Merah Putih (KMNMP)</strong> — mencerminkan multi-stakeholder nature (6 KPA) dan posisi sebagai koperasi multipihak pertama yang mengintegrasikan seluruh ekosistem desa Indonesia.</div></div>
+    <div class="tb-card"><div class="tb-num">④ 12 SUPER IDE BRILIAN — BAB 23 BARU v13.0</div><div class="tb-body">12 inovasi eksklusif yang tidak dimiliki koperasi manapun di dunia: CAS 3.0, Village Digital Twin, DAC Blockchain, ZKP Identity, Green Sukuk, Satellite IoT, Carbon Exchange, AI Crop Insurance, MetaDesa, Sovereign Wealth Fund, Global Export Protocol, Neural Health Grid.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 2 — 13 DEWAN PENDIRI
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// KELEMBAGAAN TERTINGGI · UPDATE v13.0</div>
+    <div class="stitle"><span class="r">13 Dewan Pendiri</span> <span class="g">KMNMP</span></div>
+    <div class="sdesc">Para pendiri ekosistem peradaban ekonomi digital Indonesia — Kuadran Kekuatan: Digital · Militer · Politik · Kapital</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="ibox ibox-gold a-fadeup a-d1">
+    <div class="ibox-title">★ REVISI v13.0 — PENETAPAN RESMI 4 PENDIRI BARU (NO.10–13)</div>
+    <div class="ibox-body">Tn. H. Gugun Gunara ditetapkan sebagai Pendiri ke-1 selaku Grand Architect, COO, dan Arsitek Utama Ekosistem Digital KMNMP. Beliau memegang Hak Veto Terbatas atas prinsip AD/ART. Pendiri ke-10 s.d. ke-13 adalah penambahan resmi per Revisi v13.0 yang membentuk Kuadran Kekuatan strategis: Siber-Militer-Pemerintah-Kapital.</div>
+  </div>
+  <div class="founders-grid a-fadeup a-d2">
+    <!-- Pendiri 1-9 existing -->
+    <div class="founder-card"><div class="f-num">PENDIRI #01 · GRAND ARCHITECT</div><div class="f-avatar">🏛️</div><div class="f-name">Tn. H. Gugun Gunara, S.E., M.M.</div><div class="f-jabatan">Wasekjen + Grand Architect + Ketua Holding + Plt Agritech + Plt Energi</div><div class="f-peran">COO · Arsitek Ekosistem Digital · Hak Veto Terbatas · Chief Strategy & Innovation Officer · CMC · MBA · CFA · PMP · CBP · Six Sigma Black Belt</div></div>
+    <div class="founder-card"><div class="f-num">PENDIRI #02 · PRESIDEN</div><div class="f-avatar">👑</div><div class="f-name">Prof. Wirono, S.E., M.Pd</div><div class="f-jabatan">PRESIDEN / Ketua Umum (Bakornas)</div><div class="f-peran">Pimpinan Tertinggi Eksekutif KMNMP · Wajah Resmi Koperasi</div></div>
+    <div class="founder-card"><div class="f-num">PENDIRI #03 · WAKIL PRESIDEN</div><div class="f-avatar">🌐</div><div class="f-name">Drs. H. Arif Rachman Hakim, M.M.</div><div class="f-jabatan">WAKIL PRESIDEN / Wakil Ketua Umum</div><div class="f-peran">CEO JE-P3 & Diplomat Utama 195 Negara · ICA Relations</div></div>
+    <div class="founder-card"><div class="f-num">PENDIRI #04 · DEWAN PEMBINA</div><div class="f-avatar">⚖️</div><div class="f-name">Hj. Inna Hadianala, S.E.</div><div class="f-jabatan">Ketua Dewan Pembina + Korbid Organisasi & Keanggotaan</div><div class="f-peran">Penjaga Nilai & Konstitusi KMNMP · Guardian of AD/ART</div></div>
+    <div class="founder-card"><div class="f-num">PENDIRI #05 · SEKRETARIS JENDERAL</div><div class="f-avatar">📋</div><div class="f-name">Dr. Cecep Sumarno</div><div class="f-jabatan">SEKRETARIS JENDERAL + Korbid Wisata/Umroh/Haji</div><div class="f-peran">Legal Koperasi & Kepala Administrasi · Notaris Liaison</div></div>
+    <div class="founder-card"><div class="f-num">PENDIRI #06 · CFO</div><div class="f-avatar">💰</div><div class="f-name">Fawwaz Arif Al Jabar, S.E., M.M.</div><div class="f-jabatan">Ketua Dewan Penasihat + Korbid Keuangan & Perbankan</div><div class="f-peran">CFO · Chief Financial Advisor & Arsitek ESG · Green Finance</div></div>
+    <div class="founder-card"><div class="f-num">PENDIRI #07 · PANGLIMA KALIMANTAN</div><div class="f-avatar">🏝️</div><div class="f-name">Andi Darmadji, S.E.</div><div class="f-jabatan">Panglima Wilayah Kalimantan (Bakorwil)</div><div class="f-peran">Pilar Ekspansi Kawasan Timur & IKN · Kalimantan 6.000+ Desa</div></div>
+    <div class="founder-card"><div class="f-num">PENDIRI #08 · DEWAN PENGAWAS</div><div class="f-avatar">🌾</div><div class="f-name">Dr. Habib</div><div class="f-jabatan">Anggota Dewan Pengawas + Korbid Pangan & Ketahanan Pangan</div><div class="f-peran">Pengawas Internal & Ahli Ketahanan Pangan Nasional</div></div>
+    <div class="founder-card"><div class="f-num">PENDIRI #09 · KETUA DEWAN PENGAWAS</div><div class="f-avatar">🔬</div><div class="f-name">Prof. Dr. Tedy Mantoro</div><div class="f-jabatan">KETUA DEWAN PENGAWAS (Chairman Supervisory Board)</div><div class="f-peran">Ketua Pengawas Independen · Pakar Tata Kelola Digital · CTO Advisor</div></div>
+    <!-- New founders 10-13 -->
+    <div class="founder-card new-founder"><div class="f-num gold-num">PENDIRI #10 · ★ BARU · KEAMANAN SIBER</div><div class="f-badge">CYBERSECURITY LEAD</div><div class="f-avatar">🛡️</div><div class="f-name">Komjen. Pol. (Purn.) Dr. (H.C.) Drs. Dharma Pongrekun, S.I.K., M.M., M.H.</div><div class="f-jabatan">Ketua Bidang Keamanan Siber & Kedaulatan Digital KMNMP</div><div class="f-peran">Mantan Wakil Kepala BSSN (2019–2021) · Akpol 1988 · Pakar Keamanan Siber Nasional · Lahir Palu 12 Jan 1966 · Pengalaman 36 tahun Polri · Arsitek Digital Sovereignty Platform kopnusa.id · ZKP-ID Framework Lead</div></div>
+    <div class="founder-card new-founder"><div class="f-num gold-num">PENDIRI #11 · ★ BARU · PERTAHANAN NASIONAL</div><div class="f-badge">TNI STRATEGIC PARTNER</div><div class="f-avatar">⚔️</div><div class="f-name">Jenderal TNI Agus Subiyanto, S.I.P.</div><div class="f-jabatan">Dewan Penasihat Pertahanan & Ketahanan Nasional KMNMP</div><div class="f-peran">Panglima Tentara Nasional Indonesia (dilantik 22 November 2023) · Akmil 1991 · Pemimpin 400.000+ personel TNI · Protector 83.763 desa termasuk wilayah 3T (Terdepan, Terluar, Tertinggal) · Strategic Defense & National Security Network</div></div>
+    <div class="founder-card new-founder"><div class="f-num gold-num">PENDIRI #12 · ★ BARU · REPRESENTASI PRESIDEN</div><div class="f-badge">ISTANA RELATIONS</div><div class="f-avatar">🏛️</div><div class="f-name">H. Hashim Sujono Djojohadikusumo, S.E., M.B.A.</div><div class="f-jabatan">Dewan Penasihat Senior + Korbid Hubungan Pemerintah & Negara</div><div class="f-peran">Adik kandung Presiden RI ke-8 Prabowo Subianto · Lahir 5 Juni 1954 Jakarta · Founder Arsari Group · Wakil Ketua Dewan Pembina Gerindra · Putra Prof. Soemitro Djojohadikusumo · Bridge langsung ke Istana Presiden untuk prioritas Inpres 9/2025 & KDMP 80.081 gerai</div></div>
+    <div class="founder-card new-founder" style="border-color:rgba(212,175,55,0.5)"><div class="f-num gold-num">PENDIRI #13 · ★ BARU · PATRON UTAMA KAPITAL</div><div class="f-badge" style="background:rgba(212,175,55,0.25);border-color:var(--gold-dark);color:#8B6914">UNLIMITED CAPITAL ★</div><div class="f-avatar">💎</div><div class="f-name">Ir. Prajogo Pangestu</div><div class="f-jabatan">PATRON UTAMA & Ketua Dewan Kapital Strategis KMNMP</div><div class="f-peran">Orang Terkaya #1 Indonesia Forbes Maret 2026 (US$24,8 Miliar = Rp418 Triliun) · Founder Barito Pacific Group · Chandra Asri Petrokimia · Barito Renewables Energy · Ultimate Capital Provider untuk ekspansi 195 negara · Modal tidak terbatas untuk infrastruktur digital desa peradaban</div></div>
+  </div>
+  <div class="ibox ibox-red a-fadeup a-d4" style="margin-top:16px">
+    <div class="ibox-title">KUADRAN KEKUATAN KMNMP — 4 PILAR BARU v13.0</div>
+    <div class="ibox-body" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px">
+      <div><strong style="color:var(--red)">🛡️ SIBER</strong><br><small>Dharma Pongrekun · Eks-BSSN · Platform Security · ZKP-ID · Kedaulatan Data 10 Juta Anggota</small></div>
+      <div><strong style="color:var(--text)">⚔️ MILITER</strong><br><small>Panglima TNI · Proteksi fisik 83.763 Desa · Wilayah 3T · National Security Network</small></div>
+      <div><strong style="color:var(--green)">🏛️ POLITIK</strong><br><small>Hashim Djojohadikusumo · Akses Istana Presiden · Inpres 9/2025 prioritas · KDMP 80.081 gerai</small></div>
+      <div><strong style="color:var(--gold-dark)">💎 KAPITAL</strong><br><small>Prajogo Pangestu · Rp418T · Unlimited Capital · ICA Global Expansion Funded</small></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 3 — DUAL ENTITY
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// ARSITEKTUR KELEMBAGAAN</div>
+    <div class="stitle">Dual-Entity: <span class="g">Dua Badan</span>, Satu Peradaban</div>
+    <div class="sdesc">JE-P3 sebagai Otak Strategis (pppbisnis.com) & KMNMP sebagai Jantung Operasional (kopnusa.id) — diikat Strategic Alliance Framework 25 tahun</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="dual-wrap a-fadeup a-d2">
+    <div class="entity e-jep3">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><span style="font-size:1.8rem">🧠</span><div><div class="e-label">JE-P3 ASOSIASI</div><div style="font-size:0.85rem;color:var(--green);letter-spacing:1px">pppbisnis.com</div></div></div>
+      <div class="e-role">Otak Strategis — Narasi, Brand, Investor, Global Diplomacy</div>
+      <ul class="e-feat">
+        <li>Narasi publik & investor relations global</li><li>Brand ownership & IP management</li>
+        <li>Diplomasi internasional (ICA, ASEAN-BAC)</li><li>Fundraising & impact investment</li>
+        <li>Policy advocacy ke pemerintah</li><li>JE-P3 Academy — pendidikan ekosistem</li>
+        <li>Global Village Network Protocol (GVNP)</li><li>Carbon Credit Exchange facilitation</li>
+      </ul>
+      <div class="e-meta"><strong style="color:var(--green)">KEPEMIMPINAN:</strong><br>CEO: Drs. H. Arif Rachman Hakim, M.M.<br>COO/Grand Architect: Tn. H. Gugun Gunara, S.E., M.M.<br>CFO: Fawwaz Arif Al Jabar, S.E., M.M.<br>CTO: Prof. Dr. Tedy Mantoro</div>
+    </div>
+    <div class="connector">
+      <div class="jsc-box"><div class="jsc-title">JSC</div><div class="jsc-sub">Joint Steering<br>Committee</div></div>
+      <div class="conn-line"></div>
+      <div style="text-align:center;font-size:0.58rem;color:var(--gold-dark);letter-spacing:1px;line-height:1.6;padding:0 8px">SAF 25 TAHUN<br>16 RED LINES<br>9→13 PENDIRI</div>
+      <div class="conn-line"></div>
+      <div class="jsc-box" style="border-color:rgba(204,0,0,0.5);background:rgba(204,0,0,0.05)"><div class="jsc-title" style="color:var(--red)">KMNMP RAT</div><div class="jsc-sub">Forum Tertinggi<br>Koperasi</div></div>
+    </div>
+    <div class="entity e-kmnmp">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><span style="font-size:1.8rem">❤️</span><div><div class="e-label">KMNMP KOPERASI</div><div style="font-size:0.85rem;color:var(--red);opacity:0.8;letter-spacing:1px">kopnusa.id</div></div></div>
+      <div class="e-role">Jantung Operasional — Aset, Anggota, SHU, Data, Desa</div>
+      <ul class="e-feat">
+        <li>Digital OS Desa — 16 modul terintegrasi</li><li>Kepemilikan aset produktif koperasi</li>
+        <li>Pengelola 6 Kelompok Pihak Anggota (KPA)</li><li>Distribusi SHU demokratis via RAT</li>
+        <li>Kedaulatan data anggota (UU PDP 27/2022)</li><li>KDMP-as-a-Service (80.081 gerai)</li>
+        <li>Cooperative AI Senator 3.0 (CAS)</li><li>Blockchain Hyperledger Governance</li>
+      </ul>
+      <div class="e-meta"><strong style="color:var(--red)">ORGAN GOVERNANCE:</strong><br>RAT (Forum Tertinggi) → Pengurus KMNMP<br>Pengawas Independen → Dewan Penasihat<br>Dewan Etik → Ombudsman KMNMP<br>13 Pendiri = Dewan Pembina Permanen</div>
+    </div>
+  </div>
+  <div class="rl-grid a-fadeup a-d3">
+    <div class="rl-box rl-red">
+      <div class="rl-title">🔴 8 RED LINES JE-P3 — TIDAK BOLEH DILANGGAR SELAMANYA</div>
+      <div class="rl-items">
+        <div class="rl-item">❌ Akses data pribadi anggota KMNMP</div><div class="rl-item">❌ Intervensi RAT KMNMP</div>
+        <div class="rl-item">❌ Monopoli supply chain desa</div><div class="rl-item">❌ Kampanye politik dari aset JE-P3</div>
+        <div class="rl-item">❌ Jual / agunan aset KMNMP</div><div class="rl-item">❌ Hapus hak voting KPA Petani 30%</div>
+        <div class="rl-item">❌ Konversi ke PT/swasta</div><div class="rl-item">❌ Tinggalkan prinsip ICA</div>
+      </div>
+    </div>
+    <div class="rl-box rl-green">
+      <div class="rl-title">✅ AD/ART KMNMP SUPER FINAL 2026 — KEY PROVISIONS</div>
+      <div class="rl-items">
+        <div class="rl-item">✅ 22 definisi kelembagaan formal</div><div class="rl-item">✅ 5 landasan koperasi multipihak</div>
+        <div class="rl-item">✅ JSC: 13 Pendiri Ketua Permanen</div><div class="rl-item">✅ 8 Pasal Baru (55A–55H)</div>
+        <div class="rl-item">✅ Dewan Etik & Ombudsman KMNMP</div><div class="rl-item">✅ UU PDP 27/2022 + ZKP-ID compliant</div>
+        <div class="rl-item">✅ KPA Petani: 30% suara RAT selamanya</div><div class="rl-item">✅ Blockchain covenant 100 tahun</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 4 — GAP ANALYSIS + 5 PILAR
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// STRATEGI INTEGRASI DESA</div>
+    <div class="stitle">GAP Analysis <span class="r">45+ Infrastruktur</span> · <span class="g">5 Pilar</span> KMNMP</div>
+    <div class="sdesc">45+ infrastruktur desa yang berjalan SILO — KMNMP hadir menyatukannya dalam satu Digital OS Desa</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="ibox ibox-red a-fadeup a-d1">
+    <div class="ibox-title">⚠️ SILO SYNDROME — MASALAH FUNDAMENTAL DESA INDONESIA</div>
+    <div class="ibox-body">RATA-RATA SETIAP DESA PUNYA 15–25 LEMBAGA AKTIF YANG TIDAK TERHUBUNG: PKK mendata keluarga miskin → tidak terhubung ke BUMDes · Gapoktan kumpulkan panen → tidak terhubung ke Lumbung Pangan · Posyandu catat stunting → tidak terhubung ke program pangan · SID Kemendesa + Prodeskel Kemendagri → baru mulai integrasi via DIGIDES · BUMDesMA kelola SPP → tidak terhubung ke koperasi.</div>
+  </div>
+  <div class="a-fadeup a-d2">
+    <div class="tier-block">
+      <div class="tier-hdr"><span class="tier-num-badge">TIER 1 — KRITIS</span><span class="tier-hdr-name">Kelembagaan Inti Desa — HARUS Diintegrasikan Pertama</span><span class="tier-hdr-count">5 Komponen</span></div>
+      <div class="tier-items-grid">
+        <div class="ti"><div class="ti-name">PKK</div><div class="ti-func">30 Juta Kader, 83.763 Unit</div><div class="ti-status s-kritis">🔴 KRITIS</div></div>
+        <div class="ti"><div class="ti-name">Karang Taruna</div><div class="ti-func">Agen Logistik Digital, 83.763 Unit</div><div class="ti-status s-kritis">🔴 KRITIS</div></div>
+        <div class="ti"><div class="ti-name">Lumbung Pangan</div><div class="ti-func">Resi Gudang Digital, Ribuan Unit</div><div class="ti-status s-kritis">🔴 KRITIS</div></div>
+        <div class="ti"><div class="ti-name">BUMDesMA</div><div class="ti-func">Jaringan SPP Antar-Desa, 5.000+ Unit</div><div class="ti-status s-kritis">🔴 KRITIS</div></div>
+        <div class="ti"><div class="ti-name">SID/Prodeskel/Siskeudes</div><div class="ti-func">Legitimasi Data Pemerintah, 83.763 Desa</div><div class="ti-status s-kritis">🔴 KRITIS</div></div>
+      </div>
+    </div>
+    <div class="tier-block">
+      <div class="tier-hdr red-hdr"><span class="tier-num-badge">TIER 2 — TINGGI</span><span class="tier-hdr-name">Layanan Sosial & Ekonomi Desa</span><span class="tier-hdr-count">5 Komponen</span></div>
+      <div class="tier-items-grid">
+        <div class="ti"><div class="ti-name">Posyandu</div><div class="ti-func">Health Dashboard, 300.000+ Unit</div><div class="ti-status s-partial">🟡 TINGGI</div></div>
+        <div class="ti"><div class="ti-name">BKAD</div><div class="ti-func">Kerjasama Kawasan Antar-Desa</div><div class="ti-status s-partial">🟡 TINGGI</div></div>
+        <div class="ti"><div class="ti-name">SPP (Simpan Pinjam Perempuan)</div><div class="ti-func">Microfinance Existing, Ribuan Kelompok</div><div class="ti-status s-partial">🟡 TINGGI</div></div>
+        <div class="ti"><div class="ti-name">BAZDes</div><div class="ti-func">Kanal Zakat/Infaq KMNMP</div><div class="ti-status s-partial">🟡 TINGGI</div></div>
+        <div class="ti"><div class="ti-name">BUMDes</div><div class="ti-func">Holding Desa Digital, 50.000+ Unit</div><div class="ti-status s-manual">🔵 MANUAL</div></div>
+      </div>
+    </div>
+    <div class="tier-block">
+      <div class="tier-hdr gold-hdr"><span class="tier-num-badge">TIER 3 — SEDANG</span><span class="tier-hdr-name">Marketplace, Adat & Infrastruktur Tambahan</span><span class="tier-hdr-count">8 Komponen</span></div>
+      <div class="tier-items-grid">
+        <div class="ti"><div class="ti-name">Prukades</div><div class="ti-func">Produk Unggulan Desa</div><div class="ti-status s-active">🟢 SEDANG</div></div>
+        <div class="ti"><div class="ti-name">KUBE</div><div class="ti-func">Kelompok Usaha Bersama</div><div class="ti-status s-active">🟢 SEDANG</div></div>
+        <div class="ti"><div class="ti-name">Pasar Desa</div><div class="ti-func">Collection Point Logistik</div><div class="ti-status s-active">🟢 SEDANG</div></div>
+        <div class="ti"><div class="ti-name">P3A/HIPPA</div><div class="ti-func">Irigasi Pertanian Terpadu</div><div class="ti-status s-active">🟢 SEDANG</div></div>
+        <div class="ti"><div class="ti-name">KIM (Kelompok Informasi Masy.)</div><div class="ti-func">Digital Literacy Hub</div><div class="ti-status s-active">🟢 SEDANG</div></div>
+        <div class="ti"><div class="ti-name">Linmas</div><div class="ti-func">Safety & Security IoT</div><div class="ti-status s-active">🟢 SEDANG</div></div>
+        <div class="ti"><div class="ti-name">Lembaga Adat</div><div class="ti-func">Cultural Heritage CMS</div><div class="ti-status s-active">🟢 SEDANG</div></div>
+        <div class="ti"><div class="ti-name">KRPL</div><div class="ti-func">Carbon Credits + Pangan Keluarga</div><div class="ti-status s-active">🟢 SEDANG</div></div>
+      </div>
+    </div>
+  </div>
+  <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);letter-spacing:2px;margin:24px 0 12px;font-weight:700;">▸ 5 PILAR INTEGRASI KMNMP — FRAMEWORK UNIFIKASI</div>
+  <div class="pillars-grid a-fadeup a-d3">
+    <div class="pillar p1"><span class="pillar-icon">🏘️</span><div class="pillar-num">PILAR · P1</div><div class="pillar-title">Desa Cerdas (Smart Village)</div><div class="pillar-sub">PKK, Karang Taruna, Posyandu, RT/RW, Linmas, KIM, Lembaga Adat</div><div class="pillar-tags"><span class="ptag">Village Mgmt</span><span class="ptag">Health Dashboard</span><span class="ptag">Safety</span></div></div>
+    <div class="pillar p2"><span class="pillar-icon">🌾</span><div class="pillar-num">PILAR · P2</div><div class="pillar-title">Pertanian Terpadu (Smart Farming)</div><div class="pillar-sub">Poktan, Gapoktan, P3A/HIPPA, Penyuluh, Lumbung Pangan, KRPL</div><div class="pillar-tags"><span class="ptag">Agri Dashboard</span><span class="ptag">Resi Gudang</span><span class="ptag">IoT Farm</span></div></div>
+    <div class="pillar p3"><span class="pillar-icon">💵</span><div class="pillar-num">PILAR · P3</div><div class="pillar-title">Ekonomi Rakyat (People Economy)</div><div class="pillar-sub">SPP, KUBE, BAZDes, KUR Desa, Desa Wisata, Tabungan Haji</div><div class="pillar-tags"><span class="ptag">JP3 Pay</span><span class="ptag">Zakat Pay</span><span class="ptag">Tabungan Haji</span></div></div>
+    <div class="pillar p4"><span class="pillar-icon">🚛</span><div class="pillar-num">PILAR · P4</div><div class="pillar-title">Logistik Digital</div><div class="pillar-sub">Karang Taruna (agen), Pasar Desa (collection), KDMP (drop point), JNT/JNE</div><div class="pillar-tags"><span class="ptag">Logistics Tracker</span><span class="ptag">83.763 Agen</span></div></div>
+    <div class="pillar p5"><span class="pillar-icon">💻</span><div class="pillar-num">PILAR · P5</div><div class="pillar-title">Platform Digital OS</div><div class="pillar-sub">SID, Prodeskel, Siskeudes, Simluhtan, BMKG, Bank Himbara, BI, BSSN</div><div class="pillar-tags"><span class="ptag">kopnusa.id</span><span class="ptag">16 Modul</span><span class="ptag">ZKP-ID</span></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 5 — PLATFORM 16 MODUL
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// PRODUK & TEKNOLOGI</div>
+    <div class="stitle"><span class="g">16 Modul</span> Platform <span class="r">kopnusa.id</span></div>
+    <div class="sdesc">kopnusa.id sebagai super-app desa Indonesia — API-first, blockchain-ready, AI-powered, IoT-connected</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="modules-grid a-fadeup a-d2">
+    <div class="mod mc1"><span class="mod-icon">🏘️</span><div class="mod-code">MOD 01</div><div class="mod-name">Village Management System</div><div class="mod-connects">RT/RW, BPD, LPM, SID, Prodeskel</div></div>
+    <div class="mod mc2"><span class="mod-icon">🏥</span><div class="mod-code">MOD 02</div><div class="mod-name">Health Dashboard</div><div class="mod-connects">Posyandu, PKK, KPM, BPJS Kesehatan</div></div>
+    <div class="mod mc3"><span class="mod-icon">🌾</span><div class="mod-code">MOD 03</div><div class="mod-name">Agri Dashboard</div><div class="mod-connects">Poktan, P3A, BMKG, BPS, Simluhtan, IoT Farm</div></div>
+    <div class="mod mc4"><span class="mod-icon">💳</span><div class="mod-code">MOD 04</div><div class="mod-name">JP3 Pay E-Wallet</div><div class="mod-connects">SPP, BAZDes, Bank Himbara, BI + QRIS</div></div>
+    <div class="mod mc5"><span class="mod-icon">🗳️</span><div class="mod-code">MOD 05</div><div class="mod-name">Cooperative Governance Portal</div><div class="mod-connects">RAT Online, SHU Voting, Blockchain Hyperledger + DAC</div></div>
+    <div class="mod mc6"><span class="mod-icon">🛒</span><div class="mod-code">MOD 06</div><div class="mod-name">Marketplace B2B/B2C</div><div class="mod-connects">Prukades, KUBE, Poktan → Smart Contract Escrow</div></div>
+    <div class="mod mc7"><span class="mod-icon">🚚</span><div class="mod-code">MOD 07</div><div class="mod-name">Logistics Tracker</div><div class="mod-connects">Karang Taruna Agen → API JNT/JNE/SiCepat/GoSend</div></div>
+    <div class="mod mc8"><span class="mod-icon">🎓</span><div class="mod-code">MOD 08</div><div class="mod-name">JE-P3 Academy LMS</div><div class="mod-connects">PKK Tier · KT Tier · Profesional Tier · Sertifikasi</div></div>
+    <div class="mod mc1"><span class="mod-icon">🏗️</span><div class="mod-code">MOD 09</div><div class="mod-name">KDMP Dashboard (KaaS)</div><div class="mod-connects">POS Gerai, Stok, RAT → 80.081 gerai KDMP</div></div>
+    <div class="mod mc2"><span class="mod-icon">🕌</span><div class="mod-code">MOD 10</div><div class="mod-name">Haji & Umroh Module</div><div class="mod-connects">BAZDes, Majlis Taklim → API BPIH Kemenag</div></div>
+    <div class="mod mc3"><span class="mod-icon">🏪</span><div class="mod-code">MOD 11</div><div class="mod-name">Resi Gudang Digital</div><div class="mod-connects">Lumbung Pangan → IoT Sensor + BAPPEBTI</div></div>
+    <div class="mod mc4"><span class="mod-icon">📡</span><div class="mod-code">MOD 12</div><div class="mod-name">Smart Village Dashboard IoT</div><div class="mod-connects">Sensor cuaca, tanah, produksi, stok real-time</div></div>
+    <div class="mod mc5"><span class="mod-icon">🛡️</span><div class="mod-code">MOD 13</div><div class="mod-name">Safety & Security</div><div class="mod-connects">Linmas, CCTV, IoT Early Warning, ZKP-ID Auth</div></div>
+    <div class="mod mc6"><span class="mod-icon">🎭</span><div class="mod-code">MOD 14</div><div class="mod-name">Cultural Heritage CMS</div><div class="mod-connects">Lembaga Adat → MetaDesa Booking Platform</div></div>
+    <div class="mod mc7"><span class="mod-icon">⚡</span><div class="mod-code">MOD 15</div><div class="mod-name">Energy Dashboard</div><div class="mod-connects">Kelompok Ternak → Biogas + Solar + CCVE Carbon</div></div>
+    <div class="mod mc9 star-mod"><span class="mod-icon">🤖</span><div class="mod-code">MOD 16 ★ FLAGSHIP</div><div class="mod-name">Cooperative AI Senator (CAS) 3.0</div><div class="mod-connects">AI Advisory RAT · Analisis Proposal Real-time · Sovereign AI · 83.763 Data Desa</div></div>
+  </div>
+  <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);letter-spacing:2px;margin:20px 0 10px;font-weight:700;">▸ 9-LAYER HYBRID ARCHITECTURE — api.kopnusa.id</div>
+  <div class="tech-stack a-fadeup a-d3">
+    <div class="ts-item" style="border-top-color:#CC0000"><div class="ts-name" style="color:var(--red)">FRONTEND</div><div class="ts-sub">Next.js 15<br>React Native</div></div>
+    <div class="ts-item" style="border-top-color:#00A550"><div class="ts-name" style="color:var(--green)">BACKEND</div><div class="ts-sub">Node.js<br>Prisma ORM</div></div>
+    <div class="ts-item" style="border-top-color:#1565C0"><div class="ts-name" style="color:#1565C0">DATABASE</div><div class="ts-sub">Neon PgSQL<br>Redis Cache</div></div>
+    <div class="ts-item" style="border-top-color:#E67E22"><div class="ts-name" style="color:#E67E22">BLOCKCHAIN</div><div class="ts-sub">Hyperledger<br>Ethereum L2</div></div>
+    <div class="ts-item" style="border-top-color:#9B59B6"><div class="ts-name" style="color:#9B59B6">AI / ML</div><div class="ts-sub">LangChain<br>TensorFlow</div></div>
+    <div class="ts-item" style="border-top-color:#1ABC9C"><div class="ts-name" style="color:#1ABC9C">IoT</div><div class="ts-sub">MQTT<br>LoRaWAN</div></div>
+    <div class="ts-item" style="border-top-color:#E74C3C"><div class="ts-name" style="color:var(--red)">API GATEWAY</div><div class="ts-sub">Kong<br>OAuth2 JWT</div></div>
+    <div class="ts-item" style="border-top-color:#F39C12"><div class="ts-name" style="color:#F39C12">GOV BRIDGE</div><div class="ts-sub">SID Prodeskel<br>Siskeudes</div></div>
+    <div class="ts-item" style="border-top-color:#D4AF37"><div class="ts-name" style="color:var(--gold-dark)">SECURITY</div><div class="ts-sub">ZKP-ID<br>UU PDP AES</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 6 — NIAK
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// IDENTITAS DIGITAL ANGGOTA</div>
+    <div class="stitle">Sistem <span class="g">NIAK</span> — <span class="r">Algoritma Luhn</span></div>
+    <div class="sdesc">Nomor Induk Anggota Koperasi 16-digit — identitas digital unik, unforgeable, dengan validasi check digit otomatis via Algoritma Luhn</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="niak-display a-fadeup a-d1">
+    <div class="niak-code">3273 · 1 · 3 · 2603 · 00001 · 7</div>
+    <div class="niak-segments">
+      <div class="nseg"><div class="nseg-val" style="color:#4DDB8A">32</div><div class="nseg-label">Provinsi<br>(Jabar)</div></div>
+      <div class="nseg"><div class="nseg-val" style="color:#4DDB8A">73</div><div class="nseg-label">Kab/Kota<br>(Bandung)</div></div>
+      <div class="nseg"><div class="nseg-val" style="color:#FFD700">1</div><div class="nseg-label">KPA<br>(Petani)</div></div>
+      <div class="nseg"><div class="nseg-val" style="color:#FF9F40">3</div><div class="nseg-label">Tier<br>(KORDES)</div></div>
+      <div class="nseg"><div class="nseg-val" style="color:#61DAFB">26</div><div class="nseg-label">Tahun<br>(2026)</div></div>
+      <div class="nseg"><div class="nseg-val" style="color:#61DAFB">03</div><div class="nseg-label">Bulan<br>(Maret)</div></div>
+      <div class="nseg"><div class="nseg-val" style="color:#4DDB8A">00001</div><div class="nseg-label">Nomor<br>Urut</div></div>
+      <div class="nseg"><div class="nseg-val" style="color:#FF4444">7</div><div class="nseg-label">Check Digit<br>(Luhn)</div></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+    <div>
+      <div class="niak-table-wrap a-fadeup a-d2">
+        <table>
+          <thead><tr><th>Segmen</th><th>Posisi</th><th>Makna</th><th>Sumber</th></tr></thead>
+          <tbody>
+            <tr><td><strong style="color:var(--red)">PP</strong></td><td>1–2</td><td>Kode Provinsi BPS</td><td>BPS Indonesia</td></tr>
+            <tr><td><strong style="color:var(--red)">KK</strong></td><td>3–4</td><td>Kode Kabupaten/Kota</td><td>BPS/Permendagri</td></tr>
+            <tr><td><strong style="color:var(--green)">KPA</strong></td><td>5</td><td>Kelompok Pihak Anggota (1–6, 9=Pendiri)</td><td>AD/ART Ps.11</td></tr>
+            <tr><td><strong style="color:var(--green)">T</strong></td><td>6</td><td>Tier Keanggotaan (1–7, 9=Pendiri)</td><td>Tier KMNMP</td></tr>
+            <tr><td><strong style="color:var(--gold-dark)">YY</strong></td><td>7–8</td><td>Tahun Pendaftaran (26=2026, dst)</td><td>Otomatis</td></tr>
+            <tr><td><strong style="color:var(--gold-dark)">MM</strong></td><td>9–10</td><td>Bulan Pendaftaran (01–12)</td><td>Otomatis</td></tr>
+            <tr><td><strong>NNNNN</strong></td><td>11–15</td><td>Nomor Urut per Wilayah per Bulan</td><td>DB Counter</td></tr>
+            <tr><td><strong style="color:var(--red)">C</strong></td><td>16</td><td>Check Digit Luhn — <strong>TIDAK BISA DIMANIPULASI</strong></td><td>Dihitung auto</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="code-block a-fadeup a-d3" style="font-size:0.72rem;line-height:1.7">
+<span class="code-comment">// src/lib/niak.ts — Algoritma Luhn KMNMP</span>
+<span class="code-keyword">export function</span> <span class="code-fn">generateCheckDigit</span>(digits15: <span class="code-val">string</span>): <span class="code-val">number</span> {
+  <span class="code-keyword">let</span> sum = <span class="code-val">0</span>;
+  <span class="code-keyword">for</span> (<span class="code-keyword">let</span> i = <span class="code-val">0</span>; i &lt; <span class="code-val">15</span>; i++) {
+    <span class="code-keyword">let</span> d = parseInt(digits15[i]);
+    <span class="code-comment">// posisi genap dari kanan × 2</span>
+    <span class="code-keyword">if</span> ((<span class="code-val">15</span> - i) % <span class="code-val">2</span> === <span class="code-val">0</span>) {
+      d *= <span class="code-val">2</span>;
+      <span class="code-keyword">if</span> (d > <span class="code-val">9</span>) d -= <span class="code-val">9</span>;
+    }
+    sum += d;
+  }
+  <span class="code-keyword">return</span> (<span class="code-val">10</span> - (sum % <span class="code-val">10</span>)) % <span class="code-val">10</span>;
+}
+
+<span class="code-keyword">export function</span> <span class="code-fn">validateNIAK</span>(niak: <span class="code-val">string</span>): <span class="code-val">boolean</span> {
+  <span class="code-keyword">if</span> (niak.length !== <span class="code-val">16</span>) <span class="code-keyword">return false</span>;
+  <span class="code-keyword">const</span> check = <span class="code-fn">generateCheckDigit</span>(niak.slice(<span class="code-val">0</span>, <span class="code-val">15</span>));
+  <span class="code-keyword">return</span> check === parseInt(niak[<span class="code-val">15</span>]);
+}
+
+<span class="code-comment">// Contoh: 327313260300001 → sum=39 → C=1</span>
+<span class="code-comment">// NIAK: 3273132603000011 ✅ VALID</span></div>
+      <div class="ibox a-fadeup a-d4" style="margin-top:14px">
+        <div class="ibox-title">CONTOH NIAK BERBAGAI SKENARIO</div>
+        <div class="ibox-body" style="font-family:var(--font-mono);font-size:0.72rem;line-height:1.9">
+          <div>3273-9-9-2603-00001-? → <strong style="color:var(--green)">Tn. H. Gugun Gunara (Pendiri #1)</strong></div>
+          <div>3273-1-3-2603-00001-? → <strong>KORDES Pertama Kota Bandung</strong></div>
+          <div>6471-2-5-2612-00088-? → <strong>KORDA ke-88 Balikpapan (IKN)</strong></div>
+          <div>9471-1-1-2701-99999-? → <strong>Petani ke-99.999 Jayapura</strong></div>
+          <div>3171-3-7-2603-00001-? → <strong>Pengurus DPP Pertama DKI</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 7 — FINANSIAL
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// FINANCIAL MODEL</div>
+    <div class="stitle">Model Keuangan KMNMP — <span class="g">SHU</span> & <span class="r">8 Revenue Streams</span></div>
+    <div class="sdesc">Proyeksi Rp1T (2028) → Rp10T (2030) → Rp500T (2045) · Distribusi SHU demokratis berbasis partisipasi, bukan modal</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="fin-grid a-fadeup a-d2">
+    <div class="chart-box">
+      <div class="chart-head">📈 PROYEKSI ANGGOTA × TRANSAKSI 2026–2045</div>
+      <div class="bar-chart">
+        <div class="bar-row"><div class="bar-label">2026</div><div class="bar-track"><div class="bar-fill" style="width:0.5%;background:linear-gradient(to right,#006B30,#00A550)"><div class="bar-val">1K</div></div></div></div>
+        <div class="bar-row"><div class="bar-label">2027</div><div class="bar-track"><div class="bar-fill" style="width:1%;background:linear-gradient(to right,#006B30,#00A550)"><div class="bar-val">10K</div></div></div></div>
+        <div class="bar-row"><div class="bar-label">2028</div><div class="bar-track"><div class="bar-fill" style="width:8%;background:linear-gradient(to right,#006B30,#00A550)"><div class="bar-val">100K</div></div></div></div>
+        <div class="bar-row"><div class="bar-label">2030</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:linear-gradient(to right,#1A5A2A,#27AE60)"><div class="bar-val">1 Juta</div></div></div></div>
+        <div class="bar-row"><div class="bar-label">2035</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(to right,#1A3A5C,#2E6DA4)"><div class="bar-val">3 Juta</div></div></div></div>
+        <div class="bar-row"><div class="bar-label">2040</div><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(to right,#5A1A7A,#9B59B6)"><div class="bar-val">7 Juta</div></div></div></div>
+        <div class="bar-row"><div class="bar-label" style="color:var(--red)">2045</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(to right,var(--red-dark),var(--red))"><div class="bar-val">10 Juta 🏆</div></div></div></div>
+      </div>
+      <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px">
+        <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text-soft);margin-bottom:8px;letter-spacing:1px">TRANSAKSI TAHUNAN (TARGET)</div>
+        <div class="bar-chart">
+          <div class="bar-row"><div class="bar-label">2028</div><div class="bar-track"><div class="bar-fill" style="width:2%;background:rgba(0,165,80,0.5)"><div class="bar-val">Rp1T</div></div></div></div>
+          <div class="bar-row"><div class="bar-label">2030</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:rgba(0,165,80,0.65)"><div class="bar-val">Rp10T</div></div></div></div>
+          <div class="bar-row"><div class="bar-label">2035</div><div class="bar-track"><div class="bar-fill" style="width:40%;background:rgba(0,165,80,0.8)"><div class="bar-val">Rp50T</div></div></div></div>
+          <div class="bar-row"><div class="bar-label" style="color:var(--gold-dark)">2045</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(to right,#8B7500,var(--gold))"><div class="bar-val">Rp500T 🎯</div></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-head">🏦 DISTRIBUSI SHU — DEMOKRATIS & TRANSPARAN</div>
+      <div class="shu-list">
+        <div class="shu-row"><div class="shu-dot" style="background:rgba(0,165,80,0.8)"></div><div class="shu-name">Cadangan Koperasi (wajib UU 25/1992)</div><div class="shu-pct">25%</div></div>
+        <div class="shu-row"><div class="shu-dot" style="background:rgba(39,174,96,0.8)"></div><div class="shu-name"><strong>Jasa Usaha Anggota</strong> (proporsional partisipasi)</div><div class="shu-pct" style="color:var(--green)">40%</div></div>
+        <div class="shu-row"><div class="shu-dot" style="background:rgba(21,101,192,0.8)"></div><div class="shu-name">Jasa Modal Anggota (proporsional simpanan)</div><div class="shu-pct">10%</div></div>
+        <div class="shu-row"><div class="shu-dot" style="background:rgba(192,57,43,0.7)"></div><div class="shu-name">Dana Pendidikan (JE-P3 Academy, Beasiswa)</div><div class="shu-pct">10%</div></div>
+        <div class="shu-row"><div class="shu-dot" style="background:rgba(155,89,182,0.7)"></div><div class="shu-name">Dana Sosial (Masyarakat sekitar KMNMP)</div><div class="shu-pct">5%</div></div>
+        <div class="shu-row"><div class="shu-dot" style="background:rgba(230,126,34,0.7)"></div><div class="shu-name">Dana Teknologi Desa (R&D + infrastruktur)</div><div class="shu-pct">5%</div></div>
+        <div class="shu-row"><div class="shu-dot" style="background:rgba(26,188,156,0.7)"></div><div class="shu-name">Dana Cadangan Risiko (contingency fund)</div><div class="shu-pct">5%</div></div>
+      </div>
+      <div style="margin-top:16px;padding:10px 14px;background:rgba(0,165,80,0.05);border:1px solid rgba(0,165,80,0.15);border-radius:8px">
+        <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--red);font-weight:700;margin-bottom:6px;letter-spacing:1px">FORMULA SHU KMNMP:</div>
+        <div style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text)">SHU_anggota = (Partisipasi/Total) × 40% SHU + (Modal/Total) × 10% SHU</div>
+        <div style="font-size:0.72rem;color:var(--text-soft);margin-top:4px">Distributor langsung via Blockchain Smart Contract — zero manipulation, auto-execute per RAT</div>
+      </div>
+    </div>
+  </div>
+  <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);letter-spacing:2px;margin-bottom:12px;font-weight:700;">▸ 8 REVENUE STREAMS KMNMP — DIVERSIFIED & RESILIENT</div>
+  <div class="rev-grid a-fadeup a-d3">
+    <div class="rev-item"><div class="rev-name">🛒 Marketplace Fee (2–5% per transaksi)</div><div class="rev-2030">Rp150M/bulan (2030)</div><div class="rev-2045">→ Rp5T/tahun (2045)</div></div>
+    <div class="rev-item"><div class="rev-name">💳 JP3 Pay Transaction (0.5–1%)</div><div class="rev-2030">Rp50M/bulan (2030)</div><div class="rev-2045">→ Rp2T/tahun (2045)</div></div>
+    <div class="rev-item"><div class="rev-name">🏗️ KDMP-as-a-Service (Rp500rb/gerai/bulan)</div><div class="rev-2030">Rp40M/bulan (2030)</div><div class="rev-2045">→ Rp500M/bulan (2045)</div></div>
+    <div class="rev-item"><div class="rev-name">👥 Membership Fee (Rp50rb–200jt/tahun)</div><div class="rev-2030">Rp2.5M/bulan (2030)</div><div class="rev-2045">→ Rp83M/bulan (2045)</div></div>
+    <div class="rev-item"><div class="rev-name">🏪 Resi Gudang Digital (0.5% nilai komoditas)</div><div class="rev-2030">Rp100M/bulan (2030)</div><div class="rev-2045">→ Rp5T/tahun (2045)</div></div>
+    <div class="rev-item"><div class="rev-name">🎓 Academy Certification (Rp250rb–5jt/cert)</div><div class="rev-2030">Rp10M/bulan (2030)</div><div class="rev-2045">→ Rp500M/bulan (2045)</div></div>
+    <div class="rev-item"><div class="rev-name">🌿 Carbon Credits CCVE (USD 20/ton CO₂)</div><div class="rev-2030">Rp5M/bulan (2030)</div><div class="rev-2045">→ Rp2T/tahun (2045)</div></div>
+    <div class="rev-item"><div class="rev-name">🌏 Ekspor Commission GVNP (1% nilai)</div><div class="rev-2030">Rp10M/bulan (2030)</div><div class="rev-2045">→ Rp250M/bulan (2045)</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 8 — ROADMAP
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// STRATEGIC ROADMAP 2026–2045</div>
+    <div class="stitle">3 Phase Menuju <span class="g">100% Coverage</span> <span class="r">83.763 Desa</span></div>
+    <div class="sdesc">Dari 100 desa pilot (2026) → 3 juta anggota (2035) → 10 juta anggota & Rp500T transaksi (2045) — Setara Mondragon & melampaui Fonterra</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="phases a-fadeup a-d2">
+    <div class="phase ph1">
+      <div class="phase-year">PHASE 1 · 2026–2028</div>
+      <div class="phase-name">Pondasi & Pilot</div>
+      <ul class="phase-miles">
+        <li>Q2 2026: KMNMP legal standing (Notaris + Kemenkumham)</li>
+        <li>Q3 2026: Platform kopnusa.id beta — 16 modul dasar</li>
+        <li>Q3 2026: Pilot 100 desa di 10 provinsi prioritas</li>
+        <li>Q4 2026: 1.000 gerai KDMP onboarding (KaaS Phase 1)</li>
+        <li>2027: MoU API resmi Kemendesa, Kemendagri, BPKP</li>
+        <li>2027: ICA Membership application submitted</li>
+        <li>2028: Ekspansi Malaysia & Singapura (pilot luar negeri)</li>
+        <li>2028: ZKP-ID deploy — 100K anggota terproteksi</li>
+      </ul>
+      <div class="phase-kpis">
+        <div class="pkpi"><span class="pkpi-val">100K</span><span class="pkpi-key">ANGGOTA</span></div>
+        <div class="pkpi"><span class="pkpi-val">5.000</span><span class="pkpi-key">DESA</span></div>
+        <div class="pkpi"><span class="pkpi-val">Rp1T</span><span class="pkpi-key">TRANSAKSI</span></div>
+      </div>
+    </div>
+    <div class="phase ph2">
+      <div class="phase-year">PHASE 2 · 2028–2035</div>
+      <div class="phase-name">Ekspansi Nasional & Global</div>
+      <ul class="phase-miles">
+        <li>2028–2030: 25.000 desa terintegrasi penuh</li>
+        <li>2030: Rp10T transaksi, Rp1T revenue platform</li>
+        <li>2030: CSWF Rp1T AUM — investasi jangka panjang</li>
+        <li>2031: Ekspansi Filipina, Vietnam, Thailand</li>
+        <li>2032: India, Bangladesh — white-label cooperative OS</li>
+        <li>2033: Nigeria, Kenya — ADB/World Bank funded</li>
+        <li>2034: Green Sukuk Desa (GSD) Rp10T perdana</li>
+        <li>2035: 20+ negara · ICA Reference Model diakui</li>
+      </ul>
+      <div class="phase-kpis">
+        <div class="pkpi"><span class="pkpi-val">3 Juta</span><span class="pkpi-key">ANGGOTA</span></div>
+        <div class="pkpi"><span class="pkpi-val">50.000</span><span class="pkpi-key">DESA</span></div>
+        <div class="pkpi"><span class="pkpi-val">Rp50T</span><span class="pkpi-key">TRANSAKSI</span></div>
+      </div>
+    </div>
+    <div class="phase ph3">
+      <div class="phase-year">PHASE 3 · 2035–2045</div>
+      <div class="phase-name">Full Coverage & Peradaban</div>
+      <ul class="phase-miles">
+        <li>2036–2040: 70.000 desa, 7 juta anggota aktif</li>
+        <li>2040: CCVE 1 juta ton CO₂ — USD 20M/tahun</li>
+        <li>2041: 45+ komponen integrasi lengkap per desa</li>
+        <li>2043: Rp200T transaksi per tahun</li>
+        <li>2045: 83.763 desa — 100% Indonesia coverage</li>
+        <li>2045: CSWF Rp100T AUM — setara Temasek mini</li>
+        <li>2045: Rp500T transaksi = Mondragon level!</li>
+        <li>2045: Indonesia = Cooperative Digital Leader Dunia</li>
+      </ul>
+      <div class="phase-kpis">
+        <div class="pkpi"><span class="pkpi-val">10 Juta</span><span class="pkpi-key">ANGGOTA</span></div>
+        <div class="pkpi"><span class="pkpi-val">83.763</span><span class="pkpi-key">DESA</span></div>
+        <div class="pkpi"><span class="pkpi-val">Rp500T</span><span class="pkpi-key">TRANSAKSI</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);letter-spacing:2px;margin:24px 0 12px;font-weight:700;">▸ BENCHMARK GLOBAL — TARGET SETARA & MELAMPAUI KOPERASI DUNIA</div>
+  <div class="benchmark a-fadeup a-d3">
+    <div class="bm-card bm-gold"><div class="bm-name">KMNMP 2045</div><div class="bm-country">🇮🇩 Indonesia (Target)</div><div class="bm-val" style="color:var(--gold-dark)">Rp500T</div><div class="bm-label">TARGET TRANSAKSI</div></div>
+    <div class="bm-card bm-red"><div class="bm-name">Mondragon Corp.</div><div class="bm-country">🇪🇸 Spanyol</div><div class="bm-val">€12 Miliar</div><div class="bm-label">REVENUE 2023</div></div>
+    <div class="bm-card bm-green"><div class="bm-name">Fonterra</div><div class="bm-country">🇳🇿 Selandia Baru</div><div class="bm-val">NZD 22 Miliar</div><div class="bm-label">REVENUE 2023</div></div>
+    <div class="bm-card bm-blue"><div class="bm-name">REI Co-op</div><div class="bm-country">🇺🇸 Amerika Serikat</div><div class="bm-val">USD 3.8 Miliar</div><div class="bm-label">REVENUE 2023</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 9 — SDGs + WIN SOLUTION
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// DAMPAK & WIN SOLUTION</div>
+    <div class="stitle">SDGs Alignment · <span class="r">Win Solution</span> <span class="g">Pemerintah</span></div>
+    <div class="sdesc">KMNMP sebagai instrumen pencapaian 7 SDGs sekaligus win-win solution untuk pemerintah — Zero APBN, data real-time, pajak Rp55T/tahun</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="sdg-grid a-fadeup a-d2">
+    <div class="sdg-card"><span class="sdg-icon">🎯</span><div class="sdg-num">SDG 1 — NO POVERTY</div><div class="sdg-title">Tanpa Kemiskinan</div><div class="sdg-target">10 juta petani keluar kemiskinan struktural melalui SHU proporsional</div><div class="sdg-instr">KPA-1 Petani 30% Suara RAT</div></div>
+    <div class="sdg-card"><span class="sdg-icon">🌾</span><div class="sdg-num">SDG 2 — ZERO HUNGER</div><div class="sdg-title">Tanpa Kelaparan</div><div class="sdg-target">Resi Gudang Digital 83.763 desa — AI Crop Insurance — Zero Food Waste</div><div class="sdg-instr">Lumbung Pangan + Smart Farming</div></div>
+    <div class="sdg-card"><span class="sdg-icon">♀️</span><div class="sdg-num">SDG 5 — GENDER EQUALITY</div><div class="sdg-title">Kesetaraan Gender</div><div class="sdg-target">SPP Digital 30 juta kader PKK berdaya ekonomi mandiri via JP3 Pay</div><div class="sdg-instr">JP3 Pay + Academy PKK</div></div>
+    <div class="sdg-card"><span class="sdg-icon">💼</span><div class="sdg-num">SDG 8 — DECENT WORK</div><div class="sdg-title">Pekerjaan Layak</div><div class="sdg-target">518.231 lapangan kerja baru di desa dari Karang Taruna Digital + JP3 Logistics</div><div class="sdg-instr">KT Digital + Logistics Agen</div></div>
+    <div class="sdg-card"><span class="sdg-icon">🚀</span><div class="sdg-num">SDG 9 — INNOVATION</div><div class="sdg-title">Inovasi Infrastruktur</div><div class="sdg-target">Digital OS Desa pertama di dunia — 12 Super Ide Brilian tidak tertandingi</div><div class="sdg-instr">kopnusa.id 16 Modul + CAS 3.0</div></div>
+    <div class="sdg-card"><span class="sdg-icon">🌿</span><div class="sdg-num">SDG 13 — CLIMATE ACTION</div><div class="sdg-title">Aksi Iklim</div><div class="sdg-target">1 juta ton CO₂/tahun dimonetisasi via CCVE — KRPL + Agroforestri + Carbon Credits</div><div class="sdg-instr">CCVE + KRPL + Agroforestri</div></div>
+    <div class="sdg-card" style="grid-column:span 2"><span class="sdg-icon">🤝</span><div class="sdg-num">SDG 17 — PARTNERSHIPS</div><div class="sdg-title">Kemitraan Global</div><div class="sdg-target">MoU resmi Kemendesa, Kemendagri, Kemenkop · ICA 2027 · ADB · World Bank · Green Sukuk Desa Rp10T</div><div class="sdg-instr">API Government Bridge + JE-P3 ICA + GVNP 195 Negara</div></div>
+  </div>
+  <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--red);letter-spacing:2px;margin:24px 0 12px;font-weight:700;">▸ 5 ARGUMEN WIN SOLUTION UNTUK PEMERINTAH</div>
+  <div class="win-grid a-fadeup a-d3">
+    <div class="win-card"><span class="win-num">1</span><div class="win-title">ZERO APBN</div><div class="win-body">KMNMP integrasikan infrastruktur desa existing — pemerintah tidak perlu bangun sistem baru. Monitoring via Smart Village Dashboard.</div></div>
+    <div class="win-card"><span class="win-num">2</span><div class="win-title">DATA REAL-TIME 83.763 DESA</div><div class="win-body">Dashboard produksi, harga komoditas, stunting, kemiskinan. Policy making berbasis data nyata, bukan asumsi tahunan.</div></div>
+    <div class="win-card"><span class="win-num">3</span><div class="win-title">PAJAK Rp55T/TAHUN</div><div class="win-body">Transaksi Rp500T (2045) × PPN 11% = <strong style="color:#4DDB8A">Rp55 Triliun pajak/tahun</strong> dari KMNMP saja. Return investasi government 0 (zero APBN).</div></div>
+    <div class="win-card"><span class="win-num">4</span><div class="win-title">KDMP SOLVER</div><div class="win-body">80.081 gerai KDMP butuh Digital OS. KMNMP adalah satu-satunya platform siap mengisi kekosongan ini sesuai Inpres 9/2025 Presiden Prabowo.</div></div>
+    <div class="win-card"><span class="win-num">5</span><div class="win-title">SOFT POWER INDONESIA</div><div class="win-body">Model Digital OS Desa koperasi direplikasi ke 20+ negara — Indonesia diakui dunia sebagai pemimpin Cooperative Digital Transformation via ICA 2027.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 10 — 12 SUPER IDE BRILIAN
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// BAB 23 · EKSKLUSIF v13.0 · TOP SECRET DEWAN PENDIRI</div>
+    <div class="stitle"><span class="gold">12 Super Ide</span> <span class="g">Brilian</span> Peradaban</div>
+    <div class="sdesc">Inovasi eksklusif yang memposisikan KMNMP sebagai koperasi digital paling inovatif di dunia — competitive moat 5+ tahun tidak bisa ditiru siapapun</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="ibox ibox-gold a-fadeup a-d1">
+    <div class="ibox-title">⚡ RAHASIA DEWAN PENDIRI — HANYA UNTUK INVESTOR TIER UTAMA & 13 PENDIRI</div>
+    <div class="ibox-body">Berikut adalah 12 Super Ide Brilian yang akan memposisikan KMNMP sebagai koperasi digital paling inovatif di dunia — melampaui Mondragon (Spanyol), REI Co-op (USA), dan Fonterra (Selandia Baru). Setiap ide memiliki implementasi teknis konkret, dampak terukur, dan first-mover advantage yang tidak dapat direplikasi dalam 5 tahun ke depan.</div>
+  </div>
+  <div class="ideas-grid a-fadeup a-d2">
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">AI/GOV</div><div class="idea-code">SI-01</div><div class="idea-name">Cooperative AI Senator (CAS) 3.0</div><div class="idea-desc">AI advisor dengan hak suara konsultatif di RAT KMNMP. CAS menganalisis 83.763 data desa real-time, mengidentifikasi risiko sistemik, menyarankan alokasi SHU optimal, dan memberikan rekomendasi kebijakan berbasis data. Pertama di dunia: AI sebagai anggota fungsional koperasi demokratis.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">Keputusan RAT 10x lebih akurat · Zero bias · Transparansi total · Sovereign AI</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">DIGITAL TWIN</div><div class="idea-code">SI-02</div><div class="idea-name">Village Digital Twin Network (VDTN)</div><div class="idea-desc">83.763 digital twin desa Indonesia dalam satu platform. Setiap desa memiliki kembaran digital 3D real-time merepresentasikan pertanian, logistik, kesehatan, ekonomi, dan infrastruktur. Diperbarui setiap 15 menit via IoT sensors, drone data, dan satellite imagery.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">Policy simulation · Disaster prediction 60 hari awal · Resource optimization skala nasional</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">BLOCKCHAIN</div><div class="idea-code">SI-03</div><div class="idea-name">Decentralized Autonomous Cooperative (DAC)</div><div class="idea-desc">Lapisan governance DAO di atas koperasi konvensional. Smart contracts Hyperledger menjalankan distribusi SHU otomatis, voting proposal real-time tanpa manipulasi, dan audit trail permanen. Anggota propose, vote, dan execute keputusan koperasi dari handphone.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">Zero corruption · Self-executing governance · 100% auditable · Trustless democracy</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">PRIVACY</div><div class="idea-code">SI-04</div><div class="idea-name">Zero-Knowledge Proof Identity (ZKP-ID)</div><div class="idea-desc">Sistem identitas membuktikan keanggotaan tanpa mengungkap data pribadi. Anggota bisa membuktikan "Saya petani KPA-1 tier 3 dari Jabar" tanpa mengungkap NIK, alamat, atau data sensitif. Dipimpin Dharma Pongrekun (eks-BSSN). Revolusi privasi data koperasi pertama Asia.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">UU PDP 27/2022 fully compliant · Privacy-first · Anti-surveillance · 10M anggota terlindungi</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">ISLAMIC FINANCE</div><div class="idea-code">SI-05</div><div class="idea-name">Green Sukuk Desa (GSD)</div><div class="idea-desc">Instrumen keuangan syariah hijau berbasis aset desa — sawah, kebun, hutan, dan infrastruktur terbarukan. KMNMP menerbitkan sukuk musyarakah berbasis 83.763 desa sebagai underlying asset. Target: Rp10 Triliun sukuk perdana 2027, listed OJK & IDB.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">Islamic finance + green economy + village sovereignty · Halal investment revolution</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">IoT/SATELLITE</div><div class="idea-code">SI-06</div><div class="idea-name">KMNMP Satellite IoT Grid</div><div class="idea-desc">Jaringan IoT desa via integrasi Starlink/SATRIA-1 untuk 15.000+ desa terpencil tanpa internet. Sensor tanah, cuaca, stok pangan, dan CCTV desa terhubung ke kopnusa.id dalam satu grid nasional. Tidak ada desa tertinggal secara digital — zero digital divide.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">Zero digital divide · Real-time village sensing · Universal coverage · SATRIA-1 integration</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">CARBON/CLIMATE</div><div class="idea-code">SI-07</div><div class="idea-name">Carbon Credit Village Exchange (CCVE)</div><div class="idea-desc">Bursa karbon kredit desa pertama dunia. 83.763 desa menghasilkan karbon kredit dari agroforestri, KRPL, mangrove, dan energi terbarukan. KMNMP menjadi aggregator, verifikator, dan penjual ke pasar global (VERRA, Gold Standard). Target: 1 juta ton CO₂/tahun = USD 20 juta.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">SDG 13 revenue stream · Desa sebagai penjaga planet · USD 20M/tahun 2045</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">AGRITECH</div><div class="idea-code">SI-08</div><div class="idea-name">AI Precision Agriculture & Crop Insurance</div><div class="idea-desc">AI prediksi panen berbasis data historis, cuaca BMKG, citra satelit, dan kondisi tanah IoT. Sistem otomatis menghitung premi asuransi pertanian per petani per musim, bayar klaim saat anomali terdeteksi. Eliminasi broker, manipulasi, dan keterlambatan klaim.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">10M petani terlindungi · Panen optimal · Food security · Zero asuransi manipulasi</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">METAVERSE</div><div class="idea-code">SI-09</div><div class="idea-name">MetaDesa — Village Metaverse Layer</div><div class="idea-desc">Platform 3D immersive marketplace desa Indonesia. Pembeli global dapat "mengunjungi" desa virtual, melihat proses produksi langsung, membeli komoditas, dan berinteraksi dengan petani via avatar. Teknologi: WebXR + Unity + blockchain provenance traceability.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">Premium export pricing · Cultural showcase global · Rp500T target 2045 accelerated</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">SOVEREIGN WEALTH</div><div class="idea-code">SI-10</div><div class="idea-name">Cooperative Sovereign Wealth Fund (CSWF)</div><div class="idea-desc">Dana investasi jangka panjang koperasi — "tabungan peradaban" anggota. 5% SHU tahunan dikumpulkan dan diinvestasikan dalam obligasi negara, REITs, ETF global, startup agritech. Target: Rp100 Triliun AUM 2045 — setara Singapore's Temasek versi koperasi desa.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">Rp100T AUM 2045 · Intergenerational equity · Anti-poverty endowment fund</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">EXPORT/TRADE</div><div class="idea-code">SI-11</div><div class="idea-name">Global Village Network Protocol (GVNP)</div><div class="idea-desc">Standar protokol ekspor desa ke 195 negara — dokumen, sertifikasi, traceability, payment gateway, dan customs clearance dalam satu API. KMNMP menjadi ICA Reference Model untuk cooperative export protocol. First-mover advantage global.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">195 pasar terbuka · ICA recognition 2027 · Indonesia = cooperative export leader dunia</div></div></div>
+
+    <div class="idea-card"><div class="idea-glow"></div><div class="idea-cat">HEALTH/AI</div><div class="idea-code">SI-12</div><div class="idea-name">Neural Health Grid — AI Preventive Health</div><div class="idea-desc">Jaringan AI kesehatan preventif berbasis data 300.000+ posyandu Indonesia. AI mendeteksi pola stunting, gizi buruk, penyakit tropis, dan risiko epidemi 60 hari lebih awal dari sistem konvensional. Terintegrasi BPJS, PKK, dan Kemenkes via kopnusa.id Health API.</div><div class="idea-impact"><div class="idea-impact-label">DAMPAK STRATEGIS</div><div class="idea-impact-val">Zero stunting vision · Early epidemic detection · 10M balita terlindungi · SDG 3</div></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 11 — 42 DOKUMEN
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s11">
+<div class="wrap">
+  <div class="sh a-fadeup">
+    <div class="stag">// MASTER INDEX</div>
+    <div class="stitle">Master Index — <span class="r">42 Dokumen</span> <span class="g">Peradaban KMNMP</span></div>
+    <div class="sdesc">Korpus pengetahuan peradaban ekonomi digital desa Indonesia — 42 dokumen yang membentuk blueprint negara koperasi pertama dunia</div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="a-fadeup a-d2">
+    <div class="doc-level">
+      <div class="doc-lhdr"><span class="doc-lnum">L1: VISI</span><span class="doc-lname">Fondasi Peradaban — Visi, Filosofi, Whitepaper</span><div class="doc-lline"></div></div>
+      <div class="docs-row">
+        <div class="doc-chip"><div class="doc-chip-num">01</div><div class="doc-chip-title">Vision Statement Digital OS Desa Indonesia</div><div class="doc-chip-lead">Joint · kopnusa.id</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">02</div><div class="doc-chip-title">Founders Philosophy & AD/ART Super Final 2026</div><div class="doc-chip-lead">Joint · Legal KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">03</div><div class="doc-chip-title">Story of Origin & Narrative Strategy</div><div class="doc-chip-lead">JE-P3 · Brand</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">04</div><div class="doc-chip-title">Whitepaper / Concept Paper v13.0</div><div class="doc-chip-lead">Joint · ICA</div></div>
+      </div>
+    </div>
+    <div class="doc-level">
+      <div class="doc-lhdr"><span class="doc-lnum">L2: LEMBAGA</span><span class="doc-lname">Governance, GAP Analysis, Legal Framework</span><div class="doc-lline"></div></div>
+      <div class="docs-row">
+        <div class="doc-chip"><div class="doc-chip-num">05</div><div class="doc-chip-title">Organizational Structure & Governance Charter — 13 Pendiri</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">06</div><div class="doc-chip-title">GAP Analysis 45+ Infrastruktur Desa</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">07</div><div class="doc-chip-title">Arsitektur Integrasi — 5 Pilar KMNMP</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">08</div><div class="doc-chip-title">Legal Framework & Regulatory Compliance</div><div class="doc-chip-lead">KMNMP · Hukum</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">09</div><div class="doc-chip-title">Ecosystem Strategy Nasional–Global</div><div class="doc-chip-lead">JE-P3</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">10</div><div class="doc-chip-title">International Expansion Strategy — 20+ Negara + GVNP</div><div class="doc-chip-lead">JE-P3</div></div>
+      </div>
+    </div>
+    <div class="doc-level">
+      <div class="doc-lhdr"><span class="doc-lnum">L3: PRODUK</span><span class="doc-lname">Platform, Arsitektur Teknis, Financial Model</span><div class="doc-lline"></div></div>
+      <div class="docs-row">
+        <div class="doc-chip"><div class="doc-chip-num">11</div><div class="doc-chip-title">PRD v13.0 — 16 Fitur kopnusa.id + CAS 3.0</div><div class="doc-chip-lead">KMNMP · Tech</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">12</div><div class="doc-chip-title">System Architecture — api.kopnusa.id End-to-End</div><div class="doc-chip-lead">KMNMP · DevOps</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">13</div><div class="doc-chip-title">Financial Model — SHU + 8 Revenue Streams + CSWF</div><div class="doc-chip-lead">KMNMP · CFO</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">14</div><div class="doc-chip-title">Supply Chain & 10 Komoditas Ekspor GVNP</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">15</div><div class="doc-chip-title">Marketplace & E-Commerce Blueprint MetaDesa</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">16</div><div class="doc-chip-title">JP3 Pay Fintech — SPP Digital, Tabungan Haji, Zakat Pay</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">17</div><div class="doc-chip-title">Haji & Umroh Digital Module — API BPIH</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">18</div><div class="doc-chip-title">JE-P3 Academy — 3 Tier Pendidikan</div><div class="doc-chip-lead">Joint</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">19</div><div class="doc-chip-title">Smart Village IoT Blueprint + VDTN + Satellite Grid</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">20</div><div class="doc-chip-title">KDMP-as-a-Service (KaaS) — 80.081 Gerai</div><div class="doc-chip-lead">KMNMP</div></div>
+      </div>
+    </div>
+    <div class="doc-level">
+      <div class="doc-lhdr"><span class="doc-lnum">L4: OPS</span><span class="doc-lname">Program Operasional — PKK, Logistik, Carbon, Ekspor</span><div class="doc-lline"></div></div>
+      <div class="docs-row">
+        <div class="doc-chip"><div class="doc-chip-num">21</div><div class="doc-chip-title">Program PKK Integration — 30 Juta Kader</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">22</div><div class="doc-chip-title">Karang Taruna Digital — 83.763 Agen Logistik</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">23</div><div class="doc-chip-title">BUMDesMA & Holding Desa Framework</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">24</div><div class="doc-chip-title">Lumbung Pangan → Resi Gudang Digital + AI</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">25</div><div class="doc-chip-title">KDMP-as-a-Service Operasional SOP</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">26</div><div class="doc-chip-title">Smart Village Pilot 100 Desa — Deployment Guide</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">27</div><div class="doc-chip-title">Program Hilirisasi Komoditas Desa</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">28</div><div class="doc-chip-title">Program Dana Desa Integration (PMK 7/2026)</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">29</div><div class="doc-chip-title">Program Carbon Credits Desa — CCVE Blueprint</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">30</div><div class="doc-chip-title">Program Ekspor Desa ke 195 Negara + GVNP</div><div class="doc-chip-lead">Joint · JE-P3</div></div>
+      </div>
+    </div>
+    <div class="doc-level">
+      <div class="doc-lhdr"><span class="doc-lnum">L5: GOV</span><span class="doc-lname">Corporate Governance, ESG, Innovation Pipeline</span><div class="doc-lline"></div></div>
+      <div class="docs-row">
+        <div class="doc-chip"><div class="doc-chip-num">31</div><div class="doc-chip-title">Corporate Governance Framework — 5 Lapis</div><div class="doc-chip-lead">KMNMP</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">32</div><div class="doc-chip-title">Innovation Pipeline — 12 Super Ide Brilian v13.0</div><div class="doc-chip-lead">Joint · Secret</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">33</div><div class="doc-chip-title">Multi-Entity Governance & Portal Boundary</div><div class="doc-chip-lead">Joint</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">34</div><div class="doc-chip-title">ESG Framework & SDGs Alignment 2026–2045</div><div class="doc-chip-lead">Joint</div></div>
+      </div>
+    </div>
+    <div class="doc-level">
+      <div class="doc-lhdr"><span class="doc-lnum red">L6: INVESTOR</span><span class="doc-lname">Investor Memorandum, Financial Models, Legacy</span><div class="doc-lline"></div></div>
+      <div class="docs-row">
+        <div class="doc-chip"><div class="doc-chip-num">35</div><div class="doc-chip-title">Investor Memorandum — 4 Layer Competitive Moat</div><div class="doc-chip-lead">JE-P3 · VC</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">36</div><div class="doc-chip-title">Pitchdeck Narrative — 5 Slide Inti</div><div class="doc-chip-lead">JE-P3</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">37</div><div class="doc-chip-title">Financial Models — 12 Variabel Sensitifitas</div><div class="doc-chip-lead">KMNMP · CFO</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">38</div><div class="doc-chip-title">Impact/SDGs + Brand + Win Solution Pemerintah</div><div class="doc-chip-lead">Joint</div></div>
+        <div class="doc-chip"><div class="doc-chip-num">39</div><div class="doc-chip-title">Legacy & 100-Year Roadmap + Blockchain Covenant</div><div class="doc-chip-lead">Joint</div></div>
+      </div>
+    </div>
+    <div class="doc-level">
+      <div class="doc-lhdr"><span class="doc-lnum gold">EKSKLUSIF</span><span class="doc-lname">3 Dokumen Baru — Tidak Ada di Blueprint Sebelumnya</span><div class="doc-lline"></div></div>
+      <div class="docs-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="doc-chip doc-new"><div class="doc-chip-num">C-40 ★</div><div class="doc-chip-title">PKK & Posyandu Integration Blueprint — "Health-Food Nexus" + Neural Health Grid</div><div class="doc-chip-lead">KMNMP · kopnusa.id/pkk</div></div>
+        <div class="doc-chip doc-new"><div class="doc-chip-num">C-41 ★</div><div class="doc-chip-title">BUMDesMA & Holding Desa Framework — SPP Digital Migration + DAC Governance</div><div class="doc-chip-lead">KMNMP · kopnusa.id/bumdesma</div></div>
+        <div class="doc-chip doc-new"><div class="doc-chip-num">C-42 ★</div><div class="doc-chip-title">Smart Village Digital OS Blueprint — Village Digital Twin (VDTN) Full Platform</div><div class="doc-chip-lead">KMNMP CTO + Satellite Grid</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 12 — COVENANT
+══════════════════════════════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="covenant-wrap a-fadeup">
+    <div class="cov-eyebrow">// 100-YEAR COVENANT — PERJANJIAN ABADI PERADABAN</div>
+    <div class="cov-from"><span class="cov-desa">DARI DESA</span></div>
+    <div class="cov-untuk"><span class="cov-dunia">UNTUK DUNIA</span></div>
+    <div class="cov-divider"></div>
+    <blockquote class="cov-quote">
+      "Dua badan, satu peradaban. JE-P3 menjaga narasi dunia, KMNMP menjaga amanah desa — bersama menghubungkan 45+ kelembagaan dari 83.763 desa Indonesia ke 195 negara. Dari silo menuju koneksi. Dari fragmentasi menuju ekosistem. PKK, Karang Taruna, BUMDes, Gapoktan, Posyandu, Lumbung Pangan — semua adalah bagian dari satu peradaban yang utuh dan abadi."
+    </blockquote>
+    <div class="sumpah-grid">
+      <div class="sumpah-item"><div class="sumpah-num">①</div><div class="sumpah-text">JE-P3 dan KMNMP tidak akan pernah dikonversi menjadi perusahaan swasta — selamanya</div></div>
+      <div class="sumpah-item"><div class="sumpah-num">②</div><div class="sumpah-text">Seluruh aset adalah milik anggota koperasi secara kolektif — tidak bisa dijual pribadi</div></div>
+      <div class="sumpah-item"><div class="sumpah-num">③</div><div class="sumpah-text">Data anggota dilindungi UU PDP 27/2022 + ZKP-ID — tidak bisa dijual atau diserahkan ke siapapun</div></div>
+      <div class="sumpah-item"><div class="sumpah-num">④</div><div class="sumpah-text">SHU selalu didistribusikan demokratis via RAT — auto-execute via Blockchain Smart Contract</div></div>
+      <div class="sumpah-item"><div class="sumpah-num">⑤</div><div class="sumpah-text">Prinsip ICA tidak boleh ditinggalkan — koperasi sejati sampai akhir peradaban</div></div>
+      <div class="sumpah-item"><div class="sumpah-num">⑥</div><div class="sumpah-text">Petani selalu memiliki 30% suara tertinggi di RAT (KPA-1) — hak suara rakyat kecil dilindungi selamanya</div></div>
+    </div>
+    <div class="cov-stats">
+      <div class="cst"><span class="cst-val">42</span><span class="cst-key">DOKUMEN</span></div>
+      <div class="cst"><span class="cst-val">13</span><span class="cst-key">PENDIRI</span></div>
+      <div class="cst"><span class="cst-val">100</span><span class="cst-key">TAHUN</span></div>
+      <div class="cst"><span class="cst-val">∞</span><span class="cst-key">PERADABAN</span></div>
+    </div>
+    <div class="cov-architect">
+      <div class="ca-role">GRAND ARCHITECT & COO</div>
+      <div class="ca-name">Tn. H. Gugun Gunara, S.E., M.M.</div>
+      <div class="ca-sub">(Muhammad Lutfi Azmi) — Prabu Danling & Santri Angon</div>
+      <div class="ca-creds">CMC · MBA International Business · CFA · PMP · CBP · Six Sigma Black Belt</div>
+    </div>
+    <div class="cov-footer">
+      © 2026 JE-P3 × KOPERASI MULTIPIHAK NUSA MERAH PUTIH (KMNMP)<br>
+      kopnusa.id · api.kopnusa.id · admin.kopnusa.id · pppbisnis.com<br>
+      KITAB 42 DOKUMEN PERADABAN — FINAL INTEGRATED v13.0 — 17 MARET 2026<br>
+      RAHASIA INTERNAL KMNMP — DISUSUN STANDAR MONDRAGON–McKINSEY–BlackRock–ICA
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════════ -->
+<script>
+/* ── PARTICLE CANVAS ── */
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function initCanvas() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+  particles = [];
+  for (let i = 0; i < 90; i++) {
+    particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 0.5,
+      color: Math.random() > 0.7 ? '#CC0000' : Math.random() > 0.5 ? '#00A550' : '#D4AF37',
+      alpha: Math.random() * 0.5 + 0.1
+    });
+  }
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach((p, i) => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.alpha;
+    ctx.fill();
+    particles.slice(i + 1).forEach(p2 => {
+      const dx = p.x - p2.x, dy = p.y - p2.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 130) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = p.color;
+        ctx.globalAlpha = (1 - dist/130) * 0.12;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    });
+    ctx.globalAlpha = 1;
+  });
+  if (document.getElementById('s0').classList.contains('on')) requestAnimationFrame(drawParticles);
+}
+
+window.addEventListener('resize', initCanvas);
+initCanvas();
+drawParticles();
+
+/* ── SLIDE NAVIGATION ── */
+const slides = document.querySelectorAll('.slide');
+const btns   = document.querySelectorAll('#navLinks .nb');
+const prog   = document.getElementById('prog');
+const prevBtn  = document.getElementById('navPrev');
+const nextBtn  = document.getElementById('navNext');
+const counterEl= document.getElementById('navCounter');
+let cur = 0;
+
+function updateNavUI(n) {
+  btns.forEach((b,i) => b.classList.toggle('on', i === n));
+  // overlay buttons
+  document.querySelectorAll('#navOverlay .nb').forEach((b,i) => b.classList.toggle('on', i === n));
+  prog.style.width = (n / (slides.length - 1) * 100) + '%';
+  if(counterEl) counterEl.textContent = String(n+1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+  if(prevBtn) prevBtn.disabled = n === 0;
+  if(nextBtn) nextBtn.disabled = n === slides.length - 1;
+  // scroll active tab into view
+  if(btns[n]) btns[n].scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+}
+
+function go(n) {
+  slides[cur].classList.remove('on');
+  cur = n;
+  slides[cur].classList.add('on');
+  updateNavUI(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  slides[cur].querySelectorAll('.a-fadeup, .a-fadein').forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = '';
+  });
+  if (n === 0) { initCanvas(); drawParticles(); }
+  if (n === 7) setTimeout(animateBars, 400);
+}
+
+function toggleMenu() {
+  const ov = document.getElementById('navOverlay');
+  const ham = document.getElementById('navHam');
+  if (!ov || !ham) return;
+  const isOpen = ov.classList.toggle('open');
+  ham.innerHTML = isOpen ? '✕' : '&#9776;';
+}
+function closeMenu() {
+  const ov = document.getElementById('navOverlay');
+  const ham = document.getElementById('navHam');
+  if(ov) ov.classList.remove('open');
+  if(ham) ham.innerHTML = '&#9776;';
+}
+
+function animateBars() {
+  document.querySelectorAll('.bar-fill').forEach(b => {
+    const w = b.style.width;
+    b.style.width = '0%';
+    setTimeout(() => b.style.width = w, 100);
+  });
+}
+
+/* ── KEYBOARD NAVIGATION ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' && cur < slides.length - 1) go(cur + 1);
+  if (e.key === 'ArrowLeft' && cur > 0) go(cur - 1);
+});
+
+/* ── COUNTER ANIMATION ── */
+function animateCounter(el, target, dur = 1500) {
+  const start = Date.now();
+  const step = () => {
+    const p = Math.min(1, (Date.now() - start) / dur);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * ease);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ── INIT ── */
+window.onload = () => {
+  updateNavUI(0);
+  setTimeout(() => animateBars(), 3500);
+  // Counter on cover
+  document.querySelectorAll('.cstat-num[data-count]').forEach(el => {
+    animateCounter(el, +el.dataset.count);
+  });
+};
+
+/* ── TOUCH SWIPE ── */
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 60) {
+    if (dx < 0 && cur < slides.length - 1) go(cur + 1);
+    else if (dx > 0 && cur > 0) go(cur - 1);
+  }
+}, {passive:true});
+/* ESC closes menu */
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeMenu(); });
+</script>
+</body>
+</html>

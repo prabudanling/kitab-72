@@ -1,30 +1,31 @@
 ---
-Task ID: 1
+Task ID: 2
 Agent: Main
-Task: Transform KNBMP PGA-72 HTML document into an interactive super app with animated number grid
+Task: Complete UI/UX redesign following Professor's accessibility-first design critique — warm museum-quality design replacing dark Gen-Z aesthetic
 
 Work Log:
-- Read and analyzed the 1203-line HTML document containing KNBMP PGA-72 data
-- Extracted all 72 pillar data (ID, name, English name, description, domain, vision, dimensions, principles, cross-references)
-- Identified 9 domain structures with colors, emojis, and metadata
-- Created comprehensive data file `/src/lib/pillar-data.ts` with TypeScript interfaces
-- Built full-page super app with 6 major sections:
-  1. **Hero Section**: Full-screen animated cover with orbital rings, particle field, gradient layers, animated text entrance, and CTA button
-  2. **Sticky Search & Filter Bar**: Real-time search with domain filter tabs (9 domains)
-  3. **Domain Cards Grid**: 9 interactive domain cards with color-coded borders and hover effects
-  4. **72-Pillar Matrix Grid**: Interactive grid of numbers 1-72, color-coded by domain, with staggered entrance animations, hover glow effects, and click-to-detail
-  5. **Golden Ratio Philosophy Section**: Explanation of 72 pillars and 9 domains
-  6. **Covenant Footer**: Sacred oath section with signature block
-- Built **Pillar Detail Panel**: Slide-in drawer from right with full pillar information (vision, description, dimensions, principles, cross-references) and cross-navigation between pillars
-- Built **Animated Counters**: 72 Pilar, 9 Domain, 100 Tahun, 83.763 Desa
-- Used Framer Motion for all animations (entrance, hover, tap, panel transitions)
-- Dark navy + gold color theme matching the original document
-- Fully responsive (mobile-first design)
-- Updated layout.tsx metadata
-- All lint checks pass
+- Received detailed UI/UX professor critique about the dark-mode Gen-Z design being inaccessible for elderly users
+- Analyzed all design requirements: warm parchment palette, serif headings, sans-serif body, no dark mode, no glassmorphism
+- Read original document `daftar-isi-72-dokument-.txt` to extract exact daftar isi structure (9 domains, 72 pillars)
+- Updated `layout.tsx`: Replaced Geist fonts with Playfair Display (headings), Inter (body), Merriweather (serif)
+- Rewrote `globals.css`: Set warm design tokens — background #FAF9F6, foreground #2C2C2C, heritage colors (Gold #C5A059, Navy #1A3C5E, Terracotta #C75B39, Burgundy #6B2737, Forest #2E6B4F, etc.)
+- Completely rewrote `page.tsx` (1119 lines) with museum-quality design:
+  1. **Sticky Header**: Clean white bar with "KNBMP · PGA-72"
+  2. **Hero Section**: Warm parchment background, Playfair Display headings, italic tagline, animated stats bar, gold CTA button (48px min height)
+  3. **Daftar Isi Lengkap**: All 9 domains with 72 pillars listed exactly as original document — domain-colored left borders, clickable pillar rows with number badges, descriptions, and English names
+  4. **Interactive Matrix**: Number grid 1-72, warm-styled search bar, domain filter tabs
+  5. **Pillar Detail Panel**: WHITE background slide-in panel (not dark), warm text colors, gold-bordered vision quote, clean dimensions table, cross-reference navigation
+  6. **9 Domain Cards**: Clean white cards with heritage color accents
+  7. **Philosophy Section**: Gold left border quote block
+  8. **Footer**: Covenant text, sticky to bottom with mt-auto
+- Removed ALL: dark backgrounds, glassmorphism, neon glows, particle effects, orbital rings, complex gradients
+- Added: generous white space, readable typography (18px body, 1.7 line-height), accessible buttons (min 48px)
+- Lint passes cleanly, dev server compiles successfully
 
 Stage Summary:
-- Produced: `/src/lib/pillar-data.ts` (data layer), `/src/app/page.tsx` (full super app)
-- All 72 pillars interactive with search, filter, and detail views
-- Smooth animations throughout (particles, orbital rings, staggered grid, panel slide-in)
-- No external API dependencies, pure client-side React app
+- Complete visual redesign from dark Gen-Z to warm museum-quality aesthetic
+- All 72 pillars present in daftar isi, matching original document structure exactly
+- Accessibility-first design targeting general public including elderly (50+)
+- Typography: Playfair Display (headings) + Inter (body) with 18px minimum body text
+- Color palette: Parchment (#FAF9F6), Charcoal (#2C2C2C), Heritage Gold (#C5A059), Navy (#1A3C5E)
+- Files modified: layout.tsx, globals.css, page.tsx
