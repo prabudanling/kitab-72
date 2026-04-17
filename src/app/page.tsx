@@ -1466,12 +1466,12 @@ function TocPage({ tocPage }: { tocPage: number }) {
 // ═══════════════════════════════════════════════════════════════
 const DOMAIN1_COLOR = '#C4952A'
 
-const visionSentence = 'MEMBANGUN EKOSISTEM EKONOMI RAKYAT BERDAULAT YANG MENJADIKAN SETIAP MANUSIA BEBAS, MAKMUR, DAN BERMARTABAT — DARI DESA KE DUNIA.'
+const visionSentence = 'MEMBANGUN EKOSISTEM EKONOMI RAKYAT BERDAULAT YANG MENJADIKAN SETIAP MANUSIA BEBAS, MAKMUR, DAN BERDAYA — DARI DESA KE DUNIA.'
 
 const visionParagraphs = [
   'KNBMP adalah gerakan membangun kembali kemandirian rakyat — bukan hanya dalam bicara, tetapi dalam kesaksian nyata.',
-  'Kami bermimpi dunia di mana setiap manusia — mulai dari petani di desa terpencil sampai wiraswasta di kota besar — memiliki akses yang sama ke pasar, modal, teknologi, dan kebijakan. Di mana keakurangan bukan lagi menentukan nasib, tetapi kemandirian dan kerja keras yang menentukan keberhasilan.',
-  'Di dunia ini, ekonomi berputar di sekitar manusia — bukan sebaliknya. Teknologi melayani rakyat — bukan menguasai mereka. Politik menjunjung kepentingan rakyat — bukan sekedar menggunakan mereka sebagai alat. Dan kekayaan didistribusikan dengan adil — bukan hanya menggumpal di tangan segelintir orang.',
+  'Kami bermimpi dunia di mana setiap manusia — mulai dari petani di desa terpencil sampai wiraswasta di kota besar — memiliki akses yang sama ke pasar, modal, teknologi, dan kebijakan. Di mana ketidakadilan bukan lagi menentukan nasib, tetapi kemandirian dan kerja keras yang menentukan keberhasilan.',
+  'Di dunia ini, ekonomi berputar di sekitar manusia — bukan sebaliknya. Teknologi melayani rakyat — bukan menguasai mereka. Politik menjunjung kepentingan rakyat — bukan sekadar menggunakan mereka sebagai alat. Dan kekayaan didistribusikan dengan adil — bukan hanya menggumpal di tangan segelintir orang.',
   'Kami bangun KNBMP sebagai bukti nyata: bahwa ekonomi rakyat bisa bersaing dengan korporasi mana pun. Bahwa kerjasama bisa melebihi kompetisi. Bahwa kesejahteraan bisa dicapai tanpa mengorbankan kemanusiaan. Dan bahwa satu ekosistem — dibangun dengan cinta, kerja keras, dan visi yang jelas — bisa mengubah jutaan kehidupan.',
 ]
 
@@ -1758,8 +1758,8 @@ function PillarDetailPage01() {
 
           {/* Letter-by-letter vision statement */}
           <div className="relative z-10 text-center py-2" style={{ perspective: '800px' }}>
-            <p className={`${heading} text-[15px] sm:text-lg lg:text-xl leading-[1.7] tracking-wide`}
-              style={{ color: CHARCOAL }}>
+            <p className="text-[14px] sm:text-base lg:text-lg leading-[1.7] tracking-wide font-bold"
+              style={{ color: CHARCOAL, fontFamily: "'Courier New', Courier, monospace" }}>
               {visionSentence.split('').map((char, i) => (
                 <motion.span
                   key={i}
@@ -1827,8 +1827,8 @@ function PillarDetailPage01() {
               style={{ color: '#3E2723' }}
               variants={inkBleed}
               custom={17 + i}>
-              {para.split(/(ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERMARTABAT)/gi).map((part, j) => {
-                const isHighlight = /ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERMARTABAT/i.test(part)
+              {para.split(/(ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERDAYA)/gi).map((part, j) => {
+                const isHighlight = /ekonomi rakyat|kemandirian|kerjasama|kemanusiaan|cinta|BEBAS.*MAKMUR.*BERDAYA/i.test(part)
                 return isHighlight
                   ? <span key={j} className="font-semibold" style={{ color: BURGUNDY }}>{part}</span>
                   : <span key={j}>{part}</span>
@@ -1840,7 +1840,7 @@ function PillarDetailPage01() {
             style={{ color: BURGUNDY }}
             variants={glowPulse}
             custom={22}>
-            Inilah visi kami: Dunia di mana setiap manusia bebas, makmur, dan bermartabat.
+            Inilah visi kami: Dunia di mana setiap manusia bebas, makmur, dan berdaya.
           </motion.p>
         </div>
 
