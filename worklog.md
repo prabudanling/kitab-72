@@ -41,3 +41,44 @@ Stage Summary:
 - All 72 pillars dynamically generated with full content (vision, dimensions, principles, cross-refs)
 - Navigation: click, keyboard, touch swipe
 - Files: page.tsx (1022 lines), layout.tsx (unchanged), globals.css (unchanged)
+
+---
+Task ID: 4
+Agent: Main
+Task: Enhanced flipbook — page flip sound, Heritage Burgundy palette, exact daftar isi, luxury design
+
+Work Log:
+- Read uploaded document `daftar-isi-72-dokument-.txt` and verified all 72 pillar names, English names, and descriptions match pillar-data.ts exactly
+- Added **page flip sound** using Web Audio API (no external files) — synthesized paper rustle sound with bandpass filter, randomized frequency for natural variation
+- Added sound toggle button (Volume2/VolumeX icons) in desktop bottom bar
+- Applied **Heritage Burgundy (#5E2129)** as primary accent color throughout:
+  - Cover page: PGA-72 title and subtitle in burgundy
+  - Dedication page: VOC in grey (#999), KNBMP in bold burgundy, key numbers in gold
+  - Philosophy page: left border, φ watermark, key phrase in burgundy
+  - Covenant page: title, dividers, key phrases in burgundy
+  - Back cover: MERDEKA watermark in burgundy tint
+- Added **Drop Cap** CSS class (.drop-cap::first-letter) in Merriweather serif font, burgundy color, for Kata Pengantar
+- Added **Batik Kawung watermark** SVG pattern (opacity 3.5%) on all pages — elegant diamond-in-circle motif
+- Added **paper grain texture** (.paper-grain) using subtle CSS diagonal gradients
+- Added **page fold shadow** (.page-fold-shadow) using inset box-shadow for gutter effect
+- Added **page content reveal animation** (.page-content-reveal) with 0.65s fade-in + translate
+- Added **ChapterDivider** component — batik-inspired diamond ornament between sections
+- Enhanced mobile page indicator to show domain color dot + pillar code + domain name
+- Enhanced desktop bottom bar: domain color dot, pillar code, page count, sound toggle in one elegant capsule
+- Progress bar color now matches current domain color
+- Redesigned **TableOfContentsPage** to match uploaded document EXACTLY:
+  - Header: "Master Index PGA-72: Anatomi Peradaban KNBMP" + classification line
+  - Intro paragraph: exact text from uploaded document
+  - Each domain: emoji + "Domain X: ENGLISH NAME" + "(Indonesian — Subtitle)" in domain color
+  - Domain description paragraph in Merriweather serif
+  - Each pillar: "PGA-XX: Name (English Name) — Description" format, exactly matching uploaded doc
+  - Elegant batik-style diamond separators between domains
+  - Left burgundy accent bar
+  - Scrollable content area for all 72 pillars
+
+Stage Summary:
+- Flipbook now has immersive page flip sound (toggleable) using Web Audio API
+- Heritage Burgundy (#5E2129) palette applied throughout as primary accent
+- Daftar Isi matches uploaded document format EXACTLY — all 72 pillars with full names, English names, and descriptions
+- Luxury design elements: batik Kawung watermark, paper grain, page fold shadows, drop caps, chapter dividers, gold/burgundy ornamental lines
+- Lint passes cleanly, dev server compiles successfully

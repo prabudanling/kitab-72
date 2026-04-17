@@ -294,54 +294,112 @@ function DedicationPage() {
 
 function TableOfContentsPage() {
   return (
-    <div className="absolute inset-0 bg-white flex flex-col px-6 sm:px-10 py-8 sm:py-10 overflow-y-auto paper-grain page-fold-shadow">
+    <div className="absolute inset-0 flex flex-col overflow-hidden paper-grain"
+      style={{ backgroundColor: '#FFFEFB' }}>
       <BatikWatermark />
-      <div className="relative z-10 flex flex-col h-full">
-        <h2 className="font-[family-name:var(--font-heading)] text-xl sm:text-2xl font-normal mb-1 text-center"
-          style={{ color: CHARCOAL }}>
-          Daftar Isi
-        </h2>
-        <p className="font-[family-name:var(--font-heading)] text-xs italic text-center mb-6"
-          style={{ color: BURGUNDY }}>
-          Arsitektur PGA-72 — 9 Domain, 72 Pilar
+
+      {/* Left burgundy accent bar */}
+      <div className="absolute left-0 top-0 bottom-0 w-1 z-20" style={{ backgroundColor: BURGUNDY }} />
+
+      <div className="relative z-10 flex-1 overflow-y-auto px-6 sm:px-8 lg:px-10 py-6 sm:py-8">
+        {/* ═══ HEADER — Exactly as in uploaded document ═══ */}
+        <div className="text-center mb-6">
+          {/* Top ornamental line */}
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${GOLD}50` }} />
+            <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: GOLD }} />
+            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${GOLD}50` }} />
+          </div>
+
+          <h2 className="font-[family-name:var(--font-heading)] text-base sm:text-lg font-normal tracking-wide"
+            style={{ color: CHARCOAL }}>
+            Master Index PGA-72
+          </h2>
+          <p className="font-[family-name:var(--font-heading)] text-sm sm:text-base font-normal mt-1"
+            style={{ color: BURGUNDY }}>
+            Anatomi Peradaban KNBMP
+          </p>
+          <p className="font-[family-name:var(--font-heading)] text-[10px] sm:text-xs tracking-[2px] uppercase mt-2"
+            style={{ color: '#8B7D6B' }}>
+            Dokumen Super-Master &nbsp;|&nbsp; Klasifikasi: Absolut &nbsp;|&nbsp; Horizon: 100 Tahun
+          </p>
+
+          {/* Bottom ornamental line */}
+          <div className="flex items-center justify-center gap-3 mt-4">
+            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${GOLD}50` }} />
+            <div className="w-1.5 h-1.5 rotate-45" style={{ backgroundColor: GOLD }} />
+            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${GOLD}50` }} />
+          </div>
+        </div>
+
+        {/* ═══ INTRO PARAGRAPH — Exactly as in uploaded document ═══ */}
+        <p className="font-[family-name:var(--font-serif)] text-[11px] sm:text-[13px] leading-[1.85] text-center mb-8 max-w-lg mx-auto"
+          style={{ color: '#4A3F32' }}>
+          Buku ini bukan sekadar manual korporasi. Ini adalah 72 anak tangga menuju kemerdekaan ekonomi. Setiap domain mewakili satu fungsi vital dari ekosistem kita. Berikut adalah arsitektur lengkap beserta makna filosofis di balik setiap dokumennya.
         </p>
 
-        <div className="flex-1 space-y-3 sm:space-y-4">
-          {domains.map((domain) => (
-            <div key={domain.id}>
-              <div className="flex items-start gap-2 mb-1">
-                <span className="text-sm sm:text-base flex-shrink-0">{domain.emoji}</span>
+        {/* ═══ 9 DOMAINS × 8 PILLARS — Exact format from uploaded document ═══ */}
+        <div className="space-y-5 sm:space-y-6">
+          {domains.map((domain, domainIdx) => (
+            <div key={domain.id} className="relative">
+              {/* Domain header — exactly: "🏛️ DOMAIN 1: IDENTITY & CIVILIZATION (RUH & JATI DIRI)" */}
+              <div className="flex items-start gap-2 mb-1.5">
+                <span className="text-sm sm:text-base flex-shrink-0 mt-px">{domain.emoji}</span>
                 <div className="min-w-0">
-                  <p className="font-[family-name:var(--font-heading)] text-xs sm:text-sm font-semibold leading-tight"
+                  <p className="font-[family-name:var(--font-body)] text-[11px] sm:text-xs font-bold tracking-wider uppercase leading-tight"
                     style={{ color: domain.color }}>
-                    DOMAIN {domain.id}: {domain.name}
+                    Domain {domain.id}: {domain.name}
                   </p>
-                  <p className="font-[family-name:var(--font-heading)] text-[10px] sm:text-xs italic"
-                    style={{ color: '#8B7D6B' }}>
+                  <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-[11px] font-semibold uppercase tracking-wide"
+                    style={{ color: '#6B5E50' }}>
                     ({domain.nameId} — {domain.nameSubtitle})
-                  </p>
-                  <p className="font-[family-name:var(--font-body)] text-[9px] sm:text-[10px]"
-                    style={{ color: '#A09385' }}>
-                    {domain.range}
                   </p>
                 </div>
               </div>
 
-              <div className="ml-5 sm:ml-7 space-y-0.5 mb-3">
+              {/* Domain description */}
+              <p className="font-[family-name:var(--font-serif)] text-[11px] sm:text-[13px] leading-[1.75] ml-5 sm:ml-6 mb-2"
+                style={{ color: '#3E2723' }}>
+                {domain.description}
+              </p>
+
+              {/* Pillar list — exactly: "PGA-01: Name (English) — Description" */}
+              <div className="ml-5 sm:ml-6 space-y-2 mb-2">
                 {domain.pillars.map((pillar) => (
-                  <p key={pillar.id}
-                    className="font-[family-name:var(--font-body)] text-[10px] sm:text-xs leading-relaxed"
-                    style={{ color: '#4A3F32' }}>
-                    <span className="font-semibold" style={{ color: domain.color }}>{pillar.code}</span>
-                    {' '}{pillar.name}
-                  </p>
+                  <div key={pillar.id}
+                    className="relative pl-3"
+                    style={{ borderLeft: `2px solid ${domain.color}20` }}>
+                    <p className="font-[family-name:var(--font-body)] text-[10px] sm:text-[11px] leading-[1.6]"
+                      style={{ color: '#3E2723' }}>
+                      <span className="font-bold" style={{ color: domain.color }}>{pillar.code}</span>
+                      <span style={{ color: '#3E2723' }}>:{' '}</span>
+                      <span className="font-semibold">{pillar.name}</span>
+                      <span className="font-[family-name:var(--font-serif)] italic" style={{ color: '#6B5E50' }}>
+                        {' '}({pillar.eng})
+                      </span>
+                      <span style={{ color: '#8B7D6B' }}> — </span>
+                      <span style={{ color: '#4A3F32' }}>{pillar.desc}</span>
+                    </p>
+                  </div>
                 ))}
               </div>
 
-              <div className="h-px" style={{ backgroundColor: '#E8E0D4' }} />
+              {/* Domain separator — elegant batik-style */}
+              {domainIdx < domains.length - 1 && (
+                <div className="flex items-center justify-center gap-2 mt-4">
+                  <div className="h-px flex-1" style={{ backgroundColor: `${domain.color}15` }} />
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ opacity: 0.3 }}>
+                    <path d="M5 0L10 5L5 10L0 5Z" fill="none" stroke={domain.color} strokeWidth="0.5" />
+                  </svg>
+                  <div className="h-px flex-1" style={{ backgroundColor: `${domain.color}15` }} />
+                </div>
+              )}
             </div>
           ))}
         </div>
+
+        {/* Bottom spacing for scroll */}
+        <div className="h-6" />
       </div>
     </div>
   )
