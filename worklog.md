@@ -327,3 +327,40 @@ Stage Summary:
 - Cover page is DARK LUXURY CINEMATIC: AI-generated background, gold particles with trails, hover interactions
 - All elements use spring animations and blur-to-focus reveals
 - Files: public/cover-bg-god.png, public/cover-ornament-god.png, src/app/page.tsx updated
+---
+Task ID: 1
+Agent: Main Agent
+Task: Fix paper flip sound volume & GOD MODE cover redesign
+
+Work Log:
+- Analyzed existing Web Audio API sound code in page.tsx
+- Increased master gain from 1.0 to 3.0
+- Amplified Layer 1 (paper body) from 0.45 to 1.4
+- Amplified Layer 2 (crisp snap) from 0.55 to 1.6
+- Amplified Layer 3 (air whoosh) from 0.35 to 1.0
+- Amplified Layer 4 (resonance) from 0.2/0.15 to 0.6/0.45
+- Generated new cinematic cover background: cover-bg-ultimate.png (864x1152)
+- Generated new gold ornament frame overlay: cover-ornament-ultimate.png (864x1152)
+- Completely redesigned CoverPage with 13 depth layers:
+  - Layer 0: Deep base gradient (radial, atmospheric)
+  - Layer 1: AI masterpiece background (full bleed cinematic)
+  - Layer 2: Gold ornament frame overlay (mix-blend-mode screen)
+  - Layer 3: Multi-layer vignette (radial + top + bottom + edges)
+  - Layer 4: Batik Kawung ethereal watermark (hover reactive)
+  - Layer 5: Enhanced golden particles (60 particles, trails, glow)
+  - Layer 6: Cinematic light sweep animation (periodic golden shimmer)
+  - Layer 7: Triple gold border frames (outer/middle/inner)
+  - Layer 8: Royal Javanese corner ornaments (spring animation)
+  - Layer 9: Bismillah Arabic calligraphy + classification
+  - Layer 10: Main typography (KNBMP letter reveal, PGA-72, tagline)
+  - Layer 11: Royal Kawung centerpiece (slowly rotating) + credits
+  - Layer 12: Interactive hover effects (golden border + inner glow)
+- Added CinematicLightSweep component (periodic gold shimmer)
+- Added RoyalKawungCenterpiece component (rotating kawung motif)
+- Lint passes cleanly
+
+Stage Summary:
+- Sound volume increased 3x master gain + 2-3x per layer
+- Cover completely redesigned with AI-generated images + 13-layer depth
+- New assets: /public/cover-bg-ultimate.png, /public/cover-ornament-ultimate.png
+- Dev server running, all routes 200, lint clean
