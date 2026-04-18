@@ -4515,7 +4515,10 @@ export default function Home() {
   const handleRitualComplete = useCallback(() => {
     setRitualComplete(true)
     try { sessionStorage.setItem('knbmp-ritual-complete', 'true') } catch { /* quota */ }
-  }, [])
+    // ═══ Start Indonesia Raya HERE — this runs inside Buka Kitab click = real user gesture ═══
+    // Browser allows AudioContext ONLY from direct user interaction, not from useEffect
+    anthem.play(3.0) // 3s delay = time for loading screen to finish
+  }, [anthem])
 
   const handleLockKitab = useCallback(() => {
     setRitualComplete(false)
@@ -4622,35 +4625,25 @@ export default function Home() {
     }
   }, [])
 
-  // ═══ Start Indonesia Raya immediately when cover opens ═══
+  // ═══ Fallback: if ritual was auto-skipped (sessionStorage), play on first user click ═══
+  // This handles returning visitors who skip the ritual — their first click/tap on the page
+  // will resume the AudioContext which was blocked by autoplay policy
+  const fallbackTriggeredRef = useRef(false)
   useEffect(() => {
-    if (!loading && !anthem.hasStarted) {
-      anthem.play(2.0) // 2s delay for smooth entry after loading
+    const playOnFirstGesture = () => {
+      if (fallbackTriggeredRef.current || anthem.hasStarted) return
+      fallbackTriggeredRef.current = true
+      anthem.play(1.0) // Short delay after gesture
     }
-  }, [loading, anthem.hasStarted])
-
-  // ═══ Fallback: resume AudioContext on first user interaction (autoplay policy) ═══
-  const anthemTriggeredRef = useRef(false)
-  useEffect(() => {
-    const resumeOnInteraction = () => {
-      if (anthemTriggeredRef.current) return
-      anthemTriggeredRef.current = true
-      if (!anthem.hasStarted && !loading) {
-        anthem.play(0.5)
-      }
-      document.removeEventListener('click', resumeOnInteraction)
-      document.removeEventListener('touchstart', resumeOnInteraction)
-      document.removeEventListener('keydown', resumeOnInteraction)
-    }
-    document.addEventListener('click', resumeOnInteraction, { once: false })
-    document.addEventListener('touchstart', resumeOnInteraction, { once: false })
-    document.addEventListener('keydown', resumeOnInteraction, { once: false })
+    document.addEventListener('click', playOnFirstGesture)
+    document.addEventListener('touchstart', playOnFirstGesture)
+    document.addEventListener('keydown', playOnFirstGesture)
     return () => {
-      document.removeEventListener('click', resumeOnInteraction)
-      document.removeEventListener('touchstart', resumeOnInteraction)
-      document.removeEventListener('keydown', resumeOnInteraction)
+      document.removeEventListener('click', playOnFirstGesture)
+      document.removeEventListener('touchstart', playOnFirstGesture)
+      document.removeEventListener('keydown', playOnFirstGesture)
     }
-  }, [anthem.hasStarted, anthem, loading])
+  }, [anthem])
 
   // ═══ Mobile detection ═══
   const [isMobile, setIsMobile] = useState(false)
