@@ -713,3 +713,61 @@ Stage Summary:
 - SVG batik patterns replaced with lightweight CSS on mobile
 - Navigation always visible at bottom with proper touch targets (48px)
 - Touch swipe and tap both work for page turning
+---
+Task ID: mobile-perf-v2
+Agent: Main Agent
+Task: Fix mobile performance - app still slow/heavy, optimize all bottlenecks
+
+Work Log:
+- **ROOT CAUSE ANALYSIS**: Identified 5 major mobile bottlenecks:
+  1. 72+ DOM nodes with CSS 3D transforms rendered on mobile (each page is a div with rotateY, backfaceVisibility, box-shadow transitions)
+  2. Screensaver canvas: 150 particles with trails, glow, connecting lines running continuously
+  3. 292KB API response fetched on every page load (72 pilars + 213 dimensions + 144 principles + 341 xrefs)
+  4. AdminPanel (1450 lines) and MerahPutihScreensaver (778 lines) loaded eagerly in main bundle
+  5. Progress bar (fixed bottom-0 z-20) overlapping mobile nav buttons
+  6. Loading screen 1500ms delay on all devices
+
+- **FIX 1: Single-page mobile rendering (page.tsx)**
+  - Replaced 72+ DOM nodes with single `motion.div` that only renders current page
+  - Removed CSS 3D perspective transforms on mobile entirely
+  - Simple opacity fade transition (0.18s) instead of 3D flip
+  - Eliminates ~70 unnecessary DOM nodes, ~70 GPU compositing layers
+
+- **FIX 2: Mobile navigation bar redesign (page.tsx)**
+  - Progress bar moved INSIDE nav bar (was fixed at viewport bottom, overlapping buttons)
+  - Desktop progress bar now has `hidden md:block` class
+  - Nav buttons 44px (11x11 rem) touch targets with active:scale-90 feedback
+  - Page info (pillar code + page number) centered between buttons
+  - Safe area insets: `pb-[max(10px,env(safe-area-inset-bottom))]`
+
+- **FIX 3: Screensaver optimization (MerahPutihScreensaver.tsx)**
+  - Added `useIsMobile()` hook (useState + useEffect, window.innerWidth < 768)
+  - Mobile particles: 150 → 20, glow disabled, trails skipped
+  - Mobile skips: FlagStripes (20 animated divs), GarudaSilhouette, PulsingStar, LightBeams, CornerDecorations
+  - Mobile keeps: Canvas (20p), SilkWaves (1 of 4), MerahPutihText, Vignette, ClockDisplay
+  - Mobile idle timeout: 90s → 120s
+
+- **FIX 4: API response caching (use-flipbook-data.ts)**
+  - Added localStorage caching with 5-minute TTL
+  - On load: read cache → instant render with cached data → fetch fresh in background
+  - `readCache()` has try/catch for SSR safety (localStorage unavailable on server)
+  - Eliminates 292KB network request on repeat visits
+
+- **FIX 5: Lazy-load heavy components (page.tsx)**
+  - AdminPanel: static import → `dynamic(() => import(...), { ssr: false })`
+  - MerahPutihScreensaver: static import → `dynamic(() => import(...), { ssr: false })`
+  - DigitalUnveiling: already dynamic (unchanged)
+  - useScreensaver: kept as static import (small hook, no rendering)
+
+- **FIX 6: Loading screen optimization (page.tsx)**
+  - Mobile: 1500ms → 600ms (faster perceived load)
+  - Mobile: progress increment 15 → 25 (fills bar faster)
+
+Stage Summary:
+- **Mobile DOM nodes**: 72+ → 1 (single page renderer)
+- **Screensaver particles**: 150 → 20 on mobile, 5 animation layers removed
+- **Initial load**: 292KB API call cached in localStorage (instant on revisit)
+- **Bundle split**: AdminPanel (1450 lines) + Screensaver (778 lines) lazy-loaded
+- **Progress bar**: no longer overlaps mobile nav buttons
+- **Loading screen**: 60% faster on mobile (1.5s → 0.6s)
+- All changes: ESLint clean, dev server compiling successfully

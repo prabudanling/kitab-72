@@ -17,6 +17,19 @@ const MERAH_DEEP = '#8B0000'
 const PUTIH = '#FFFFFF'
 const PUTIH_WARM = '#FFF8F0'
 const IDLE_TIMEOUT = 90 // seconds
+const IDLE_TIMEOUT_MOBILE = 120 // seconds — mobile users interact more frequently
+
+// ── Mobile Detection Hook ──
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+  return isMobile
+}
 
 // ── Canvas Particle System ──
 interface Particle {
@@ -31,12 +44,17 @@ function MerahPutihCanvas() {
   const animRef = useRef<number>(0)
   const particlesRef = useRef<Particle[]>([])
   const mouseRef = useRef({ x: 0, y: 0 })
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+
+    const mobile = isMobile
+    const PARTICLE_COUNT = mobile ? 20 : 150
+    const CONNECT_LIMIT = mobile ? 3 : 10
 
     let W = 0, H = 0
     const resize = () => {
@@ -61,34 +79,36 @@ function MerahPutihCanvas() {
         opacity: Math.random() * 0.6 + 0.1,
         fadeDir: (Math.random() * 0.005 + 0.001) * (Math.random() > 0.5 ? 1 : -1),
         color: isRed ? MERAH : PUTIH,
-        glow: Math.random() > 0.5,
+        glow: mobile ? false : Math.random() > 0.5,
         trail: [],
         life: 0,
         maxLife: Math.random() * 600 + 200,
       }
     }
 
-    // Initialize 150 particles
+    // Initialize particles (20 on mobile, 150 on desktop)
     const particles: Particle[] = []
-    for (let i = 0; i < 150; i++) particles.push(createParticle(true))
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle(true))
     particlesRef.current = particles
 
     const animate = () => {
       ctx.clearRect(0, 0, W, H)
 
-      // Background: subtle flowing gradient that shifts over time
-      const time = Date.now() * 0.0003
-      const grd = ctx.createRadialGradient(
-        W / 2 + Math.sin(time) * W * 0.2,
-        H / 2 + Math.cos(time * 0.7) * H * 0.2,
-        0,
-        W / 2, H / 2, W * 0.7
-      )
-      grd.addColorStop(0, 'rgba(139, 0, 0, 0.03)')
-      grd.addColorStop(0.5, 'rgba(255, 0, 0, 0.01)')
-      grd.addColorStop(1, 'transparent')
-      ctx.fillStyle = grd
-      ctx.fillRect(0, 0, W, H)
+      // Background: subtle flowing gradient that shifts over time (skip on mobile for performance)
+      if (!mobile) {
+        const time = Date.now() * 0.0003
+        const grd = ctx.createRadialGradient(
+          W / 2 + Math.sin(time) * W * 0.2,
+          H / 2 + Math.cos(time * 0.7) * H * 0.2,
+          0,
+          W / 2, H / 2, W * 0.7
+        )
+        grd.addColorStop(0, 'rgba(139, 0, 0, 0.03)')
+        grd.addColorStop(0.5, 'rgba(255, 0, 0, 0.01)')
+        grd.addColorStop(1, 'transparent')
+        ctx.fillStyle = grd
+        ctx.fillRect(0, 0, W, H)
+      }
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i]
@@ -114,9 +134,11 @@ function MerahPutihCanvas() {
         p.x += p.vx
         p.y += p.vy
 
-        // Trail
-        p.trail.push({ x: p.x, y: p.y })
-        if (p.trail.length > 8) p.trail.shift()
+        // Trail (skip on mobile)
+        if (!mobile) {
+          p.trail.push({ x: p.x, y: p.y })
+          if (p.trail.length > 8) p.trail.shift()
+        }
 
         // Fade
         p.opacity += p.fadeDir
@@ -148,8 +170,8 @@ function MerahPutihCanvas() {
           : `rgba(255, 255, 255, ${p.opacity})`
         ctx.fill()
 
-        // Glow
-        if (p.glow) {
+        // Glow (skipped on mobile — glow disabled above)
+        if (p.glow && !mobile) {
           const glowR = p.size * 6
           const ggrd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR)
           ggrd.addColorStop(0, p.color === MERAH
@@ -163,11 +185,11 @@ function MerahPutihCanvas() {
         }
       }
 
-      // Draw connecting lines between close red particles
+      // Draw connecting lines between close red particles (reduced on mobile)
       ctx.strokeStyle = 'rgba(255, 0, 0, 0.02)'
       ctx.lineWidth = 0.5
       for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < Math.min(i + 10, particles.length); j++) {
+        for (let j = i + 1; j < Math.min(i + CONNECT_LIMIT, particles.length); j++) {
           const dx = particles[i].x - particles[j].x
           const dy = particles[i].y - particles[j].y
           const d = dx * dx + dy * dy
@@ -196,46 +218,51 @@ function MerahPutihCanvas() {
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', handleMouse)
     }
-  }, [])
+  }, [isMobile])
 
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 }
 
 // ── Flowing Silk Waves ──
 function SilkWaves() {
+  const mobile = useIsMobile()
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Wave 1 — Deep red flowing from left */}
-      <motion.div
-        className="absolute -left-[20%] w-[140%] h-[40%]"
-        style={{
-          background: 'linear-gradient(180deg, transparent 0%, rgba(139,0,0,0.08) 40%, rgba(255,0,0,0.04) 100%)',
-          borderRadius: '50% 50% 0 0',
-          filter: 'blur(40px)',
-        }}
-        animate={{
-          x: ['-5%', '5%', '-5%'],
-          y: ['0%', '8%', '0%'],
-          scale: [1, 1.05, 1],
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      />
+      {/* Wave 1 — Deep red flowing from left (desktop only) */}
+      {!mobile && (
+        <motion.div
+          className="absolute -left-[20%] w-[140%] h-[40%]"
+          style={{
+            background: 'linear-gradient(180deg, transparent 0%, rgba(139,0,0,0.08) 40%, rgba(255,0,0,0.04) 100%)',
+            borderRadius: '50% 50% 0 0',
+            filter: 'blur(40px)',
+          }}
+          animate={{
+            x: ['-5%', '5%', '-5%'],
+            y: ['0%', '8%', '0%'],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      )}
 
-      {/* Wave 2 — Bright red sweeping */}
-      <motion.div
-        className="absolute -right-[10%] w-[120%] h-[35%] bottom-[20%]"
-        style={{
-          background: 'linear-gradient(180deg, rgba(255,0,0,0.06) 0%, rgba(255,0,0,0.02) 60%, transparent 100%)',
-          borderRadius: '0 0 50% 50%',
-          filter: 'blur(50px)',
-        }}
-        animate={{
-          x: ['5%', '-5%', '5%'],
-          y: ['5%', '-3%', '5%'],
-          scale: [1.02, 0.98, 1.02],
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-      />
+      {/* Wave 2 — Bright red sweeping (desktop only) */}
+      {!mobile && (
+        <motion.div
+          className="absolute -right-[10%] w-[120%] h-[35%] bottom-[20%]"
+          style={{
+            background: 'linear-gradient(180deg, rgba(255,0,0,0.06) 0%, rgba(255,0,0,0.02) 60%, transparent 100%)',
+            borderRadius: '0 0 50% 50%',
+            filter: 'blur(50px)',
+          }}
+          animate={{
+            x: ['5%', '-5%', '5%'],
+            y: ['5%', '-3%', '5%'],
+            scale: [1.02, 0.98, 1.02],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+        />
+      )}
 
       {/* Wave 3 — White silk from bottom */}
       <motion.div
@@ -252,19 +279,21 @@ function SilkWaves() {
         transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
       />
 
-      {/* Wave 4 — Red pulse from center */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%]"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(255,0,0,0.05) 0%, transparent 70%)',
-          filter: 'blur(80px)',
-        }}
-        animate={{
-          scale: [0.8, 1.2, 0.8],
-          opacity: [0.3, 0.7, 0.3],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-      />
+      {/* Wave 4 — Red pulse from center (desktop only) */}
+      {!mobile && (
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%]"
+          style={{
+            background: 'radial-gradient(ellipse at center, rgba(255,0,0,0.05) 0%, transparent 70%)',
+            filter: 'blur(80px)',
+          }}
+          animate={{
+            scale: [0.8, 1.2, 0.8],
+            opacity: [0.3, 0.7, 0.3],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      )}
     </div>
   )
 }
@@ -651,6 +680,7 @@ export function MerahPutihScreensaver({
   onDismiss: () => void
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const isMobile = useIsMobile()
 
   const handleInteraction = useCallback(() => {
     if (active) onDismiss()
@@ -691,17 +721,17 @@ export function MerahPutihScreensaver({
           {/* LAYER 2: Flowing Silk Waves */}
           <SilkWaves />
 
-          {/* LAYER 3: Flag Stripe Animation */}
-          <FlagStripes />
+          {/* LAYER 3: Flag Stripe Animation (desktop only) */}
+          {!isMobile && <FlagStripes />}
 
-          {/* LAYER 4: Garuda Silhouette */}
-          <GarudaSilhouette />
+          {/* LAYER 4: Garuda Silhouette (desktop only) */}
+          {!isMobile && <GarudaSilhouette />}
 
-          {/* LAYER 5: Pulsing Star */}
-          <PulsingStar />
+          {/* LAYER 5: Pulsing Star (desktop only) */}
+          {!isMobile && <PulsingStar />}
 
-          {/* LAYER 6: Light Beams */}
-          <LightBeams />
+          {/* LAYER 6: Light Beams (desktop only) */}
+          {!isMobile && <LightBeams />}
 
           {/* LAYER 7: Text Reveals */}
           <MerahPutihText />
@@ -709,8 +739,8 @@ export function MerahPutihScreensaver({
           {/* LAYER 8: Vignette */}
           <Vignette />
 
-          {/* LAYER 9: Corner Decorations */}
-          <CornerDecorations />
+          {/* LAYER 9: Corner Decorations (desktop only) */}
+          {!isMobile && <CornerDecorations />}
 
           {/* LAYER 10: Clock */}
           <ClockDisplay />
@@ -744,16 +774,19 @@ export function MerahPutihScreensaver({
 export function useScreensaver(timeoutMs: number = IDLE_TIMEOUT * 1000) {
   const [active, setActive] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const mobile = useIsMobile()
+  // On mobile, use longer idle timeout (120s) since mobile users interact more frequently
+  const effectiveTimeout = mobile ? IDLE_TIMEOUT_MOBILE * 1000 : timeoutMs
 
   const resetTimer = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current)
     if (active) setActive(false) // dismiss immediately on activity
-    timerRef.current = setTimeout(() => setActive(true), timeoutMs)
-  }, [active, timeoutMs])
+    timerRef.current = setTimeout(() => setActive(true), effectiveTimeout)
+  }, [active, effectiveTimeout])
 
   useEffect(() => {
     // Only start timer after component mounts
-    timerRef.current = setTimeout(() => setActive(true), timeoutMs)
+    timerRef.current = setTimeout(() => setActive(true), effectiveTimeout)
 
     const events = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'wheel'] as const
     const handlers = events.map(event => ({

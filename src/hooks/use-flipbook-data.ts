@@ -126,13 +126,42 @@ interface UseFlipbookDataReturn {
 }
 
 const POLL_INTERVAL = 30_000 // 30 seconds
+const CACHE_KEY = 'knbmp-flipbook-data'
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+
+function readCache(): { data: FlipbookResponse; ts: number } | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    if (!raw) return null
+    const { data, ts } = JSON.parse(raw)
+    if (Date.now() - ts > CACHE_TTL) return null
+    return { data, ts }
+  } catch { return null }
+}
+
+function writeCache(data: FlipbookResponse) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() })) } catch { /* quota */ }
+}
 
 export function useFlipbookData(): UseFlipbookDataReturn {
-  const [domains, setDomains] = useState<Domain[]>(staticDomains)
-  const [settings, setSettings] = useState<Record<string, string | null>>({})
-  const [isLoading, setIsLoading] = useState(true)
-  const [isLive, setIsLive] = useState(false)
-  const [lastFetched, setLastFetched] = useState<Date | null>(null)
+  const [domains, setDomains] = useState<Domain[]>(() => {
+    // Try cache first for instant render
+    const cached = readCache()
+    if (cached?.data?.domains?.length) {
+      return cached.data.domains.map(transformDomain)
+    }
+    return staticDomains
+  })
+  const [settings, setSettings] = useState<Record<string, string | null>>(() => {
+    const cached = readCache()
+    return cached?.data?.settings ?? {}
+  })
+  const [isLoading, setIsLoading] = useState(false)
+  const [isLive, setIsLive] = useState(() => !!readCache())
+  const [lastFetched, setLastFetched] = useState<Date | null>(() => {
+    const cached = readCache()
+    return cached ? new Date(cached.data.meta?.generatedAt ?? Date.now()) : null
+  })
   const [error, setError] = useState<string | null>(null)
 
   const fetchData = useCallback(async () => {
@@ -141,6 +170,9 @@ export function useFlipbookData(): UseFlipbookDataReturn {
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
       const data: FlipbookResponse = await res.json()
+
+      // Cache response for fast reload
+      writeCache(data)
 
       // Transform database domains to match Domain interface
       if (data.domains && data.domains.length > 0) {
@@ -153,7 +185,7 @@ export function useFlipbookData(): UseFlipbookDataReturn {
       setLastFetched(new Date(data.meta?.generatedAt ?? Date.now()))
       setError(null)
     } catch (err) {
-      console.warn('[FlipbookData] Using static data (API unavailable):', err)
+      console.warn('[FlipbookData] Using cached data:', err)
       setError(err instanceof Error ? err.message : 'API unavailable')
       setIsLive(false)
     } finally {
@@ -161,8 +193,12 @@ export function useFlipbookData(): UseFlipbookDataReturn {
     }
   }, [])
 
-  // Initial fetch
+  // Initial fetch (will use cache if available for instant render)
   useEffect(() => {
+    // If we already have cached data, still refresh in background
+    if (readCache()) {
+      setIsLoading(false)
+    }
     fetchData()
   }, [fetchData])
 

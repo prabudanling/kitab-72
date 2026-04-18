@@ -7,8 +7,17 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { type Domain, type Pillar } from '@/lib/pillar-data'
 import { useFlipbookData } from '@/hooks/use-flipbook-data'
 import { AdminTrigger } from '@/components/admin/AdminTrigger'
-import { AdminPanel } from '@/components/admin/AdminPanel'
-import { MerahPutihScreensaver, useScreensaver } from '@/components/MerahPutihScreensaver'
+import { useScreensaver } from '@/components/MerahPutihScreensaver'
+
+// Lazy-load heavy components to reduce initial bundle on mobile
+const AdminPanel = dynamic(
+  () => import('@/components/admin/AdminPanel').then((m) => m.AdminPanel),
+  { ssr: false },
+)
+const MerahPutihScreensaver = dynamic(
+  () => import('@/components/MerahPutihScreensaver').then((m) => m.MerahPutihScreensaver),
+  { ssr: false },
+)
 
 // DigitalUnveiling uses random CSS positioning + border shorthands that expand
 // differently on server vs client → dynamic import with ssr:false avoids hydration mismatch
@@ -601,13 +610,16 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768
+    const loadTime = isMobile ? 600 : 1500 // Faster on mobile
+    const increment = isMobile ? 25 : 15
     const interval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) { clearInterval(interval); return 100 }
-        return prev + Math.random() * 15 + 5
+        return prev + Math.random() * increment + 5
       })
     }, 100)
-    const timer = setTimeout(onComplete, 1500)
+    const timer = setTimeout(onComplete, loadTime)
     return () => { clearInterval(interval); clearTimeout(timer) }
   }, [onComplete])
 
@@ -4650,75 +4662,71 @@ export default function Home() {
         </motion.button>
       </div>
 
-      {/* ═══ Mobile ═══ */}
+      {/* ═══ Mobile — Single page rendering (NO 72+ DOM nodes) ═══ */}
       <div className="flex md:hidden flex-1 flex-col">
+        {/* Mobile page area — only renders the CURRENT page */}
         <div className="relative flex-1 overflow-hidden cursor-pointer select-none"
-          style={{ perspective: '2500px' }}
           onClick={handleBookClick} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
           role="book" aria-label={`Page ${displayPage} of ${totalPages}`}>
-          {/* Gold page edge effect */}
-          <div className="absolute top-0 right-0 bottom-0 w-[3px] z-50 pointer-events-none"
-            style={{ background: 'linear-gradient(180deg, transparent, rgba(197,160,89,0.15) 20%, rgba(197,160,89,0.25) 50%, rgba(197,160,89,0.15) 80%, transparent)' }} />
-          {bookPages.map((page, index) => {
-            const isFlipped = index <= currentLeaf
-            const isCurrent = index === currentLeaf
-            // Mobile: only render full content for nearby pages (±1), placeholder for rest
-            const isNearby = Math.abs(index - currentLeaf) <= 1
-            const shouldRenderContent = !isMobile || isNearby
-            return (
-              <div key={index} className="absolute inset-0 bg-white overflow-hidden book-spine-shadow"
-                style={{
-                  transformOrigin: 'left center',
-                  transform: isFlipped ? 'rotateY(-180deg)' : 'rotateY(0deg)',
-                  backfaceVisibility: 'hidden',
-                  transition: 'transform 0.85s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 0.85s cubic-bezier(0.645, 0.045, 0.355, 1)',
-                  zIndex: getZIndex(index, currentLeaf, totalPages),
-                  boxShadow: isFlipped ? '-3px 0 10px rgba(0,0,0,0.15)' : isCurrent ? '4px 0 15px rgba(0,0,0,0.2)' : '2px 0 5px rgba(0,0,0,0.1)',
-                }}>
-                {shouldRenderContent ? renderPage(page, index, totalPages, liveDomains) : (
-                  <div className="absolute inset-0" style={{ backgroundColor: '#FAF9F6' }} />
-                )}
-              </div>
-            )
-          })}
+          <motion.div
+            key={currentLeaf}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.18 }}
+            className="absolute inset-0 bg-white overflow-hidden"
+          >
+            {renderPage(bookPages[currentLeaf], currentLeaf, totalPages, liveDomains)}
+          </motion.div>
         </div>
 
-        <div className="relative flex-shrink-0 flex items-center justify-between px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]"
-          style={{ backgroundColor: DARK_BG }}>
-          {/* Subtle gold separator line */}
-          <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(197,160,89,0.2) 30%, rgba(197,160,89,0.2) 70%, transparent)' }} />
-          <motion.button onClick={goPrev} disabled={currentLeaf <= 0}
-            className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default active:scale-90"
-            style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
-            whileTap={{ scale: 0.9 }} aria-label="Previous">
-            <ChevronLeft className="w-5 h-5" />
-          </motion.button>
-          <div className="text-center min-w-0 flex-1 mx-3">
-            <AnimatePresence mode="wait">
-              <motion.div key={displayPage}
-                initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
-                transition={{ duration: 0.2 }}>
-                {currentPageInfo.pillarCode && (
-                  <p className="font-[family-name:var(--font-ui)] text-[10px] tracking-wider truncate"
-                    style={{ color: currentPageInfo.domainColor }}>{currentPageInfo.pillarCode}</p>
-                )}
-                <p className="font-[family-name:var(--font-heading)] text-xs tracking-[0.15em]"
-                  style={{ color: '#D89098' }}>{displayPage} / {totalPages}</p>
-              </motion.div>
-            </AnimatePresence>
+        {/* Mobile navigation bar */}
+        <div className="relative flex-shrink-0 flex flex-col" style={{ backgroundColor: DARK_BG }}>
+          {/* Progress bar — inside nav bar, no overlap */}
+          <div className="h-1 w-full">
+            <motion.div className="h-full"
+              style={{ backgroundColor: currentPageInfo.domainColor || GOLD, opacity: 0.6 }}
+              initial={false}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.5, ease: 'easeOut' }} />
           </div>
-          <motion.button onClick={goNext} disabled={currentLeaf >= totalPages - 1}
-            className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default active:scale-90"
-            style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
-            whileTap={{ scale: 0.9 }} aria-label="Next">
-            <ChevronRight className="w-5 h-5" />
-          </motion.button>
+
+          {/* Nav buttons + page info */}
+          <div className="flex items-center justify-between px-3 py-2.5 pb-[max(10px,env(safe-area-inset-bottom))]">
+            {/* Subtle gold separator line */}
+            <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(197,160,89,0.2) 30%, rgba(197,160,89,0.2) 70%, transparent)' }} />
+            <motion.button onClick={goPrev} disabled={currentLeaf <= 0}
+              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default active:scale-90"
+              style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
+              whileTap={{ scale: 0.9 }} aria-label="Halaman sebelumnya">
+              <ChevronLeft className="w-5 h-5" />
+            </motion.button>
+            <div className="text-center min-w-0 flex-1 mx-2">
+              <AnimatePresence mode="wait">
+                <motion.div key={displayPage}
+                  initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.15 }}>
+                  {currentPageInfo.pillarCode && (
+                    <p className="font-[family-name:var(--font-ui)] text-[10px] tracking-wider truncate"
+                      style={{ color: currentPageInfo.domainColor }}>{currentPageInfo.pillarCode}</p>
+                  )}
+                  <p className="font-[family-name:var(--font-heading)] text-xs tracking-[0.15em]"
+                    style={{ color: '#D89098' }}>{displayPage} / {totalPages}</p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <motion.button onClick={goNext} disabled={currentLeaf >= totalPages - 1}
+              className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default active:scale-90"
+              style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
+              whileTap={{ scale: 0.9 }} aria-label="Halaman selanjutnya">
+              <ChevronRight className="w-5 h-5" />
+            </motion.button>
+          </div>
         </div>
       </div>
 
-      {/* ═══ Progress bar ═══ */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 h-1 pointer-events-none">
+      {/* ═══ Desktop Progress bar (mobile has its own inside nav bar) ═══ */}
+      <div className="hidden md:block fixed bottom-0 left-0 right-0 z-20 h-1 pointer-events-none">
         <motion.div className="h-full"
           style={{ backgroundColor: currentPageInfo.domainColor || GOLD, opacity: 0.6 }}
           initial={false}
@@ -4768,13 +4776,12 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* ═══ Keyboard / Swipe hint ═══ */}
-      <motion.div className="fixed bottom-16 md:bottom-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+      {/* ═══ Keyboard / Swipe hint — desktop only (mobile has nav buttons) ═══ */}
+      <motion.div className="hidden md:block fixed bottom-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
         animate={{ opacity: showHint ? 1 : 0 }} transition={{ duration: 1 }}>
         <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-wider text-center"
           style={{ color: '#C47080' }}>
-          <span className="hidden sm:inline">← → atau klik untuk berpindah halaman</span>
-          <span className="sm:hidden">Geser kiri/kanan atau ketuk tombol ◀ ▶</span>
+          ← → atau klik untuk berpindah halaman
         </p>
       </motion.div>
 
