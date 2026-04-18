@@ -58,7 +58,7 @@
   --secondary: #F0EBE3;
   --secondary-foreground: #3E2723;
   --muted: #F0EBE3;
-  --muted-foreground: #6B5E50;
+  --muted-foreground: #C47080;
   --accent: #1A3C5E;
   --accent-foreground: #FFFFFF;
   --destructive: #B01C28;
@@ -195,11 +195,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--heritage-cream);
+  background: #0E0004;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--heritage-warm-grey);
+  background: #380012;
   border-radius: 4px;
 }
 

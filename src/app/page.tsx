@@ -24,7 +24,7 @@ const BURGUNDY = '#5E2129'
 const GOLD = '#C5A059'
 const CHARCOAL = '#2C2417'
 const PARCHMENT = '#FAF9F6'
-const DARK_BG = '#1A1814'
+const DARK_BG = '#0E0004'
 
 // ═══════════════════════════════════════════════════════════════
 // ANIMATION VARIANTS
@@ -601,7 +601,7 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         </span>
       </motion.div>
       <motion.div className="w-48 h-[2px] rounded-full overflow-hidden"
-        style={{ backgroundColor: '#2A2520' }}
+        style={{ backgroundColor: '#250008' }}
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
         <motion.div className="h-full rounded-full"
           style={{ backgroundColor: GOLD }}
@@ -610,7 +610,7 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
           transition={{ duration: 0.3, ease: 'easeOut' }} />
       </motion.div>
       <motion.p className="font-[family-name:var(--font-ui)] text-[10px] tracking-[3px] uppercase mt-4"
-        style={{ color: '#6B5E50' }}
+        style={{ color: '#C47080' }}
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
         Memuat Dokumen Peradaban
       </motion.p>
@@ -681,7 +681,7 @@ function CoverPage() {
   return (
     <div
       className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden cursor-default"
-      style={{ backgroundColor: '#0A0806' }}
+      style={{ backgroundColor: '#060002' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -690,7 +690,7 @@ function CoverPage() {
           ═══════════════════════════════════════════════════════════ */}
       <div className="absolute inset-0 z-0"
         style={{
-          background: 'radial-gradient(ellipse at 50% 40%, #1A100C 0%, #0D0906 40%, #050302 100%)',
+          background: 'radial-gradient(ellipse at 50% 40%, #120006 0%, #080003 40%, #030001 100%)',
         }} />
 
       {/* ═══════════════════════════════════════════════════════════
@@ -723,25 +723,25 @@ function CoverPage() {
       {/* Radial vignette — draws all focus to center */}
       <div className="absolute inset-0 z-[3] pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at 50% 45%, transparent 15%, rgba(10,8,6,0.3) 40%, rgba(10,8,6,0.7) 65%, rgba(5,3,2,0.95) 100%)',
+          background: 'radial-gradient(ellipse at 50% 45%, transparent 15%, rgba(8,0,4,0.3) 40%, rgba(8,0,4,0.7) 65%, rgba(3,0,1,0.95) 100%)',
         }} />
 
       {/* Top gradient — darkens upper area for header text */}
       <div className="absolute inset-0 z-[3] pointer-events-none"
         style={{
-          background: 'linear-gradient(180deg, rgba(10,8,6,0.8) 0%, rgba(10,8,6,0.3) 20%, transparent 35%)',
+          background: 'linear-gradient(180deg, rgba(8,0,4,0.8) 0%, rgba(8,0,4,0.3) 20%, transparent 35%)',
         }} />
 
       {/* Bottom gradient — darkens lower area for footer text */}
       <div className="absolute inset-0 z-[3] pointer-events-none"
         style={{
-          background: 'linear-gradient(0deg, rgba(10,8,6,0.85) 0%, rgba(10,8,6,0.3) 20%, transparent 35%)',
+          background: 'linear-gradient(0deg, rgba(8,0,4,0.85) 0%, rgba(8,0,4,0.3) 20%, transparent 35%)',
         }} />
 
       {/* Left/right edge shadows — spine shadow feel */}
       <div className="absolute inset-0 z-[3] pointer-events-none"
         style={{
-          background: 'linear-gradient(90deg, rgba(10,8,6,0.4) 0%, transparent 12%, transparent 88%, rgba(10,8,6,0.4) 100%)',
+          background: 'linear-gradient(90deg, rgba(8,0,4,0.4) 0%, transparent 12%, transparent 88%, rgba(8,0,4,0.4) 100%)',
         }} />
 
       {/* ═══════════════════════════════════════════════════════════
@@ -1139,7 +1139,7 @@ function KataPengantarPage({ part }: { part: number }) {
           <div className="max-w-lg mx-auto space-y-4 sm:space-y-5">
             {/* Segala puji */}
             <motion.p className={txtSm}
-              style={{ color: '#6B5E50' }}
+              style={{ color: '#C47080' }}
               variants={inkBleed} custom={3}>
               Segala puji bagi Tuhan Semesta Alam, Pemilik mutlak atas segala kedaulatan, yang mengajarkan manusia apa yang tidak diketahuinya.
             </motion.p>
@@ -1153,7 +1153,7 @@ function KataPengantarPage({ part }: { part: number }) {
             </motion.p>
 
             <motion.p className={txtSm}
-              style={{ color: '#6B5E50' }}
+              style={{ color: '#C47080' }}
               variants={fadeSlideUp} custom={5}>
               Jika Anda mencari jargon-jargon kosong tentang &ldquo;sinergi korporat&rdquo;, &ldquo;efisiensi modal kapitalis&rdquo;, atau retorika pasar bebas yang menindas,{' '}
               <span className="font-semibold" style={{ color: '#999' }}>tutuplah dokumen ini sekarang</span>. Anda berada di tempat yang salah.
@@ -1174,7 +1174,7 @@ function KataPengantarPage({ part }: { part: number }) {
             </motion.p>
 
             <motion.p className={txtSm}
-              style={{ color: '#6B5E50' }}
+              style={{ color: '#C47080' }}
               variants={fadeSlideUp} custom={8}>
               Namun, luka ini sebenarnya berakar jauh lebih dalam dari sekadar kebijakan modern&hellip;
             </motion.p>
@@ -1562,7 +1562,7 @@ function MukadimahPage({ part }: { part: number }) {
           </motion.p>
 
           <motion.p className={`${txtXs} text-center mb-4`}
-            style={{ color: '#6B5E50' }}
+            style={{ color: '#C47080' }}
             variants={inkBleed} custom={3}>
             Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang
           </motion.p>
@@ -1785,7 +1785,7 @@ function MukadimahPage({ part }: { part: number }) {
               <p className={`${txtXs} font-semibold`} style={{ color: '#3E2723' }}>
                 Dari <span style={{ color: GOLD }}>83.763 desa</span> dan kelurahan yang terpencar, kami bangun <span className="font-semibold" style={{ color: BURGUNDY }}>satu peradaban</span>.
               </p>
-              <p className={`${txtXs} mt-1`} style={{ color: '#6B5E50' }}>
+              <p className={`${txtXs} mt-1`} style={{ color: '#C47080' }}>
                 Dari silo menuju ekosistem. Dari desa untuk Indonesia. Dari Indonesia untuk Dunia. Dari hari ini untuk 100 tahun ke depan.
               </p>
             </motion.div>
@@ -1935,7 +1935,7 @@ function TocPage({ tocPage, domains }: { tocPage: number; domains: Domain[] }) {
               Domain {domain.id}: {domain.name}
             </motion.h3>
             <motion.p className="font-[family-name:var(--font-heading)] text-base sm:text-lg font-semibold uppercase tracking-wide mt-1"
-              style={{ color: '#6B5E50' }}>
+              style={{ color: '#C47080' }}>
               ({domain.nameId} — {domain.nameSubtitle})
             </motion.p>
             <motion.p className="font-[family-name:var(--font-ui)] text-sm sm:text-base font-semibold mt-1.5"
@@ -1979,7 +1979,7 @@ function TocPage({ tocPage, domains }: { tocPage: number; domains: Domain[] }) {
                       {pillar.code}
                     </span>
                     <span className="font-[family-name:var(--font-ui)] text-xs sm:text-sm font-medium"
-                      style={{ color: '#A09385' }}>
+                      style={{ color: '#D89098' }}>
                       {pillar.badge === 'foundation' ? 'Fondasi' : pillar.badge === 'strategic' ? 'Strategis' : 'Operasional'}
                     </span>
                   </div>
@@ -2260,7 +2260,7 @@ function PillarDetailPage01() {
             <div key={i} className="p-2 rounded-sm"
               style={{ backgroundColor: `${DOMAIN1_COLOR}05`, borderLeft: `2px solid ${DOMAIN1_COLOR}20` }}>
               <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[1px] uppercase font-semibold mb-0.5`}
-                style={{ color: '#A09385' }}>{m.label}</p>
+                style={{ color: '#D89098' }}>{m.label}</p>
               <p className={`${bodyFont} text-[10px] sm:text-xs font-bold`}
                 style={{ color: '#3E2723' }}>{m.value}</p>
             </div>
@@ -2354,7 +2354,7 @@ function PillarDetailPage01() {
         <motion.div className="flex flex-wrap items-center justify-center gap-2 mb-6 sm:mb-8"
           variants={fadeSlideUp} custom={8}>
           <span className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[1px] uppercase`}
-            style={{ color: '#A09385' }}>
+            style={{ color: '#D89098' }}>
             17 kata &middot; 6 dimensi &middot; 1 visi
           </span>
           <div className="flex flex-wrap gap-1.5 justify-center">
@@ -2534,7 +2534,7 @@ function PillarDetailPage01() {
                 <span className={`${bodyFont} text-[9px] font-bold tracking-[0.5px] uppercase`}
                   style={{ color: DOMAIN1_COLOR }}>Implementasi:</span>
                 <span className={`${bodyFont} text-[11px] sm:text-xs leading-relaxed`}
-                  style={{ color: '#6B5E50' }}>{pr.impl}</span>
+                  style={{ color: '#C47080' }}>{pr.impl}</span>
               </div>
               {/* Red Line */}
               <div className="flex items-center gap-1.5 mt-2">
@@ -2746,7 +2746,7 @@ function PillarDetailPage02() {
         {/* 18 kata badge */}
         <motion.div className="text-center mb-5" variants={fadeSlideUp} custom={7}>
           <span className={`${bodyFont} text-[9px] sm:text-[10px] tracking-[1px] uppercase`}
-            style={{ color: '#A09385' }}>
+            style={{ color: '#D89098' }}>
             18 kata &middot; 3 aksi &middot; 3 outcome &middot; 1 misi
           </span>
         </motion.div>
@@ -2795,7 +2795,7 @@ function PillarDetailPage02() {
                 {p.how.map((h, hi) => (
                   <div key={hi} className="flex items-start gap-1.5">
                     <span className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0" style={{ backgroundColor: p.color, opacity: 0.6 }} />
-                    <span className={`${bodyFont} text-[10px] sm:text-[11px]`} style={{ color: '#6B5E50' }}>{h}</span>
+                    <span className={`${bodyFont} text-[10px] sm:text-[11px]`} style={{ color: '#C47080' }}>{h}</span>
                   </div>
                 ))}
               </div>
@@ -2834,7 +2834,7 @@ function PillarDetailPage02() {
                 <span className="text-lg">{b.icon}</span>
                 <h4 className={`${bodyFont} text-xs sm:text-sm font-bold`} style={{ color: b.color }}>{b.title}</h4>
               </div>
-              <p className={`${bodyFont} text-[10px] sm:text-[11px] leading-[1.6]`} style={{ color: '#6B5E50' }}>{b.desc}</p>
+              <p className={`${bodyFont} text-[10px] sm:text-[11px] leading-[1.6]`} style={{ color: '#C47080' }}>{b.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -2857,7 +2857,7 @@ function PillarDetailPage02() {
               <div key={i} className="text-center p-2 rounded-sm"
                 style={{ backgroundColor: `${BURGUNDY}05` }}>
                 <p className={`${heading} text-sm sm:text-base font-bold`} style={{ color: BURGUNDY }}>{t.value}</p>
-                <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#A09385' }}>{t.label}</p>
+                <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#D89098' }}>{t.label}</p>
               </div>
             ))}
           </div>
@@ -3013,7 +3013,7 @@ function PillarDetailPage13({ domain }: { domain: Domain }) {
             <div key={i} className="p-2 rounded-sm text-center"
               style={{ backgroundColor: `${DOMAIN2_COLOR}05`, borderLeft: `2px solid ${DOMAIN2_COLOR}20` }}>
               <p className={`${bodyFont} text-base sm:text-lg font-bold`} style={{ color: DOMAIN2_COLOR }}>{s.value}</p>
-              <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#A09385' }}>{s.label}</p>
+              <p className={`${bodyFont} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#D89098' }}>{s.label}</p>
             </div>
           ))}
         </motion.div>
@@ -3130,9 +3130,9 @@ function PillarDetailPage13({ domain }: { domain: Domain }) {
                 <motion.tr key={i} variants={fadeSlideUp} custom={13 + i}
                   style={{ borderBottom: `1px solid #f0ece4` }}>
                   <td className={`${bodyFont} py-2 pr-3 font-semibold`} style={{ color: '#3E2723' }}>{row.institution}</td>
-                  <td className={`${bodyFont} py-2 pr-3`} style={{ color: '#6B5E50' }}>{row.count}</td>
+                  <td className={`${bodyFont} py-2 pr-3`} style={{ color: '#C47080' }}>{row.count}</td>
                   <td className={`${bodyFont} py-2 pr-3`} style={{ color: row.status === 'Manual' ? BURGUNDY : DOMAIN2_COLOR }}>{row.status}</td>
-                  <td className={`${bodyFont} py-2 italic`} style={{ color: '#A09385' }}>{row.gap}</td>
+                  <td className={`${bodyFont} py-2 italic`} style={{ color: '#D89098' }}>{row.gap}</td>
                 </motion.tr>
               ))}
             </tbody>
@@ -3163,7 +3163,7 @@ function PillarDetailPage13({ domain }: { domain: Domain }) {
                 <span className={`${heading} text-sm sm:text-base font-bold`} style={{ color: DOMAIN2_COLOR }}>{pr.num}.</span>
                 <h4 className={`${bodyFont} text-xs sm:text-sm font-bold`} style={{ color: CHARCOAL }}>{pr.text}</h4>
               </div>
-              <p className={`${bodyFont} text-[11px] sm:text-xs leading-[1.7]`} style={{ color: '#6B5E50' }}>{pr.desc}</p>
+              <p className={`${bodyFont} text-[11px] sm:text-xs leading-[1.7]`} style={{ color: '#C47080' }}>{pr.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -3196,7 +3196,7 @@ function PillarDetailPage13({ domain }: { domain: Domain }) {
               variants={scaleIn} custom={29 + i}>
               <span className="text-lg sm:text-xl">{mod.icon}</span>
               <p className={`${bodyFont} text-[10px] sm:text-xs font-bold mt-1`} style={{ color: '#3E2723' }}>{mod.label}</p>
-              <p className={`${bodyFont} text-[8px] sm:text-[9px]`} style={{ color: '#A09385' }}>{mod.desc}</p>
+              <p className={`${bodyFont} text-[8px] sm:text-[9px]`} style={{ color: '#D89098' }}>{mod.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -3327,7 +3327,7 @@ function SpecialDocumentPage({ data }: { data: SDData }) {
                       <div key={i} className="p-2 rounded-sm text-center"
                         style={{ backgroundColor: `${DC}05`, borderLeft: `2px solid ${DC}20` }}>
                         <p className={`${hf} text-sm sm:text-base font-bold`} style={{ color: DC }}>{s.value}</p>
-                        <p className={`${bf} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#A09385' }}>{s.label}</p>
+                        <p className={`${bf} text-[8px] sm:text-[9px] tracking-[0.5px] uppercase`} style={{ color: '#D89098' }}>{s.label}</p>
                       </div>
                     ))}
                   </motion.div>
@@ -4115,7 +4115,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
             Domain {domain.id} &middot; {domain.code}
           </p>
           <p className="font-[family-name:var(--font-ui)] text-xs sm:text-sm font-semibold"
-            style={{ color: '#6B5E50' }}>
+            style={{ color: '#C47080' }}>
             {domain.emoji} {domain.nameId}
           </p>
         </motion.div>
@@ -4190,7 +4190,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
                     borderLeft: `2px solid ${domain.color}30`,
                   }}>
                   <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs font-semibold tracking-wider uppercase mb-0.5"
-                    style={{ color: '#6B5E50' }}>
+                    style={{ color: '#C47080' }}>
                     {dim.label}
                   </p>
                   <p className="font-[family-name:var(--font-ui)] text-sm sm:text-base font-semibold"
@@ -4226,7 +4226,7 @@ function PillarDetailPage({ pillar, domain }: { pillar: Pillar; domain: Domain }
         {pillar.xref.length > 0 && (
           <motion.div className="mt-4 sm:mt-5" variants={fadeSlideUp} custom={10}>
             <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-[2px] uppercase font-bold mb-2"
-              style={{ color: '#A09385' }}>
+              style={{ color: '#D89098' }}>
               Referensi Silang
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -4324,7 +4324,7 @@ function CovenantPage() {
         </motion.blockquote>
         <motion.div variants={fadeSlideUp} custom={4}><GoldDivider /></motion.div>
         <motion.p className="font-[family-name:var(--font-ui)] text-xs tracking-wider uppercase mt-6"
-          style={{ color: '#A09385' }} variants={fadeSlideUp} custom={5}>
+          style={{ color: '#D89098' }} variants={fadeSlideUp} custom={5}>
           Dewan Pendiri KNBMP &middot; Warisan Negara Republik Indonesia
         </motion.p>
         <motion.div className="w-16 h-px mt-6" style={{ backgroundColor: BURGUNDY }}
@@ -4370,7 +4370,7 @@ function BackCoverPage() {
           Dewan Pendiri KNBMP
         </motion.p>
         <motion.p className="font-[family-name:var(--font-ui)] text-xs tracking-[2px] uppercase"
-          style={{ color: '#A09385' }} variants={fadeSlideUp} custom={2}>
+          style={{ color: '#D89098' }} variants={fadeSlideUp} custom={2}>
           Klasifikasi: Absolute Source of Truth
         </motion.p>
         <motion.p className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl font-normal"
@@ -4565,8 +4565,8 @@ export default function Home() {
       <div className="hidden md:flex flex-1 items-center justify-center p-8 gap-6">
         <motion.button onClick={goPrev} disabled={currentLeaf <= 0}
           className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default"
-          style={{ backgroundColor: '#2A2520', color: GOLD, border: '1px solid #3A3530' }}
-          whileHover={{ scale: 1.1, backgroundColor: '#352F28' }}
+          style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
+          whileHover={{ scale: 1.1, backgroundColor: '#35000E' }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300 }} aria-label="Previous">
           <ChevronLeft className="w-6 h-6" />
@@ -4601,8 +4601,8 @@ export default function Home() {
 
         <motion.button onClick={goNext} disabled={currentLeaf >= totalPages - 1}
           className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default"
-          style={{ backgroundColor: '#2A2520', color: GOLD, border: '1px solid #3A3530' }}
-          whileHover={{ scale: 1.1, backgroundColor: '#352F28' }}
+          style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
+          whileHover={{ scale: 1.1, backgroundColor: '#35000E' }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300 }} aria-label="Next">
           <ChevronRight className="w-6 h-6" />
@@ -4644,7 +4644,7 @@ export default function Home() {
             style={{ background: 'linear-gradient(90deg, transparent, rgba(197,160,89,0.2) 30%, rgba(197,160,89,0.2) 70%, transparent)' }} />
           <motion.button onClick={goPrev} disabled={currentLeaf <= 0}
             className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default"
-            style={{ backgroundColor: '#2A2520', color: GOLD, border: '1px solid #3A3530' }}
+            style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
             whileTap={{ scale: 0.9 }} aria-label="Previous">
             <ChevronLeft className="w-4 h-4" />
           </motion.button>
@@ -4658,13 +4658,13 @@ export default function Home() {
                     style={{ color: currentPageInfo.domainColor }}>{currentPageInfo.pillarCode}</p>
                 )}
                 <p className="font-[family-name:var(--font-heading)] text-xs tracking-[0.15em]"
-                  style={{ color: '#A09385' }}>{displayPage} / {totalPages}</p>
+                  style={{ color: '#D89098' }}>{displayPage} / {totalPages}</p>
               </motion.div>
             </AnimatePresence>
           </div>
           <motion.button onClick={goNext} disabled={currentLeaf >= totalPages - 1}
             className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default"
-            style={{ backgroundColor: '#2A2520', color: GOLD, border: '1px solid #3A3530' }}
+            style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
             whileTap={{ scale: 0.9 }} aria-label="Next">
             <ChevronRight className="w-4 h-4" />
           </motion.button>
@@ -4686,7 +4686,7 @@ export default function Home() {
         <div className="w-48 h-px pointer-events-none"
           style={{ background: 'linear-gradient(90deg, transparent, rgba(197,160,89,0.25) 30%, rgba(197,160,89,0.25) 70%, transparent)' }} />
         <motion.div className="flex items-center gap-3 px-6 py-2.5 rounded-full"
-          style={{ color: '#A09385', backgroundColor: '#1A1814CC', border: '1px solid #2A2520' }}
+          style={{ color: '#D89098', backgroundColor: '#1A1814CC', border: '1px solid #250008' }}
           layout>
           <motion.div className="w-2 h-2 rounded-full flex-shrink-0"
             animate={{ backgroundColor: currentPageInfo.domainColor || GOLD }}
@@ -4701,20 +4701,20 @@ export default function Home() {
               <p className="font-[family-name:var(--font-heading)] text-sm tracking-[0.15em]">{displayPage} / {totalPages}</p>
             </motion.div>
           </AnimatePresence>
-          <div className="w-px h-5" style={{ backgroundColor: '#3A3530' }} />
+          <div className="w-px h-5" style={{ backgroundColor: '#380012' }} />
           <motion.button
             onClick={(e) => { e.stopPropagation(); setSoundEnabled((prev) => !prev) }}
             className="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer"
-            style={{ color: soundEnabled ? GOLD : '#6B5E50' }}
+            style={{ color: soundEnabled ? GOLD : '#C47080' }}
             whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}
             aria-label={soundEnabled ? 'Mute' : 'Unmute'}>
             {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
           </motion.button>
-          <div className="w-px h-5" style={{ backgroundColor: '#3A3530' }} />
+          <div className="w-px h-5" style={{ backgroundColor: '#380012' }} />
           <motion.button
             onClick={(e) => { e.stopPropagation(); handleLockKitab() }}
             className="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer"
-            style={{ color: '#6B5E50' }}
+            style={{ color: '#C47080' }}
             whileHover={{ scale: 1.15, color: '#C5A059' }} whileTap={{ scale: 0.9 }}
             aria-label="Kunci Kitab">
             <Lock className="w-3.5 h-3.5" />
@@ -4726,7 +4726,7 @@ export default function Home() {
       <motion.div className="fixed bottom-12 md:bottom-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
         animate={{ opacity: showHint ? 1 : 0 }} transition={{ duration: 1 }}>
         <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-wider"
-          style={{ color: '#6B5E50' }}>
+          style={{ color: '#C47080' }}>
           ← → atau klik untuk berpindah halaman
         </p>
       </motion.div>

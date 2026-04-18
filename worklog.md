@@ -662,3 +662,27 @@ Stage Summary:
 - Dismisses instantly on any interaction (click, touch, key, scroll, wheel, mouse)
 - Smooth 1.5s fade in/out transitions
 - All animations are GPU-accelerated via CSS transforms and canvas
+---
+Task ID: 3
+Agent: Main Agent
+Task: Replace brown/charcoal book background with Merah Putih red theme
+
+Work Log:
+- Changed DARK_BG from #1A1814 (brown-black) to #0E0004 (deep red-black)
+- Changed button backgrounds from #2A2520 to #250008 (dark red)
+- Changed button hover from #352F28 to #35000E (brighter red)
+- Changed borders from #3A3530 to #380012 (red borders)
+- Changed muted text from #6B5E50 to #C47080 (warm rose)
+- Changed secondary text from #A09385 to #D89098 (lighter rose)
+- Changed cover BG from #0A0806 to #060002 (deep black-red)
+- Changed cover gradient: #1A100C→#120006, #0D0906→#080003, #050302→#030001
+- Changed vignette overlays: rgba(10,8,6→rgba(8,0,4), rgba(5,3,2→rgba(3,0,1)
+- Updated scrollbar: track → #0E0004, thumb → #380012
+- Updated muted-foreground CSS variable to #C47080
+- Gold accents (GOLD = #C5A059) preserved — gold + red = royal combo
+- Lint: 0 errors, dev server confirmed running
+
+Stage Summary:
+- Complete brown-to-red color overhaul across page.tsx and globals.css
+- 6 background colors, 2 text colors, 4 vignette overlays, 2 scrollbar colors changed
+- Gold preserved for contrast — creates luxury royal aesthetic
