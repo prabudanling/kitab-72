@@ -4625,15 +4625,13 @@ export default function Home() {
     }
   }, [])
 
-  // ═══ Fallback: if ritual was auto-skipped (sessionStorage), play on first user click ═══
-  // This handles returning visitors who skip the ritual — their first click/tap on the page
-  // will resume the AudioContext which was blocked by autoplay policy
+  // ═══ Fallback: if ritual was auto-skipped, play on first user gesture ═══
   const fallbackTriggeredRef = useRef(false)
   useEffect(() => {
     const playOnFirstGesture = () => {
       if (fallbackTriggeredRef.current || anthem.hasStarted) return
       fallbackTriggeredRef.current = true
-      anthem.play(1.0) // Short delay after gesture
+      anthem.play(0.5)
     }
     document.addEventListener('click', playOnFirstGesture)
     document.addEventListener('touchstart', playOnFirstGesture)
@@ -4816,35 +4814,29 @@ export default function Home() {
             </motion.button>
           </div>
 
-          {/* Mobile music indicator — shows when anthem is active */}
-          {anthem.hasStarted && (
+          {/* Mobile music indicator — shows when anthem is playing */}
+          {anthem.isPlaying && (
             <motion.div
               className="absolute top-2 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 px-3 py-1 rounded-full pointer-events-none"
               style={{ backgroundColor: 'rgba(14,0,4,0.8)', border: '1px solid rgba(197,160,89,0.15)' }}
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}>
-              {anthem.isPlaying ? (
-                <Music className="w-3 h-3" style={{ color: GOLD }} />
-              ) : (
-                <VolumeX className="w-3 h-3" style={{ color: '#C47080' }} />
-              )}
+              <Music className="w-3 h-3" style={{ color: GOLD }} />
               <span className="font-[family-name:var(--font-ui)] text-[9px] tracking-wider uppercase"
-                style={{ color: anthem.isPlaying ? GOLD : '#C47080' }}>
+                style={{ color: GOLD }}>
                 Indonesia Raya
               </span>
               {/* Animated equalizer bars */}
-              {anthem.isPlaying && (
-                <div className="flex items-end gap-0.5 ml-1">
-                  {[0, 1, 2].map(i => (
-                    <motion.div key={i}
-                      className="w-0.5 rounded-full"
-                      style={{ backgroundColor: GOLD, height: 6 }}
-                      animate={{ height: [4, 10, 6, 12, 4] }}
-                      transition={{ duration: 0.8 + i * 0.15, repeat: Infinity, ease: 'easeInOut' }} />
-                  ))}
-                </div>
-              )}
+              <div className="flex items-end gap-0.5 ml-1">
+                {[0, 1, 2].map(i => (
+                  <motion.div key={i}
+                    className="w-0.5 rounded-full"
+                    style={{ backgroundColor: GOLD, height: 6 }}
+                    animate={{ height: [4, 10, 6, 12, 4] }}
+                    transition={{ duration: 0.8 + i * 0.15, repeat: Infinity, ease: 'easeInOut' }} />
+                ))}
+              </div>
             </motion.div>
           )}
         </div>
@@ -4890,28 +4882,26 @@ export default function Home() {
             {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
           </motion.button>
           {/* Indonesia Raya anthem toggle — desktop */}
-          {anthem.hasStarted && (
+          {anthem.isPlaying && (
             <>
               <div className="w-px h-5" style={{ backgroundColor: '#380012' }} />
               <motion.button
                 onClick={(e) => { e.stopPropagation(); anthem.toggle() }}
                 className="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer"
-                style={{ color: anthem.isPlaying ? GOLD : '#C47080' }}
+                style={{ color: GOLD }}
                 whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}
-                aria-label={anthem.isPlaying ? 'Matikan Lagu' : 'Putar Lagu'}>
-                {anthem.isPlaying ? <Music className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                aria-label="Matikan Lagu">
+                <VolumeX className="w-3.5 h-3.5" />
               </motion.button>
-              {anthem.isPlaying && (
-                <div className="flex items-end gap-0.5">
-                  {[0, 1, 2].map(i => (
-                    <motion.div key={i}
-                      className="w-0.5 rounded-full"
-                      style={{ backgroundColor: GOLD, height: 6 }}
-                      animate={{ height: [4, 10, 6, 12, 4] }}
-                      transition={{ duration: 0.8 + i * 0.15, repeat: Infinity, ease: 'easeInOut' }} />
-                  ))}
-                </div>
-              )}
+              <div className="flex items-end gap-0.5">
+                {[0, 1, 2].map(i => (
+                  <motion.div key={i}
+                    className="w-0.5 rounded-full"
+                    style={{ backgroundColor: GOLD, height: 6 }}
+                    animate={{ height: [4, 10, 6, 12, 4] }}
+                    transition={{ duration: 0.8 + i * 0.15, repeat: Infinity, ease: 'easeInOut' }} />
+                ))}
+              </div>
             </>
           )}
           <div className="w-px h-5" style={{ backgroundColor: '#380012' }} />
