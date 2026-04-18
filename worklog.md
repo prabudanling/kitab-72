@@ -641,3 +641,24 @@ Stage Summary:
 - All 7 fonts loaded with proper weights and display:swap
 - Font size system with clamp() responsive scaling implemented
 - Zero lint errors, dev server confirmed running
+---
+Task ID: 2
+Agent: Main Agent
+Task: Create Merah Putih Screensaver — the best screensaver ever
+
+Work Log:
+- Created `/src/components/MerahPutihScreensaver.tsx` — full cinematic screensaver
+- 11 animation layers: Canvas Particle System (150 particles), Silk Waves (4 flowing gradients), Flag Stripes (20 animated lines), Garuda Silhouette (SVG), Pulsing Star (5-pointed), Light Beams (3 beams), Text Reveals (6 rotating phrases), Vignette, Corner Decorations (Batik Parang), Clock Display
+- Red (#FF0000) and White (#FFFFFF) particle system with mouse attraction, trails, glow, and connecting lines
+- Text phrases cycle: MERDEKA, INDONESIA, MERAH PUTIH, BHINNEKA TUNGGAL IKA, 17 AGUSTUS 1945, SATU NUSANTARA
+- Gradient text effect (white→red→dark red) with pulsing drop shadow
+- `useScreensaver()` hook with 90-second idle timeout, listens to 6 event types
+- Integrated into page.tsx via import and z-[200] overlay
+- Fixed Corner component nesting (moved to module-level BatikCorner)
+- Lint: 0 errors, dev server confirmed running
+
+Stage Summary:
+- Screensaver activates after 90 seconds of inactivity
+- Dismisses instantly on any interaction (click, touch, key, scroll, wheel, mouse)
+- Smooth 1.5s fade in/out transitions
+- All animations are GPU-accelerated via CSS transforms and canvas

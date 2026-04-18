@@ -8,6 +8,7 @@ import { type Domain, type Pillar } from '@/lib/pillar-data'
 import { useFlipbookData } from '@/hooks/use-flipbook-data'
 import { AdminTrigger } from '@/components/admin/AdminTrigger'
 import { AdminPanel } from '@/components/admin/AdminPanel'
+import { MerahPutihScreensaver, useScreensaver } from '@/components/MerahPutihScreensaver'
 
 // DigitalUnveiling uses random CSS positioning + border shorthands that expand
 // differently on server vs client → dynamic import with ssr:false avoids hydration mismatch
@@ -4441,6 +4442,7 @@ export default function Home() {
   const [showHint, setShowHint] = useState(true)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [loading, setLoading] = useState(true)
+  const { active: screensaverActive, dismiss: dismissScreensaver } = useScreensaver(90_000) // 90s idle
   // Always start false on both server & client to avoid hydration mismatch.
   // The DigitalUnveiling component itself checks sessionStorage and fires
   // onComplete immediately if the ritual was already completed, so the user
@@ -4732,6 +4734,9 @@ export default function Home() {
       {/* ═══ Admin Panel ═══ */}
       <AdminTrigger />
       <AdminPanel />
+
+      {/* ═══ MERAH PUTIH SCREENSAVER ═══ */}
+      <MerahPutihScreensaver active={screensaverActive} onDismiss={dismissScreensaver} />
     </main>
   )
 }
