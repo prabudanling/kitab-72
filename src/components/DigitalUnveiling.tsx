@@ -756,218 +756,205 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
 
       {/* ── VISIBLE PASSCODE INPUT (phone lock screen style) ── */}
       {(phase === 'LOCKED' || phase === 'SYNTHESIZING') && (
-        <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 sm:pb-24 px-6 z-10">
-          {/* Classification badge */}
-          <motion.div
-            className="mb-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.35 }}
-            transition={{ duration: 1.5, delay: 0.5 }}
-          >
-            <span
-              className="inline-block px-3 py-1 rounded-full"
-              style={{
-                fontFamily: 'var(--font-ui)',
-                color: GOLD,
-                fontSize: '0.75rem',
-                letterSpacing: '0.25em',
-                textTransform: 'uppercase',
-                border: '1px solid rgba(197,160,89,0.2)',
-                background: 'rgba(197,160,89,0.04)',
-              }}
-            >
-              Dokumen Omega&ensp;&bull;&ensp;Rahasia Strategis
-            </span>
-          </motion.div>
-
-          {/* Classification badge */}
-          <motion.div
-            className="mb-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.35 }}
-            transition={{ duration: 1.5, delay: 0.5 }}
-          >
-            <span
-              className="inline-block px-3 py-1 rounded-full"
-              style={{
-                fontFamily: 'var(--font-ui)',
-                color: GOLD,
-                fontSize: '0.75rem',
-                letterSpacing: '0.25em',
-                textTransform: 'uppercase',
-                border: '1px solid rgba(197,160,89,0.2)',
-                background: 'rgba(197,160,89,0.04)',
-              }}
-            >
-              Dokumen Omega&ensp;&bull;&ensp;Rahasia Strategis
-            </span>
-          </motion.div>
-
-          {/* Title */}
-          <motion.p
-            className="mb-8 sm:mb-12 text-center"
-            style={{
-              fontFamily: 'var(--font-heading)',
-              color: GOLD,
-              fontSize: 'clamp(14px, 3.5vw, 20px)',
-              fontWeight: 400,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              textShadow: '0 0 20px rgba(197,160,89,0.3)',
-            }}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: phase === 'SYNTHESIZING' ? 0.6 : 0.85, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Masukkan Kata Kunci
-          </motion.p>
-
-          {/* Dot indicators */}
-          <motion.div
-            className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8"
-            animate={shaking ? { animation: 'shake 0.5s ease-in-out' } : {}}
-            key={shaking ? 'shake' : 'still'}
-          >
-            {PASSWORD.split('').map((_, i) => {
-              const filled = i < matchProgress;
-              const typed = i < typedCount;
-              return (
-                <span
-                  key={i}
-                  className="block rounded-full"
-                  style={{
-                    width: 'clamp(12px, 3vw, 18px)',
-                    height: 'clamp(12px, 3vw, 18px)',
-                    backgroundColor: filled ? GOLD : typed ? 'rgba(197,160,89,0.2)' : 'rgba(197,160,89,0.08)',
-                    boxShadow: filled
-                      ? `0 0 10px rgba(197,160,89,0.6), 0 0 20px rgba(197,160,89,0.2)`
-                      : 'none',
-                    transition: 'background-color 0.3s, box-shadow 0.3s',
-                    animation: filled ? 'dotPulse 0.4s ease-out' : 'none',
-                  }}
-                />
-              );
-            })}
-          </motion.div>
-
-          {/* Visible input — always focused, shows cursor, triggers mobile keyboard */}
-          <input
-            ref={hiddenRef}
-            type="text"
-            inputMode="text"
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            onInput={onMobileInput}
-            onKeyDown={onMobileKeyDown}
-            style={{
-              position: 'fixed',
-              top: '-200px',
-              left: '-200px',
-              opacity: 0,
-              width: '1px',
-              height: '1px',
-              border: 'none',
-              outline: 'none',
-            }}
-          />
-
-          {/* Backspace button for mobile */}
-          {typedCount > 0 && phase === 'SYNTHESIZING' && (
-            <motion.button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                processBackspace();
-                hiddenRef.current?.focus();
-              }}
-              className="mt-3 px-6 py-2.5 rounded-full cursor-pointer"
-              style={{
-                fontFamily: 'var(--font-ui)',
-                color: GOLD,
-                fontSize: '12px',
-                letterSpacing: '0.15em',
-                border: '1px solid rgba(197,160,89,0.25)',
-                background: 'rgba(197,160,89,0.05)',
-                opacity: 0.5,
-              }}
-              whileHover={{ opacity: 0.8, backgroundColor: 'rgba(197,160,89,0.1)' }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 0.5, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              ← HAPUS
-            </motion.button>
-          )}
-
-          {/* Hints (only in LOCKED phase, after delay) */}
-          {phase === 'LOCKED' && showTextHint && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.25 }}
-              style={{
-                fontFamily: 'var(--font-ui)',
-                color: GOLD,
-                fontSize: '11px',
-                marginTop: '20px',
-                animation: 'subtlePulse 3s ease-in-out infinite',
-                lineHeight: 1.6,
-              }}
-              className="text-center px-8"
-            >
-              Imperium Kemaslahatan Universal menunggu untuk dibuka&hellip;
-            </motion.p>
-          )}
-          {phase === 'LOCKED' && showFullHint && (
+        <div className="absolute inset-0 flex flex-col z-10" onClick={() => hiddenRef.current?.focus()}>
+          {/* ── TOP SECTION: Classification + Title (stays above keyboard) ── */}
+          <div className="flex-shrink-0 flex flex-col items-center pt-16 sm:pt-24 px-6">
+            {/* Classification badge */}
             <motion.div
+              className="mb-6"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center gap-1.5 mt-4"
+              animate={{ opacity: 0.35 }}
+              transition={{ duration: 1.5, delay: 0.5 }}
             >
-              <p
+              <span
+                className="inline-block px-3 py-1 rounded-full"
                 style={{
                   fontFamily: 'var(--font-ui)',
                   color: GOLD,
                   fontSize: '0.75rem',
-                  opacity: 0.22,
-                  letterSpacing: '0.06em',
+                  letterSpacing: '0.25em',
+                  textTransform: 'uppercase',
+                  border: '1px solid rgba(197,160,89,0.2)',
+                  background: 'rgba(197,160,89,0.04)',
                 }}
-                className="text-center px-8"
               >
-                Meneruskan perjuangan para pendiri republik&thinsp;—&thinsp;kini saatnya.
-              </p>
-              <p
+                Dokumen Omega&ensp;&bull;&ensp;Rahasia Strategis
+              </span>
+            </motion.div>
+
+            {/* Title */}
+            <motion.p
+              className="text-center mb-2"
+              style={{
+                fontFamily: 'var(--font-heading)',
+                color: GOLD,
+                fontSize: 'clamp(14px, 3.5vw, 20px)',
+                fontWeight: 400,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                textShadow: '0 0 20px rgba(197,160,89,0.3)',
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: phase === 'SYNTHESIZING' ? 0.6 : 0.85, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              Masukkan Kata Kunci
+            </motion.p>
+          </div>
+
+          {/* ── MIDDLE SECTION: Dot indicators ── */}
+          <div className="flex-1 flex flex-col items-center justify-center px-6">
+            <motion.div
+              className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8"
+              animate={shaking ? { animation: 'shake 0.5s ease-in-out' } : {}}
+              key={shaking ? 'shake' : 'still'}
+            >
+              {PASSWORD.split('').map((_, i) => {
+                const filled = i < matchProgress;
+                const typed = i < typedCount;
+                return (
+                  <span
+                    key={i}
+                    className="block rounded-full"
+                    style={{
+                      width: 'clamp(12px, 3vw, 18px)',
+                      height: 'clamp(12px, 3vw, 18px)',
+                      backgroundColor: filled ? GOLD : typed ? 'rgba(197,160,89,0.2)' : 'rgba(197,160,89,0.08)',
+                      boxShadow: filled
+                        ? `0 0 10px rgba(197,160,89,0.6), 0 0 20px rgba(197,160,89,0.2)`
+                        : 'none',
+                      transition: 'background-color 0.3s, box-shadow 0.3s',
+                      animation: filled ? 'dotPulse 0.4s ease-out' : 'none',
+                    }}
+                  />
+                );
+              })}
+            </motion.div>
+
+            {/* Backspace button */}
+            {typedCount > 0 && phase === 'SYNTHESIZING' && (
+              <motion.button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  processBackspace();
+                  hiddenRef.current?.focus();
+                }}
+                className="px-6 py-2.5 rounded-full cursor-pointer"
                 style={{
                   fontFamily: 'var(--font-ui)',
                   color: GOLD,
                   fontSize: '12px',
-                  opacity: 0.28,
-                  letterSpacing: '0.18em',
+                  letterSpacing: '0.15em',
+                  border: '1px solid rgba(197,160,89,0.25)',
+                  background: 'rgba(197,160,89,0.05)',
+                  opacity: 0.5,
+                }}
+                whileHover={{ opacity: 0.8, backgroundColor: 'rgba(197,160,89,0.1)' }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 0.5, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                ← HAPUS
+              </motion.button>
+            )}
+
+            {/* Hints (only in LOCKED phase, after delay) */}
+            {phase === 'LOCKED' && showTextHint && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.25 }}
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  color: GOLD,
+                  fontSize: '11px',
+                  marginTop: '20px',
+                  animation: 'subtlePulse 3s ease-in-out infinite',
+                  lineHeight: 1.6,
+                }}
+                className="text-center px-8"
+              >
+                Imperium Kemaslahatan Universal menunggu untuk dibuka&hellip;
+              </motion.p>
+            )}
+            {phase === 'LOCKED' && showFullHint && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex flex-col items-center gap-1.5 mt-4"
+              >
+                <p
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: GOLD,
+                    fontSize: '0.75rem',
+                    opacity: 0.22,
+                    letterSpacing: '0.06em',
+                  }}
+                  className="text-center px-8"
+                >
+                  Meneruskan perjuangan para pendiri republik&thinsp;&mdash;&thinsp;kini saatnya.
+                </p>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: GOLD,
+                    fontSize: '12px',
+                    opacity: 0.28,
+                    letterSpacing: '0.18em',
+                  }}
+                >
+                  b e r d i k a r i
+                </p>
+              </motion.div>
+            )}
+
+            {/* Tap to focus hint (mobile) */}
+            {phase === 'LOCKED' && elapsed < 8 && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0.15, 0.35, 0.15] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  color: GOLD,
+                  fontSize: '11px',
+                  marginTop: '16px',
                 }}
               >
-                b e r d i k a r i
-              </p>
-            </motion.div>
-          )}
+                Ketuk di mana saja untuk mulai
+              </motion.p>
+            )}
+          </div>
 
-          {/* Tap to focus hint (mobile) */}
-          {phase === 'LOCKED' && elapsed < 8 && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.15, 0.35, 0.15] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
+          {/* ── BOTTOM SECTION: Input field + keyboard area ── */}
+          {/* Input is in normal document flow so the mobile keyboard
+              appears naturally right below it — like iPhone/Android lock screen */}
+          <div className="flex-shrink-0 px-6 pb-6 pt-4">
+            <input
+              ref={hiddenRef}
+              type="text"
+              inputMode="text"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              onInput={onMobileInput}
+              onKeyDown={onMobileKeyDown}
+              placeholder="Ketik kata kunci di sini..."
+              className="w-full px-4 py-3 rounded-xl text-center outline-none"
               style={{
                 fontFamily: 'var(--font-ui)',
                 color: GOLD,
-                fontSize: '11px',
-                marginTop: '16px',
+                fontSize: '14px',
+                letterSpacing: '0.2em',
+                backgroundColor: 'rgba(197,160,89,0.06)',
+                border: '1px solid rgba(197,160,89,0.15)',
+                caretColor: GOLD,
               }}
-            >
-              Ketuk di mana saja untuk mulai
-            </motion.p>
-          )}
+            />
+          </div>
         </div>
       )}
 
