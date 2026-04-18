@@ -145,7 +145,10 @@ const CSS = `
 /* ═══════════════════════════════════════════════════════════════
    COMPONENT
    ═══════════════════════════════════════════════════════════════ */
-export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
+export function DigitalUnveiling({ onComplete, onPrepareAudio }: {
+  onComplete: () => void
+  onPrepareAudio?: () => void   // ← MUST be called during user gesture to unlock AudioContext
+}) {
   /* ── state ── */
   const [phase, _setPhase] = useState<Phase>('LOCKED');
   const [matchProgress, setMatchProgress] = useState(0);
@@ -1351,6 +1354,7 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
                         type="button"
                         onClick={() => {
                           playIndonesiaRaya();
+                          onPrepareAudio?.();  // ← Unlock AudioContext during THIS user gesture!
                           setPhase('OPENING');
                         }}
                         className="mt-2 px-8 py-3 rounded-sm cursor-pointer"

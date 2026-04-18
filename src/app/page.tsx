@@ -4515,9 +4515,9 @@ export default function Home() {
   const handleRitualComplete = useCallback(() => {
     setRitualComplete(true)
     try { sessionStorage.setItem('knbmp-ritual-complete', 'true') } catch { /* quota */ }
-    // ═══ Start Indonesia Raya HERE — this runs inside Buka Kitab click = real user gesture ═══
-    // Browser allows AudioContext ONLY from direct user interaction, not from useEffect
-    anthem.play(3.0) // 3s delay = time for loading screen to finish
+    // ═══ Start Indonesia Raya — AudioContext was already prepared during Buka Kitab click ═══
+    // prepare() was called inside the user gesture; play() just schedules the oscillators
+    anthem.play(0.5) // Small delay for transition smoothness
   }, [anthem])
 
   const handleLockKitab = useCallback(() => {
@@ -4625,12 +4625,13 @@ export default function Home() {
     }
   }, [])
 
-  // ═══ Fallback: if ritual was auto-skipped, play on first user gesture ═══
+  // ═══ Fallback: if ritual was auto-skipped, prepare + play on first user gesture ═══
   const fallbackTriggeredRef = useRef(false)
   useEffect(() => {
     const playOnFirstGesture = () => {
       if (fallbackTriggeredRef.current || anthem.hasStarted) return
       fallbackTriggeredRef.current = true
+      anthem.prepare()  // Unlock AudioContext during user gesture
       anthem.play(0.5)
     }
     document.addEventListener('click', playOnFirstGesture)
@@ -4654,7 +4655,7 @@ export default function Home() {
 
   // ═══ Ritual: Digital Unveiling Experience ═══
   if (!ritualComplete) {
-    return <DigitalUnveiling onComplete={handleRitualComplete} />
+    return <DigitalUnveiling onComplete={handleRitualComplete} onPrepareAudio={anthem.prepare} />
   }
 
   return (

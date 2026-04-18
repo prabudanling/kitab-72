@@ -856,3 +856,28 @@ Stage Summary:
 - User can mute/unmute anthem while it plays
 - Plays once through (~2 minutes) then stops automatically
 
+
+---
+Task ID: audio-fix-4
+Agent: Main Agent
+Task: Fix Indonesia Raya background music — 4th attempt (prepare/play split)
+
+Work Log:
+- Identified ROOT CAUSE: `onComplete` callback fires 1200ms AFTER "Buka Kitab" click via setTimeout, completely outside user gesture context
+- Browser autoplay policy requires AudioContext to be created+resumed DURING a user gesture
+- Previous 3 fixes failed because AudioContext was always created AFTER the gesture expired
+- Rewrote `use-indonesia-raya.ts` with prepare()+play() split:
+  - `prepare()` — creates AudioContext + resume() during user gesture (in click handler)
+  - `play()` — schedules all 5 orchestra layers using pre-created context (can be called anytime)
+- Updated DigitalUnveiling.tsx: added `onPrepareAudio` prop, called in "Buka Kitab" onClick handler
+- Updated page.tsx: passed `anthem.prepare` as `onPrepareAudio` prop to DigitalUnveiling
+- Updated page.tsx: `handleRitualComplete` now calls `anthem.play(0.5)` (no need to create context)
+- Updated page.tsx: fallback gesture listener also calls `anthem.prepare()` before `anthem.play()`
+- TypeScript check: 0 errors in changed files (pre-existing errors in unrelated files only)
+- ESLint: 0 errors
+- Dev server: compiling successfully
+
+Stage Summary:
+- Root cause identified: setTimeout in DigitalUnveiling breaks user gesture chain
+- Fix: prepare() called in "Buka Kitab" click handler, play() called later by onComplete
+- Files changed: src/hooks/use-indonesia-raya.ts, src/components/DigitalUnveiling.tsx, src/app/page.tsx

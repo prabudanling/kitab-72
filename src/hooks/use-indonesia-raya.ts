@@ -5,6 +5,12 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 // ═══════════════════════════════════════════════════════════════
 // INDONESIA RAYA — Full Orchestral Background Music
 // Web Audio API synthesis of the Indonesian National Anthem
+//
+// CRITICAL: Browser autoplay policy requires AudioContext to be
+// created & resumed DURING a user gesture (click/tap).
+// Therefore this hook splits into:
+//   prepare()  — must be called inside click handler
+//   play()     — can be called anytime after prepare()
 // ═══════════════════════════════════════════════════════════════
 
 // MIDI note → frequency
@@ -288,105 +294,158 @@ const TOTAL_DURATION = Math.max(
 ) + 2
 
 // ═══════════════════════════════════════════════════════════════
-// HOOK — Uses REF for guard (no stale closure issues)
+// HOOK — prepare() + play() split for user gesture compliance
 // ═══════════════════════════════════════════════════════════════
 export function useIndonesiaRaya() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [hasStarted, setHasStarted] = useState(false)
   const [hasFinished, setHasFinished] = useState(false)
 
-  // Guard ref for preventing double-play (always accurate, never stale)
+  // Refs — never stale
   const ctxRef = useRef<AudioContext | null>(null)
   const masterRef = useRef<GainNode | null>(null)
-  const startedRef = useRef(false) // ← REF not state!
+  const preparedRef = useRef(false)
+  const startedRef = useRef(false)
+  const mutedRef = useRef(false)
   const finishTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const play = useCallback(async (fadeDelay: number = 2.0) => {
-    // Guard with REF — always accurate, never stale
-    if (startedRef.current) return
-    startedRef.current = true
+  /**
+   * PREPARE — MUST be called inside a user gesture (click/tap).
+   * Creates AudioContext and resumes it while we're still in the
+   * gesture handler, so the browser unlocks audio output.
+   */
+  const prepare = useCallback(() => {
+    if (preparedRef.current) {
+      console.log('[IndonesiaRaya] prepare() — already prepared, skipping')
+      return
+    }
 
-    console.log('[IndonesiaRaya] play() called, creating AudioContext...')
+    console.log('[IndonesiaRaya] prepare() — creating AudioContext inside user gesture...')
 
     try {
-      const ctx = new AudioContext()
+      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
       ctxRef.current = ctx
 
       const master = ctx.createGain()
-      master.gain.value = 0 // Start silent for fade-in
+      master.gain.value = 0 // Start silent
       master.connect(ctx.destination)
       masterRef.current = master
 
-      // MUST resume from user gesture
+      // Resume synchronously — this is the KEY fix!
+      // In Safari/iOS, resume() returns a promise, but the unlock
+      // happens immediately when called during a gesture.
       if (ctx.state === 'suspended') {
-        console.log('[IndonesiaRaya] AudioContext suspended, resuming...')
-        await ctx.resume()
+        ctx.resume()
       }
 
-      if (ctx.state !== 'running') {
-        console.warn('[IndonesiaRaya] AudioContext still not running after resume. State:', ctx.state)
-        startedRef.current = false // Allow retry
-        return
-      }
-
-      console.log('[IndonesiaRaya] AudioContext running! Scheduling orchestra...')
-
-      const delay = fadeDelay
-
-      // Layer 1: Brass melody — LOUD (was 0.08, now 0.25)
-      playBrassMelody(ctx, master, melodyTimeline, 0.25, delay)
-
-      // Layer 2: String pad (was 0.03, now 0.10)
-      playStringPad(ctx, master, chordTimeline, 0.10, delay)
-
-      // Layer 3: Bass (was 0.06, now 0.20)
-      playBass(ctx, master, chordTimeline, 0.20, delay)
-
-      // Layer 4: Timpani (was 0.04, now 0.15)
-      playTimpani(ctx, master, chordTimeline, 0.15, delay)
-
-      // Layer 5: Shimmer (was 0.012, now 0.04)
-      playShimmer(ctx, master, TOTAL_DURATION, 0.04, delay)
-
-      // Fade in to FULL volume (was 0.7, now 1.0)
-      master.gain.setValueAtTime(0, ctx.currentTime + delay)
-      master.gain.linearRampToValueAtTime(1.0, ctx.currentTime + delay + 3)
-
-      // Fade out near end
-      const fadeOutStart = delay + TOTAL_DURATION - 4
-      master.gain.setValueAtTime(1.0, ctx.currentTime + fadeOutStart)
-      master.gain.linearRampToValueAtTime(0, ctx.currentTime + delay + TOTAL_DURATION)
-
-      setHasStarted(true)
-      setIsPlaying(true)
-      console.log('[IndonesiaRaya] All 5 layers scheduled. Duration:', TOTAL_DURATION.toFixed(1), 's')
-
-      // Mark finished
-      if (finishTimerRef.current) clearTimeout(finishTimerRef.current)
-      finishTimerRef.current = setTimeout(() => {
-        setIsPlaying(false)
-        setHasFinished(true)
-        console.log('[IndonesiaRaya] Finished')
-      }, (delay + TOTAL_DURATION) * 1000 + 500)
-
+      preparedRef.current = true
+      console.log('[IndonesiaRaya] prepare() — AudioContext created. State:', ctx.state)
     } catch (err) {
-      console.error('[IndonesiaRaya] Error:', err)
-      startedRef.current = false // Allow retry
+      console.error('[IndonesiaRaya] prepare() failed:', err)
     }
-  }, []) // ← NO dependencies — uses refs for everything
+  }, [])
 
+  /**
+   * PLAY — Schedule the full orchestral anthem.
+   * Can be called anytime AFTER prepare() has been called.
+   */
+  const play = useCallback((fadeDelay: number = 2.0) => {
+    if (startedRef.current) {
+      console.log('[IndonesiaRaya] play() — already started, skipping')
+      return
+    }
+    if (!preparedRef.current || !ctxRef.current || !masterRef.current) {
+      console.warn('[IndonesiaRaya] play() — not prepared yet! Call prepare() during user gesture first.')
+      return
+    }
+
+    startedRef.current = true
+
+    const ctx = ctxRef.current
+    const master = masterRef.current
+
+    console.log('[IndonesiaRaya] play() — scheduling orchestra. AudioContext state:', ctx.state)
+
+    // Double-check: try to resume if somehow still suspended
+    if (ctx.state === 'suspended') {
+      ctx.resume()
+    }
+
+    // Layer 1: Brass melody
+    playBrassMelody(ctx, master, melodyTimeline, 0.25, fadeDelay)
+
+    // Layer 2: String pad
+    playStringPad(ctx, master, chordTimeline, 0.10, fadeDelay)
+
+    // Layer 3: Bass
+    playBass(ctx, master, chordTimeline, 0.20, fadeDelay)
+
+    // Layer 4: Timpani
+    playTimpani(ctx, master, chordTimeline, 0.15, fadeDelay)
+
+    // Layer 5: Shimmer
+    playShimmer(ctx, master, TOTAL_DURATION, 0.04, fadeDelay)
+
+    // Fade in to FULL volume
+    master.gain.setValueAtTime(0, ctx.currentTime + fadeDelay)
+    master.gain.linearRampToValueAtTime(1.0, ctx.currentTime + fadeDelay + 3)
+
+    // Fade out near end
+    const fadeOutStart = fadeDelay + TOTAL_DURATION - 4
+    master.gain.setValueAtTime(1.0, ctx.currentTime + fadeOutStart)
+    master.gain.linearRampToValueAtTime(0, ctx.currentTime + fadeDelay + TOTAL_DURATION)
+
+    setHasStarted(true)
+    setIsPlaying(true)
+    console.log('[IndonesiaRaya] All 5 layers scheduled. Duration:', TOTAL_DURATION.toFixed(1), 's')
+
+    // Mark finished
+    if (finishTimerRef.current) clearTimeout(finishTimerRef.current)
+    finishTimerRef.current = setTimeout(() => {
+      setIsPlaying(false)
+      setHasFinished(true)
+      startedRef.current = false
+      preparedRef.current = false
+      console.log('[IndonesiaRaya] Finished')
+    }, (fadeDelay + TOTAL_DURATION) * 1000 + 500)
+  }, [])
+
+  /**
+   * TOGGLE MUTE — Mute/unmute the anthem
+   */
   const toggle = useCallback(() => {
     const ctx = ctxRef.current
     const master = masterRef.current
     if (!ctx || !master || !startedRef.current) return
-    if (isPlaying) {
+
+    mutedRef.current = !mutedRef.current
+    if (mutedRef.current) {
       master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5)
       setIsPlaying(false)
     } else {
       master.gain.linearRampToValueAtTime(1.0, ctx.currentTime + 0.5)
       setIsPlaying(true)
     }
-  }, [isPlaying])
+  }, [])
+
+  /**
+   * STOP — Stop and clean up
+   */
+  const stop = useCallback(() => {
+    if (ctxRef.current) {
+      try {
+        ctxRef.current.close()
+      } catch { /* ok */ }
+      ctxRef.current = null
+    }
+    masterRef.current = null
+    preparedRef.current = false
+    startedRef.current = false
+    mutedRef.current = false
+    setIsPlaying(false)
+    setHasStarted(false)
+    if (finishTimerRef.current) clearTimeout(finishTimerRef.current)
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -399,8 +458,10 @@ export function useIndonesiaRaya() {
     isPlaying,
     hasStarted,
     hasFinished,
-    play,
+    prepare,  // ← Call during user gesture!
+    play,     // ← Call after prepare(), anytime
     toggle,
+    stop,
     totalDuration: TOTAL_DURATION,
   }
 }
