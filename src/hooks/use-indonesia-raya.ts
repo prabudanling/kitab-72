@@ -12,7 +12,7 @@ const midi = (n: number) => 440 * Math.pow(2, (n - 69) / 12)
 
 // Note constants
 const Bb3 = 58, C4 = 60, D4 = 62, Eb4 = 63, F4 = 65, G4 = 67, A4 = 69, Bb4 = 70
-const C5 = 72, D5 = 74, Eb5 = 75, F5 = 77, G5 = 79, A5 = 81, Bb5 = 82, C6 = 84
+const C5 = 72, D5 = 74, Eb5 = 75, F5 = 77, G5 = 79, A5 = 81, Bb5 = 82, C6 = 84, Eb6 = 87
 
 // ═══ MELODY — Indonesia Raya ═══
 // Each note: [midiNote, durationInBeats]
