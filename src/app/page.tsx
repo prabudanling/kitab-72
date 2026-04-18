@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
+import { useState, useCallback, useEffect, useRef, useMemo, createContext, useContext } from 'react'
 import dynamic from 'next/dynamic'
 import { ChevronLeft, ChevronRight, ChevronDown, Volume2, VolumeX, Lock } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -16,6 +16,12 @@ const DigitalUnveiling = dynamic(
   () => import('@/components/DigitalUnveiling').then((m) => m.DigitalUnveiling),
   { ssr: false },
 )
+
+// ═══════════════════════════════════════════════════════════════
+// MOBILE DETECTION — critical for performance optimization
+// ═══════════════════════════════════════════════════════════════
+const IsMobileContext = createContext(false)
+function useIsMobile() { return useContext(IsMobileContext) }
 
 // ═══════════════════════════════════════════════════════════════
 // COLORS
@@ -207,10 +213,13 @@ const getZIndex = (index: number, currentLeaf: number, total: number) => {
 // GOLDEN PARTICLES (Canvas-based for performance)
 // ═══════════════════════════════════════════════════════════════
 function GoldenParticles() {
+  const isMobile = useIsMobile()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animRef = useRef<number>(0)
 
   useEffect(() => {
+    // Skip canvas animation entirely on mobile — huge performance win
+    if (isMobile) return
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
@@ -272,10 +281,13 @@ function GoldenParticles() {
 // GOD MODE: Enhanced Golden Particles — Luxurious & Dense
 // ═══════════════════════════════════════════════════════════════
 function GoldenParticlesGod() {
+  const isMobile = useIsMobile()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animRef = useRef<number>(0)
 
   useEffect(() => {
+    // Skip canvas animation entirely on mobile
+    if (isMobile) return
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
@@ -372,6 +384,16 @@ function GoldenParticlesGod() {
 // BATIK WATERMARK
 // ═══════════════════════════════════════════════════════════════
 function BatikWatermark() {
+  const isMobile = useIsMobile()
+  // On mobile, return a much simpler pattern — no SVG pattern tiling
+  if (isMobile) {
+    return (
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={{ opacity: 0.02 }}>
+        <div className="absolute top-4 left-4 w-3 h-3 rotate-45 border border-[rgba(197,160,89,0.3)]" />
+        <div className="absolute bottom-4 right-4 w-3 h-3 rotate-45 border border-[rgba(197,160,89,0.3)]" />
+      </div>
+    )
+  }
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={{ opacity: 0.035 }}>
       <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -4549,12 +4571,22 @@ export default function Home() {
   const progress = ((currentLeaf + 1) / totalPages) * 100
   const displayPage = currentLeaf + 1
 
+  // ═══ Mobile detection ═══
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   // ═══ Ritual: Digital Unveiling Experience ═══
   if (!ritualComplete) {
     return <DigitalUnveiling onComplete={handleRitualComplete} />
   }
 
   return (
+    <IsMobileContext.Provider value={isMobile}>
     <main className="min-h-screen flex flex-col" style={{ backgroundColor: DARK_BG }}>
       {/* ═══ LOADING SCREEN ═══ */}
       <AnimatePresence>
@@ -4583,6 +4615,9 @@ export default function Home() {
           {bookPages.map((page, index) => {
             const isFlipped = index <= currentLeaf
             const isCurrent = index === currentLeaf
+            // Mobile: only render full content for nearby pages (±2), placeholder for rest
+            const isNearby = Math.abs(index - currentLeaf) <= 2
+            const shouldRenderContent = !isMobile || isNearby
             return (
               <div key={index} className="absolute inset-0 bg-white overflow-hidden book-spine-shadow"
                 style={{
@@ -4593,7 +4628,13 @@ export default function Home() {
                   zIndex: getZIndex(index, currentLeaf, totalPages),
                   boxShadow: isFlipped ? '-5px 0 20px rgba(0,0,0,0.15)' : isCurrent ? '8px 0 30px rgba(0,0,0,0.25)' : '3px 0 10px rgba(0,0,0,0.15)',
                 }}>
-                {renderPage(page, index, totalPages, liveDomains)}
+                {shouldRenderContent ? renderPage(page, index, totalPages, liveDomains) : (
+                  <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
+                    <span className="font-[family-name:var(--font-heading)] text-sm" style={{ color: '#C5A05940' }}>
+                      {page.type === 'pillar-detail' ? page.pillar?.code : ''}
+                    </span>
+                  </div>
+                )}
               </div>
             )
           })}
@@ -4621,6 +4662,9 @@ export default function Home() {
           {bookPages.map((page, index) => {
             const isFlipped = index <= currentLeaf
             const isCurrent = index === currentLeaf
+            // Mobile: only render full content for nearby pages (±1), placeholder for rest
+            const isNearby = Math.abs(index - currentLeaf) <= 1
+            const shouldRenderContent = !isMobile || isNearby
             return (
               <div key={index} className="absolute inset-0 bg-white overflow-hidden book-spine-shadow"
                 style={{
@@ -4631,22 +4675,24 @@ export default function Home() {
                   zIndex: getZIndex(index, currentLeaf, totalPages),
                   boxShadow: isFlipped ? '-3px 0 10px rgba(0,0,0,0.15)' : isCurrent ? '4px 0 15px rgba(0,0,0,0.2)' : '2px 0 5px rgba(0,0,0,0.1)',
                 }}>
-                {renderPage(page, index, totalPages, liveDomains)}
+                {shouldRenderContent ? renderPage(page, index, totalPages, liveDomains) : (
+                  <div className="absolute inset-0" style={{ backgroundColor: '#FAF9F6' }} />
+                )}
               </div>
             )
           })}
         </div>
 
-        <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]"
+        <div className="relative flex-shrink-0 flex items-center justify-between px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]"
           style={{ backgroundColor: DARK_BG }}>
           {/* Subtle gold separator line */}
           <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
             style={{ background: 'linear-gradient(90deg, transparent, rgba(197,160,89,0.2) 30%, rgba(197,160,89,0.2) 70%, transparent)' }} />
           <motion.button onClick={goPrev} disabled={currentLeaf <= 0}
-            className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default"
+            className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default active:scale-90"
             style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
             whileTap={{ scale: 0.9 }} aria-label="Previous">
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5" />
           </motion.button>
           <div className="text-center min-w-0 flex-1 mx-3">
             <AnimatePresence mode="wait">
@@ -4663,16 +4709,16 @@ export default function Home() {
             </AnimatePresence>
           </div>
           <motion.button onClick={goNext} disabled={currentLeaf >= totalPages - 1}
-            className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default"
+            className="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:cursor-default active:scale-90"
             style={{ backgroundColor: '#250008', color: GOLD, border: '1px solid #380012' }}
             whileTap={{ scale: 0.9 }} aria-label="Next">
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-5 h-5" />
           </motion.button>
         </div>
       </div>
 
       {/* ═══ Progress bar ═══ */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 h-1 pointer-events-none">
+      <div className="fixed bottom-0 left-0 right-0 z-20 h-1 pointer-events-none">
         <motion.div className="h-full"
           style={{ backgroundColor: currentPageInfo.domainColor || GOLD, opacity: 0.6 }}
           initial={false}
@@ -4722,12 +4768,13 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* ═══ Keyboard hint ═══ */}
-      <motion.div className="fixed bottom-12 md:bottom-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+      {/* ═══ Keyboard / Swipe hint ═══ */}
+      <motion.div className="fixed bottom-16 md:bottom-16 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
         animate={{ opacity: showHint ? 1 : 0 }} transition={{ duration: 1 }}>
-        <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-wider"
+        <p className="font-[family-name:var(--font-ui)] text-[10px] sm:text-xs tracking-wider text-center"
           style={{ color: '#C47080' }}>
-          ← → atau klik untuk berpindah halaman
+          <span className="hidden sm:inline">← → atau klik untuk berpindah halaman</span>
+          <span className="sm:hidden">Geser kiri/kanan atau ketuk tombol ◀ ▶</span>
         </p>
       </motion.div>
 
@@ -4738,5 +4785,6 @@ export default function Home() {
       {/* ═══ MERAH PUTIH SCREENSAVER ═══ */}
       <MerahPutihScreensaver active={screensaverActive} onDismiss={dismissScreensaver} />
     </main>
+    </IsMobileContext.Provider>
   )
 }
