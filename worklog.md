@@ -821,3 +821,38 @@ Stage Summary:
 - Auto-disappears after 4 page turns to reduce visual clutter
 - Performance impact: minimal (2 small motion.div overlays, pointer-events-none)
 
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: Add Indonesia Raya background music from Kata Pengantar onwards
+
+Work Log:
+- Identified YouTube video w88PFY7BQBA as "NATIONAL ANTHEM | INDONESIA RAYA" via noembed API
+- Created /src/hooks/use-indonesia-raya.ts — full orchestral Web Audio API synthesis
+  - 5-layer orchestral synthesis: Brass Melody, String Pad, Bass, Timpani, Orchestral Shimmer
+  - Complete melody encoding: 3 verses + chorus in Bb Major at 100 BPM (~2 minutes)
+  - Brass: sawtooth + detuned chorus + triangle warmth, bandpass filtered
+  - Strings: 3 detuned sine waves per note across 3 octaves with slow vibrato
+  - Bass: sine wave one octave below with lowpass filter
+  - Timpani: sine with pitch-bend settle (sharp→fundamental) on beats 1&3
+  - Shimmer: triangle waves at C6/Eb6/G5/Bb5 with LFO tremolo
+  - Smooth fade-in (3s) and fade-out (4s before end)
+  - playOnce pattern: hasStarted prevents replay
+  - toggle() for play/pause mid-song
+- Integrated into page.tsx:
+  - Anthem starts when currentLeaf >= 1 (past cover = Kata Pengantar)
+  - 1.5s delay for smooth entry
+  - Mobile nav bar: "Indonesia Raya" indicator pill with Music/VolumeX icon + animated equalizer bars
+  - Desktop bottom bar: Music toggle button + equalizer bars next to volume control
+- Fixed MusicOff import error (not in this lucide-react version) → replaced with VolumeX
+- ESLint: 0 errors, Dev server: GET / 200
+
+Stage Summary:
+- Indonesia Raya orchestral background music plays once starting from Kata Pengantar
+- 5-layer Web Audio API synthesis: brass, strings, bass, timpani, shimmer
+- Mobile: indicator pill with animated equalizer in nav bar
+- Desktop: toggle button with equalizer in bottom bar
+- User can mute/unmute anthem while it plays
+- Plays once through (~2 minutes) then stops automatically
+

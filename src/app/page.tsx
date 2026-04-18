@@ -2,12 +2,13 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo, createContext, useContext } from 'react'
 import dynamic from 'next/dynamic'
-import { ChevronLeft, ChevronRight, ChevronDown, Volume2, VolumeX, Lock } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronDown, Volume2, VolumeX, Lock, Music } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { type Domain, type Pillar } from '@/lib/pillar-data'
 import { useFlipbookData } from '@/hooks/use-flipbook-data'
 import { AdminTrigger } from '@/components/admin/AdminTrigger'
 import { useScreensaver } from '@/components/MerahPutihScreensaver'
+import { useIndonesiaRaya } from '@/hooks/use-indonesia-raya'
 
 // Lazy-load heavy components to reduce initial bundle on mobile
 const AdminPanel = dynamic(
@@ -4509,6 +4510,7 @@ export default function Home() {
   // is never stuck re-doing the ritual after a page reload.
   const [ritualComplete, setRitualComplete] = useState(false)
   const { domains: liveDomains, isLive, lastFetched, refresh: refreshFlipbookData } = useFlipbookData()
+  const anthem = useIndonesiaRaya() // Indonesia Raya background music
 
   const handleRitualComplete = useCallback(() => {
     setRitualComplete(true)
@@ -4619,6 +4621,13 @@ export default function Home() {
       setTimeout(() => { try { preloader.remove() } catch { /* already removed */ } }, 600)
     }
   }, [])
+
+  // ═══ Start Indonesia Raya when navigating past cover ═══
+  useEffect(() => {
+    if (currentLeaf >= 1 && !anthem.hasStarted) {
+      anthem.play(1.5) // 1.5s delay for smooth entry
+    }
+  }, [currentLeaf, anthem.hasStarted])
 
   // ═══ Mobile detection ═══
   const [isMobile, setIsMobile] = useState(false)
@@ -4790,6 +4799,38 @@ export default function Home() {
               <ChevronRight className="w-5 h-5" />
             </motion.button>
           </div>
+
+          {/* Mobile music indicator — shows when anthem is active */}
+          {anthem.hasStarted && (
+            <motion.div
+              className="absolute top-2 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 px-3 py-1 rounded-full pointer-events-none"
+              style={{ backgroundColor: 'rgba(14,0,4,0.8)', border: '1px solid rgba(197,160,89,0.15)' }}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}>
+              {anthem.isPlaying ? (
+                <Music className="w-3 h-3" style={{ color: GOLD }} />
+              ) : (
+                <VolumeX className="w-3 h-3" style={{ color: '#C47080' }} />
+              )}
+              <span className="font-[family-name:var(--font-ui)] text-[9px] tracking-wider uppercase"
+                style={{ color: anthem.isPlaying ? GOLD : '#C47080' }}>
+                Indonesia Raya
+              </span>
+              {/* Animated equalizer bars */}
+              {anthem.isPlaying && (
+                <div className="flex items-end gap-0.5 ml-1">
+                  {[0, 1, 2].map(i => (
+                    <motion.div key={i}
+                      className="w-0.5 rounded-full"
+                      style={{ backgroundColor: GOLD, height: 6 }}
+                      animate={{ height: [4, 10, 6, 12, 4] }}
+                      transition={{ duration: 0.8 + i * 0.15, repeat: Infinity, ease: 'easeInOut' }} />
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
         </div>
       </div>
 
@@ -4832,6 +4873,31 @@ export default function Home() {
             aria-label={soundEnabled ? 'Mute' : 'Unmute'}>
             {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
           </motion.button>
+          {/* Indonesia Raya anthem toggle — desktop */}
+          {anthem.hasStarted && (
+            <>
+              <div className="w-px h-5" style={{ backgroundColor: '#380012' }} />
+              <motion.button
+                onClick={(e) => { e.stopPropagation(); anthem.toggle() }}
+                className="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer"
+                style={{ color: anthem.isPlaying ? GOLD : '#C47080' }}
+                whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}
+                aria-label={anthem.isPlaying ? 'Matikan Lagu' : 'Putar Lagu'}>
+                {anthem.isPlaying ? <Music className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+              </motion.button>
+              {anthem.isPlaying && (
+                <div className="flex items-end gap-0.5">
+                  {[0, 1, 2].map(i => (
+                    <motion.div key={i}
+                      className="w-0.5 rounded-full"
+                      style={{ backgroundColor: GOLD, height: 6 }}
+                      animate={{ height: [4, 10, 6, 12, 4] }}
+                      transition={{ duration: 0.8 + i * 0.15, repeat: Infinity, ease: 'easeInOut' }} />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
           <div className="w-px h-5" style={{ backgroundColor: '#380012' }} />
           <motion.button
             onClick={(e) => { e.stopPropagation(); handleLockKitab() }}
