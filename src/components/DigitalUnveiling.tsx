@@ -153,6 +153,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
   const [shaking, setShaking] = useState(false);
   const [typedCount, setTypedCount] = useState(0); // how many chars currently in buffer
 
+  // ── Visual Viewport tracking for mobile keyboard ──
+  const [vvHeight, setVvHeight] = useState(0);
+
   /* ── refs ── */
   const phaseRef = useRef<Phase>('LOCKED');
   const matchRef = useRef(0);
@@ -682,6 +685,20 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
     return () => clearInterval(iv);
   }, [phase]);
 
+  // Track visualViewport for mobile keyboard awareness
+  useEffect(() => {
+    const vv = window.visualViewport;
+    const update = () => setVvHeight(vv ? vv.height : window.innerHeight);
+    update();
+    if (!vv) return;
+    vv.addEventListener('resize', update);
+    vv.addEventListener('scroll', update);
+    return () => {
+      vv.removeEventListener('resize', update);
+      vv.removeEventListener('scroll', update);
+    };
+  }, []);
+
   // Mobile: tap anywhere → focus visible input (also pre-init AudioContext)
   useEffect(() => {
     if (phase !== 'LOCKED' && phase !== 'SYNTHESIZING') return;
@@ -756,7 +773,11 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
 
       {/* ── VISIBLE PASSCODE INPUT (phone lock screen style) ── */}
       {(phase === 'LOCKED' || phase === 'SYNTHESIZING') && (
-        <div className="absolute inset-0 flex flex-col z-10" onClick={() => hiddenRef.current?.focus()}>
+        <div
+          className="absolute inset-0 flex flex-col z-10"
+          style={{ height: vvHeight || undefined }}
+          onClick={() => hiddenRef.current?.focus()}
+        >
           {/* ── TOP SECTION: Classification + Title (stays above keyboard) ── */}
           <div className="flex-shrink-0 flex flex-col items-center pt-16 sm:pt-24 px-6">
             {/* Classification badge */}
@@ -928,9 +949,9 @@ export function DigitalUnveiling({ onComplete }: { onComplete: () => void }) {
             )}
           </div>
 
-          {/* ── BOTTOM SECTION: Input field + keyboard area ── */}
-          {/* Input is in normal document flow so the mobile keyboard
-              appears naturally right below it — like iPhone/Android lock screen */}
+          {/* ── BOTTOM SECTION: Input field (always above keyboard) ── */}
+          {/* On mobile: visualViewport tracks keyboard, so this stays visible.
+              On desktop: full width input at the bottom. */}
           <div className="flex-shrink-0 px-6 pb-6 pt-4">
             <input
               ref={hiddenRef}

@@ -771,3 +771,28 @@ Stage Summary:
 - **Progress bar**: no longer overlaps mobile nav buttons
 - **Loading screen**: 60% faster on mobile (1.5s → 0.6s)
 - All changes: ESLint clean, dev server compiling successfully
+---
+Task ID: 1
+Agent: Main Agent
+Task: Mobile performance optimization - lightweight loading, keyboard fix, skip heavy animations
+
+Work Log:
+- Analyzed full project: 4,797-line page.tsx, 1,401-line DigitalUnveiling.tsx, 7 Google Fonts, 85+ pages
+- Created CSS-only instant preloader in layout.tsx (shows before ANY JavaScript loads)
+- Optimized font loading: 2 core fonts (Outfit, DM Sans) preload eagerly, 5 premium fonts deferred
+- Added MobileHide component to skip rendering heavy DOM elements on mobile entirely
+- Made LoadingScreen return null on mobile (CSS preloader already showed branded experience, 150ms transition)
+- Skip CinematicLightSweep on mobile (infinite animation consuming compositor)
+- Skip middle/inner gold frames on mobile (reduced DOM layers)
+- Skip all 4 CornerOrnamentGod on mobile (8 motion.div elements saved)
+- Fixed DigitalUnveiling keyboard: use visualViewport API to track keyboard height
+- Layout container height adapts to visualViewport so dots stay above keyboard
+- Added preloader dismissal in Home component useEffect (fires on mount regardless of ritual state)
+
+Stage Summary:
+- Key files modified: layout.tsx, page.tsx, DigitalUnveiling.tsx
+- CSS preloader: pure CSS animation with system fonts, 0ms JS dependency
+- Mobile cover: reduced from 13+ layers to ~8 (skip CinematicLightSweep, frames, corners)
+- Loading on mobile: 150ms (was 600ms) since CSS preloader handles the visual experience
+- Keyboard fix: visualViewport tracks keyboard open/close, adjusts container height
+- Font strategy: preload: true for Outfit + DM Sans, preload: false for 5 others

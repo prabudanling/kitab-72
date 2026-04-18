@@ -32,6 +32,14 @@ const DigitalUnveiling = dynamic(
 const IsMobileContext = createContext(false)
 function useIsMobile() { return useContext(IsMobileContext) }
 
+// Desktop-only wrapper — skips rendering children entirely on mobile
+// This is more efficient than CSS hidden because it avoids DOM creation + JS execution
+function MobileHide({ children }: { children: React.ReactNode }) {
+  const isMobile = useIsMobile()
+  if (isMobile) return null
+  return <>{children}</>
+}
+
 // ═══════════════════════════════════════════════════════════════
 // COLORS
 // ═══════════════════════════════════════════════════════════════
@@ -604,25 +612,39 @@ function AnimatedLetters({ text, className, delay = 0, color }: { text: string; 
 }
 
 // ═══════════════════════════════════════════════════════════════
-// LOADING SCREEN
+// LOADING SCREEN — Ultra lightweight on mobile
+// On mobile: CSS-only fade out (no framer-motion, no state updates)
+// On desktop: Rich animated loading with progress bar
 // ═══════════════════════════════════════════════════════════════
 function LoadingScreen({ onComplete }: { onComplete: () => void }) {
-  const [progress, setProgress] = useState(0)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 768
-    const loadTime = isMobile ? 600 : 1500 // Faster on mobile
-    const increment = isMobile ? 25 : 15
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) { clearInterval(interval); return 100 }
-        return prev + Math.random() * increment + 5
-      })
-    }, 100)
-    const timer = setTimeout(onComplete, loadTime)
-    return () => { clearInterval(interval); clearTimeout(timer) }
-  }, [onComplete])
+    // Dismiss the CSS-only preloader from layout.tsx
+    const preloader = document.getElementById('knbmp-preloader')
+    if (preloader) {
+      preloader.classList.add('fade-out')
+      setTimeout(() => preloader.remove(), 600)
+    }
 
+    if (isMobile) {
+      // Mobile: ultra-fast — CSS preloader already showed, just fade out quickly
+      const t = setTimeout(onComplete, 150)
+      return () => clearTimeout(t)
+    }
+
+    // Desktop: rich animated loading
+    const t = setTimeout(onComplete, 1500)
+    return () => clearTimeout(t)
+  }, [onComplete, isMobile])
+
+  if (isMobile) {
+    // Mobile: minimal — just a dark overlay that fades out instantly
+    // The CSS preloader already showed the branded loading experience
+    return null
+  }
+
+  // Desktop: rich animated loading screen
   return (
     <motion.div className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
       style={{ backgroundColor: DARK_BG }}
@@ -640,8 +662,8 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         <motion.div className="h-full rounded-full"
           style={{ backgroundColor: GOLD }}
           initial={{ width: '0%' }}
-          animate={{ width: `${Math.min(progress, 100)}%` }}
-          transition={{ duration: 0.3, ease: 'easeOut' }} />
+          animate={{ width: '100%' }}
+          transition={{ duration: 1.2, ease: 'easeOut' }} />
       </motion.div>
       <motion.p className="font-[family-name:var(--font-ui)] text-[10px] tracking-[3px] uppercase mt-4"
         style={{ color: '#C47080' }}
@@ -794,10 +816,11 @@ function CoverPage() {
       {/* ═══════════════════════════════════════════════════════════
           LAYER 6: Cinematic Light Sweep — periodic golden shimmer
           ═══════════════════════════════════════════════════════════ */}
-      <CinematicLightSweep />
+      {/* CinematicLightSweep DESKTOP ONLY — skip on mobile for performance */}
+      <MobileHide><CinematicLightSweep /></MobileHide>
 
       {/* ═══════════════════════════════════════════════════════════
-          LAYER 7: Elegant Gold Border Frames — triple depth
+          LAYER 7: Elegant Gold Border Frames — reduced on mobile
           ═══════════════════════════════════════════════════════════ */}
       {/* Outer frame — bold gold with subtle glow */}
       <motion.div className="absolute pointer-events-none z-[8]"
@@ -811,50 +834,52 @@ function CoverPage() {
           boxShadow: '0 0 60px rgba(197,160,89,0.06), inset 0 0 60px rgba(197,160,89,0.03)',
         }} />
 
-      {/* Middle frame — thinner line */}
-      <motion.div className="absolute pointer-events-none z-[8]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.3, duration: 1.8 }}
-        style={{ inset: '18px', border: '0.5px solid rgba(197,160,89,0.12)', borderRadius: 2 }} />
-
-      {/* Inner frame — delicate whisper */}
-      <motion.div className="absolute pointer-events-none z-[8]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 1.5 }}
-        style={{ inset: '26px', border: '0.3px solid rgba(197,160,89,0.08)' }} />
+      {/* Middle + Inner frame — DESKTOP ONLY */}
+      <MobileHide>
+        <motion.div className="absolute pointer-events-none z-[8]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3, duration: 1.8 }}
+          style={{ inset: '18px', border: '0.5px solid rgba(197,160,89,0.12)', borderRadius: 2 }} />
+        <motion.div className="absolute pointer-events-none z-[8]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6, duration: 1.5 }}
+          style={{ inset: '26px', border: '0.3px solid rgba(197,160,89,0.08)' }} />
+      </MobileHide>
 
       {/* ═══════════════════════════════════════════════════════════
-          LAYER 8: Corner Ornaments — Royal Javanese
+          LAYER 8: Corner Ornaments — DESKTOP ONLY (skip on mobile)
           ═══════════════════════════════════════════════════════════ */}
-      <motion.div className="absolute top-3 left-3 z-[9]"
-        initial={{ opacity: 0, scale: 0.3, rotate: -15 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ delay: 0.6, duration: 1.0, type: 'spring', stiffness: 120 }}>
-        <CornerOrnamentGod />
-      </motion.div>
-      <motion.div className="absolute top-3 right-3 z-[9]"
-        initial={{ opacity: 0, scale: 0.3, rotate: 15 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ delay: 0.7, duration: 1.0, type: 'spring', stiffness: 120 }}
-        style={{ transform: 'scaleX(-1)' }}>
-        <CornerOrnamentGod />
-      </motion.div>
-      <motion.div className="absolute bottom-3 left-3 z-[9]"
-        initial={{ opacity: 0, scale: 0.3, rotate: 15 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ delay: 0.8, duration: 1.0, type: 'spring', stiffness: 120 }}
-        style={{ transform: 'scaleY(-1)' }}>
-        <CornerOrnamentGod />
-      </motion.div>
-      <motion.div className="absolute bottom-3 right-3 z-[9]"
-        initial={{ opacity: 0, scale: 0.3, rotate: -15 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ delay: 0.9, duration: 1.0, type: 'spring', stiffness: 120 }}
-        style={{ transform: 'scale(-1,-1)' }}>
-        <CornerOrnamentGod />
-      </motion.div>
+      <MobileHide>
+        <motion.div className="absolute top-3 left-3 z-[9]"
+          initial={{ opacity: 0, scale: 0.3, rotate: -15 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ delay: 0.6, duration: 1.0, type: 'spring', stiffness: 120 }}>
+          <CornerOrnamentGod />
+        </motion.div>
+        <motion.div className="absolute top-3 right-3 z-[9]"
+          initial={{ opacity: 0, scale: 0.3, rotate: 15 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ delay: 0.7, duration: 1.0, type: 'spring', stiffness: 120 }}
+          style={{ transform: 'scaleX(-1)' }}>
+          <CornerOrnamentGod />
+        </motion.div>
+        <motion.div className="absolute bottom-3 left-3 z-[9]"
+          initial={{ opacity: 0, scale: 0.3, rotate: 15 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ delay: 0.8, duration: 1.0, type: 'spring', stiffness: 120 }}
+          style={{ transform: 'scaleY(-1)' }}>
+          <CornerOrnamentGod />
+        </motion.div>
+        <motion.div className="absolute bottom-3 right-3 z-[9]"
+          initial={{ opacity: 0, scale: 0.3, rotate: -15 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ delay: 0.9, duration: 1.0, type: 'spring', stiffness: 120 }}
+          style={{ transform: 'scale(-1,-1)' }}>
+          <CornerOrnamentGod />
+        </motion.div>
+      </MobileHide>
 
       {/* ═══════════════════════════════════════════════════════════
           LAYER 9: TOP SECTION — Bismillah & Classification
@@ -4582,6 +4607,15 @@ export default function Home() {
 
   const progress = ((currentLeaf + 1) / totalPages) * 100
   const displayPage = currentLeaf + 1
+
+  // ═══ Dismiss CSS-only preloader on mount ═══
+  useEffect(() => {
+    const preloader = document.getElementById('knbmp-preloader')
+    if (preloader) {
+      preloader.classList.add('fade-out')
+      setTimeout(() => { try { preloader.remove() } catch { /* already removed */ } }, 600)
+    }
+  }, [])
 
   // ═══ Mobile detection ═══
   const [isMobile, setIsMobile] = useState(false)
