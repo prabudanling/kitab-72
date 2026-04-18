@@ -881,3 +881,29 @@ Stage Summary:
 - Root cause identified: setTimeout in DigitalUnveiling breaks user gesture chain
 - Fix: prepare() called in "Buka Kitab" click handler, play() called later by onComplete
 - Files changed: src/hooks/use-indonesia-raya.ts, src/components/DigitalUnveiling.tsx, src/app/page.tsx
+
+---
+Task ID: audio-fix-5-real-mp3
+Agent: Main Agent
+Task: Replace Web Audio synthesis with real Indonesia Raya orchestral MP3
+
+Work Log:
+- User reported music sounds like electronic synthesizer, not like the YouTube orchestral recording
+- Root cause: Previous implementation used Web Audio API oscillators to synthesize Indonesia Raya — will never sound like real orchestra
+- Searched for free/public Indonesia Raya audio sources via web search
+- Found Wikimedia Commons: "Indonesia Raya Simfoni dan Vokal 3 Bait.ogg" (full 4:30, orchestral + vocal, 3 verses)
+- Downloaded from Wikimedia Commons (5.4MB OGG, stereo, 44100Hz, 164kbps)
+- Converted to MP3 using ffmpeg (6.2MB, stereo, 44100Hz, 192kbps, 4:30 duration)
+- Completely rewrote use-indonesia-raya.ts to use HTML5 Audio element instead of Web Audio API synthesis
+- New hook uses real MP3 file from /public/indonesia-raya-full.mp3
+- prepare() creates Audio element + sets src during user gesture
+- play() calls audio.play() with 3-second fade-in using volume ramp
+- toggle() fades volume to 0 or back to 1.0
+- stop() fades out over 1 second before pausing
+- Lint: 0 errors, dev server compiling successfully
+
+Stage Summary:
+- Real Indonesia Raya orchestral recording now plays (4:30, full 3 verses with vocals)
+- File: /public/indonesia-raya-full.mp3 (6.2MB, 192kbps stereo)
+- Source: Wikimedia Commons (public domain, Indonesian government)
+- Hook simplified from ~400 lines (oscillator synthesis) to ~160 lines (HTML5 Audio)
