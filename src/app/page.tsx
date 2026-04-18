@@ -4622,12 +4622,35 @@ export default function Home() {
     }
   }, [])
 
-  // ═══ Start Indonesia Raya when navigating past cover ═══
+  // ═══ Start Indonesia Raya immediately when cover opens ═══
   useEffect(() => {
-    if (currentLeaf >= 1 && !anthem.hasStarted) {
-      anthem.play(1.5) // 1.5s delay for smooth entry
+    if (!loading && !anthem.hasStarted) {
+      anthem.play(2.0) // 2s delay for smooth entry after loading
     }
-  }, [currentLeaf, anthem.hasStarted])
+  }, [loading, anthem.hasStarted])
+
+  // ═══ Fallback: resume AudioContext on first user interaction (autoplay policy) ═══
+  const anthemTriggeredRef = useRef(false)
+  useEffect(() => {
+    const resumeOnInteraction = () => {
+      if (anthemTriggeredRef.current) return
+      anthemTriggeredRef.current = true
+      if (!anthem.hasStarted && !loading) {
+        anthem.play(0.5)
+      }
+      document.removeEventListener('click', resumeOnInteraction)
+      document.removeEventListener('touchstart', resumeOnInteraction)
+      document.removeEventListener('keydown', resumeOnInteraction)
+    }
+    document.addEventListener('click', resumeOnInteraction, { once: false })
+    document.addEventListener('touchstart', resumeOnInteraction, { once: false })
+    document.addEventListener('keydown', resumeOnInteraction, { once: false })
+    return () => {
+      document.removeEventListener('click', resumeOnInteraction)
+      document.removeEventListener('touchstart', resumeOnInteraction)
+      document.removeEventListener('keydown', resumeOnInteraction)
+    }
+  }, [anthem.hasStarted, anthem, loading])
 
   // ═══ Mobile detection ═══
   const [isMobile, setIsMobile] = useState(false)

@@ -395,7 +395,7 @@ export function useIndonesiaRaya() {
   const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const finishTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const play = useCallback((fadeDelay: number = 2.0) => {
+  const play = useCallback(async (fadeDelay: number = 2.0) => {
     if (hasStarted) return // Play only once
 
     try {
@@ -410,8 +410,15 @@ export function useIndonesiaRaya() {
       const ctx = ctxRef.current
       const master = masterRef.current!
 
+      // MUST wait for resume — browsers block audio until user gesture
       if (ctx.state === 'suspended') {
-        ctx.resume()
+        await ctx.resume()
+      }
+
+      // Double-check context is running after resume
+      if (ctx.state !== 'running') {
+        console.warn('AudioContext not running, cannot play Indonesia Raya')
+        return
       }
 
       const delay = fadeDelay
