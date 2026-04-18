@@ -4501,6 +4501,7 @@ export default function Home() {
   const [showHint, setShowHint] = useState(true)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [loading, setLoading] = useState(true)
+  const [mobileTurns, setMobileTurns] = useState(0) // track mobile page turns to auto-hide swipe arrows
   const { active: screensaverActive, dismiss: dismissScreensaver } = useScreensaver(90_000) // 90s idle
   // Always start false on both server & client to avoid hydration mismatch.
   // The DigitalUnveiling component itself checks sessionStorage and fires
@@ -4566,6 +4567,7 @@ export default function Home() {
     setIsAnimating(true)
     if (soundEnabled) playFlipSound()
     setCurrentLeaf((prev) => prev + 1)
+    setMobileTurns((p) => p + 1)
     setTimeout(() => setIsAnimating(false), 850)
   }, [isAnimating, currentLeaf, totalPages, soundEnabled, playFlipSound])
 
@@ -4574,6 +4576,7 @@ export default function Home() {
     setIsAnimating(true)
     if (soundEnabled) playFlipSound()
     setCurrentLeaf((prev) => prev - 1)
+    setMobileTurns((p) => p + 1)
     setTimeout(() => setIsAnimating(false), 850)
   }, [isAnimating, currentLeaf, soundEnabled, playFlipSound])
 
@@ -4711,6 +4714,37 @@ export default function Home() {
           >
             {renderPage(bookPages[currentLeaf], currentLeaf, totalPages, liveDomains)}
           </motion.div>
+
+          {/* ═══ Mobile Swipe Direction Arrows ═══ */}
+          {/* Left arrow — shows on all pages except first, fades after 4 turns */}
+          {currentLeaf > 0 && mobileTurns < 4 && (
+            <motion.div
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-40 pointer-events-none"
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: [0.25, 0.55, 0.25], x: [-2, 4, -2] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
+              style={{ filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.4))' }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: 'rgba(0,0,0,0.35)', backdropFilter: 'blur(4px)' }}>
+                <ChevronLeft className="w-5 h-5" style={{ color: GOLD }} />
+              </div>
+            </motion.div>
+          )}
+
+          {/* Right arrow — shows on all pages except last, fades after 4 turns */}
+          {currentLeaf < totalPages - 1 && mobileTurns < 4 && (
+            <motion.div
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-40 pointer-events-none"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: [0.25, 0.55, 0.25], x: [2, -4, 2] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.4))' }}>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: 'rgba(0,0,0,0.35)', backdropFilter: 'blur(4px)' }}>
+                <ChevronRight className="w-5 h-5" style={{ color: GOLD }} />
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* Mobile navigation bar */}

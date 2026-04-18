@@ -796,3 +796,28 @@ Stage Summary:
 - Loading on mobile: 150ms (was 600ms) since CSS preloader handles the visual experience
 - Keyboard fix: visualViewport tracks keyboard open/close, adjusts container height
 - Font strategy: preload: true for Outfit + DM Sans, preload: false for 5 others
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Add mobile swipe direction arrows (left/right indicators)
+
+Work Log:
+- Added mobileTurns state to track page turns on mobile
+- Updated goNext/goPrev callbacks to increment mobileTurns counter
+- Added floating left arrow indicator (ChevronLeft) on mobile page area — positioned left-2, vertically centered
+- Added floating right arrow indicator (ChevronRight) on mobile page area — positioned right-2, vertically centered
+- Both arrows: semi-transparent dark circles (rgba(0,0,0,0.35)) with backdrop blur, gold chevron icons
+- Arrows animate with pulsing opacity (0.25↔0.55) and subtle horizontal nudge to indicate swipe direction
+- pointer-events-none so they don't interfere with touch/click navigation
+- Left arrow hidden on first page (currentLeaf === 0)
+- Right arrow hidden on last page (currentLeaf >= totalPages - 1)
+- Auto-hide after 4 page turns (mobileTurns < 4) — user learns the gesture
+- Dev server compiled successfully
+
+Stage Summary:
+- Mobile users now see floating directional arrows on book pages indicating swipe/click directions
+- Left arrow nudges left, right arrow nudges right — intuitive motion hints
+- Auto-disappears after 4 page turns to reduce visual clutter
+- Performance impact: minimal (2 small motion.div overlays, pointer-events-none)
+
